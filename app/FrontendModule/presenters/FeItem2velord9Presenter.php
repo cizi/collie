@@ -49,17 +49,24 @@ class FeItem2velord9Presenter extends FrontendPresenter {
 		return $form;
 	}
 
+	/**
+	 * Zedituje uživatele
+	 * @param Form $form
+	 */
 	public function saveUser(Form $form) {
 		$values = $form->getHttpData();
-		$userEntity = new UserEntity();
-		$userEntity->hydrate((array)$values);
+		$userEntityCurrent = $this->userRepository->getUser($this->user->getId());
 
-		$userEntity->setRole(UserRoleEnum::USER_REGISTERED);
-		$userEntity->setActive(true);
-		$userEntity->setPassword(Passwords::hash($userEntity->getPassword()));
+		$userEntityNew = new UserEntity();
+		$userEntityNew->hydrate((array)$values);
+		$userEntityNew->setId($userEntityCurrent->getId());
+		$userEntityNew->setEmail($userEntityCurrent->getEmail());
+		$userEntityNew->setRole($userEntityCurrent->getRole());
+		$userEntityNew->setActive(true);
+		$userEntityNew->setPassword($userEntityCurrent->getPassword());
 
 		try {
-			$this->userRepository->saveUser($userEntity);
+			$this->userRepository->saveUser($userEntityNew);
 			if (isset($values['id']) && $values['id'] != "") {
 				$this->flashMessage(USER_EDITED, "alert-success");
 			} else {

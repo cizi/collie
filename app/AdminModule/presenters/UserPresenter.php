@@ -7,6 +7,8 @@ use App\Enum\UserRoleEnum;
 use App\Forms\UserForm;
 use App\Model\Entity\UserEntity;
 use App\Model\UserRepository;
+use Nette\Application\AbortException;
+use Nette\Application\UI\Form;
 use Nette\Security\Passwords;
 use Nette\Security\User;
 
@@ -55,22 +57,46 @@ class UserPresenter extends SignPresenter {
 		return $form;
 	}
 
-	public function saveUser($form, $values) {
+	/**
+	 * @param Form $form
+	 * @param $values
+	 */
+	public function saveUser(Form $form, $values) {
 		$userEntity = new UserEntity();
 		$userEntity->hydrate((array)$values);
 		$userEntity->setPassword(Passwords::hash($userEntity->getPassword()));
+		$isEditation = (isset($values['id']) && $values['id'] != "");
 
 		try {
-			$this->userRepository->saveUser($userEntity);
-			if (isset($values['id']) && $values['id'] != "") {
+			if ($isEditation) {	// pokud edituji tal propíšu jen heslo
+				$userCurrent = $this->userRepository->getUser($this->user->getId());
+				$userEntity->setPassword($userCurrent->getPassword());
+				$this->userRepository->saveUser($userEntity);
 				$this->flashMessage(USER_EDITED, "alert-success");
 			} else {
-				$this->flashMessage(USER_ADDED, "alert-success");
+				if ((trim($values['passwordConfirm']) == "") || (trim($values['password']) == "")) {
+					$this->flashMessage(USER_EDIT_PASSWORDS_EMPTY, "alert-danger");
+					$form->addError(USER_EDIT_PASSWORDS_EMPTY);
+				} elseif (trim($values['passwordConfirm']) != trim($values['password'])) {
+					$this->flashMessage(USER_EDIT_PASSWORDS_DOESNT_MATCH, "alert-danger");
+					$form->addError(USER_EDIT_PASSWORDS_DOESNT_MATCH);
+				} elseif ($this->userRepository->getUserByEmail($values['email']) == null) {
+					$this->userRepository->saveUser($userEntity);
+					$this->flashMessage(USER_ADDED, "alert-success");
+					$this->redirect("Default");
+				} else {
+					$this->flashMessage(USER_EMAIL_ALREADY_EXISTS, "alert-danger");
+					$form->addError(USER_EMAIL_ALREADY_EXISTS);
+				}
 			}
 		} catch (\Exception $e) {
-			$this->flashMessage(USER_EDIT_SAVE_FAILED, "alert-danger");
+			if ($e instanceof AbortException) {
+				throw $e;
+			} else {
+				$this->flashMessage(USER_EDIT_SAVE_FAILED, "alert-danger");
+				$form->addError(USER_EDIT_SAVE_FAILED);
+			}
 		}
-		$this->redirect("Default");
 	}
 
 	/**
@@ -84,7 +110,14 @@ class UserPresenter extends SignPresenter {
 		if ($userEntity) {
 			$this['editForm']->addHidden('id', $userEntity->getId());
 			$this['editForm']['email']->setAttribute("readonly", "readonly");
+
+			$this['editForm']['password']->setAttribute("readonly", "readonly");	// pokud edituji tak heslo nemìním
+			$this['editForm']['passwordConfirm']->setAttribute("readonly", "readonly"); // pokud edituji tak heslo nemìním
+
 			$this['editForm']->setDefaults($userEntity->extract());
+
+			$this['editForm']['passwordConfirm']->setAttribute("class", "form-control");
+			$this['editForm']['password']->setAttribute("class", "form-control");
 		}
 	}
 
