@@ -45,6 +45,9 @@ class SignForm extends Nette\Object {
 
 		$form->addCheckbox('remember', ADMIN_LOGIN_REMEMBER_ME);
 
+		$form->addSubmit("password_reset", ADMIN_LOGIN_RESET_PASSWORD)
+			->setAttribute("class", "btn btn-lg btn-secondary btn-block");
+
 		$form->addSubmit('send', ADMIN_LOGIN_LOGIN)
 			->setAttribute("class", "btn btn-lg btn-primary btn-block");
 

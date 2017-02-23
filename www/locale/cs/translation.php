@@ -8,6 +8,7 @@ define("ADMIN_LOGIN_PASS", 'Heslo');
 define("ADMIN_LOGIN_PASS_REQ", 'Prosím vyplňte heslo');
 define("ADMIN_LOGIN_LANG", 'Jazyk rozhraní');
 define("ADMIN_LOGIN_REMEMBER_ME", 'Zapamatuj si mě');
+define("ADMIN_LOGIN_RESET_PASSWORD", 'Obnovit heslo');
 define("ADMIN_LOGIN_LOGIN", 'Přihlásit');
 define("ADMIN_LOGIN_EMAIL_PLACEHOLDER", 'Email');
 define("ADMIN_LOGIN_PASS_PLACEHOLDER", 'Heslo');
