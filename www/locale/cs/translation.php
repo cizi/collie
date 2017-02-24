@@ -61,6 +61,8 @@ define("USER_CONFIRM_DELETE", 'Opravdu smazat uživatele?');
 define("USER_CONFIRM_DELETE_CANCEL", 'Zpět');
 define("USER_CONFIRM_DELETE_OK", 'Smazat');
 define("USER_ERROR_ACTIVE_SWITCH", 'Došlo k chybě při komunikaci ze serverem, opakujte prosím později.');
+define("USER_CREATED_MAIL_SUBJECT", 'Registrace nového uživatele');
+define("USER_CREATED_MAIL_BODY", 'Dobrý den, \n\n Vaše registace na serveru %s proběhla úspěšně.\n Vaše příhlašovací údaje jsou: \n jméno: %s \n heslo: %s \n\n');
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", 'Přidání nového uživatele');

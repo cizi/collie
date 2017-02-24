@@ -4,8 +4,6 @@ namespace App\Controller;
 
 class EmailController {
 
-
-
 	/**
 	 * Odešle email o obnovì hesla
 	 *
@@ -16,7 +14,7 @@ class EmailController {
 	 * @throws \Exception
 	 * @throws \phpmailerException
 	 */
-	public static function sendResetPasswordEmail($emailFrom, $emailTo, $subject, $body) {
+	public static function SendPlainEmail($emailFrom, $emailTo, $subject, $body) {
 		$email = new \PHPMailer();
 		$email->CharSet = "UTF-8";
 		$email->From = $emailFrom;

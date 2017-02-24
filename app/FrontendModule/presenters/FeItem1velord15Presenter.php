@@ -3,11 +3,12 @@
 namespace App\FrontendModule\Presenters;
 
 // PRESENTER REGISTRACE UŽIVATELE
+use App\Controller\EmailController;
 use App\Enum\UserRoleEnum;
 use App\Forms\UserForm;
 use App\Model\Entity\UserEntity;
 use App\Model\UserRepository;
-use Dibi\Exception;
+use App\Model\WebconfigRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use Nette\Security\Passwords;
@@ -70,6 +71,10 @@ class FeItem1velord15Presenter extends FrontendPresenter {
 				if (isset($values['id']) && $values['id'] != "") {
 					$this->flashMessage(USER_EDITED, "alert-success");
 				} else {
+					$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+					$subject = USER_CREATED_MAIL_SUBJECT;
+					$body = sprintf(USER_CREATED_MAIL_BODY, $this->getHttpRequest()->getUrl()->getBaseUrl(), $userEntity->getEmail(), $values['password']);
+					EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), $subject, $body);
 					$this->flashMessage(USER_ADDED, "alert-success");
 				}
 				$this->redirect($this->getPresenterLink(1, 14) . ":default");

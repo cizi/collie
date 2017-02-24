@@ -60,6 +60,9 @@ define("USER_CONFIRM_DELETE", 'Really delete user?');
 define("USER_CONFIRM_DELETE_CANCEL", 'Cancel');
 define("USER_CONFIRM_DELETE_OK", 'Delete');
 define("USER_ERROR_ACTIVE_SWITCH", 'Communication with server broken, please repeat action later.');
+define("USER_CREATED_MAIL_SUBJECT", 'New user registration');
+define("USER_CREATED_MAIL_BODY", 'Hello there, \n\n your registration on server %s has been successful .\n Your credentials are: \n login: %s \n password: %s \n\n');
+
 // admin - user edit
 define("USER_EDIT_FORM_ADD", ' Addition the new user');
 define("USER_EDIT_FORM_EDIT", 'Editing of user %s');

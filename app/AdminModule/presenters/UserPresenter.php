@@ -3,10 +3,12 @@
 namespace App\AdminModule\Presenters;
 
 use App\AdminModule\Model;
+use App\Controller\EmailController;
 use App\Enum\UserRoleEnum;
 use App\Forms\UserForm;
 use App\Model\Entity\UserEntity;
 use App\Model\UserRepository;
+use App\Model\WebconfigRepository;
 use Nette\Application\AbortException;
 use Nette\Application\UI\Form;
 use Nette\Security\Passwords;
@@ -68,7 +70,7 @@ class UserPresenter extends SignPresenter {
 		$isEditation = (isset($values['id']) && $values['id'] != "");
 
 		try {
-			if ($isEditation) {	// pokud edituji tal propíšu jen heslo
+			if ($isEditation) {	// pokud edituji tak propíšu jen heslo
 				$userCurrent = $this->userRepository->getUser($this->user->getId());
 				$userEntity->setPassword($userCurrent->getPassword());
 				$this->userRepository->saveUser($userEntity);
@@ -82,6 +84,12 @@ class UserPresenter extends SignPresenter {
 					$form->addError(USER_EDIT_PASSWORDS_DOESNT_MATCH);
 				} elseif ($this->userRepository->getUserByEmail($values['email']) == null) {
 					$this->userRepository->saveUser($userEntity);
+
+					$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+					$subject = USER_CREATED_MAIL_SUBJECT;
+					$body = sprintf(USER_CREATED_MAIL_BODY, $this->getHttpRequest()->getUrl()->getBaseUrl(), $userEntity->getEmail(), $values['password']);
+					EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), $subject, $body);
+
 					$this->flashMessage(USER_ADDED, "alert-success");
 					$this->redirect("Default");
 				} else {
