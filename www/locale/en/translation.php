@@ -371,5 +371,17 @@ define("HEADER_CONFIRM_DELETE_CANCEL", 'Cancel');
 define("HEADER_CONFIRM_DELETE_OK", 'Delete');
 define("HEADER_BUTTON_SAVE", 'Save header setting');
 
+// číselníky
+define("ENUM_TITLE", 'Enumeration setting');
+define("ENUM_TITLE_DESCRIPTION", 'Zde je možné spravovat číselníky, které jsou napříč celým systémem. Správu by měl dělat jen administrátor,
+								protože změny mohou mít dopad na celou aplikaci');
+define("ENUM_TABLE_ENUM_NAME", 'Enumeration title');
+define("ENUM_TABLE_FIELDS_PREVIEW", 'Enumeration items');
+define("ENUM_TABLE_ADD_NEW_ENUM", 'Add enumeration');
+define("ENUM_TABLE_ENUM_EDIT", 'Enumeration edit');
+define("ENUM_TABLE_ENUM_DELETE", 'Enumeration delete');
+define("ENUM_TABLE_ENUM_WARNING_TITLE", 'Deleting enumeration');
+define("ENUM_TABLE_ENUM_WARNING_TEXT", 'Are really want to delete whole enumeration item?');
+
 // common
 define("UNSUPPORTED_UPLOAD_FORMAT", " You are trying to upload unsupported format. Supported formats are %s.");
