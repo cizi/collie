@@ -8,6 +8,7 @@ use App\Forms\SignForm;
 use App\FrontendModule\Presenters\BasePresenter;
 use Nette\Application\UI\Form;
 use App\AdminModule\Presenters;
+use App\Forms\PasswordResetForm;
 
 class DefaultPresenter extends BasePresenter {
 
@@ -17,23 +18,36 @@ class DefaultPresenter extends BasePresenter {
 	/** @var UserRepository */
 	public $userRepository;
 
+	/** @var PasswordResetForm */
+	private $passwordResetForm;
+
 	/**
 	 * @param SignForm $signForm
 	 * @param UserRepository $userRepository
 	 * @param LangRepository $langRepository
 	 */
-	public function __construct(SignForm $signForm, UserRepository $userRepository, LangRepository $langRepository) {
+	public function __construct(SignForm $signForm, UserRepository $userRepository, LangRepository $langRepository, PasswordResetForm $passwordResetForm) {
 		$this->singInForm = $signForm;
 		$this->userRepository = $userRepository;
+		$this->passwordResetForm = $passwordResetForm;
+	}
+
+	public function startup() {
+		parent::startup();
+		if ($this->user->isLoggedIn()) {
+			$this->redirect('Dashboard:Default');
+		}
 	}
 
 	/**
 	 * Already logged in, redirect do dashboard
 	 */
 	public function actionDefault() {
-		if ($this->user->isLoggedIn()) {
-			$this->redirect('Dashboard:Default');
-		}
+
+	}
+
+	public function renderResetPassword() {
+		
 	}
 
 	/**

@@ -3,16 +3,20 @@
 namespace App\FrontendModule\Presenters;
 
 use App\AdminModule\Presenters\BlockContentPresenter;
+use App\Controller\EmailController;
 use App\Controller\FileController;
 use App\Controller\MenuController;
 use App\Enum\WebWidthEnum;
 use App\Forms\ContactForm;
+use App\Forms\PasswordResetForm;
 use App\Model\BlockRepository;
 use App\Model\LangRepository;
 use App\Model\MenuRepository;
 use App\Model\SliderPicRepository;
 use App\Model\SliderSettingRepository;
+use App\Model\UserRepository;
 use App\Model\WebconfigRepository;
+use Dibi\Exception;
 use Nette;
 use Nette\Application\UI\Presenter;
 
@@ -54,6 +58,12 @@ abstract class BasePresenter extends Presenter {
 	/** @var LangRepository */
 	protected $langRepository;
 
+	/** @var PasswordResetForm */
+	private $passwordResetForm;
+
+	/** @var UserRepository */
+	private $userRepository;
+
 	/**
 	 * @param LangRepository $langRepository
 	 */
@@ -66,7 +76,9 @@ abstract class BasePresenter extends Presenter {
 		MenuRepository $menuRepository,
 		FileController $fileController,
 		BlockRepository $blockRepository,
-		LangRepository $langRepository
+		LangRepository $langRepository,
+		PasswordResetForm $passwordResetForm,
+		UserRepository $userRepository
 	) {
 		$this->webconfigRepository = $webconfigRepository;
 		$this->sliderSettingRepository = $sliderSettingRepository;
@@ -77,6 +89,8 @@ abstract class BasePresenter extends Presenter {
 		$this->fileController = $fileController;
 		$this->blockRepository = $blockRepository;
 		$this->langRepository = $langRepository;
+		$this->passwordResetForm = $passwordResetForm;
+		$this->userRepository = $userRepository;
 	}
 
 	public function startup() {
@@ -140,6 +154,45 @@ abstract class BasePresenter extends Presenter {
 	 */
 	protected function getPresenterLink($level, $order) {
 		return self::PRESENTER_PREFIX . $level . self::LEVEL_ORDER_DELIMITER . $order;
+	}
+
+	protected function createComponentPasswordResetForm() {
+		$form = $this->passwordResetForm->create();
+		$form->onSubmit[] = $this->resetUserPassword;
+
+		return $form;
+	}
+
+	/**
+	 * @param Nette\Forms\Form $form
+	 */
+	public function resetUserPassword(Nette\Forms\Form $form) {
+		$values = $form->getHttpData();
+		if (isset($values["login"]) && $values["login"] != "") {
+			$user = $this->userRepository->getUserByEmail(trim($values["login"]));
+			if ($user != null) {
+				try {
+					$newPass = $this->userRepository->resetUserPassword($user);
+					$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+					$subject = sprintf(ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT, $this->getHttpRequest()->getUrl()->getBaseUrl());
+					$body = sprintf(ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_BODY, $this->getHttpRequest()->getUrl()->getBaseUrl(), $newPass);
+					EmailController::sendResetPasswordEmail($emailFrom, $user->getPassword(), $subject, $body);
+
+					$this->flashMessage(ADMIN_LOGIN_RESET_SUCCESS, "alert-success");
+					$this->redirect("default");
+				} catch (Exception $e) {
+					if ($e instanceof Nette\Application\AbortException) {
+						throw $e;
+					} else {
+						$this->flashMessage(ADMIN_LOGIN_RESET_FAILED, "alert-danger");
+						$form->addError(ADMIN_LOGIN_RESET_FAILED);
+					}
+				}
+			} else {
+				$this->flashMessage(ADMIN_LOGIN_RESET_PASSWORD_EMAIL_FAIL, "alert-danger");
+				$form->addError(ADMIN_LOGIN_RESET_PASSWORD_EMAIL_FAIL);
+			}
+		}
 	}
 
 	/**

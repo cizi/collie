@@ -272,3 +272,9 @@ div.colorExample {
 	color: #000000;
 	width: 100%;
 }
+.resetPasswordLink {
+	padding: 10px 25px ;
+}
+.spacer10{
+	height: 10px;
+}

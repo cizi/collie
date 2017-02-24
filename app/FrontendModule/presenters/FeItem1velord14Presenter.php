@@ -32,10 +32,6 @@ class FeItem1velord14Presenter extends FrontendPresenter {
 		}
 	}
 
-	public function renderDefault($id) {
-		
-	}
-
 	/**
 	 * Sign-in form factory.
 	 * @return Form
@@ -61,27 +57,23 @@ class FeItem1velord14Presenter extends FrontendPresenter {
 	 */
 	public function formSucceeded(Form $form) {
 		$values = $form->getHttpData();
-		if (isset($values['password_reset'])) {
-			// TODO
+		if (isset($values['remember'])) {
+			$this->user->setExpiration('14 days', false);
 		} else {
-			if (isset($values['remember'])) {
-				$this->user->setExpiration('14 days', false);
-			} else {
-				$this->user->setExpiration('20 minutes', true);
-			}
+			$this->user->setExpiration('20 minutes', true);
+		}
 
-			try {
-				$credentials = ['email' => $values['login'], 'password' => $values['password']];
-				$identity = $this->user->getAuthenticator()->authenticate($credentials);
-				$this->user->login($identity);
-				$this->userRepository->updateLostLogin($identity->getId());
+		try {
+			$credentials = ['email' => $values['login'], 'password' => $values['password']];
+			$identity = $this->user->getAuthenticator()->authenticate($credentials);
+			$this->user->login($identity);
+			$this->userRepository->updateLostLogin($identity->getId());
 
-				$this->flashMessage(ADMIN_LOGIN_SUCCESS, "alert-success");
-				$this->redirect("Homepage:default");
-			} catch (\Nette\Security\AuthenticationException $e) {
-				$this->flashMessage(ADMIN_LOGIN_FAILED, "alert-danger");
-				$form->addError(ADMIN_LOGIN_FAILED);
-			}
+			$this->flashMessage(ADMIN_LOGIN_SUCCESS, "alert-success");
+			$this->redirect("Homepage:default");
+		} catch (\Nette\Security\AuthenticationException $e) {
+			$this->flashMessage(ADMIN_LOGIN_FAILED, "alert-danger");
+			$form->addError(ADMIN_LOGIN_FAILED);
 		}
 	}
 }
