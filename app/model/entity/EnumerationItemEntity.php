@@ -17,6 +17,23 @@ class EnumerationItemEntity {
 	/** @var string */
 	private $item;
 
+	/** @var int */
+	private $order;
+
+	/**
+	 * @return int
+	 */
+	public function getOrder() {
+		return $this->order;
+	}
+
+	/**
+	 * @param int $order
+	 */
+	public function setOrder($order) {
+		$this->order = $order;
+	}
+
 	/**
 	 * @return int
 	 */
@@ -81,7 +98,8 @@ class EnumerationItemEntity {
 			'id' => $this->id,
 			'enum_header_id' => $this->enumHeaderId,
 			'lang' => $this->lang,
-			'item' => $this->item
+			'item' => $this->item,
+			'order' => $this->order
 		];
 	}
 
@@ -93,5 +111,6 @@ class EnumerationItemEntity {
 		$this->enumHeaderId = $data['enum_header_id'];
 		$this->lang = $data['lang'];
 		$this->item = $data['item'];
+		$this->order = $data['order'];
 	}
 }

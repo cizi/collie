@@ -383,5 +383,15 @@ define("ENUM_TABLE_ENUM_DELETE", 'Enumeration delete');
 define("ENUM_TABLE_ENUM_WARNING_TITLE", 'Deleting enumeration');
 define("ENUM_TABLE_ENUM_WARNING_TEXT", 'Are really want to delete whole enumeration item?');
 
+define("ENUM_EDIT_TITLE", 'Enumeration detail');
+define("ENUM_EDIT_DESC", 'Enumeration detail area, please take care what are you doing');
+define("ENUM_EDIT_NAME", 'Enumeration title');
+define("ENUM_EDIT_NAME_REQ", 'Title of enumeration is mandatory');
+define("ENUM_EDIT_ITEMS_LABEL", 'Enumeration items');
+define("ENUM_EDIT_ITEM_EDIT", 'Editation of enumeration item');
+define("ENUM_EDIT_ITEM_DELETE", 'Enum item delete');
+define("ENUM_EDIT_ITEM_ADD", 'Add enumeration item');
+define("ENUM_EDIT_ITEM_DELETE_MSG", 'Are you really want to delete enumeration item');
+
 // common
 define("UNSUPPORTED_UPLOAD_FORMAT", " You are trying to upload unsupported format. Supported formats are %s.");

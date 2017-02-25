@@ -142,7 +142,7 @@ class UserForm extends Nette\Object {
 		$form->addButton("back", USER_EDIT_BACK_BTN_LABEL)
 			->setAttribute("class", "btn btn-secondary")
 			->setAttribute("onclick", "location.assign('". $linkBack ."')")
-			->setAttribute("tabindex", "21");;
+			->setAttribute("tabindex", "21");
 
 		return $form;
 	}

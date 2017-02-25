@@ -393,7 +393,7 @@ define("HEADER_BUTTON_SAVE", 'Uložit hlavičku');
 // nastavení číselníků
 define("ENUM_TITLE", 'Nastavení číselníků v systému');
 define("ENUM_TITLE_DESCRIPTION", 'Zde je možné spravovat číselníky, které jsou napříč celým systémem. Správu by měl dělat jen administrátor,
-								protože změny mohou mít dopad na celou aplikaci');
+								protože změny mohou mít dopad na celou aplikaci.');
 define("ENUM_TABLE_ENUM_NAME", 'Název číselníku');
 define("ENUM_TABLE_FIELDS_PREVIEW", 'Položky číselníku');
 define("ENUM_TABLE_ADD_NEW_ENUM", 'Přidat číselník');
@@ -401,7 +401,16 @@ define("ENUM_TABLE_ENUM_EDIT", 'Editace číselníku');
 define("ENUM_TABLE_ENUM_DELETE", 'Smazat číselník');
 define("ENUM_TABLE_ENUM_WARNING_TITLE", 'Smazání číseníku');
 define("ENUM_TABLE_ENUM_WARNING_TEXT", 'Opravdu chcete smazat číselník?');
-
+define("ENUM_EDIT_TITLE", 'Detail číselníku');
+define("ENUM_EDIT_DESC", 'Zde můžete spravovat název číselníku v jazycích systému a následně jeho jednotlivé položky. Úpravy by měl dělat jen
+						administrátor, protože změny mohou mít dopad na celou aplikaci.');
+define("ENUM_EDIT_NAME", 'Název číselníku');
+define("ENUM_EDIT_NAME_REQ", 'Název číselníků je povinná položka');
+define("ENUM_EDIT_ITEMS_LABEL", 'Položky číselníku');
+define("ENUM_EDIT_ITEM_EDIT", 'Editace položky číselníku');
+define("ENUM_EDIT_ITEM_DELETE", 'Smazání položky číselníku');
+define("ENUM_EDIT_ITEM_ADD", 'Přidání položky číselníku');
+define("ENUM_EDIT_ITEM_DELETE_MSG", 'Opravdu chcete smazat položku číselníku');
 
 // common
 define("UNSUPPORTED_UPLOAD_FORMAT", "Pokoušíte se nahrát nepodporovaný formát. Podporované formáty jsou %s.");
