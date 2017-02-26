@@ -36,20 +36,24 @@ class EnumerationRepository extends BaseRepository {
 	 * @param int $id
 	 */
 	public function deleteEnum($id) {
+		$return = true;
 		$this->connection->begin();
 		try {
-			$query = ["delete * from enum_item where enum_header_id = %d", $id];
+			$query = ["delete from enum_item where enum_header_id = %i", $id];
 			$this->connection->query($query);
 
-			$query = ["delete * from enum_translation where enum_header_id = %d", $id];
+			$query = ["delete from enum_translation where enum_header_id = %i", $id];
 			$this->connection->query($query);
 
-			$query = ["delete * from enum_header where id = %d", $id];
+			$query = ["delete from enum_header where id = %i", $id];
 			$this->connection->query($query);
 		} catch (\Exception $e) {
 			$this->connection->rollback();
+			$return = false;
 		}
 		$this->connection->commit();
+
+		return $return;
 	}
 
 	/**
@@ -80,7 +84,7 @@ class EnumerationRepository extends BaseRepository {
 	 * @return EnumerationEntity
 	 */
 	public function getEnumDescription($id, $lang) {
-		$query = ["select et.lang, et.description, et.enum_header_id from enum_translation as et
+		$query = ["select et.lang, et.description, et.enum_header_id, et.id from enum_translation as et
 				where et.enum_header_id = %i and lang = %s",
 			$id,
 			$lang
@@ -139,6 +143,10 @@ class EnumerationRepository extends BaseRepository {
 		$this->connection->query($query);
 	}
 
+	/**
+	 * @param array $items
+	 * @return bool
+	 */
 	public function saveEnumerationItems(array $items) {
 		$result = true;
 		$this->connection->begin();
@@ -162,6 +170,32 @@ class EnumerationRepository extends BaseRepository {
 		$this->connection->commit();
 
 		return $result;
+	}
+
+	public function saveEnumeration(array $items, $enumHeaderId) {
+		$this->connection->begin();
+		try {
+			if ($enumHeaderId == null) {
+				$query = "insert into enum_header (description) values ('USER ENUM')";
+				$this->connection->query($query);
+				$enumHeaderId = $this->connection->getInsertId();
+			}
+			/** @var EnumerationEntity $item */
+			foreach($items as $item) {
+				if ($item->getId() == null) {
+					$item->setEnumHeaderId($enumHeaderId);
+					$query = ["insert into enum_translation", $item->extract()];
+				} else {
+					$query = ["update enum_translation set description = %s where id = %i", $item->getDescription(), $item->getId()];
+				}
+				$this->connection->query($query);
+			}
+		} catch (\Exception $e) {
+			$this->connection->rollback();
+		}
+		$this->connection->commit();
+
+		return $enumHeaderId;
 	}
 
 	/**

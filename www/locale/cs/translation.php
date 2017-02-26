@@ -418,6 +418,8 @@ define("ENUM_EDIT_ITEM_NAME", 'Hodnota položky číselníku');
 define("ENUM_EDIT_ITEM_NAME_REQ", 'Hodnota položky číselníku je povinná položka');
 define("ENUM_EDIT_ITEM_SAVE", 'Uložení hodnoty číselníků proběhlo v pořádku');
 define("ENUM_EDIT_ITEM_FAIL", 'Během ukládání hodnoty číselníku došlo k chybě.');
+define("ENUM_DELETE_SUCCESS", 'Smazání číselníku proběhlo v pořádku.');
+define("ENUM_DELETE_FAIL", 'Během mazání celého číselníku došlo k chybě. Pravděpodobně je hodnota číselníku někde využívána.');
 
 
 // common

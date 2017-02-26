@@ -393,5 +393,14 @@ define("ENUM_EDIT_ITEM_DELETE", 'Enum item delete');
 define("ENUM_EDIT_ITEM_ADD", 'Add enumeration item');
 define("ENUM_EDIT_ITEM_DELETE_MSG", 'Are you really want to delete enumeration item');
 
+define("ENUM_EDIT_ITEM_DESC",  'Edit of enumeration item in all langugages mutations.');
+define("ENUM_EDIT_ITEM_TITLE", 'Item of enumeration');
+define("ENUM_EDIT_ITEM_NAME", 'Value of enumeration item');
+define("ENUM_EDIT_ITEM_NAME_REQ", 'Value of enumeration item is mandatory.');
+define("ENUM_EDIT_ITEM_SAVE", 'Value of enumeration item has been successfully saved.');
+define("ENUM_EDIT_ITEM_FAIL", 'Saving enumeration item failed.');
+define("ENUM_DELETE_SUCCESS", 'Whole enumeration has benn deleted.');
+define("ENUM_DELETE_FAIL", 'During whole enumeration failed. Probably any value of enumeration item is in used. ');
+
 // common
 define("UNSUPPORTED_UPLOAD_FORMAT", " You are trying to upload unsupported format. Supported formats are %s.");

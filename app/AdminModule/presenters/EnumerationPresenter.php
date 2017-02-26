@@ -5,6 +5,7 @@ namespace App\AdminModule\Presenters;
 
 use App\Forms\EnumerationForm;
 use App\Forms\EnumerationItemForm;
+use App\Model\Entity\EnumerationEntity;
 use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
 use Nette\Application\UI\Form;
@@ -36,7 +37,11 @@ class EnumerationPresenter extends SignPresenter {
 	}
 
 	public function actionDelete($id) {
-		$this->enumerationRepository->deleteEnum($id);
+		if ($this->enumerationRepository->deleteEnum($id)) {
+			$this->flashMessage(ENUM_DELETE_SUCCESS, "alert-success");
+		} else {
+			$this->flashMessage(ENUM_DELETE_FAIL, "alert-danger");
+		}
 		$this->redirect("default");
 	}
 
@@ -78,7 +83,7 @@ class EnumerationPresenter extends SignPresenter {
 		if ($id != null) {
 			foreach($this->langRepository->findLanguages() as $lang) {
 				$desc = $this->enumerationRepository->getEnumDescription($id, $lang);
-				$data[$lang] = [ 'description' => $desc->getDescription() ];
+				$data[$lang] = [ 'description' => $desc->getDescription(), 'enum_header_id' => $desc->getEnumHeaderId(), 'id' => $desc->getId() ];
 				$this['enumerationForm']->setDefaults($data);
 			}
 			$this->template->enumItems = $this->enumerationRepository->findEnumItems($this->langRepository->getCurrentLang($this->session), $id);
@@ -101,7 +106,29 @@ class EnumerationPresenter extends SignPresenter {
 	}
 
 	public function saveEdit(Form $form, ArrayHash $values) {
-		dump($values);
+		$items = [];
+		foreach ($values as $data) {
+			if (is_a($data, "Nette\Utils\ArrayHash")) {
+				$item = new EnumerationEntity();
+				$item->setLang($data['lang']);
+				$item->setDescription($data['description']);
+				if (isset($data["id"]) && ($data["id"] != "")) {
+					$item->setEnumHeaderId($data["id"]);
+					$item->setId($data["id"]);
+				}
+				if (isset($data["enum_header_id"]) && ($data["enum_header_id"] != "")) {
+					$item->setEnumHeaderId($data["enum_header_id"]);
+				}
+				$items[] = $item;
+			}
+		}
+		$enumHeaderId = $this->enumerationRepository->saveEnumeration($items, reset($items)->getEnumHeaderId());
+		if ($enumHeaderId) {
+			$this->flashMessage(ENUM_EDIT_ITEM_SAVE, "alert-success");
+			$this->redirect("edit", $enumHeaderId);
+		} else {
+			$this->flashMessage(ENUM_EDIT_ITEM_FAIL, "alert-danger");
+		}
 	}
 
 	/**

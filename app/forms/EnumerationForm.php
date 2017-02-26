@@ -31,6 +31,7 @@ class EnumerationForm extends Nette\Object {
 			$container = $form->addContainer($lang);
 
 			$container->addHidden("id");
+			$container->addHidden("enum_header_id");
 
 			$container->addText("lang")
 				->setAttribute("class", "form-control menuItem")

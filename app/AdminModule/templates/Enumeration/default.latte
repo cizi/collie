@@ -43,7 +43,7 @@
 												</td>
 												<td class="alignRight">
 													<a href={link Enumeration:Edit, $enum->getId()} title={=ENUM_TABLE_ENUM_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
-													<a href="#" data-href={link Enumeration:Delete, $enum->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=ENUM_TABLE_ENUM_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+													<a href="#" data-href={link Enumeration:Delete, $enum->getEnumHeaderId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=ENUM_TABLE_ENUM_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 												</td>
 											</tr>
 										{/foreach}
