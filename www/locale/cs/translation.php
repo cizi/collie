@@ -412,6 +412,14 @@ define("ENUM_EDIT_ITEM_DELETE", 'Smazání položky číselníku');
 define("ENUM_EDIT_ITEM_ADD", 'Přidání položky číselníku');
 define("ENUM_EDIT_ITEM_DELETE_MSG", 'Opravdu chcete smazat položku číselníku');
 
+define("ENUM_EDIT_ITEM_DESC",  'Editace položky číselníku ve všech jazykových mutacích');
+define("ENUM_EDIT_ITEM_TITLE", 'Položka číselníku');
+define("ENUM_EDIT_ITEM_NAME", 'Hodnota položky číselníku');
+define("ENUM_EDIT_ITEM_NAME_REQ", 'Hodnota položky číselníku je povinná položka');
+define("ENUM_EDIT_ITEM_SAVE", 'Uložení hodnoty číselníků proběhlo v pořádku');
+define("ENUM_EDIT_ITEM_FAIL", 'Během ukládání hodnoty číselníku došlo k chybě.');
+
+
 // common
 define("UNSUPPORTED_UPLOAD_FORMAT", "Pokoušíte se nahrát nepodporovaný formát. Podporované formáty jsou %s.");
 

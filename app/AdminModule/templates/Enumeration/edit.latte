@@ -31,7 +31,7 @@
 											<th>{$lang}</th>
 										{/foreach}
 											<th class="alignRight">
-												<button type="button" class="btn btn-success" onclick="window.location.assign({link Enumeration:EditItem});">
+												<button type="button" class="btn btn-success" onclick="window.location.assign({link Enumeration:EditItem, "", $enumHeaderId});">
 													<span class="glyphicon glyphicon-plus"></span>	{=ENUM_EDIT_ITEM_ADD}
 												</button>
 											</th>
@@ -48,7 +48,7 @@
 													{/if}
 												{/foreach}
 												<td class="alignRight">
-													<a href={link Enumeration:EditItem, $item->getEnumHeaderId(), $item->getOrder()} title={=ENUM_EDIT_ITEM_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+													<a href={link Enumeration:EditItem, $item->getOrder()} title={=ENUM_EDIT_ITEM_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
 													<a href="#" data-href={link Enumeration:DeleteItem, $item->getEnumHeaderId(), $item->getOrder()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=ENUM_EDIT_ITEM_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 												</td>
 											</tr>
