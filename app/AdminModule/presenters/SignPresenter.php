@@ -20,4 +20,10 @@ class SignPresenter extends BasePresenter {
 
 		parent::startup();
 	}
+
+	public function actionOut(){
+		$this->getUser()->logout();
+		$this->flashMessage(ADMIN_LOGIN_UNLOGGED);
+		$this->redirect('default');
+	}
 }

@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use Dibi\Exception;
 use Nette;
 use App\Model\Entity\UserEntity;
 use Nette\InvalidStateException;
@@ -126,12 +127,12 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		} else {
 			$updateArray = $userEntity->extract();
 			unset($updateArray['id']);
+			unset($updateArray['register_timestamp']);
+			unset($updateArray['last_login']);
 			$query = ["update user set ", $updateArray, "where id=%i", $userEntity->getId()];
 		}
 
-		if (!$this->connection->query($query)) {
-			throw new InvalidStateException("Bad");
-		}
+		$this->connection->query($query);
 	}
 
 	/**

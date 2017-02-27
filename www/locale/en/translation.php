@@ -14,7 +14,7 @@ define("ADMIN_LOGIN_RESET_PASSWORD_EMAIL_FAIL", 'Email does not exist in databas
 define("ADMIN_LOGIN_RESET_SUCCESS", 'Password has benn successfully changed and send to your email.');
 define("ADMIN_LOGIN_RESET_FAILED", 'Password reset failed. Try again later.');
 define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT", 'Password changed in %s');
-define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_BODY", 'Hello, \n your password has been changed in %s. \n\n New password is "%s".\n\n');
+define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_BODY", "Hello, <br /> your password has been changed in %s. <br /><br /> New password is '%s'.<br /><br />");
 define("ADMIN_LOGIN_LOGIN", 'Login');
 define("ADMIN_LOGIN_EMAIL_PLACEHOLDER", 'Email');
 define("ADMIN_LOGIN_PASS_PLACEHOLDER", 'Password');
@@ -61,7 +61,7 @@ define("USER_CONFIRM_DELETE_CANCEL", 'Cancel');
 define("USER_CONFIRM_DELETE_OK", 'Delete');
 define("USER_ERROR_ACTIVE_SWITCH", 'Communication with server broken, please repeat action later.');
 define("USER_CREATED_MAIL_SUBJECT", 'New user registration');
-define("USER_CREATED_MAIL_BODY", 'Hello there, \n\n your registration on server %s has been successful .\n Your credentials are: \n login: %s \n password: %s \n\n');
+define("USER_CREATED_MAIL_BODY", "Hello there, <br /><br /> your registration on server %s has been successful.<br /> Your credentials are: <br /> login: %s <br /> password: %s <br /><br />");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", ' Addition the new user');

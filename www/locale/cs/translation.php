@@ -14,7 +14,7 @@ define("ADMIN_LOGIN_RESET_PASSWORD_EMAIL_FAIL", 'Email nebyl nalezen v databázi
 define("ADMIN_LOGIN_RESET_SUCCESS", 'Heslo bylo úspěšně změněno a odesláno na email.');
 define("ADMIN_LOGIN_RESET_FAILED", 'Obnova hesla se nezdařila, opakujte později.');
 define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_SUBJECT", 'Změna hesla v systému %s');
-define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_BODY", 'Dobrý den, \nVaše heslo do systému %s bylo úspěšně změněno. \n\n Nové heslo je "%s".\n\n');
+define("ADMIN_LOGIN_PASSWORD_CHANGED_EMAIL_BODY", "Dobrý den, <br />Vaše heslo do systému %s bylo úspěšně změněno. <br /><br /> Nové heslo je '%s'. <br /><br />");
 define("ADMIN_LOGIN_LOGIN", 'Přihlásit');
 define("ADMIN_LOGIN_EMAIL_PLACEHOLDER", 'Email');
 define("ADMIN_LOGIN_PASS_PLACEHOLDER", 'Heslo');
@@ -62,7 +62,7 @@ define("USER_CONFIRM_DELETE_CANCEL", 'Zpět');
 define("USER_CONFIRM_DELETE_OK", 'Smazat');
 define("USER_ERROR_ACTIVE_SWITCH", 'Došlo k chybě při komunikaci ze serverem, opakujte prosím později.');
 define("USER_CREATED_MAIL_SUBJECT", 'Registrace nového uživatele');
-define("USER_CREATED_MAIL_BODY", 'Dobrý den, \n\n Vaše registace na serveru %s proběhla úspěšně.\n Vaše příhlašovací údaje jsou: \n jméno: %s \n heslo: %s \n\n');
+define("USER_CREATED_MAIL_BODY", "Dobrý den, <br /><br /> Vaše registace na serveru %s proběhla úspěšně.<br /> Vaše příhlašovací údaje jsou: <br /> jméno: %s <br /> heslo: %s <br /><br />");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", 'Přidání nového uživatele');

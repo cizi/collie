@@ -18,7 +18,8 @@ class EmailController {
 		$email = new \PHPMailer();
 		$email->CharSet = "UTF-8";
 		$email->From = $emailFrom;
-		//$email->FromName = $
+		$email->FromName = $emailFrom;
+		$email->isHTML(true);
 		$email->Subject = $subject;
 		$email->Body = $body;
 		$email->AddAddress($emailTo);

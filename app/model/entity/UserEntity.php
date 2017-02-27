@@ -2,6 +2,8 @@
 
 namespace App\Model\Entity;
 
+use Dibi\DateTime;
+
 class UserEntity {
 
 	/** @var int */
@@ -365,14 +367,14 @@ class UserEntity {
 	}
 
 	/**
-	 * @return string
+	 * @return DateTime
 	 */
 	public function getRegisterTimestamp() {
 		return $this->registerTimestamp;
 	}
 
 	/**
-	 * @param string $registerTimestamp
+	 * @param DateTime $registerTimestamp
 	 */
 	public function setRegisterTimestamp($registerTimestamp) {
 		$this->registerTimestamp = $registerTimestamp;

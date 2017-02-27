@@ -135,8 +135,12 @@ class UserForm extends Nette\Object {
 			->setAttribute("placeholder", USER_EDIT_STATE_LABEL)
 			->setAttribute("tabindex", "18");
 
-		$form->addRadioList("sharing", USER_EDIT_SHARING_LABEL, $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 9))
+		$sharing = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 9);
+		reset($sharing);
+		$first_key = key($sharing);
+		$form->addRadioList("sharing", USER_EDIT_SHARING_LABEL, $sharing)
 			->setAttribute("class", "form-check-input margin10")
+			->setDefaultValue($first_key)
 			->setAttribute("placeholder", USER_EDIT_SHARING_LABEL)
 			->setAttribute("tabindex", "19");
 
