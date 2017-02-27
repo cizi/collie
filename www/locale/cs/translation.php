@@ -114,6 +114,7 @@ define("USER_ROLE_LAYOUT_CHANGER", "Plná práva");
 define("USER_ROLE_CONTENT_CHANGER", "Uživatel může měnit obsah");
 define("USER_ROLE_GUEST", "Host");
 define("USER_REGISTERED", "Registrovaný");
+define("USER_BREEDER", "Chovatel");
 define("USER_EDITOR", "Editor");
 define("USER_ROLE_ADMINISTRATOR", "Administrátor");
 

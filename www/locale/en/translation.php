@@ -107,6 +107,7 @@ define("USER_ROLE_LAYOUT_CHANGER", "Full access");
 define("USER_ROLE_CONTENT_CHANGER", "User can change content");
 define("USER_ROLE_GUEST", "Host");
 define("USER_REGISTERED", "Registered");
+define("USER_BREEDER", "Breeder");
 define("USER_EDITOR", "Editor");
 define("USER_ROLE_ADMINISTRATOR", "Administrator");
 
