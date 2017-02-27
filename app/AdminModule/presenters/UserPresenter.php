@@ -53,7 +53,7 @@ class UserPresenter extends SignPresenter {
 	}
 
 	public function createComponentEditForm() {
-		$form = $this->userForm->create($this->link("User:Default"));
+		$form = $this->userForm->create($this->link("User:Default"), $this->langRepository->getCurrentLang($this->session));
 		$form->onSuccess[] = $this->saveUser;
 
 		return $form;

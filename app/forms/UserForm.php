@@ -4,6 +4,7 @@ namespace App\Forms;
 
 use App\Enum\StateEnum;
 use App\Enum\UserRoleEnum;
+use App\Model\EnumerationRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
@@ -12,17 +13,22 @@ class UserForm extends Nette\Object {
 	/** @var FormFactory */
 	private $factory;
 
+	/** @var EnumerationRepository */
+	private $enumerationRepository;
+
 	/**
 	 * @param FormFactory $factory
+	 * @param EnumerationRepository $enumerationRepository
 	 */
-	public function __construct(FormFactory $factory) {
+	public function __construct(FormFactory $factory, EnumerationRepository $enumerationRepository) {
 		$this->factory = $factory;
+		$this->enumerationRepository = $enumerationRepository;
 	}
 
 	/**
 	 * @return Form
 	 */
-	public function create($linkBack) {
+	public function create($linkBack, $langCurrent) {
 		$form = $this->factory->create();
 		$form->getElementPrototype()->addAttributes(["onsubmit" => "return requiredFields();"]);
 
@@ -124,13 +130,13 @@ class UserForm extends Nette\Object {
 			->setAttribute("placeholder", USER_EDIT_STATION_LABEL)
 			->setAttribute("tabindex", "17");
 
-		$form->addSelect("breed", USER_EDIT_BREED_LABEL, []) // TODO
+		$form->addSelect("breed", USER_EDIT_BREED_LABEL, $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 7))
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", USER_EDIT_STATE_LABEL)
 			->setAttribute("tabindex", "18");
 
-		$form->addRadioList("sharing", USER_EDIT_SHARING_LABEL, []) // TODO
-			->setAttribute("class", "form-control")
+		$form->addRadioList("sharing", USER_EDIT_SHARING_LABEL, $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 9))
+			->setAttribute("class", "form-check-input margin10")
 			->setAttribute("placeholder", USER_EDIT_SHARING_LABEL)
 			->setAttribute("tabindex", "19");
 

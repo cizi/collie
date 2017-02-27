@@ -278,3 +278,6 @@ div.colorExample {
 .spacer10{
 	height: 10px;
 }
+.margin10 {
+	margin: 10px!important;
+}

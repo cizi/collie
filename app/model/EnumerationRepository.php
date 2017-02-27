@@ -8,31 +8,6 @@ use App\Model\Entity\EnumerationItemEntity;
 class EnumerationRepository extends BaseRepository {
 
 	/**
-	 * @param EnumerationEntity $enumerationEntity
-	 */
-	public function createEnum(EnumerationEntity $enumerationEntity) {
-		$this->connection->begin();
-		try {
-			$query = "insert into enum_header (description) values (USER ENUM)";
-			$this->connection->query($query);
-
-			$newEnumId = $this->connection->getInsertId();
-			$enumerationEntity->setEnumHeaderId($newEnumId);
-			$query = ["insert into enum_translation", $enumerationEntity->extract()];
-			$this->connection->query($query);
-
-			foreach($enumerationEntity->getItems() as $enumItem) {
-				$enumItem->setEnumHeaderId($newEnumId);
-				$query = ["insert into enum_item", $enumItem->extract()];
-				$this->connection->query($query);
-			}
-		} catch (\Exception $e) {
-			$this->connection->rollback();
-		}
-		$this->connection->commit();
-	}
-
-	/**
 	 * @param int $id
 	 */
 	public function deleteEnum($id) {
@@ -110,6 +85,24 @@ class EnumerationRepository extends BaseRepository {
 			$enumItem = new EnumerationItemEntity();
 			$enumItem->hydrate($item->toArray());
 			$return[] = $enumItem;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * @param string $lang
+	 * @param int $enumHeaderId
+	 * @return array
+	 */
+	public function findEnumItemsForSelect($lang, $enumHeaderId) {
+		$return = [];
+		$query = ["select * from enum_item where enum_header_id = %i and lang = %s", $enumHeaderId, $lang];
+		$result = $this->connection->query($query)->fetchAll();
+		foreach ($result as $item) {
+			$enumItem = new EnumerationItemEntity();
+			$enumItem->hydrate($item->toArray());
+			$return[$enumItem->getOrder()] = $enumItem->getItem();
 		}
 
 		return $return;
