@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Enum\UserRoleEnum;
 use App\FrontendModule\Presenters\BasePresenter;
 use App\Model\Entity\MenuEntity;
 use App\Model\MenuRepository;
@@ -165,7 +166,8 @@ class MenuController {
 			if (
 				($this->user->isLoggedIn() && (($item->getLevel() == 1) && ($item->getOrder() == 14))) // pokud je přihlášený tak mu nebudeme zobrazovat odkaz přihlásit
 				|| (($this->user->isLoggedIn()) == false) && (($item->getLevel() == 1) && ($item->getOrder() == 8))	// pokud není přihlášený nebudeme mu zobrazovat odkaz uživatelského menu
-				|| ($this->user->isLoggedIn() && (($item->getLevel() == 1) && ($item->getOrder() == 15)))	// nebo je prihlášený tak nechci vidět možnost registrace
+				|| ($this->user->isLoggedIn() && (($item->getLevel() == 1) && ($item->getOrder() == 15))
+				|| ($this->user->isLoggedIn() && (($item->getLevel() == 2) && ($item->getOrder() == 12)) && ($this->user->isInRole(UserRoleEnum::USER_ROLE_ADMINISTRATOR) == false)) )	// nebo je prihlášený tak nechci vidět možnost registrace
 			) {
 				continue;
 			}

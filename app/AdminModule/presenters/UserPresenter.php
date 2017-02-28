@@ -71,7 +71,7 @@ class UserPresenter extends SignPresenter {
 
 		try {
 			if ($isEditation) {	// pokud edituji tak propíšu jen heslo
-				$userCurrent = $this->userRepository->getUser($this->user->getId());
+				$userCurrent = $this->userRepository->getUser($values['id']);	// uživatel kterého mìním
 				$userEntity->setPassword($userCurrent->getPassword());
 				$this->userRepository->saveUser($userEntity);
 				$this->flashMessage(USER_EDITED, "alert-success");

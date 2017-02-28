@@ -96,7 +96,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 			$password .= $input[mt_rand(0, 60)];
 		}
 
-		$query = ["update user set password = %s where email = %s", Passwords::hash($password), $userEntity->getPassword()];
+		$query = ["update user set password = %s where email = %s", Passwords::hash($password), $userEntity->getEmail()];
 		$this->connection->query($query);
 
 		return $password;
