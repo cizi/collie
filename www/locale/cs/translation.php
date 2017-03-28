@@ -426,3 +426,25 @@ define("ENUM_DELETE_FAIL", 'Během mazání celého číselníku došlo k chybě
 // common
 define("UNSUPPORTED_UPLOAD_FORMAT", "Pokoušíte se nahrát nepodporovaný formát. Podporované formáty jsou %s.");
 
+// tabulka psi
+define("DOG_TABLE_FILTER_LABEL", 'Filtr tabulky');
+define("DOG_TABLE_HEADER_ADD_DOG", 'přidat psa');
+define("DOG_TABLE_FILTER_TOGGLE", 'zobrazit/skrýt filtr');
+define("DOG_TABLE_BTN_FILTER", 'filtrovat');
+define("DOG_TABLE_HEADER_NAME", 'jméno');
+define("DOG_TABLE_HEADER_BREED", 'plemeno');
+define("DOG_TABLE_HEADER_COLOR", 'barva');
+define("DOG_TABLE_HEADER_SEX", 'pohlaví');
+define("DOG_TABLE_HEADER_BIRT", 'dat. naroz.');
+define("DOG_TABLE_HEADER_BREEDING", 'chovnost');
+define("DOG_TABLE_HEADER_PROB_DKK", 'DKK');
+define("DOG_TABLE_HEADER_PROB_DLK", 'DLK');
+define("DOG_TABLE_HEADER_HEALTH", 'zdraví');
+define("DOG_TABLE_HEADER_MOTHER", 'matka');
+define("DOG_TABLE_HEADER_FATHER", 'otec');
+define("DOG_TABLE_HEADER_LAND", 'kraj');
+define("DOG_TABLE_HEADER_BREEDER", 'chovatel');
+define("DOG_TABLE_HEADER_EXAM", 'zkouška');
+define("DOG_TABLE_HEADER_HEIGHT", 'výška');
+define("DOG_TABLE_HEADER_FULLTEXT", 'fullextové hledání');
+

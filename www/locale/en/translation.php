@@ -405,3 +405,25 @@ define("ENUM_DELETE_FAIL", 'During whole enumeration failed. Probably any value 
 
 // common
 define("UNSUPPORTED_UPLOAD_FORMAT", " You are trying to upload unsupported format. Supported formats are %s.");
+
+// tabulka psi
+define("DOG_TABLE_FILTER_LABEL", 'Filter');
+define("DOG_TABLE_HEADER_ADD_DOG", 'add dog');
+define("DOG_TABLE_FILTER_TOGGLE", 'show/hide filter');
+define("DOG_TABLE_BTN_FILTER", 'filter');
+define("DOG_TABLE_HEADER_NAME", 'name');
+define("DOG_TABLE_HEADER_BREED", 'breed');
+define("DOG_TABLE_HEADER_COLOR", 'colour');
+define("DOG_TABLE_HEADER_SEX", 'sex');
+define("DOG_TABLE_HEADER_BIRT", 'birt. date');
+define("DOG_TABLE_HEADER_BREEDING", 'breeding');
+define("DOG_TABLE_HEADER_PROB_DKK", 'DKK');
+define("DOG_TABLE_HEADER_PROB_DLK", 'DLK');
+define("DOG_TABLE_HEADER_HEALTH", 'health');
+define("DOG_TABLE_HEADER_MOTHER", 'mother');
+define("DOG_TABLE_HEADER_FATHER", 'father');
+define("DOG_TABLE_HEADER_LAND", 'land');
+define("DOG_TABLE_HEADER_BREEDER", 'breeder');
+define("DOG_TABLE_HEADER_EXAM", 'exam');
+define("DOG_TABLE_HEADER_HEIGHT", 'height');
+define("DOG_TABLE_HEADER_FULLTEXT", 'searching');
