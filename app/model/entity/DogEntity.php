@@ -64,7 +64,7 @@ class DogEntity {
 	/** @var int */
 	private $Skus;
 
-	/** @var  string */
+	/** @var int */
 	private $Zuby;
 
 	/** @var string */

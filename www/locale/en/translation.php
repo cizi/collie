@@ -35,6 +35,7 @@ define("MENU_FOOTER", 'Page footer');
 define("MENU_USERS", 'Users');
 define("MENU_SETTINGS", 'Page setting');
 define("MENU_ENUMERATION", 'Enumerations');
+define("MENU_VETS", 'Vets / Labs');
 define("MENU_LANG", 'Language setting');
 define("MENU_LOGOUT", 'Logout');
 
@@ -402,6 +403,27 @@ define("ENUM_EDIT_ITEM_SAVE", 'Value of enumeration item has been successfully s
 define("ENUM_EDIT_ITEM_FAIL", 'Saving enumeration item failed.');
 define("ENUM_DELETE_SUCCESS", 'Whole enumeration has benn deleted.');
 define("ENUM_DELETE_FAIL", 'During whole enumeration failed. Probably any value of enumeration item is in used. ');
+
+// veterináři
+define("ENUM_VET_TITLE", 'Vet / Lab');
+define("ENUM_VET_INFO", 'Setting of each vet or lab which can be used in application.');
+define("ENUM_VET_NAME", 'Name / Title of vet');
+define("ENUM_VET_ADDRESS", 'Address');
+define("ENUM_VET_ADD_VET", 'Add vet');
+define("ENUM_VET_DELETE_VET", 'Delete vet');
+define("ENUM_VET_EDIT_VET", 'Edit vet');
+define("ENUM_VET_ADD", 'Vet edit');
+define("ENUM_VET_EDIT", 'Add vet');
+
+define("ENUM_VET_EDIT_NAME", 'Name');
+define("ENUM_VET_EDIT_SURNAME", 'Surname');
+define("ENUM_VET_EDIT_PREFIX", 'Title before');
+define("ENUM_VET_EDIT_SUFFIX", 'Title after');
+define("ENUM_VET_EDIT_STREET", 'Street');
+define("ENUM_VET_EDIT_CITY", 'City');
+define("ENUM_VET_EDIT_PSC", 'Zip');
+define("ENUM_VET_EDIT_SAVE", 'Save');
+define("ENUM_VET_EDIT_BACK", 'Back');
 
 // common
 define("UNSUPPORTED_UPLOAD_FORMAT", " You are trying to upload unsupported format. Supported formats are %s.");
