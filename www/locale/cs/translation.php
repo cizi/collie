@@ -424,25 +424,32 @@ define("ENUM_DELETE_SUCCESS", 'Smazání číselníku proběhlo v pořádku.');
 define("ENUM_DELETE_FAIL", 'Během mazání celého číselníku došlo k chybě. Pravděpodobně je hodnota číselníku někde využívána.');
 
 // veterináři
-define("ENUM_VET_TITLE", 'Veterinář / Laboratoř');
-define("ENUM_VET_INFO", 'Nastavení jednotlivých veterinářů, případně veterinárních stanic, které je následně možné přiřazovat v aplikaci.');
-define("ENUM_VET_NAME", 'Jméno / název veterináře');
-define("ENUM_VET_ADDRESS", 'Adresa');
-define("ENUM_VET_ADD_VET", 'Přidat veterináře');
-define("ENUM_VET_DELETE_VET", 'Smazat veterináře');
-define("ENUM_VET_EDIT_VET", 'Editace veteriáře');
-define("ENUM_VET_ADD", 'Editace veteriáře');
-define("ENUM_VET_EDIT", 'Přidání veteriáře');
+define("VET_TITLE", 'Veterinář / Laboratoř');
+define("VET_INFO", 'Nastavení jednotlivých veterinářů, případně veterinárních stanic, které je následně možné přiřazovat v aplikaci.');
+define("VET_NAME", 'Jméno / název veterináře');
+define("VET_ADDRESS", 'Adresa');
+define("VET_ADD_VET", 'Přidat veterináře');
+define("VET_DELETE_VET", 'Smazat veterináře');
+define("VET_EDIT_VET", 'Editace veteriáře');
+define("VET_ADD", 'Editace veteriáře');
+define("VET_EDIT", 'Přidání veteriáře');
 
-define("ENUM_VET_EDIT_NAME", 'Jméno');
-define("ENUM_VET_EDIT_SURNAME", 'Přijmení');
-define("ENUM_VET_EDIT_PREFIX", 'Titul před');
-define("ENUM_VET_EDIT_SUFFIX", 'Titul za');
-define("ENUM_VET_EDIT_STREET", 'Ulice');
-define("ENUM_VET_EDIT_CITY", 'Město');
-define("ENUM_VET_EDIT_PSC", 'PSČ');
-define("ENUM_VET_EDIT_SAVE", 'Uložit');
-define("ENUM_VET_EDIT_BACK", 'Zpět');
+define("VET_EDIT_NAME", 'Jméno');
+define("VET_EDIT_SURNAME", 'Přijmení');
+define("VET_EDIT_PREFIX", 'Titul před');
+define("VET_EDIT_SUFFIX", 'Titul za');
+define("VET_EDIT_STREET", 'Ulice');
+define("VET_EDIT_CITY", 'Město');
+define("VET_EDIT_PSC", 'PSČ');
+define("VET_EDIT_SAVE", 'Uložit');
+define("VET_EDIT_BACK", 'Zpět');
+
+define("VET_CONFIRM_DELETE_TITLE", 'Smazání veterináře / laboratoře');
+define("VET_CONFIRM_DELETE", 'Opravdu smazat záznam?');
+define("VET_CONFIRM_DELETE_DELETE", 'Smazat');
+define("VET_CONFIRM_DELETE_CANCEL", 'Zpět');
+define("VET_ADDED", 'Záznam byl v pořádku uložen.');
+define("VET_ADD_FAILED", 'Záznam nebyl uložen.');
 
 // common
 define("UNSUPPORTED_UPLOAD_FORMAT", "Pokoušíte se nahrát nepodporovaný formát. Podporované formáty jsou %s.");

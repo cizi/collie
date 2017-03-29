@@ -405,25 +405,32 @@ define("ENUM_DELETE_SUCCESS", 'Whole enumeration has benn deleted.');
 define("ENUM_DELETE_FAIL", 'During whole enumeration failed. Probably any value of enumeration item is in used. ');
 
 // veterináři
-define("ENUM_VET_TITLE", 'Vet / Lab');
-define("ENUM_VET_INFO", 'Setting of each vet or lab which can be used in application.');
-define("ENUM_VET_NAME", 'Name / Title of vet');
-define("ENUM_VET_ADDRESS", 'Address');
-define("ENUM_VET_ADD_VET", 'Add vet');
-define("ENUM_VET_DELETE_VET", 'Delete vet');
-define("ENUM_VET_EDIT_VET", 'Edit vet');
-define("ENUM_VET_ADD", 'Vet edit');
-define("ENUM_VET_EDIT", 'Add vet');
+define("VET_TITLE", 'Vet / Lab');
+define("VET_INFO", 'Setting of each vet or lab which can be used in application.');
+define("VET_NAME", 'Name / Title of vet');
+define("VET_ADDRESS", 'Address');
+define("VET_ADD_VET", 'Add vet');
+define("VET_DELETE_VET", 'Delete vet');
+define("VET_EDIT_VET", 'Edit vet');
+define("VET_ADD", 'Vet edit');
+define("VET_EDIT", 'Add vet');
 
-define("ENUM_VET_EDIT_NAME", 'Name');
-define("ENUM_VET_EDIT_SURNAME", 'Surname');
-define("ENUM_VET_EDIT_PREFIX", 'Title before');
-define("ENUM_VET_EDIT_SUFFIX", 'Title after');
-define("ENUM_VET_EDIT_STREET", 'Street');
-define("ENUM_VET_EDIT_CITY", 'City');
-define("ENUM_VET_EDIT_PSC", 'Zip');
-define("ENUM_VET_EDIT_SAVE", 'Save');
-define("ENUM_VET_EDIT_BACK", 'Back');
+define("VET_EDIT_NAME", 'Name');
+define("VET_EDIT_SURNAME", 'Surname');
+define("VET_EDIT_PREFIX", 'Title before');
+define("VET_EDIT_SUFFIX", 'Title after');
+define("VET_EDIT_STREET", 'Street');
+define("VET_EDIT_CITY", 'City');
+define("VET_EDIT_PSC", 'Zip');
+define("VET_EDIT_SAVE", 'Save');
+define("VET_EDIT_BACK", 'Back');
+
+define("VET_CONFIRM_DELETE_TITLE", 'Delete vet / lab');
+define("VET_CONFIRM_DELETE", 'Are you really want to delete the record?');
+define("VET_CONFIRM_DELETE_DELETE", 'Delete');
+define("VET_CONFIRM_DELETE_CANCEL", 'Back');
+define("VET_ADDED", 'Successfully saved.');
+define("VET_ADD_FAILED", 'Saved failed, try again later.');
 
 // common
 define("UNSUPPORTED_UPLOAD_FORMAT", " You are trying to upload unsupported format. Supported formats are %s.");

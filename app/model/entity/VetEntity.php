@@ -144,14 +144,14 @@ class VetEntity {
 	 * @param array $data
 	 */
 	public function hydrate(array $data) {
-		$this->setID($data['ID']);
-		$this->setJmeno($data['Jmeno']);
-		$this->setPrijmeni($data['Prijmeni']);
-		$this->setTitulyPrefix($data['TitulyPrefix']);
-		$this->setTitulySuffix($data['TitulySuffix']);
-		$this->setUlice($data['Ulice']);
-		$this->setMesto($data['Mesto']);
-		$this->setPSC($data['PSC']);
+		$this->setID(isset($data['ID']) ? $data['ID'] : null);
+		$this->setJmeno(isset($data['Jmeno']) ? $data['Jmeno'] : null);
+		$this->setPrijmeni(isset($data['Prijmeni']) ? $data['Prijmeni'] : null);
+		$this->setTitulyPrefix(isset($data['TitulyPrefix']) ? $data['TitulyPrefix'] : null);
+		$this->setTitulySuffix(isset($data['TitulySuffix']) ? $data['TitulySuffix'] : null);
+		$this->setUlice(isset($data['Ulice']) ? $data['Ulice'] : null);
+		$this->setMesto(isset($data['Mesto']) ? $data['Mesto'] : null);
+		$this->setPSC(isset($data['PSC']) ? $data['PSC'] : null);
 	}
 
 	/**
