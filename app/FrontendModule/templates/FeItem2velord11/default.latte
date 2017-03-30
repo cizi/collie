@@ -26,7 +26,6 @@
 								<th>{=DOG_TABLE_HEADER_HEALTH}</th>
 								<th>{=DOG_TABLE_HEADER_MOTHER}</th>
 								<th>{=DOG_TABLE_HEADER_FATHER}</th>
-								<th></th>
 								<th class="alignRight">
 									<button type="button" class="btn btn-group" id="filterToggle">
 										<span class="glyphicon glyphicon-filter"></span> {=DOG_TABLE_FILTER_TOGGLE}
@@ -40,22 +39,20 @@
 							<tbody>
 							{foreach $dogs as $dog}
 								<tr>
-									<td>{$user->getEmail()}</td>
-									<td>
-										{if isset($roles[$user->getRole()])}
-											{$roles[$user->getRole()]}
-										{else}
-											""
-										{/if}
-									</td>
-									<td>
-
-									</td>
-									<td>{$user->getRegisterTimestamp()|date: 'j.n.Y G:i:s'}</td>
-									<td>{$user->getLastLogin()|date: 'j.n.Y G:i:s'}</td>
+									<td>{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</td>
+									<td>{$enumRepository->findEnumItemByOrder($currentLang, 7, $dog->getPlemeno())}</td>
+									<td>{$enumRepository->findEnumItemByOrder($currentLang, 4, $dog->getBarva())}</td>
+									<td>{$enumRepository->findEnumItemByOrder($currentLang, 8, $dog->getPohlavi())}</td>
+									<td>{$dog->getDatNarozeni()}</td>
+									<td>{$enumRepository->findEnumItemByOrder($currentLang, 5, $dog->getChovnost())}</td>
+									<td>{$enumRepository->findEnumItemByOrder($currentLang, 5, $dog->getChovnost())}</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
 									<td class="alignRight">
-										<a href={link User:Edit, $user->getId()} title={=USER_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
-										<a href="#" data-href={link User:DeleteUser, $user->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=USER_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+										<a href={link FeItem2velord11:Edit, $dog->getID()} title={=DOG_TABLE_DOG_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+										<a href="#" data-href={link FeItem2velord11:Delete, $dog->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=DOG_TABLE_DOG_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 									</td>
 								</tr>
 							{/foreach}
@@ -69,11 +66,31 @@
 		<!-- /#page-content-wrapper -->
 	</div>
 
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=DOG_TABLE_DOG_DELETATION_TITLE}
+				</div>
+				<div class="modal-body">
+					{=DOG_TABLE_DOG_DELETATION_CONFIRM}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=DOG_TABLE_DOG_DELETATION_CONFIRM_YES}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script>
 		$( document ).ready(function() {
 			$( "#filterToggle" ).click(function() {
 				$( "#dogFilterForm" ).toggle( "slow" );
 			});
+		});
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 		});
 	</script>
 {/block}

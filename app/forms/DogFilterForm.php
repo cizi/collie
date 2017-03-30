@@ -53,10 +53,12 @@ class DogFilterForm {
 		$form->addSelect("DOG_FILTER_BREEDING", DOG_TABLE_HEADER_BREEDING, $chovnost)
 			->setAttribute("class", "form-control");
 
-		$form->addSelect("DOG_FILTER_PROB_DKK", DOG_TABLE_HEADER_PROB_DKK)
+		$dkk = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 15);
+		$form->addSelect("DOG_FILTER_PROB_DKK", DOG_TABLE_HEADER_PROB_DKK, $dkk)
 			->setAttribute("class", "form-control");
 
-		$form->addSelect("DOG_FILTER_PROB_DLK", DOG_TABLE_HEADER_PROB_DLK)
+		$dlk = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 16);
+		$form->addSelect("DOG_FILTER_PROB_DLK", DOG_TABLE_HEADER_PROB_DLK, $dlk)
 			->setAttribute("class", "form-control");
 
 		$zdravi = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 14);
