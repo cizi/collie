@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogPicEntity;
@@ -54,7 +55,9 @@ class DogRepository extends BaseRepository {
 				$query = ["delete from appdata_pes_obrazky where pID = %i", $id];    // nejdøíve smažu obrázky
 				$this->connection->query($query);
 
-				// TODO zdravi
+				$this->deleteHealthByDogId($id);
+				$this->deleteBreederByDogId($id);
+				$this->deleteOwnerByDogId($id);
 
 				$query = ["delete from appdata_pes where ID = %i", $id];    // pak smažu psa
 				$this->connection->query($query);
@@ -67,6 +70,30 @@ class DogRepository extends BaseRepository {
 		}
 
 		return $return;
+	}
+
+	/**
+	 * @param int $pID
+	 */
+	private function deleteHealthByDogId($pID) {
+		$query = ["delete from appdata_zdravi where pID = %i", $pID];
+		$this->connection->query($query);
+	}
+
+	/**
+	 * @param int $pID
+	 */
+	private function deleteBreederByDogId($pID) {
+		$query = ["delete from appdata_chovatel where pID = %i", $pID];
+		$this->connection->query($query);
+	}
+
+	/**
+	 * @param int $pID
+	 */
+	private function deleteOwnerByDogId($pID) {
+		$query = ["delete from appdata_majitel where pID = %i", $pID];
+		$this->connection->query($query);
 	}
 
 	/**
@@ -86,9 +113,11 @@ class DogRepository extends BaseRepository {
 
 	/**
 	 * @param DogEntity $dogEntity
-	 * @param DogPicEntity []
+	 * @param DogPicEntity[]
+	 * @param DogHealthEntity[]
+	 * @param BreederEntity[]
 	 */
-	public function save(DogEntity $dogEntity, $dogPics, array $dogHealth) {
+	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders) {
 		$dataArray = $dogEntity->extract();
 		$dataArray['PosledniZmena'] = new DateTime();
 
@@ -105,12 +134,25 @@ class DogRepository extends BaseRepository {
 			/** @var DogHealthEntity $dogHealthEntity */
 			foreach($dogHealth as $dogHealthEntity) {
 				$dogHealthEntity->setPID($dogEntity->getID());
+				if ($dogHealthEntity->getVeterinar() == 0) {	// pokud nebyl veterináø vybrán vynuluji jeho záznam
+					$dogHealthEntity->setVeterinar(null);
+				}
 				if ($dogHealthEntity->getID() == null) {
 					$query = ["insert into appdata_zdravi ", $dogHealthEntity->extract()];
 				} else {
 					$query = ["update appdata_zdravi set ", $dogHealthEntity->extract(), "where ID=%i", $dogHealthEntity->getID()];
 				}
 				$this->connection->query($query);
+			}
+			/** @var BreederEntity $breeder */
+			foreach($breeders as $breeder) {
+				$breeder->setPID($dogEntity->getID());
+				if ($breeder->getUID() == 0) {
+					$this->deleteBreederByDogId($dogEntity->getID());
+				} else {
+					$query = ($breeder->getID() == null ? ["insert into appdata_chovatel ", $breeder->extract()] : ["update appdata_chovatel set ", $breeder->extract(), "where ID=%i", $breeder->getID()]);
+					$this->connection->query($query);
+				}
 			}
 
 			/** @var DogPicEntity $dogPic */
@@ -122,6 +164,7 @@ class DogRepository extends BaseRepository {
 			}
 			$this->connection->commit();
 		} catch (\Exception $e) {
+			dump($e->getMessage()); die;
 			$this->connection->rollback();
 		}
 	}

@@ -17,7 +17,7 @@ use Nette\Security\User;
 class UserPresenter extends SignPresenter {
 
 	/** @var UserRepository */
-	private $userRepository;
+	protected $userRepository;
 
 	/** @var UserForm */
 	private $userForm;

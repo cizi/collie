@@ -6,6 +6,9 @@ use App\Model\Entity\VetEntity;
 
 class VetRepository extends BaseRepository {
 
+	/** string znak pro nevybraného veterináø v selectu  */
+	const NOT_SELECTED = "-";
+
 	/**
 	 * @return array
 	 */
@@ -30,7 +33,7 @@ class VetRepository extends BaseRepository {
 		$query = "select * from appdata_veterinar";
 		$result = $this->connection->query($query);
 
-		$vets = [];
+		$vets[0] = self::NOT_SELECTED;
 		foreach ($result->fetchAll() as $row) {
 			$vet = new VetEntity();
 			$vet->hydrate($row->toArray());

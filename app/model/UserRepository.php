@@ -2,6 +2,9 @@
 
 namespace App\Model;
 
+use App\Enum\UserRoleEnum;
+use App\Model\Entity\BreederEntity;
+use App\Model\Entity\DogOwnerEntity;
 use Dibi\Exception;
 use Nette;
 use App\Model\Entity\UserEntity;
@@ -11,6 +14,9 @@ use Nette\Security\Passwords;
 class UserRepository extends BaseRepository implements Nette\Security\IAuthenticator {
 
 	const PASSWORD_COLUMN = 'password';
+
+	/** string znak pro nevybraného veterináø v selectu  */
+	const NOT_SELECTED = "-";
 
 	/**
 	 * Performs an authentication.
@@ -171,5 +177,53 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	public function updateLostLogin($id) {
 		$query = ["update user set last_login = NOW() where id = %i", $id];
 		return $this->connection->query($query);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findBreedersForSelect() {
+		$breeders[0] = self::NOT_SELECTED;
+		$query = ["select * from user where role = %i", UserRoleEnum::USER_BREEDER];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = new UserEntity();
+			$user->hydrate($row->toArray());
+			$breeders[$user->getId()] = $user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " ". $user->getTitleAfter();
+		}
+
+		return $breeders;
+	}
+
+	/**
+	 * @param int $pID
+	 * @return BreederEntity
+	 */
+	public function getBreederByDog($pID) {
+		$query = ["select * from appdata_chovatel where pID = %i", $pID];
+		$row = $this->connection->query($query)->fetch();
+		if ($row) {
+			$breederEntity = new BreederEntity();
+			$breederEntity->hydrate($row->toArray());
+			return $breederEntity;
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findOwnersForSelect() {
+		$owners[0] = self::NOT_SELECTED;
+		$query = ["select * from user where role = %i", UserRoleEnum::USER_OWNER];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = new UserEntity();
+			$user->hydrate($row->toArray());
+			$users[$user->getId()] = $user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " ". $user->getTitleAfter();
+		}
+
+		return $owners;
 	}
 }

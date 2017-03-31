@@ -8,6 +8,9 @@ class UserRoleEnum extends Enum {
 		parent::__construct(__CLASS__);
 	}
 
+	/** @const owner */
+	const USER_OWNER = 22;
+
 	/** @const registered */
 	const USER_REGISTERED = 33;
 

@@ -5,6 +5,7 @@ namespace App\Forms;
 use App\Model\DogRepository;
 use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
+use App\Model\UserRepository;
 use App\Model\VetRepository;
 use Nette\Application\UI\Form;
 use Nette\Utils\Html;
@@ -20,19 +21,25 @@ class DogForm {
 	/** @var VetRepository */
 	private $vetRepository;
 
+	/** @var UserRepository */
+	private $userRepository;
+
 	/**
 	 * @param FormFactory $factory
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param VetRepository $vetRepository
+	 * @param UserRepository $userRepository
 	 */
 	public function __construct(
 		FormFactory $factory,
 		EnumerationRepository $enumerationRepository,
-		VetRepository $vetRepository
+		VetRepository $vetRepository,
+		UserRepository $userRepository
 	) {
 		$this->factory = $factory;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->vetRepository = $vetRepository;
+		$this->userRepository = $userRepository;
 	}
 
 	/**
@@ -149,12 +156,13 @@ class DogForm {
 			$container->addText("caption", null)->setAttribute("class", "form-control")->setAttribute("readonly", "readonly")->setAttribute("value", $enumEntity->getItem());
 			$container->addText("Vysledek", DOG_FORM_HEALTH_SUMMARY)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_SUMMARY);
 			$container->addText("Komentar", DOG_FORM_HEALTH_COMMENT)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_COMMENT);
-			$container->addText("Datum", DOG_FORM_HEALTH_DATE)->setAttribute("class", "form-control datetimepicker")->setAttribute("placeholder", DOG_FORM_HEALTH_DATE);
+			$container->addText("Datum", DOG_FORM_HEALTH_DATE)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_DATE);
 			$container->addSelect("Veterinar", DOG_FORM_HEALTH_VET, $vets)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_VET);
 		}
 
-		//$form->addButton("healthHelper", DOG_FORM_HEALTH)->setAttribute("id","healthHelper")->setAttribute("class", "form-control btn btn-info");
-		// chovatele TODO
+		$chovatele = $this->userRepository->findBreedersForSelect();
+		$ownerContainer = $form->addContainer("owners");
+		$ownerContainer->addSelect("uID", DOG_FORM_BREEDER, $chovatele)->setAttribute("class", "form-control");
 
 		//$form->addButton("healthHelper", DOG_FORM_HEALTH)->setAttribute("id","healthHelper")->setAttribute("class", "form-control btn btn-info");
 		// majitele TODO

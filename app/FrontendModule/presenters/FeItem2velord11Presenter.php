@@ -6,11 +6,13 @@ use App\Controller\FileController;
 use App\Forms\DogFilterForm;
 use App\Forms\DogForm;
 use App\Model\DogRepository;
+use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogPicEntity;
 use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
+use App\Model\UserRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use Nette\Http\FileUpload;
@@ -26,14 +28,24 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	/** @var DogForm */
 	private $dogForm;
 
+	/** @var UserRepository  */
+	private $userRepository;
+
 	/** @var EnumerationRepository  */
 	private $enumerationRepository;
 
-	public function __construct(DogFilterForm $dogFilterForm, DogForm $dogForm, DogRepository $dogRepository, EnumerationRepository $enumerationRepository) {
+	public function __construct(
+		DogFilterForm $dogFilterForm,
+		DogForm $dogForm,
+		DogRepository $dogRepository,
+		EnumerationRepository $enumerationRepository,
+		UserRepository $userRepository
+	) {
 		$this->dogFilterForm = $dogFilterForm;
 		$this->dogForm = $dogForm;
 		$this->dogRepository = $dogRepository;
 		$this->enumerationRepository = $enumerationRepository;
+		$this->userRepository = $userRepository;
 	}
 
 	/**
@@ -107,6 +119,12 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 					$this['dogForm']['dogHealth'][$enumEntity->getOrder()]->addHidden('ID', $dogHealthEntity->getID());
 				}
 			}
+			$breeder = $this->userRepository->getBreederByDog($id);
+			if ($breeder) {
+				$this['dogForm']['owners']->addHidden("ID", $breeder->getID())->setAttribute("class", "form-control");
+				$this['dogForm']['owners']['uID']->setValue($breeder->getUID());
+			}
+
 		}
 		$this->template->dogPics = $this->dogRepository->findDogPics($id);
 	}
@@ -150,6 +168,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$dogEntity = new DogEntity();
 		$pics = [];
 		$health = [];
+		$breeders = [];
 		try {
 			$formData = $form->getHttpData();
 			// zdraví
@@ -176,8 +195,16 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			}
 			unset($formData['pics']);
 
+			// chovatele
+			if (isset($formData['owners'])) {
+				$breederEntity = new BreederEntity();
+				$breederEntity->hydrate($formData['owners']);
+				$breeders[] = $breederEntity;
+			}
+			unset($formData['owners']);
 			$dogEntity->hydrate($formData);
-			$this->dogRepository->save($dogEntity, $pics, $health);
+
+			$this->dogRepository->save($dogEntity, $pics, $health, $breeders);
 			$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			$this->redirect("default");
 		} catch (\Exception $e) {
