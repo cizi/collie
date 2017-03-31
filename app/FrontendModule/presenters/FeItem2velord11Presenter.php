@@ -7,7 +7,9 @@ use App\Forms\DogFilterForm;
 use App\Forms\DogForm;
 use App\Model\DogRepository;
 use App\Model\Entity\DogEntity;
+use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogPicEntity;
+use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
@@ -96,9 +98,30 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			if ($dog) {
 				$this['dogForm']->addHidden('ID', $dog->getID());
 			}
-
+			$zdravi = $this->enumerationRepository->findEnumItems($this->langRepository->getCurrentLang($this->session), 14);
+			/** @var EnumerationItemEntity $enumEntity */
+			foreach ($zdravi as $enumEntity) {
+				$dogHealthEntity = $this->dogRepository->getHealthEntityByDogAndType($enumEntity->getOrder(), $id);
+				if ($dogHealthEntity != null) {
+					$this['dogForm']['dogHealth'][$enumEntity->getOrder()]->setDefaults($dogHealthEntity->extract());
+					$this['dogForm']['dogHealth'][$enumEntity->getOrder()]->addHidden('ID', $dogHealthEntity->getID());
+				}
+			}
 		}
-		$this->template->dogPics = [];
+		$this->template->dogPics = $this->dogRepository->findDogPics($id);
+	}
+
+	/**
+	 * Aktualizuje vychozí obrázek u psa
+	 */
+	public function actionDefaultDogPic() {
+		$data = $this->getHttpRequest()->getQuery();
+		$dogId = (isset($data['dogId']) ? $data['dogId'] : null);
+		$picId = (isset($data['picId']) ? $data['picId'] : null);
+		if ($dogId != null && ($picId != null)) {
+			$this->dogRepository->setDefaultDogPic($dogId, $picId);
+		}
+		$this->terminate();
 	}
 
 	/**
@@ -113,29 +136,48 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$this->redirect("default");
 	}
 
+	/**
+	 * @param int $id
+	 * @param int $pID
+	 */
+	public function actionDeleteDogPic($id, $pID) {
+		$this->dogRepository->deleteDogPic($id);
+		$this->redirect("edit", $pID);
+	}
+
 	public function saveDog(Form $form){
 		$supportedFileFormats = ["jpg", "png", "gif"];
 		$dogEntity = new DogEntity();
 		$pics = [];
+		$health = [];
 		try {
 			$formData = $form->getHttpData();
+			// zdraví
+			foreach($formData['dogHealth'] as $typ => $hodnoty) {
+				$healthEntity = new DogHealthEntity();
+				$healthEntity->hydrate($hodnoty);
+				$healthEntity->setTyp($typ);
+				$health[] = $healthEntity;
+			}
+			unset($formData['dogHealth']);
+
 			/** @var FileUpload $file */
 			foreach($formData['pics'] as $file) {
-				if ($file->name != "") {
+				if ($file != null) {
 					$fileController = new FileController();
 					if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
 						throw new \Exception("Nelze nahrát soubor.");
 						break;
 					}
 					$dogPic = new DogPicEntity();
-					$dogPic->setPath($fileController->getPathDb());
+					$dogPic->setCesta($fileController->getPathDb());
 					$pics[] = $dogPic;
 				}
 			}
 			unset($formData['pics']);
 
 			$dogEntity->hydrate($formData);
-			$this->dogRepository->save($dogEntity, $pics);
+			$this->dogRepository->save($dogEntity, $pics, $health);
 			$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			$this->redirect("default");
 		} catch (\Exception $e) {

@@ -281,3 +281,8 @@ div.colorExample {
 .margin10 {
 	margin: 10px!important;
 }
+.dogEditPic{
+	width: 120px;
+	margin: 10px;
+	display: block;
+}

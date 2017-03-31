@@ -24,6 +24,23 @@ class VetRepository extends BaseRepository {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function findVetsForSelect() {
+		$query = "select * from appdata_veterinar";
+		$result = $this->connection->query($query);
+
+		$vets = [];
+		foreach ($result->fetchAll() as $row) {
+			$vet = new VetEntity();
+			$vet->hydrate($row->toArray());
+			$vets[$vet->getID()] = $vet->getTitulyPrefix() . " " . $vet->getJmeno() . " " . $vet->getPrijmeni() . " " . $vet->getTitulySuffix();
+		}
+
+		return $vets;
+	}
+
+	/**
 	 * @param VetEntity $vetEntity
 	 */
 	public function saveVet(VetEntity $vetEntity) {

@@ -15,8 +15,15 @@
 						</div>
 						<div class="col-lg-4">
 							<h5>{=DOG_FORM_PICS}</h5>
-							{foreach $dogPics as $dogPic}
-							{/foreach}
+							<form action="">
+								{if $currentDog != null}<input type="hidden" id="currentDogId" value={$currentDog->getID()}>{/if}
+								{foreach $dogPics as $dogPic}
+									<input type="radio" name="defaultPic" value={$dogPic->getId()}  {if $dogPic->isVychozi()} checked="checked" {/if}> {=DOG_FORM_PIC_DEFAULT}
+									<a href="#" data-href={link deleteDogPic, $dogPic->getId(), $dogPic->getpID()}  data-toggle="modal" data-target="#confirm-delete" title={=DOG_FORM_PIC_DELETE}>
+										<img src="{$dogPic->getCesta()}" class="dogEditPic"  />
+									</a>
+								{/foreach}
+							</form>
 						</div>
 					</fieldset>
 				</div>
@@ -24,4 +31,53 @@
 			<!-- /#page-content-wrapper -->
 		{/form}
 	</div>
+
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=DOG_FORM_PIC_DELETE_TITLE}
+				</div>
+				<div class="modal-body">
+					{=DOG_FORM_PIC_DELETE_INFO}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=SLIDER_SETTINGS_CONFIRM_MODAL_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=SLIDER_SETTINGS_CONFIRM_MODAL_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		$("input[name='defaultPic']").change(function(){
+			var dogId = $("#currentDogId").val();
+			var picId = $(this).val();
+			$.ajax({
+				url: {link defaultDogPic},
+				data: {
+					dogId: dogId,
+					picId: picId
+				},
+				success: function(){
+					//
+				}
+			});
+		});
+
+		$("[type=text][name^='dogHealth']").parent().parent().toggle();
+		$("select[name^='dogHealth']").parent().parent().toggle();
+		$("#healthHelper").on('click' , function(e) {
+			$("[type=text][name^='dogHealth']").parent().parent().toggle();
+			$("select[name^='dogHealth']").parent().parent().toggle();
+		})
+
+		$(function () {
+			$('.datetimepicker').datetimepicker();
+		});
+	</script>
 {/block}

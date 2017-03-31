@@ -4,45 +4,17 @@ namespace App\Model\Entity;
 
 class DogPicEntity {
 
-	/** @var int  */
+	/** @var int */
 	private $id;
 
-	/** @var string  */
-	private $path;
+	/** @var int */
+	private $pID;
 
-	/**
-	 * @return int
-	 */
-	public function getDogId() {
-		return $this->dogId;
-	}
-
-	/**
-	 * @param int $dogId
-	 */
-	public function setDogId($dogId) {
-		$this->dogId = $dogId;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function isIsMain() {
-		return $this->isMain;
-	}
-
-	/**
-	 * @param boolean $isMain
-	 */
-	public function setIsMain($isMain) {
-		$this->isMain = $isMain;
-	}
-
-	/** @var int  */
-	private $dogId;
+	/** @var string */
+	private $cesta;
 
 	/** @var bool */
-	private $isMain;
+	private $vychozi;
 
 	/**
 	 * @return int
@@ -59,27 +31,45 @@ class DogPicEntity {
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getPID() {
+		return $this->pID;
+	}
+
+	/**
+	 * @param int $pID
+	 */
+	public function setPID($pID) {
+		$this->pID = $pID;
+	}
+
+	/**
 	 * @return string
 	 */
-	public function getPath() {
-		return $this->path;
+	public function getCesta() {
+		return $this->cesta;
 	}
 
 	/**
-	 * @param string $path
+	 * @param string $cesta
 	 */
-	public function setPath($path) {
-		$this->path = $path;
+	public function setCesta($cesta) {
+		$this->cesta = $cesta;
 	}
 
 	/**
-	 * @param array $data
+	 * @return boolean
 	 */
-	public function hydrate($data) {
-		$this->id = (isset($data['id']) ? $data['id'] : null);
-		$this->path = (isset($data['path']) ? $data['path'] : null);
-		$this->dogId = (isset($data['dogId']) ? $data['dogId'] : null);
-		$this->isMain = (isset($data['isMain']) ? $data['isMain'] : null);
+	public function isVychozi() {
+		return $this->vychozi;
+	}
+
+	/**
+	 * @param boolean $vychozi
+	 */
+	public function setVychozi($vychozi) {
+		$this->vychozi = $vychozi;
 	}
 
 	/**
@@ -87,11 +77,20 @@ class DogPicEntity {
 	 */
 	public function extract() {
 		return [
-			'id' => $this->id,
-			'path' => $this->path,
-			'dogId' => $this->dogId,
-			'isMain' => $this->isMain
+			'id' => $this->getId(),
+			'pID' => $this->getPID(),
+			'cesta' => $this->getCesta(),
+			'vychozi' => $this->isVychozi()
 		];
 	}
 
+	/**
+	 * @param array $data
+	 */
+	public function hydrate(array $data) {
+		$this->setId(isset($data['id'])? $data['id'] : null);
+		$this->setPID(isset($data['pID'])? $data['pID'] : null);
+		$this->setCesta(isset($data['cesta'])? $data['cesta'] : null);
+		$this->setVychozi(isset($data['vychozi'])? $data['vychozi'] : null);
+	}
 }

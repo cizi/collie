@@ -486,6 +486,7 @@ define("DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL", 'Zpět');
 
 define("DOG_FORM_NAME_PREFIX", 'Tituly před jménem');
 define("DOG_FORM_NAME", 'Jméno');
+define("DOG_FORM_NAME_MANDATORY", 'Jméno je povinná položka');
 define("DOG_FORM_NAME_SUFFIX", 'Tituly za jménem');
 define("DOG_FORM_BREED", 'Plemeno');
 define("DOG_FORM_FUR", 'Barva a délka srsti');
@@ -512,3 +513,20 @@ define("DOG_FORM_HEADER", 'Detaily psa');
 define("DOG_FORM_PIC_UPLOAD", 'Nahrát obrázky');
 define("DOG_FORM_ADDED", 'Data byla v pořádku uložena.');
 define("DOG_FORM_ADD_FAILED", 'Změny nebyly zpracovány.');
+define("DOG_FORM_PIC_DEFAULT", 'Nastavit obrázek jako výchozí');
+define("DOG_FORM_PIC_DELETE", 'Smazat obrázek');
+define("DOG_FORM_PIC_DELETE_TITLE", 'Smazání obrázku u karty psa');
+define("DOG_FORM_PIC_DELETE_INFO", 'Opravdu smazat obrázek?');
+define("DOG_FORM_HEALTH_COMMENT", 'Komentář');
+define("DOG_FORM_HEALTH_SUMMARY", 'Výsledek');
+define("DOG_FORM_HEALTH_DATE", 'Datum');
+define("DOG_FORM_HEALTH_VET", 'Veterinář');
+define("DOG_FORM_HEALTH", 'Zdraví');
+
+define("DOG_FORM_TITLES", 'Tituly');
+define("DOG_FORM_BON_TEXT", 'Bonitační posudek');
+define("DOG_FORM_SHOWS_TEXT", 'Výstavní ocenění');
+define("DOG_FORM_SHOWS_NEXT_TEXT", 'Další výstavní ocenění');
+define("DOG_FORM_SHOWS_EXAMS", 'Zkoušky');
+define("DOG_FORM_SHOWS_RACES", 'Závody');
+define("DOG_FORM_SHOWS_NOTE", 'Poznámka');

@@ -2,8 +2,12 @@
 
 namespace App\Forms;
 
+use App\Model\DogRepository;
+use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
+use App\Model\VetRepository;
 use Nette\Application\UI\Form;
+use Nette\Utils\Html;
 
 class DogForm {
 
@@ -13,13 +17,22 @@ class DogForm {
 	/** @var EnumerationRepository */
 	private $enumerationRepository;
 
+	/** @var VetRepository */
+	private $vetRepository;
+
 	/**
 	 * @param FormFactory $factory
 	 * @param EnumerationRepository $enumerationRepository
+	 * @param VetRepository $vetRepository
 	 */
-	public function __construct(FormFactory $factory, EnumerationRepository $enumerationRepository) {
+	public function __construct(
+		FormFactory $factory,
+		EnumerationRepository $enumerationRepository,
+		VetRepository $vetRepository
+	) {
 		$this->factory = $factory;
 		$this->enumerationRepository = $enumerationRepository;
+		$this->vetRepository = $vetRepository;
 	}
 
 	/**
@@ -35,6 +48,7 @@ class DogForm {
 
 		$form->addText("Jmeno", DOG_FORM_NAME)
 			->setAttribute("class", "form-control tinym_required_field")
+			->setAttribute("validation", USER_EDIT_SURNAME_LABEL_VALIDATION)
 			->setAttribute("placeholder", DOG_FORM_NAME);
 
 		$form->addText("TitulyZaJmenem", DOG_FORM_NAME_SUFFIX)
@@ -113,11 +127,8 @@ class DogForm {
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", DOG_FORM_HEALTH_COM);
 
-		// vyšetøení a zdraví TODO
-
-
-		$varalate = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 12);
-		$form->addSelect("Varlata", DOG_FORM_BOLOCKS, $varalate)
+		$varlata = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 12);
+		$form->addSelect("Varlata", DOG_FORM_BOLOCKS, $varlata)
 			->setAttribute("class", "form-control");
 
 		$skus = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 10);
@@ -128,11 +139,49 @@ class DogForm {
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", DOG_FORM_TEETH_COM);
 
-		// chovatele
+		$vets = $this->vetRepository->findVetsForSelect();
+		$zdravi = $this->enumerationRepository->findEnumItems($langCurrent, 14);
+		$form->addButton("healthHelper", DOG_FORM_HEALTH)->setAttribute("id","healthHelper")->setAttribute("class", "form-control btn btn-info");
+		$dogHealthContainer = $form->addContainer("dogHealth");
+		/** @var EnumerationItemEntity $enumEntity */
+		foreach ($zdravi as $enumEntity) {
+			$container = $dogHealthContainer->addContainer($enumEntity->getOrder());
+			$container->addText("caption", null)->setAttribute("class", "form-control")->setAttribute("readonly", "readonly")->setAttribute("value", $enumEntity->getItem());
+			$container->addText("Vysledek", DOG_FORM_HEALTH_SUMMARY)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_SUMMARY);
+			$container->addText("Komentar", DOG_FORM_HEALTH_COMMENT)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_COMMENT);
+			$container->addText("Datum", DOG_FORM_HEALTH_DATE)->setAttribute("class", "form-control datetimepicker")->setAttribute("placeholder", DOG_FORM_HEALTH_DATE);
+			$container->addSelect("Veterinar", DOG_FORM_HEALTH_VET, $vets)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_VET);
+		}
 
-		// majitele
+		//$form->addButton("healthHelper", DOG_FORM_HEALTH)->setAttribute("id","healthHelper")->setAttribute("class", "form-control btn btn-info");
+		// chovatele TODO
 
-		// puvdno majitel
+		//$form->addButton("healthHelper", DOG_FORM_HEALTH)->setAttribute("id","healthHelper")->setAttribute("class", "form-control btn btn-info");
+		// majitele TODO
+
+		//$form->addButton("healthHelper", DOG_FORM_HEALTH)->setAttribute("id","healthHelper")->setAttribute("class", "form-control btn btn-info");
+		// puvdno majitel TODO
+
+		// rodokmen TODO
+
+		$form->addTextArea("TitulyKomentar", DOG_FORM_TITLES)
+			->setAttribute("class", "form-control");
+
+		$form->addTextArea("Posudek", DOG_FORM_BON_TEXT)
+			->setAttribute("class", "form-control");
+
+		$form->addTextArea("Oceneni", DOG_FORM_SHOWS_NEXT_TEXT)		// ocenÄ›Å¡nÃ­ z DB bude zobrazeno jinak
+			->setAttribute("class", "form-control");
+
+		$form->addTextArea("Zkousky", DOG_FORM_SHOWS_EXAMS)
+			->setAttribute("class", "form-control");
+
+		$form->addTextArea("Zavody", DOG_FORM_SHOWS_RACES)
+			->setAttribute("class", "form-control");
+
+		$form->addTextArea("Komentar",DOG_FORM_SHOWS_NOTE)
+			->setAttribute("class", "form-control");
+
 
 		$form->addMultiUpload("pics", DOG_FORM_PIC_UPLOAD)
 			->setAttribute("class", "form-control");
@@ -141,7 +190,7 @@ class DogForm {
 			->setAttribute("class", "btn margin10")
 			->setAttribute("onclick", "location.assign('" . $linkBack . "')");
 
-		$form->addSubmit("confirm", VET_EDIT_SAVE)
+		$form->addSubmit("saveDog", VET_EDIT_SAVE)
 			->setAttribute("class", "btn btn-primary margin10");
 
 		return $form;
