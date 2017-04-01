@@ -11,6 +11,15 @@ use Nette\Utils\DateTime;
 
 class DogRepository extends BaseRepository {
 
+	/** @const znak pro nevybraného psa v selectu  */
+	const NOT_SELECTED = "-";
+
+	/** @const poøadí pro fenu */
+	const FEMALE_ORDER = 30;
+
+	/** @const poøadí pro psa */
+	const MALE_ORDER = 29;
+
 	/**
 	 * @param int $id
 	 * @return DogEntity
@@ -23,6 +32,40 @@ class DogRepository extends BaseRepository {
 			$dogEntity->hydrate($row->toArray());
 			return $dogEntity;
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findFemaleDogsForSelect() {
+		$query = ["select * from appdata_pes where Pohlavi = %i", self::FEMALE_ORDER];
+		$result = $this->connection->query($query);
+
+		$dogs[0] = self::NOT_SELECTED;
+		foreach ($result->fetchAll() as $row) {
+			$dog = new DogEntity();
+			$dog->hydrate($row->toArray());
+			$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
+		}
+
+		return $dogs;
+	}
+
+	/**
+	 * @return DogEntity[]
+	 */
+	public function findMaleDogsForSelect() {
+		$query = ["select * from appdata_pes where Pohlavi = %i", self::MALE_ORDER];
+		$result = $this->connection->query($query);
+
+		$dogs[0] = self::NOT_SELECTED;
+		foreach ($result->fetchAll() as $row) {
+			$dog = new DogEntity();
+			$dog->hydrate($row->toArray());
+			$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
+		}
+
+		return $dogs;
 	}
 
 	/**
@@ -41,6 +84,7 @@ class DogRepository extends BaseRepository {
 
 		return $dogs;
 	}
+
 
 	/**
 	 * @param int $id
@@ -118,17 +162,21 @@ class DogRepository extends BaseRepository {
 	 * @param BreederEntity[]
 	 */
 	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders) {
-		$dataArray = $dogEntity->extract();
-		$dataArray['PosledniZmena'] = new DateTime();
-
 		try {
 			$this->connection->begin();
+			$dogEntity->setPosledniZmena(new DateTime());
+			if ($dogEntity->getMID() == 0) {
+				$dogEntity->setMID(null);
+			}
+			if ($dogEntity->getOID() == 0) {
+				$dogEntity->setOID(null);
+			}
 			if ($dogEntity->getID() == null) {	// nový pes
-				$query = ["insert into appdata_pes ", $dataArray];
+				$query = ["insert into appdata_pes ", $dogEntity->extract()];
 				$this->connection->query($query);
 				$dogEntity->setID($this->connection->getInsertId());
 			} else {	// editovaný pes
-				$query = ["update appdata_pes set ", $dataArray, "where ID=%i", $dogEntity->getID()];
+				$query = ["update appdata_pes set ", $dogEntity->extract(), "where ID=%i", $dogEntity->getID()];
 				$this->connection->query($query);
 			}
 			/** @var DogHealthEntity $dogHealthEntity */
@@ -164,7 +212,6 @@ class DogRepository extends BaseRepository {
 			}
 			$this->connection->commit();
 		} catch (\Exception $e) {
-			dump($e->getMessage()); die;
 			$this->connection->rollback();
 		}
 	}

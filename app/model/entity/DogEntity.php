@@ -566,7 +566,7 @@ class DogEntity {
 	}
 
 	/**
-	 * @param DateTime $PosledniZmena
+	 * @param \Nette\Utils\DateTime $PosledniZmena
 	 */
 	public function setPosledniZmena($PosledniZmena) {
 		$this->PosledniZmena = $PosledniZmena;

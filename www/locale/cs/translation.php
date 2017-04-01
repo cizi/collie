@@ -532,3 +532,5 @@ define("DOG_FORM_SHOWS_EXAMS", 'Zkoušky');
 define("DOG_FORM_SHOWS_RACES", 'Závody');
 define("DOG_FORM_SHOWS_NOTE", 'Poznámka');
 define("DOG_FORM_BREEDER", 'Chovatel');
+define("DOG_FORM_MALE", 'Otec');
+define("DOG_FORM_FEMALE", 'Matka');

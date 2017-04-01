@@ -9,7 +9,7 @@
 
 				<div class="row">
 					<fieldset>
-						<legend>{=DOG_FORM_HEADER} {if $currentDog != null} :{$currentDog->getTitulyPredJmenem()} {$currentDog->getJmeno()} {$currentDog->getTitulyZaJmenem()} {/if} </legend>
+						<legend>{=DOG_FORM_HEADER}{if $currentDog != null}: {$currentDog->getTitulyPredJmenem()} {$currentDog->getJmeno()} {$currentDog->getTitulyZaJmenem()} {/if} </legend>
 						<div class="col-lg-8"><br /><br />
 							{control dogForm}
 						</div>

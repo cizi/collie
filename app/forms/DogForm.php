@@ -24,22 +24,28 @@ class DogForm {
 	/** @var UserRepository */
 	private $userRepository;
 
+	/** @var DogRepository */
+	private $dogRepository;
+
 	/**
 	 * @param FormFactory $factory
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param VetRepository $vetRepository
 	 * @param UserRepository $userRepository
+	 * @param DogRepository
 	 */
 	public function __construct(
 		FormFactory $factory,
 		EnumerationRepository $enumerationRepository,
 		VetRepository $vetRepository,
-		UserRepository $userRepository
+		UserRepository $userRepository,
+		DogRepository $dogRepository
 	) {
 		$this->factory = $factory;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->vetRepository = $vetRepository;
 		$this->userRepository = $userRepository;
+		$this->dogRepository = $dogRepository;
 	}
 
 	/**
@@ -94,13 +100,13 @@ class DogForm {
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", DOG_FORM_WEIGHT);
 
-		$form->addText("DatUmrti", DOG_FORM_WEIGHT)
+		$form->addText("DatUmrti", DOG_FORM_DEAD)
 			->setAttribute("class", "form-control")
-			->setAttribute("placeholder", DOG_FORM_WEIGHT);
+			->setAttribute("placeholder", DOG_FORM_DEAD);
 
-		$form->addText("UmrtiKomentar", DOG_FORM_WEIGHT)
+		$form->addText("UmrtiKomentar", DOG_FORM_DEAD_COM)
 			->setAttribute("class", "form-control")
-			->setAttribute("placeholder", DOG_FORM_WEIGHT);
+			->setAttribute("placeholder", DOG_FORM_DEAD_COM);
 
 		$form->addText("CisloZapisu", DOG_FORM_NO_OF_REC)
 			->setAttribute("class", "form-control")
@@ -170,7 +176,13 @@ class DogForm {
 		//$form->addButton("healthHelper", DOG_FORM_HEALTH)->setAttribute("id","healthHelper")->setAttribute("class", "form-control btn btn-info");
 		// puvdno majitel TODO
 
-		// rodokmen TODO
+		$males = $this->dogRepository->findMaleDogsForSelect();
+		$form->addSelect("oID", DOG_FORM_MALE, $males)
+			->setAttribute("class", "form-control");
+
+		$females = $this->dogRepository->findFemaleDogsForSelect();
+		$form->addSelect("mID", DOG_FORM_FEMALE, $females)
+			->setAttribute("class", "form-control");
 
 		$form->addTextArea("TitulyKomentar", DOG_FORM_TITLES)
 			->setAttribute("class", "form-control");
