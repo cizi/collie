@@ -534,3 +534,7 @@ define("DOG_FORM_SHOWS_NOTE", 'Poznámka');
 define("DOG_FORM_BREEDER", 'Chovatel');
 define("DOG_FORM_MALE", 'Otec');
 define("DOG_FORM_FEMALE", 'Matka');
+
+define("DOG_FORM_OWNERS", 'Majitel/é');
+define("DOG_FORM_PREVIOUS_OWNERS", 'Předchozí majitelé');
+

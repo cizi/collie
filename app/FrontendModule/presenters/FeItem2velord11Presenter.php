@@ -9,6 +9,7 @@ use App\Model\DogRepository;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogHealthEntity;
+use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
 use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
@@ -121,10 +122,14 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			}
 			$breeder = $this->userRepository->getBreederByDog($id);
 			if ($breeder) {
-				$this['dogForm']['owners']->addHidden("ID", $breeder->getID())->setAttribute("class", "form-control");
-				$this['dogForm']['owners']['uID']->setValue($breeder->getUID());
+				$this['dogForm']['breeder']->addHidden("ID", $breeder->getID())->setAttribute("class", "form-control");
+				$this['dogForm']['breeder']['uID']->setValue($breeder->getUID());
 			}
 
+			$owners = $this->userRepository->findDogOwners($id);
+			$this['dogForm']['owners']['uID']->setDefaultValue($owners);
+
+			$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
 		}
 		$this->template->dogPics = $this->dogRepository->findDogPics($id);
 	}
@@ -169,6 +174,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$pics = [];
 		$health = [];
 		$breeders = [];
+		$owners = [];
 		try {
 			$formData = $form->getHttpData();
 			// zdraví
@@ -196,15 +202,25 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			unset($formData['pics']);
 
 			// chovatele
-			if (isset($formData['owners'])) {
+			if (isset($formData['breeder'])) {
 				$breederEntity = new BreederEntity();
-				$breederEntity->hydrate($formData['owners']);
+				$breederEntity->hydrate($formData['breeder']);
 				$breeders[] = $breederEntity;
 			}
-			unset($formData['owners']);
+			unset($formData['breeder']);
+
+			// majitel
+			foreach($formData['owners']['uID'] as $owner) {
+				$ownerEntity = new DogOwnerEntity();
+				$ownerEntity->setUID($owner);
+				$ownerEntity->setSoucasny(true);
+				$owners[] = $ownerEntity;
+			}
+			unset($formData['owners']['uID']);
+
 			$dogEntity->hydrate($formData);
 
-			$this->dogRepository->save($dogEntity, $pics, $health, $breeders);
+			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners);
 			$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			$this->redirect("default");
 		} catch (\Exception $e) {

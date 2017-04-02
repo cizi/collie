@@ -9,7 +9,7 @@ class UserRoleEnum extends Enum {
 	}
 
 	/** @const owner */
-	const USER_OWNER = 22;
+	//const USER_OWNER = 22;
 
 	/** @const registered */
 	const USER_REGISTERED = 33;

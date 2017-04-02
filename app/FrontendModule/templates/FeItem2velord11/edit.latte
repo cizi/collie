@@ -14,7 +14,17 @@
 							{control dogForm}
 						</div>
 						<div class="col-lg-4">
-							<h5>{=DOG_FORM_PICS}</h5>
+							{if count($previousOwners) > 0}
+								<h4>{=DOG_FORM_PREVIOUS_OWNERS}</h4>
+								<div>
+									{foreach $previousOwners as $user}
+										{var $name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter())}
+										{(strlen($name) > 35 ? substr($name, 0, 35) . "..." : $name)}<br />
+									{/foreach}
+								</div>
+							{/if}
+
+							<h4>{=DOG_FORM_PICS}</h4>
 							<form action="">
 								{if $currentDog != null}<input type="hidden" id="currentDogId" value={$currentDog->getID()}>{/if}
 								{foreach $dogPics as $dogPic}

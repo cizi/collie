@@ -167,11 +167,12 @@ class DogForm {
 		}
 
 		$chovatele = $this->userRepository->findBreedersForSelect();
-		$ownerContainer = $form->addContainer("owners");
-		$ownerContainer->addSelect("uID", DOG_FORM_BREEDER, $chovatele)->setAttribute("class", "form-control");
+		$breederContainer = $form->addContainer("breeder");
+		$breederContainer->addSelect("uID", DOG_FORM_BREEDER, $chovatele)->setAttribute("class", "form-control");
 
-		//$form->addButton("healthHelper", DOG_FORM_HEALTH)->setAttribute("id","healthHelper")->setAttribute("class", "form-control btn btn-info");
-		// majitele TODO
+		$vlastnici = $this->userRepository->findOwnersForSelect();
+		$ownerContainer = $form->addContainer("owners");
+		$ownerContainer->addMultiSelect("uID", DOG_FORM_OWNERS, $vlastnici)->setAttribute("class", "form-control");
 
 		//$form->addButton("healthHelper", DOG_FORM_HEALTH)->setAttribute("id","healthHelper")->setAttribute("class", "form-control btn btn-info");
 		// puvdno majitel TODO

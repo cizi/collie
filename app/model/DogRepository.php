@@ -5,6 +5,7 @@ namespace App\Model;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogHealthEntity;
+use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
 use Dibi\Exception;
 use Nette\Utils\DateTime;
@@ -160,8 +161,9 @@ class DogRepository extends BaseRepository {
 	 * @param DogPicEntity[]
 	 * @param DogHealthEntity[]
 	 * @param BreederEntity[]
+	 * @param DogOwnerEntity[]
 	 */
-	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders) {
+	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders, array $owners) {
 		try {
 			$this->connection->begin();
 			$dogEntity->setPosledniZmena(new DateTime());
@@ -195,7 +197,7 @@ class DogRepository extends BaseRepository {
 			/** @var BreederEntity $breeder */
 			foreach($breeders as $breeder) {
 				$breeder->setPID($dogEntity->getID());
-				if ($breeder->getUID() == 0) {
+				if ($breeder->getUID() == 0) {		// pokud je v selectu vybrána nula tak mažu
 					$this->deleteBreederByDogId($dogEntity->getID());
 				} else {
 					$query = ($breeder->getID() == null ? ["insert into appdata_chovatel ", $breeder->extract()] : ["update appdata_chovatel set ", $breeder->extract(), "where ID=%i", $breeder->getID()]);
@@ -203,11 +205,28 @@ class DogRepository extends BaseRepository {
 				}
 			}
 
+			$query = ["update appdata_majitel set Soucasny = %i where pID = %i", 0, $dogEntity->getID()];	// nevím co mi nyní pøijde takže všechny rovnou udìlám jako bývalé majitele
+			$this->connection->query($query);
+			/** @var DogOwnerEntity $owner */
+			foreach($owners as $owner) {
+				$owner->setPID($dogEntity->getID());
+				$alreadyIn = ["select * from appdata_majitel where uID = %i and pID = %i", $owner->getUID(), $dogEntity->getID()];
+				$row = $this->connection->query($alreadyIn)->fetch();
+				if ($row) {	// pokud existuje akorat pøepnu na souèasného
+					$dogOwn = new DogOwnerEntity();
+					$dogOwn->hydrate($row->toArray());
+					$query = ["update appdata_majitel set Soucasny = %i where ID = %i", $owner->isSoucasny(), $dogOwn->getID()];
+				} else {	// pokud záznam neexistuje vložím jako nový souèasný majitel
+					$query = ["insert into appdata_majitel ", $owner->extract()];
+				}
+				$this->connection->query($query);
+			}
+
 			/** @var DogPicEntity $dogPic */
 			foreach ($dogPics as $dogPic) {
 				$dogPic->setPID($dogEntity->getID());
 				$dogPic->setVychozi(0);
-				$picQuery = $query = ["insert into appdata_pes_obrazky ", $dogPic->extract()];
+				$picQuery = ["insert into appdata_pes_obrazky ", $dogPic->extract()];
 				$this->connection->query($picQuery);
 			}
 			$this->connection->commit();

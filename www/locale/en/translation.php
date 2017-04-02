@@ -515,3 +515,6 @@ define("DOG_FORM_SHOWS_NOTE", 'Note');
 define("DOG_FORM_BREEDER", 'Breeder');
 define("DOG_FORM_MALE", 'Father');
 define("DOG_FORM_FEMALE", 'Mother');
+
+define("DOG_FORM_OWNERS", 'Owner/s');
+define("DOG_FORM_PREVIOUS_OWNERS", 'Previous owners');

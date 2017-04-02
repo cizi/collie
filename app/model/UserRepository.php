@@ -211,17 +211,55 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	}
 
 	/**
+	 * @param int $pID
 	 * @return array
 	 */
-	public function findOwnersForSelect() {
-		$owners[0] = self::NOT_SELECTED;
-		$query = ["select * from user where role = %i", UserRoleEnum::USER_OWNER];
+	public function findDogOwners($pID) {
+		$owners = [];
+		$query = ["select * from appdata_majitel where pID = %i and Soucasny = %i", $pID, 1];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$dogOwnerEntity = new DogOwnerEntity();
+			$dogOwnerEntity->hydrate($row->toArray());
+			$owners[] = $dogOwnerEntity->getUID();
+		}
+
+		return $owners;
+	}
+
+	/**
+	 * @param int $pID
+	 * @return array
+	 */
+	public function findDogPreviousOwners($pID) {
+		$owners = [];
+		$query = ["select * from appdata_majitel as am left join user as u on am.uID = u.id where am.pID = %i and am.Soucasny = %i", $pID, 0];
 		$result = $this->connection->query($query);
 
 		foreach ($result->fetchAll() as $row) {
 			$user = new UserEntity();
 			$user->hydrate($row->toArray());
-			$users[$user->getId()] = $user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " ". $user->getTitleAfter();
+			$owners[] = $user;
+		}
+
+		return $owners;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findOwnersForSelect() {
+		$owners = [];
+		$query = ["select * from user"]; //where, UserRoleEnum::USER_OWNER];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = new UserEntity();
+			$user->hydrate($row->toArray());
+			$name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter());
+			$name = (strlen($name) > 60 ? substr($name, 0, 60)."..." : $name);
+			$owners[$user->getId()] = $name;
 		}
 
 		return $owners;
