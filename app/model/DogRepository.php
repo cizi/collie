@@ -9,6 +9,7 @@ use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
 use Dibi\Exception;
 use Nette\Utils\DateTime;
+use Nette\Utils\Paginator;
 
 class DogRepository extends BaseRepository {
 
@@ -72,8 +73,8 @@ class DogRepository extends BaseRepository {
 	/**
 	 * @return DogEntity[]
 	 */
-	public function findDogs() {
-		$query = "select * from appdata_pes";
+	public function findDogs(Paginator $paginator) {
+		$query = ["select * from appdata_pes limit %i , %i", $paginator->getOffset(), $paginator->getLength()];
 		$result = $this->connection->query($query);
 
 		$dogs = [];
@@ -84,6 +85,16 @@ class DogRepository extends BaseRepository {
 		}
 
 		return $dogs;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getDogsCount() {
+		$query = "select count(ID) as pocet from appdata_pes";
+		$row = $this->connection->query($query);
+
+		return ($row ? $row->fetch()['pocet'] : 0);
 	}
 
 

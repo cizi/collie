@@ -286,3 +286,22 @@ div.colorExample {
 	margin: 10px;
 	display: block;
 }
+
+.paginator{
+	margin: auto;
+	text-align: center;
+}
+.paginator span{
+	color: white;
+	font-weight: bold;
+	background-color: #E1A348;
+	padding: 4px;
+}
+.paginator a{
+	color: white;
+	background-color: #E1A348;
+	padding: 4px;
+}
+.paginator a:hover{
+	color: white;
+}

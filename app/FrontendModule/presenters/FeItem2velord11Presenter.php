@@ -17,6 +17,7 @@ use App\Model\UserRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use Nette\Http\FileUpload;
+use Nette\Utils\Paginator;
 
 class FeItem2velord11Presenter extends FrontendPresenter {
 
@@ -53,13 +54,20 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * @param int $id
 	 */
 	public function actionDefault($id) {
-		$this->template->dogs = $this->dogRepository->findDogs();
+		$page = (empty($id) ? 1 : $id);
+		$paginator = new Paginator();
+		$paginator->setItemCount($this->dogRepository->getDogsCount()); // celkový počet položek
+		$paginator->setItemsPerPage(50); // počet položek na stránce
+		$paginator->setPage($page); // číslo aktuální stránky, číslováno od 1
+
+		$this->template->paginator = $paginator;
+		$this->template->dogs = $this->dogRepository->findDogs($paginator);
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->enumRepository = $this->enumerationRepository;
 	}
 
 	/**
-	 * Vytvo�� komponentu pro zm�nu hesla u�ivatele
+	 * Vytvoří komponentu pro změnu hesla uživatele
 	 */
 	public function createComponentDogFilterForm() {
 		$form = $this->dogFilterForm->create($this->langRepository->getCurrentLang($this->session));
@@ -79,7 +87,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	}
 
 	/**
-	 * Vytvo�� komponentu pro zm�nu hesla u�ivatele
+	 * Vytvoří komponentu pro změnu hesla uživatele
 	 */
 	public function createComponentDogForm() {
 		$form = $this->dogForm->create($this->langRepository->getCurrentLang($this->session), $this->link("default"));
@@ -135,7 +143,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	}
 
 	/**
-	 * Aktualizuje vychoz� obr�zek u psa
+	 * Aktualizuje vychozí obrázek u psa
 	 */
 	public function actionDefaultDogPic() {
 		$data = $this->getHttpRequest()->getQuery();
@@ -177,7 +185,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$owners = [];
 		try {
 			$formData = $form->getHttpData();
-			// zdrav�
+			// zdraví
 			foreach($formData['dogHealth'] as $typ => $hodnoty) {
 				$healthEntity = new DogHealthEntity();
 				$healthEntity->hydrate($hodnoty);
@@ -191,7 +199,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				if ($file != null) {
 					$fileController = new FileController();
 					if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
-						throw new \Exception("Nelze nahr�t soubor.");
+						throw new \Exception("Nelze nahrát soubor.");
 						break;
 					}
 					$dogPic = new DogPicEntity();
