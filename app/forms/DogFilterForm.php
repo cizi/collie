@@ -31,26 +31,26 @@ class DogFilterForm {
 		$form->addGroup(DOG_TABLE_FILTER_LABEL)	;
 		//$form->getElementPrototype()->addAttributes(["onsubmit" => "return requiredFields();"]);
 
-		$form->addText("DOG_FILTER_NAME", DOG_TABLE_HEADER_NAME)
+		$form->addText("Jmeno", DOG_TABLE_HEADER_NAME)
 			->setAttribute("class", "form-control");
 
 		$plemena = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 7);
-		$form->addSelect("DOG_FILTER_BREED", DOG_TABLE_HEADER_BREED, $plemena)
+		$form->addSelect("Plemeno", DOG_TABLE_HEADER_BREED, $plemena)
 			->setAttribute("class", "form-control");
 
 		$barvy = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 4);
-		$form->addSelect("DOG_FILTER_COLOR", DOG_TABLE_HEADER_COLOR, $barvy)
+		$form->addSelect("Barva", DOG_TABLE_HEADER_COLOR, $barvy)
 			->setAttribute("class", "form-control");
 
 		$pohlavi = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 8);
-		$form->addSelect("DOG_FILTER_SEX", DOG_TABLE_HEADER_SEX, $pohlavi)
+		$form->addSelect("Pohlavi", DOG_TABLE_HEADER_SEX, $pohlavi)
 			->setAttribute("class", "form-control");
 
-		$form->addSelect("DOG_FILTER_BIRT", DOG_TABLE_HEADER_BIRT)
+		$form->addSelect("DatNarozeni", DOG_TABLE_HEADER_BIRT)
 			->setAttribute("class", "form-control");
 
 		$chovnost = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 5);
-		$form->addSelect("DOG_FILTER_BREEDING", DOG_TABLE_HEADER_BREEDING, $chovnost)
+		$form->addSelect("Chovnost", DOG_TABLE_HEADER_BREEDING, $chovnost)
 			->setAttribute("class", "form-control");
 
 		$dkk = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 15);
@@ -67,6 +67,7 @@ class DogFilterForm {
 
 		$states = new StateEnum();
 		$form->addSelect("DOG_FILTER_LAND",DOG_TABLE_HEADER_LAND, $states->arrayKeyValue())
+			->setDefaultValue("CZECH_REPUBLIC")
 			->setAttribute("class", "form-control");
 
 		$form->addText("DOG_FILTER_BREEDER",DOG_TABLE_HEADER_BREEDER)
@@ -75,11 +76,8 @@ class DogFilterForm {
 		$form->addText("DOG_FILTER_EXAM", DOG_TABLE_HEADER_EXAM)
 			->setAttribute("class", "form-control");
 
-		$form->addText("DOG_FILTER_HEIGHT", DOG_TABLE_HEADER_HEIGHT)
+		$form->addText("Vyska", DOG_TABLE_HEADER_HEIGHT)
 		->setAttribute("class", "form-control");
-
-		$form->addText("DOG_FILTER_FULLTEXT",DOG_TABLE_HEADER_FULLTEXT)
-			->setAttribute("class", "form-control");
 
 		$form->addGroup();
 		$form->addSubmit("filter", DOG_TABLE_BTN_FILTER)

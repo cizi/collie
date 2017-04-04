@@ -21,6 +21,9 @@ use Nette\Utils\Paginator;
 
 class FeItem2velord11Presenter extends FrontendPresenter {
 
+	/** @persistent */
+	public $filter;
+
 	/** @var DogRepository */
 	private $dogRepository;
 
@@ -50,37 +53,65 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$this->userRepository = $userRepository;
 	}
 
-	/**
-	 * @param int $id
-	 */
-	public function actionDefault($id) {
-		$page = (empty($id) ? 1 : $id);
-		$paginator = new Paginator();
-		$paginator->setItemCount($this->dogRepository->getDogsCount()); // celkový počet položek
-		$paginator->setItemsPerPage(50); // počet položek na stránce
-		$paginator->setPage($page); // číslo aktuální stránky, číslováno od 1
+	private function decodeFilterFromQuery() {
+		$filter = [];
+		if ($this->filter != "") {
+			$arr = explode("&", $this->filter);
+			foreach ($arr as $filterItem) {
+				$filterPiece = explode("=", $filterItem);
+				if (
+					(count($filterPiece) > 1)
+					&& ($filterPiece[0] != "")
+					&& ($filterPiece[1] != "")
+					&& ($filterPiece[0] != "filter")
+					&& ($filterPiece[0] != "do")
+					&& ($filterPiece[1] != "0")
+				) {
+					$filter[$filterPiece[0]] = $filterPiece[1];
+				}
+			}
+		}
+		 unset($filter['DOG_FILTER_PROB_DKK']);
+		 unset($filter['DOG_FILTER_PROB_DLK']);
+		 unset($filter['DOG_FILTER_HEALTH']);
+		 unset($filter['DOG_FILTER_LAND']);
+		 unset($filter['DOG_FILTER_BREEDER']);
+		 unset($filter['DOG_FILTER_EXAM']);
 
-		$this->template->paginator = $paginator;
-		$this->template->dogs = $this->dogRepository->findDogs($paginator);
-		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
-		$this->template->enumRepository = $this->enumerationRepository;
+		return $filter;
 	}
 
 	/**
 	 * @param int $id
 	 */
-	public function dogFilter(Form $form) {
-		//dump($form->getHttpData());
+	public function actionDefault($id) {
+		$filter = $this->decodeFilterFromQuery();
+		$this['dogFilterForm']->setDefaults($filter);
+
 		$page = (empty($id) ? 1 : $id);
 		$paginator = new Paginator();
-		$paginator->setItemCount($this->dogRepository->getDogsCount()); // celkový počet položek
+		$paginator->setItemCount($this->dogRepository->getDogsCount($filter)); // celkový počet položek
 		$paginator->setItemsPerPage(50); // počet položek na stránce
 		$paginator->setPage($page); // číslo aktuální stránky, číslováno od 1
 
 		$this->template->paginator = $paginator;
-		$this->template->dogs = $this->dogRepository->findDogs($paginator);
+		$this->template->dogs = $this->dogRepository->findDogs($paginator, $filter);
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->enumRepository = $this->enumerationRepository;
+	}
+
+	/**
+	 * @param Form $form
+	 */
+	public function dogFilter(Form $form) {
+		$filter = "1&";
+		foreach ($form->getHttpData() as $key => $value) {
+			if ($value != "") {
+				$filter .= $key . "=" . $value . "&";
+			}
+		}
+		$this->filter = $filter;
+		$this->redirect("default");
 	}
 
 	/**

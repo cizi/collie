@@ -13,13 +13,13 @@ use Nette\Utils\Paginator;
 
 class DogRepository extends BaseRepository {
 
-	/** @const znak pro nevybraného psa v selectu  */
+	/** @const znak pro nevybranÃ©ho psa v selectu  */
 	const NOT_SELECTED = "-";
 
-	/** @const poøadí pro fenu */
+	/** @const poÅ™adÃ­ pro fenu */
 	const FEMALE_ORDER = 30;
 
-	/** @const poøadí pro psa */
+	/** @const poÅ™adÃ­ pro psa */
 	const MALE_ORDER = 29;
 
 	/**
@@ -73,8 +73,12 @@ class DogRepository extends BaseRepository {
 	/**
 	 * @return DogEntity[]
 	 */
-	public function findDogs(Paginator $paginator) {
-		$query = ["select * from appdata_pes limit %i , %i", $paginator->getOffset(), $paginator->getLength()];
+	public function findDogs(Paginator $paginator, array $filter) {
+		if (empty($filter)) {
+			$query = ["select * from appdata_pes limit %i , %i", $paginator->getOffset(), $paginator->getLength()];
+		} else {
+			$query = ["select * from appdata_pes where 1 and " . $this->getWhereFromKeyValueArray($filter), " limit %i , %i", $paginator->getOffset(), $paginator->getLength()];
+		}
 		$result = $this->connection->query($query);
 
 		$dogs = [];
@@ -88,15 +92,37 @@ class DogRepository extends BaseRepository {
 	}
 
 	/**
+	 * @param array $filter
 	 * @return int
 	 */
-	public function getDogsCount() {
-		$query = "select count(ID) as pocet from appdata_pes";
+	public function getDogsCount(array $filter) {
+		if (empty($filter)) {
+			$query = "select count(ID) as pocet from appdata_pes";
+		} else {
+			$query = ["select count(ID) as pocet from appdata_pes where 1 and " . $this->getWhereFromKeyValueArray($filter)];
+		}
 		$row = $this->connection->query($query);
 
 		return ($row ? $row->fetch()['pocet'] : 0);
 	}
 
+	/**
+	 * @param array $filer
+	 * @return string
+	 */
+	private function getWhereFromKeyValueArray(array $filter) {
+		$return = "";
+		$i = 0;
+		foreach ($filter as $key => $value) {
+			$return .= $key . "=" . $value;
+			if (($i+1) != count($filter)) {
+				$return .= " and ";
+			}
+			$i++;
+		}
+
+		return $return;
+	}
 
 	/**
 	 * @param int $id
@@ -108,14 +134,14 @@ class DogRepository extends BaseRepository {
 			try {
 				$this->connection->begin();
 
-				$query = ["delete from appdata_pes_obrazky where pID = %i", $id];    // nejdøíve smažu obrázky
+				$query = ["delete from appdata_pes_obrazky where pID = %i", $id];    // nejdÅ™Ã­ve smaÅ¾u obrÃ¡zky
 				$this->connection->query($query);
 
 				$this->deleteHealthByDogId($id);
 				$this->deleteBreederByDogId($id);
 				$this->deleteOwnerByDogId($id);
 
-				$query = ["delete from appdata_pes where ID = %i", $id];    // pak smažu psa
+				$query = ["delete from appdata_pes where ID = %i", $id];    // pak smaÅ¾u psa
 				$this->connection->query($query);
 
 				$this->connection->commit();
@@ -184,18 +210,18 @@ class DogRepository extends BaseRepository {
 			if ($dogEntity->getOID() == 0) {
 				$dogEntity->setOID(null);
 			}
-			if ($dogEntity->getID() == null) {	// nový pes
+			if ($dogEntity->getID() == null) {	// novÃ½ pes
 				$query = ["insert into appdata_pes ", $dogEntity->extract()];
 				$this->connection->query($query);
 				$dogEntity->setID($this->connection->getInsertId());
-			} else {	// editovaný pes
+			} else {	// editovanÃ½ pes
 				$query = ["update appdata_pes set ", $dogEntity->extract(), "where ID=%i", $dogEntity->getID()];
 				$this->connection->query($query);
 			}
 			/** @var DogHealthEntity $dogHealthEntity */
 			foreach($dogHealth as $dogHealthEntity) {
 				$dogHealthEntity->setPID($dogEntity->getID());
-				if ($dogHealthEntity->getVeterinar() == 0) {	// pokud nebyl veterináø vybrán vynuluji jeho záznam
+				if ($dogHealthEntity->getVeterinar() == 0) {	// pokud nebyl veterinÃ¡Å™ vybrÃ¡n vynuluji jeho zÃ¡znam
 					$dogHealthEntity->setVeterinar(null);
 				}
 				if ($dogHealthEntity->getID() == null) {
@@ -208,7 +234,7 @@ class DogRepository extends BaseRepository {
 			/** @var BreederEntity $breeder */
 			foreach($breeders as $breeder) {
 				$breeder->setPID($dogEntity->getID());
-				if ($breeder->getUID() == 0) {		// pokud je v selectu vybrána nula tak mažu
+				if ($breeder->getUID() == 0) {		// pokud je v selectu vybrÃ¡na nula tak maÅ¾u
 					$this->deleteBreederByDogId($dogEntity->getID());
 				} else {
 					$query = ($breeder->getID() == null ? ["insert into appdata_chovatel ", $breeder->extract()] : ["update appdata_chovatel set ", $breeder->extract(), "where ID=%i", $breeder->getID()]);
@@ -216,18 +242,18 @@ class DogRepository extends BaseRepository {
 				}
 			}
 
-			$query = ["update appdata_majitel set Soucasny = %i where pID = %i", 0, $dogEntity->getID()];	// nevím co mi nyní pøijde takže všechny rovnou udìlám jako bývalé majitele
+			$query = ["update appdata_majitel set Soucasny = %i where pID = %i", 0, $dogEntity->getID()];	// nevÃ­m co mi nynÃ­ pÅ™ijde takÅ¾e vÅ¡echny rovnou udÄ›lÃ¡m jako bÃ½valÃ© majitele
 			$this->connection->query($query);
 			/** @var DogOwnerEntity $owner */
 			foreach($owners as $owner) {
 				$owner->setPID($dogEntity->getID());
 				$alreadyIn = ["select * from appdata_majitel where uID = %i and pID = %i", $owner->getUID(), $dogEntity->getID()];
 				$row = $this->connection->query($alreadyIn)->fetch();
-				if ($row) {	// pokud existuje akorat pøepnu na souèasného
+				if ($row) {	// pokud existuje akorat pÅ™epnu na souÄasnÃ©ho
 					$dogOwn = new DogOwnerEntity();
 					$dogOwn->hydrate($row->toArray());
 					$query = ["update appdata_majitel set Soucasny = %i where ID = %i", $owner->isSoucasny(), $dogOwn->getID()];
-				} else {	// pokud záznam neexistuje vložím jako nový souèasný majitel
+				} else {	// pokud zÃ¡znam neexistuje vloÅ¾Ã­m jako novÃ½ souÄasnÃ½ majitel
 					$query = ["insert into appdata_majitel ", $owner->extract()];
 				}
 				$this->connection->query($query);
