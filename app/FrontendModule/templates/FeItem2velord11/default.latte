@@ -61,15 +61,7 @@
 						</table>
 
 						<div class="paginator">
-							{if $paginator->pageCount > 1}
-								{for $i=1; $i <= $paginator->pageCount; $i++}
-									{if $paginator->getPage() == $i}
-										<span>{$i}</span>
-									{else}
-										<a href={link default, $i}>{$i}</a>
-									{/if}
-								{/for}
-							{/if}
+							{include "../@paginator.latte", $paginator}
 						</div>
 					</div>
 				</div>

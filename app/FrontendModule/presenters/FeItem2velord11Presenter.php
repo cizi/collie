@@ -67,11 +67,28 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	}
 
 	/**
+	 * @param int $id
+	 */
+	public function dogFilter(Form $form) {
+		//dump($form->getHttpData());
+		$page = (empty($id) ? 1 : $id);
+		$paginator = new Paginator();
+		$paginator->setItemCount($this->dogRepository->getDogsCount()); // celkový počet položek
+		$paginator->setItemsPerPage(50); // počet položek na stránce
+		$paginator->setPage($page); // číslo aktuální stránky, číslováno od 1
+
+		$this->template->paginator = $paginator;
+		$this->template->dogs = $this->dogRepository->findDogs($paginator);
+		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
+		$this->template->enumRepository = $this->enumerationRepository;
+	}
+
+	/**
 	 * Vytvoří komponentu pro změnu hesla uživatele
 	 */
 	public function createComponentDogFilterForm() {
 		$form = $this->dogFilterForm->create($this->langRepository->getCurrentLang($this->session));
-		$form->onSubmit[] = $this->saveDog;
+		$form->onSubmit[] = $this->dogFilter;
 
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = NULL;
@@ -112,6 +129,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	public function actionEdit($id) {
 		if ($id == null) {
 			$this->template->currentDog = null;
+			$this->template->previousOwners = [];
 		} else {
 			$dog = $this->dogRepository->getDog($id);
 			$this->template->currentDog = $dog;
