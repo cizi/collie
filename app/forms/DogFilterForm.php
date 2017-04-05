@@ -42,7 +42,7 @@ class DogFilterForm {
 		$form->addSelect("Barva", DOG_TABLE_HEADER_COLOR, $barvy)
 			->setAttribute("class", "form-control");
 
-		$pohlavi = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 8);
+		$pohlavi = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($langCurrent, 8);
 		$form->addSelect("Pohlavi", DOG_TABLE_HEADER_SEX, $pohlavi)
 			->setAttribute("class", "form-control");
 
@@ -61,7 +61,7 @@ class DogFilterForm {
 		$form->addSelect("DOG_FILTER_PROB_DLK", DOG_TABLE_HEADER_PROB_DLK, $dlk)
 			->setAttribute("class", "form-control");
 
-		$zdravi = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 14);
+		$zdravi = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($langCurrent, 14);
 		$form->addSelect("DOG_FILTER_HEALTH", DOG_TABLE_HEADER_HEALTH, $zdravi)
 			->setAttribute("class", "form-control");
 

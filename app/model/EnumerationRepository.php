@@ -7,6 +7,9 @@ use App\Model\Entity\EnumerationItemEntity;
 
 class EnumerationRepository extends BaseRepository {
 
+	/** @const string nevybraná položka */
+	const NOT_SELECTED = "-";
+
 	/**
 	 * @param int $id
 	 */
@@ -102,6 +105,22 @@ class EnumerationRepository extends BaseRepository {
 		foreach ($result as $item) {
 			$enumItem = new EnumerationItemEntity();
 			$enumItem->hydrate($item->toArray());
+			$return[$enumItem->getOrder()] = $enumItem->getItem();
+		}
+
+		return $return;
+	}
+
+	/**
+	 * @param string $lang
+	 * @param int $enumHeaderId
+	 * @return array
+	 */
+	public function findEnumItemsForSelectWithEmpty($lang, $enumHeaderId) {
+		$return[0] = self::NOT_SELECTED;
+		$items = $this->findEnumItems($lang, $enumHeaderId);
+		/** @var EnumerationItemEntity $enumItem */
+		foreach($items as $enumItem) {
 			$return[$enumItem->getOrder()] = $enumItem->getItem();
 		}
 

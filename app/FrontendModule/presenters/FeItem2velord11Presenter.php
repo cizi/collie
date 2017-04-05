@@ -53,6 +53,9 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$this->userRepository = $userRepository;
 	}
 
+	/**
+	 * @return array
+	 */
 	private function decodeFilterFromQuery() {
 		$filter = [];
 		if ($this->filter != "") {
