@@ -90,6 +90,7 @@ class DogForm {
 
 		$form->addText("DatNarozeni", DOG_FORM_BIRT)
 			->setAttribute("class", "form-control")
+			->setAttribute("id", "DatNarozeni")
 			->setAttribute("placeholder", DOG_FORM_BIRT);
 
 		$form->addText("Vyska", DOG_FORM_HEIGHT)
@@ -102,6 +103,7 @@ class DogForm {
 
 		$form->addText("DatUmrti", DOG_FORM_DEAD)
 			->setAttribute("class", "form-control")
+			->setAttribute("id", "DatUmrti")
 			->setAttribute("placeholder", DOG_FORM_DEAD);
 
 		$form->addText("UmrtiKomentar", DOG_FORM_DEAD_COM)
@@ -173,9 +175,6 @@ class DogForm {
 		$vlastnici = $this->userRepository->findOwnersForSelect();
 		$ownerContainer = $form->addContainer("owners");
 		$ownerContainer->addMultiSelect("uID", DOG_FORM_OWNERS, $vlastnici)->setAttribute("class", "form-control");
-
-		//$form->addButton("healthHelper", DOG_FORM_HEALTH)->setAttribute("id","healthHelper")->setAttribute("class", "form-control btn btn-info");
-		// puvdno majitel TODO
 
 		$males = $this->dogRepository->findMaleDogsForSelect();
 		$form->addSelect("oID", DOG_FORM_MALE, $males)

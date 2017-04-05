@@ -46,7 +46,8 @@ class DogFilterForm {
 		$form->addSelect("Pohlavi", DOG_TABLE_HEADER_SEX, $pohlavi)
 			->setAttribute("class", "form-control");
 
-		$form->addSelect("DatNarozeni", DOG_TABLE_HEADER_BIRT)
+		$form->addText("DatNarozeni", DOG_TABLE_HEADER_BIRT)
+			->setAttribute("id", "DatNarozeni")
 			->setAttribute("class", "form-control");
 
 		$chovnost = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 5);

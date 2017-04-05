@@ -74,12 +74,12 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				}
 			}
 		}
-		 unset($filter['DOG_FILTER_PROB_DKK']);
-		 unset($filter['DOG_FILTER_PROB_DLK']);
-		 unset($filter['DOG_FILTER_HEALTH']);
-		 unset($filter['DOG_FILTER_LAND']);
-		 unset($filter['DOG_FILTER_BREEDER']);
-		 unset($filter['DOG_FILTER_EXAM']);
+		 unset($filter['DOG_FILTER_PROB_DKK']);	// TODO
+		 unset($filter['DOG_FILTER_PROB_DLK']); // TODO
+		 unset($filter['DOG_FILTER_HEALTH']);	// TODO
+		 unset($filter['DOG_FILTER_LAND']);	// TODO
+		 unset($filter['DOG_FILTER_BREEDER']);	// TODO
+		 unset($filter['DOG_FILTER_EXAM']);	// TODO
 
 		return $filter;
 	}
@@ -102,6 +102,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$this->template->dogRepository = $this->dogRepository;
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->enumRepository = $this->enumerationRepository;
+		$this->template->filterActivated = (!empty($filter) ? true : false);
 	}
 
 	/**
@@ -192,6 +193,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 
 			$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
 		}
+		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->dogPics = $this->dogRepository->findDogPics($id);
 	}
 

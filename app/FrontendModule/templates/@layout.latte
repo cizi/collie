@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="{$basePath}/boostrap/css/bootstrap.css">
 	<link rel="stylesheet" href="{$basePath}/css/jquery.bxslider.css">
 	<link rel="stylesheet" href="{$basePath}/css/navbar-multilevel.css">
+	<link rel="stylesheet" href="{$basePath}/css/bootstrap-datetimepicker.min.css">
 	<meta name="viewport" content="width=device-width">
 
 	{* if isset($currentLink)}	{* probably any page absolutelly not root }
@@ -127,7 +128,7 @@
 		{* menu end *}
 
 		{block scripts}
-			<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+			<script src="{$basePath}/js/jquery-2.2.3.min.js"></script>
 			<script src="https://nette.github.io/resources/js/netteForms.min.js"></script>
 			<script src="{$basePath}/js/main.js"></script>
 			<script src="{$basePath}/boostrap/js/bootstrap.js"></script>
@@ -135,6 +136,8 @@
 			<script src="{$basePath}/js/jquery.easing.1.3.js"></script>
 			<script src="{$basePath}/js/jquery.fitvids.js"></script>
 			<script src="{$basePath}/js/jquery.bxslider.min.js"></script>
+			<script src="{$basePath}/js/bootstrap-datetimepicker.js"></script>
+			<script src="{$basePath}/js/datetimepicker-locales/bootstrap-datetimepicker.cs.js"></script>
 		{/block}
 
 		{if $googleAnalytics != ""}
