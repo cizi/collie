@@ -97,7 +97,7 @@ class DogRepository extends BaseRepository {
 	 */
 	public function getDogsCount(array $filter) {
 		if (empty($filter)) {
-			$query = "select count(ID) as pocet from appdata_pes";
+			$query = "select count(ID) as pocet from appdata_pes as ap";
 		} else {
 			$query = ["select count(ID) as pocet from appdata_pes where 1 and " . $this->getWhereFromKeyValueArray($filter)];
 		}
@@ -122,6 +122,24 @@ class DogRepository extends BaseRepository {
 		}
 
 		return $return;
+	}
+
+	/**
+	 * @param int $id
+	 * @return DogHealthEntity[]
+	 */
+	public function findHealthsByDogId($id) {
+		$query = ["select * from appdata_zdravi where pID = %i", $id];
+		$result = $this->connection->query($query);
+
+		$dogHealths = [];
+		foreach ($result->fetchAll() as $row) {
+			$dogHealth = new DogHealthEntity();
+			$dogHealth->hydrate($row->toArray());
+			$dogHealths[] = $dogHealth;
+		}
+
+		return $dogHealths;
 	}
 
 	/**
@@ -313,5 +331,37 @@ class DogRepository extends BaseRepository {
 		}
 
 		return $return;
+	}
+
+	/**
+	 * @param int $id
+	 * @return array
+	 */
+	public function getDkkByDogId($id) {
+		$query = ["select * from appdata_zdravi where pID = %i and Typ = %i", $id, 65];
+		$result = $this->connection->query($query);
+
+		$row = $result->fetch();
+		if ($row) {
+			$dogHealth = new DogHealthEntity();
+			$dogHealth->hydrate($row->toArray());
+			return $dogHealth;
+		}
+	}
+
+	/**
+	 * @param int $id
+	 * @return array
+	 */
+	public function getDlkByDogId($id) {
+		$query = ["select * from appdata_zdravi where pID = %i and Typ = %i", $id, 66];
+		$result = $this->connection->query($query);
+
+		$row = $result->fetch();
+		if ($row) {
+			$dogHealth = new DogHealthEntity();
+			$dogHealth->hydrate($row->toArray());
+			return $dogHealth;
+		}
 	}
 }

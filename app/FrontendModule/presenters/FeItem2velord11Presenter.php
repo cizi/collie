@@ -96,6 +96,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 
 		$this->template->paginator = $paginator;
 		$this->template->dogs = $this->dogRepository->findDogs($paginator, $filter);
+		$this->template->dogRepository = $this->dogRepository;
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->enumRepository = $this->enumerationRepository;
 	}
@@ -267,13 +268,15 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			unset($formData['breeder']);
 
 			// majitel
-			foreach($formData['owners']['uID'] as $owner) {
-				$ownerEntity = new DogOwnerEntity();
-				$ownerEntity->setUID($owner);
-				$ownerEntity->setSoucasny(true);
-				$owners[] = $ownerEntity;
+			if (isset($formData['owners'])) {
+				foreach ($formData['owners']['uID'] as $owner) {
+					$ownerEntity = new DogOwnerEntity();
+					$ownerEntity->setUID($owner);
+					$ownerEntity->setSoucasny(true);
+					$owners[] = $ownerEntity;
+				}
+				unset($formData['owners']['uID']);
 			}
-			unset($formData['owners']['uID']);
 
 			$dogEntity->hydrate($formData);
 

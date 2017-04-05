@@ -45,11 +45,39 @@
 									<td>{$enumRepository->findEnumItemByOrder($currentLang, 8, $dog->getPohlavi())}</td>
 									<td>{$dog->getDatNarozeni()}</td>
 									<td>{$enumRepository->findEnumItemByOrder($currentLang, 5, $dog->getChovnost())}</td>
-									<td>{$enumRepository->findEnumItemByOrder($currentLang, 5, $dog->getChovnost())}</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
+									<td>
+										{var dkk = $dogRepository->getDkkByDogId($dog->getID())}
+										{if $dkk}
+											{$dkk->getVysledek()}
+										{/if}
+									</td>
+									<td>
+										{var dlk = $dogRepository->getDlkByDogId($dog->getID())}
+										{if $dlk}
+											{$dlk->getVysledek()}
+										{/if}
+									</td>
+									<td>
+										{var healths = $dogRepository->findHealthsByDogId($dog->getID())}
+										{count($healths)}
+										{if count($healths) > 0}
+											{foreach $healths as $health}
+												{$enumRepository->findEnumItemByOrder($currentLang, 14, $health->getTyp())}: {$health->getVysledek()}<br />
+											{/foreach}
+										{/if}
+									</td>
+									<td>
+										{if $dog->getMID() != 0}
+											{var matka = $dogRepository->getDog($dog->getMID())}
+											<a href={link edit, $matka->getID()}>{$otec->getTitulyPredJmenem()} {$matka->getJmeno()} {$matka->getTitulyZaJmenem()}</a>
+										{/if}
+									</td>
+									<td>
+										{if $dog->getOID() != 0}
+											{var otec = $dogRepository->getDog($dog->getOID())}
+											<a href={link edit, $otec->getID()}>{$otec->getTitulyPredJmenem()} {$otec->getJmeno()} {$otec->getTitulyZaJmenem()}</a>
+										{/if}
+									</td>
 									<td class="alignRight">
 										<a href={link FeItem2velord11:Edit, $dog->getID()} title={=DOG_TABLE_DOG_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
 										<a href="#" data-href={link FeItem2velord11:Delete, $dog->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=DOG_TABLE_DOG_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
