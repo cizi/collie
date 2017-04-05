@@ -2,12 +2,15 @@
 
 namespace App\Model;
 
+use App\Forms\DogFilterForm;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
+use Dibi\Connection;
 use Dibi\Exception;
+use Nette\Http\Session;
 use Nette\Utils\DateTime;
 use Nette\Utils\Paginator;
 
@@ -21,6 +24,32 @@ class DogRepository extends BaseRepository {
 
 	/** @const pořadí pro psa */
 	const MALE_ORDER = 29;
+
+	/** @var EnumerationRepository  */
+	private $enumRepository;
+
+	/** @var \Dibi\Connection */
+	protected $connection;
+
+	/** @var Session */
+	private $session;
+
+	/** @var LangRepository */
+	private $langRepository;
+
+	/**
+	 * @param EnumerationRepository $enumerationRepository
+	 * @param Connection $connection
+	 * @param Session $session
+	 * @param LangRepository $langRepository
+	 */
+	public function __construct(EnumerationRepository $enumerationRepository, Connection $connection, Session $session, LangRepository $langRepository) {
+		$this->enumRepository = $enumerationRepository;
+		$this->session = $session;
+		$this->langRepository = $langRepository;
+
+		parent::__construct($connection);
+	}
 
 	/**
 	 * @param int $id
@@ -77,7 +106,17 @@ class DogRepository extends BaseRepository {
 		if (empty($filter)) {
 			$query = ["select * from appdata_pes limit %i , %i", $paginator->getOffset(), $paginator->getLength()];
 		} else {
-			$query = ["select * from appdata_pes where 1 and " . $this->getWhereFromKeyValueArray($filter), " limit %i , %i", $paginator->getOffset(), $paginator->getLength()];
+			$query[] = "select *, ap.ID as ID from appdata_pes as ap
+					left join `appdata_chovatel` as ac on ap.ID = ac.pID
+					left join `user` as u on ac.uID = u.ID";
+			foreach ($this->getJoinsToArray($filter) as $join) {
+				$query[] = $join;
+			}
+			$query[] = "where 1 and ";
+			$query[] = $this->getWhereFromKeyValueArray($filter);
+			$query[] = " limit %i , %i";
+			$query[] = $paginator->getOffset();
+			$query[] = $paginator->getLength();
 		}
 		$result = $this->connection->query($query);
 
@@ -97,13 +136,41 @@ class DogRepository extends BaseRepository {
 	 */
 	public function getDogsCount(array $filter) {
 		if (empty($filter)) {
-			$query = "select count(ID) as pocet from appdata_pes as ap";
+			$query = "select count(ID) as pocet from appdata_pes";
 		} else {
-			$query = ["select count(ID) as pocet from appdata_pes where 1 and " . $this->getWhereFromKeyValueArray($filter)];
+			$query[] = "select count(ap.ID) as pocet from appdata_pes as ap
+						left join `appdata_chovatel` as ac on ap.ID = ac.pID
+						left join `user` as u on ac.uID = u.ID";
+			foreach ($this->getJoinsToArray($filter) as $join) {
+				$query[] = $join;
+			}
+			$query[] = "where 1 and ";
+			$query[] = $this->getWhereFromKeyValueArray($filter);
 		}
 		$row = $this->connection->query($query);
 
 		return ($row ? $row->fetch()['pocet'] : 0);
+	}
+
+	/**
+	 * Připraví joiny tabulek
+	 * @param array $filter
+	 * @return array
+	 */
+	private function getJoinsToArray($filter) {
+		$joins = [];
+		if (
+			isset($filter[DogFilterForm::DOG_FILTER_HEALTH])
+			|| isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK])
+			|| isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]
+		)) {
+			$joins[] = "left join `appdata_zdravi` as az on ap.ID = az.pID";
+			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
+			unset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]);
+			unset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
+		}
+
+		return $joins;
 	}
 
 	/**
@@ -112,7 +179,44 @@ class DogRepository extends BaseRepository {
 	 */
 	private function getWhereFromKeyValueArray(array $filter) {
 		$return = "";
+		$currentLang = $this->langRepository->getCurrentLang($this->session);
 		$i = 0;
+		if (isset($filter[DogFilterForm::DOG_FILTER_LAND])) {
+			$return .= "u.state = '" . $filter[DogFilterForm::DOG_FILTER_LAND] . "'";
+			$return .= (count($filter) > 1 ? " and " : "");
+			unset($filter[DogFilterForm::DOG_FILTER_LAND]);
+		}
+		if (isset($filter[DogFilterForm::DOG_FILTER_BREEDER])) {
+			$return .= "ac.uID = " . $filter[DogFilterForm::DOG_FILTER_BREEDER];
+			$return .= (count($filter) > 1 ? " and " : "");
+			unset($filter[DogFilterForm::DOG_FILTER_BREEDER]);
+		}
+		if (isset($filter["Jmeno"])) {
+			$return .= "(Jmeno like '%" . $filter["Jmeno"] . "%' or ";
+			$return .= "TitulyPredJmenem like '%" . $filter["Jmeno"] . "%' or ";
+			$return .= "TitulyZaJmenem like '%" . $filter["Jmeno"] . "%')";
+			$return .= (count($filter) > 1 ? " and " : "");
+			unset($filter["Jmeno"]);
+		}
+		if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH])) {
+			$return .= "az.Typ = " . $filter[DogFilterForm::DOG_FILTER_HEALTH];
+			$return .= (count($filter) > 1 ? " and " : "");
+			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
+		}
+
+		if (isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK])) {
+			$dkk = $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DKK]);;
+			$return .= "(az.Typ = 65 and az.Vysledek = '"  . $dkk . "')";
+			$return .= (count($filter) > 1 ? " and " : "");
+			unset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]);
+		}
+		if (isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK])) {
+			$dlk = $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DLK]);;
+			$return .= "(az.Typ = 66 and az.Vysledek = '"  . $dlk . "')";
+			$return .= (count($filter) > 1 ? " and " : "");
+			unset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
+		}
+
 		foreach ($filter as $key => $value) {
 			$return .= $key . "=" . $value;
 			if (($i+1) != count($filter)) {

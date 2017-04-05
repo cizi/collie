@@ -4,9 +4,18 @@ namespace App\Forms;
 
 use App\Enum\StateEnum;
 use App\Model\EnumerationRepository;
+use App\Model\UserRepository;
 use Nette\Application\UI\Form;
 
 class DogFilterForm {
+
+	/** @const pro speciální filtry */
+	const DOG_FILTER_PROB_DKK = "DOG_FILTER_PROB_DKK";
+	const DOG_FILTER_PROB_DLK = "DOG_FILTER_PROB_DLK";
+	const DOG_FILTER_HEALTH = "DOG_FILTER_HEALTH";
+	const DOG_FILTER_LAND = "DOG_FILTER_LAND";
+	const DOG_FILTER_BREEDER = "DOG_FILTER_BREEDER";
+	const DOG_FILTER_EXAM = "DOG_FILTER_EXAM";
 
 	/** @var FormFactory */
 	private $factory;
@@ -14,13 +23,18 @@ class DogFilterForm {
 	/** @var EnumerationRepository */
 	private $enumerationRepository;
 
+	/** @var UserRepository */
+	private $userRepository;
+
 	/**
 	 * @param FormFactory $factory
 	 * @param EnumerationRepository $enumerationRepository
+	 * @param UserRepository $userRepository
 	 */
-	public function __construct(FormFactory $factory, EnumerationRepository $enumerationRepository) {
+	public function __construct(FormFactory $factory, EnumerationRepository $enumerationRepository, UserRepository $userRepository) {
 		$this->factory = $factory;
 		$this->enumerationRepository = $enumerationRepository;
+		$this->userRepository = $userRepository;
 	}
 
 	/**
@@ -55,26 +69,27 @@ class DogFilterForm {
 			->setAttribute("class", "form-control");
 
 		$dkk = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 15);
-		$form->addSelect("DOG_FILTER_PROB_DKK", DOG_TABLE_HEADER_PROB_DKK, $dkk)
+		$form->addSelect(self::DOG_FILTER_PROB_DKK, DOG_TABLE_HEADER_PROB_DKK, $dkk)
 			->setAttribute("class", "form-control");
 
 		$dlk = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 16);
-		$form->addSelect("DOG_FILTER_PROB_DLK", DOG_TABLE_HEADER_PROB_DLK, $dlk)
+		$form->addSelect(self::DOG_FILTER_PROB_DLK, DOG_TABLE_HEADER_PROB_DLK, $dlk)
 			->setAttribute("class", "form-control");
 
 		$zdravi = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($langCurrent, 14);
-		$form->addSelect("DOG_FILTER_HEALTH", DOG_TABLE_HEADER_HEALTH, $zdravi)
+		$form->addSelect(self::DOG_FILTER_HEALTH, DOG_TABLE_HEADER_HEALTH, $zdravi)
 			->setAttribute("class", "form-control");
 
 		$states = new StateEnum();
-		$form->addSelect("DOG_FILTER_LAND",DOG_TABLE_HEADER_LAND, $states->arrayKeyValue())
+		$form->addSelect(self::DOG_FILTER_LAND, DOG_TABLE_HEADER_LAND, $states->arrayKeyValue())
 			->setDefaultValue("CZECH_REPUBLIC")
 			->setAttribute("class", "form-control");
 
-		$form->addText("DOG_FILTER_BREEDER",DOG_TABLE_HEADER_BREEDER)
+		$chovatele = $this->userRepository->findBreedersForFilter();
+		$form->addSelect(self::DOG_FILTER_BREEDER, DOG_TABLE_HEADER_BREEDER, $chovatele)
 			->setAttribute("class", "form-control");
 
-		$form->addText("DOG_FILTER_EXAM", DOG_TABLE_HEADER_EXAM)
+		$form->addText(self::DOG_FILTER_EXAM, DOG_TABLE_HEADER_EXAM)
 			->setAttribute("class", "form-control");
 
 		$form->addText("Vyska", DOG_TABLE_HEADER_HEIGHT)

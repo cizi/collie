@@ -44,7 +44,7 @@
 													{if $item->getLang() == $lang}
 														<td>{$item->getItem()}</td>
 													{else}
-														<td>{$enumerationRepository->findEnumItemByOrder($lang, $item->getEnumHeaderId(), $item->getOrder())}</td>
+														<td>{$enumerationRepository->findEnumItemByOrder($lang, $item->getOrder())}</td>
 													{/if}
 												{/foreach}
 												<td class="alignRight">

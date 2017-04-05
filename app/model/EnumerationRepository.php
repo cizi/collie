@@ -105,7 +105,11 @@ class EnumerationRepository extends BaseRepository {
 		foreach ($result as $item) {
 			$enumItem = new EnumerationItemEntity();
 			$enumItem->hydrate($item->toArray());
-			$return[$enumItem->getOrder()] = $enumItem->getItem();
+			if ($enumItem->getItem() == self::NOT_SELECTED) {
+				$return[0] = $enumItem->getItem();
+			} else {
+				$return[$enumItem->getOrder()] = $enumItem->getItem();
+			}
 		}
 
 		return $return;
@@ -215,11 +219,12 @@ class EnumerationRepository extends BaseRepository {
 	 * @param int $enumHeaderId
 	 * @return array
 	 */
-	public function findEnumItemByOrder($lang, $enumHeaderId, $order) {
-		$query = ["select * from enum_item where enum_header_id = %i and lang = %s and `order` = %i", $enumHeaderId, $lang, $order];
+	public function findEnumItemByOrder($lang, $order) {
+		$query = ["select * from enum_item where lang = %s and `order` = %i", $lang, $order];
+		//$this->connection->test($query);
 		$result = $this->connection->query($query)->fetch();
-			$enumItem = new EnumerationItemEntity();
-			$enumItem->hydrate($result->toArray());
+		$enumItem = new EnumerationItemEntity();
+		$enumItem->hydrate($result->toArray());
 
 		return $enumItem->getItem();
 	}
