@@ -7,6 +7,9 @@ use Dibi\DateTime;
 
 class DogEntity {
 
+	/** @const formát data */
+	const MASKA_DATA = 'Y-m-d';
+
 	/** @var int */
 	private $ID;
 
@@ -191,7 +194,9 @@ class DogEntity {
 	 * @param DateTime $DatNarozeni
 	 */
 	public function setDatNarozeni($DatNarozeni) {
-		$this->DatNarozeni = $DatNarozeni;
+		if (!empty($DatNarozeni)) {
+			$this->DatNarozeni = $DatNarozeni->format(self::MASKA_DATA);
+		}
 	}
 
 	/**
@@ -205,7 +210,9 @@ class DogEntity {
 	 * @param DateTime $DatUmrti
 	 */
 	public function setDatUmrti($DatUmrti) {
-		$this->DatUmrti = $DatUmrti;
+		if (!empty($DatUmrti)) {
+			$this->DatUmrti = $DatUmrti->format(self::MASKA_DATA);
+		}
 	}
 
 	/**
@@ -678,29 +685,29 @@ class DogEntity {
 		$this->setDatNarozeni(isset($data['DatNarozeni']) ? $data['DatNarozeni'] : null);
 		$this->setDatUmrti(isset($data['DatUmrti']) ? $data['DatUmrti'] : null);
 		$this->setUmrtiKomentar(isset($data['UmrtiKomentar']) ? $data['UmrtiKomentar'] : null);
-		$this->setPohlavi(isset($data['Pohlavi']) ? $data['Pohlavi'] : null);
-		$this->setPlemeno(isset($data['Plemeno']) ? $data['Plemeno'] : null);
-		$this->setBarva(isset($data['Barva']) ? $data['Barva'] : null);
-		$this->setSrst(isset($data['Srst']) ? $data['Srst'] : null);
+		$this->setPohlavi((isset($data['Pohlavi']) && ($data['Pohlavi'] != 0)) ? $data['Pohlavi'] : null);
+		$this->setPlemeno((isset($data['Plemeno']) && ($data['Plemeno'] != 0)) ? $data['Plemeno'] : null);
+		$this->setBarva((isset($data['Barva']) && ($data['Barva'] != 0))? $data['Barva'] : null);
+		$this->setSrst((isset($data['Srst']) && ($data['Srst'] != 0))? $data['Srst'] : null);
 		$this->setBarvaKomentar(isset($data['BarvaKomentar']) ? $data['BarvaKomentar'] : null);
 		$this->setCisloZapisu(isset($data['CisloZapisu']) ? $data['CisloZapisu'] : null);
 		$this->setPCisloZapisu(isset($data['PCisloZapisu']) ? $data['PCisloZapisu'] : null);
 		$this->setCip(isset($data['Cip']) ? $data['Cip'] : null);
 		$this->setTetovani(isset($data['Tetovani']) ? $data['Tetovani'] : null);
 		$this->setZdravotniKomentar(isset($data['ZdravotniKomentar']) ? $data['ZdravotniKomentar'] : null);
-		$this->setVarlata(isset($data['Varlata']) ? $data['Varlata'] : null);
-		$this->setSkus(isset($data['Skus']) ? $data['Skus'] : null);
+		$this->setVarlata((isset($data['Varlata']) && ($data['Varlata'] != 0)) ? $data['Varlata'] : null);
+		$this->setSkus((isset($data['Skus']) && ($data['Skus'] != 0)) ? $data['Skus'] : null);
 		$this->setZuby(isset($data['Zuby']) ? $data['Zuby'] : null);
 		$this->setZubyKomentar(isset($data['ZubyKomentar']) ? $data['ZubyKomentar'] : null);
-		$this->setChovnost(isset($data['Chovnost']) ? $data['Chovnost'] : null);
+		$this->setChovnost((isset($data['Chovnost']) && ($data['Chovnost'] != 0)) ? $data['Chovnost'] : null);
 		$this->setChovnyKomentar(isset($data['ChovnyKomentar']) ? $data['ChovnyKomentar'] : null);
 		$this->setPosudek(isset($data['Posudek']) ? $data['Posudek'] : null);
 		$this->setZkousky(isset($data['Zkousky']) ? $data['Zkousky'] : null);
 		$this->setTitulyKomentar(isset($data['TitulyKomentar']) ? $data['TitulyKomentar'] : null);
 		$this->setOceneni(isset($data['Oceneni']) ? $data['Oceneni'] : null);
 		$this->setZavody(isset($data['Zavody']) ? $data['Zavody'] : null);
-		$this->setoID(isset($data['oID']) ? $data['oID'] : null);
-		$this->setmID(isset($data['mID']) ? $data['mID'] : null);
+		$this->setoID((isset($data['oID']) && ($data['oID'] != 0)) ? $data['oID'] : null);
+		$this->setmID((isset($data['mID']) && ($data['mID'] != 0)) ? $data['mID'] : null);
 		$this->setKomentar(isset($data['Komentar']) ? $data['Komentar'] : null);
 		$this->setPosledniZmena(isset($data['PosledniZmena']) ? $data['PosledniZmena'] : null);
 		$this->setVyska(isset($data['Vyska']) ? $data['Vyska'] : null);

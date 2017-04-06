@@ -98,6 +98,16 @@
 				minView: 2,
 				forceParse: 0
 			});
+
+			$(".healthDatePicker").datetimepicker({
+				format: 'yyyy-mm-dd',
+				language: {$currentLang},
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+			});
 		});
 
 		$("[type=text][name^='dogHealth']").parent().parent().toggle();

@@ -220,12 +220,15 @@ class EnumerationRepository extends BaseRepository {
 	 * @return array
 	 */
 	public function findEnumItemByOrder($lang, $order) {
-		$query = ["select * from enum_item where lang = %s and `order` = %i", $lang, $order];
-		//$this->connection->test($query);
-		$result = $this->connection->query($query)->fetch();
-		$enumItem = new EnumerationItemEntity();
-		$enumItem->hydrate($result->toArray());
+		$result  = "";
+		if (!empty($order)) {
+			$query = ["select * from enum_item where lang = %s and `order` = %i", $lang, $order];
+			$result = $this->connection->query($query)->fetch();
+			$enumItem = new EnumerationItemEntity();
+			$enumItem->hydrate($result->toArray());
+			$result = $enumItem->getItem();
+		}
 
-		return $enumItem->getItem();
+		return $result;
 	}
 }

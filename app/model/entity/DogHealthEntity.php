@@ -6,6 +6,9 @@ use Dibi\DateTime;
 
 class DogHealthEntity {
 
+	/** @const formát data */
+	const MASKA_DATA = 'Y-m-d';
+
 	/** @var int */
 	private $ID;
 
@@ -108,7 +111,9 @@ class DogHealthEntity {
 	 * @param DateTime $Datum
 	 */
 	public function setDatum($Datum) {
-		$this->Datum = $Datum;
+		if (!empty($Datum)) {
+			$this->Datum = $Datum->format(self::MASKA_DATA);
+		}
 	}
 
 	/**
