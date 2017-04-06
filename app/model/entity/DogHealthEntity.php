@@ -4,7 +4,7 @@ namespace App\Model\Entity;
 
 use Dibi\DateTime;
 
-class DogHealthEntity {
+class DogHealthEntity extends BaseEntity {
 
 	/** @const formát data */
 	const MASKA_DATA = 'Y-m-d';
@@ -111,8 +111,8 @@ class DogHealthEntity {
 	 * @param DateTime $Datum
 	 */
 	public function setDatum($Datum) {
-		if (!empty($Datum)) {
-			$this->Datum = $Datum->format(self::MASKA_DATA);
+		if ($this->isDateValid($Datum, self::MASKA_DATA)) {
+			$this->Datum = \DateTime::createFromFormat(self::MASKA_DATA, $Datum);
 		}
 	}
 

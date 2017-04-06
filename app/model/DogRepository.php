@@ -138,7 +138,7 @@ class DogRepository extends BaseRepository {
 		if (empty($filter)) {
 			$query = "select count(ID) as pocet from appdata_pes";
 		} else {
-			$query[] = "select count(ap.ID) as pocet from appdata_pes as ap
+			$query[] = "select count(distinct ap.ID) as pocet from appdata_pes as ap
 						left join `appdata_chovatel` as ac on ap.ID = ac.pID
 						left join `user` as u on ac.uID = u.ID";
 			foreach ($this->getJoinsToArray($filter) as $join) {
@@ -204,17 +204,20 @@ class DogRepository extends BaseRepository {
 			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
 		}
 
-		if (isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK])) {
-			$dkk = $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DKK]);;
-			$return .= "(az.Typ = 65 and az.Vysledek = '"  . $dkk . "')";
-			$return .= (count($filter) > 1 ? " and " : "");
+		if (isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]) || isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK])) {
+			$dkk = $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DKK]);
+			$dlk = $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
+			if ($dkk != "" && $dlk != "") {
+				$return .= "(az.Typ in (65,66) and az.Vysledek in ('"  . $dkk . "','" . $dlk . "'))";
+				//$return .= "((az.Typ = 65 and az.Vysledek = '"  . $dkk . "') and (az.Typ = 66 and az.Vysledek = '"  . $dlk . "'))";
+			} else if ($dkk != "") {
+				$return .= "(az.Typ = 65 and az.Vysledek = '"  . $dkk . "')";
+			} else if ($dlk != "") {
+				$return .= "(az.Typ = 66 and az.Vysledek = '"  . $dlk . "')";
+			}
 			unset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]);
-		}
-		if (isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK])) {
-			$dlk = $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DLK]);;
-			$return .= "(az.Typ = 66 and az.Vysledek = '"  . $dlk . "')";
-			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
+			$return .= (count($filter) > 0 ? " and " : "");
 		}
 
 		foreach ($filter as $key => $value) {

@@ -2,10 +2,9 @@
 
 namespace App\Model\Entity;
 
-
 use Dibi\DateTime;
 
-class DogEntity {
+class DogEntity extends BaseEntity {
 
 	/** @const formát data */
 	const MASKA_DATA = 'Y-m-d';
@@ -194,8 +193,8 @@ class DogEntity {
 	 * @param DateTime $DatNarozeni
 	 */
 	public function setDatNarozeni($DatNarozeni) {
-		if (!empty($DatNarozeni)) {
-			$this->DatNarozeni = $DatNarozeni->format(self::MASKA_DATA);
+		if ($this->isDateValid($DatNarozeni, self::MASKA_DATA)) {
+			$this->DatNarozeni = \DateTime::createFromFormat(self::MASKA_DATA, $DatNarozeni);
 		}
 	}
 
@@ -210,8 +209,8 @@ class DogEntity {
 	 * @param DateTime $DatUmrti
 	 */
 	public function setDatUmrti($DatUmrti) {
-		if (!empty($DatUmrti)) {
-			$this->DatUmrti = $DatUmrti->format(self::MASKA_DATA);
+		if ($this->isDateValid($DatUmrti, self::MASKA_DATA)) {
+			$this->DatUmrti = \DateTime::createFromFormat(self::MASKA_DATA, $DatUmrti);
 		}
 	}
 
