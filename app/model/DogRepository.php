@@ -388,13 +388,20 @@ class DogRepository extends BaseRepository {
 			foreach ($dogPics as $dogPic) {
 				$dogPic->setPID($dogEntity->getID());
 				$dogPic->setVychozi(0);
-				$picQuery = ["insert into appdata_pes_obrazky ", $dogPic->extract()];
-				$this->connection->query($picQuery);
+				$this->saveDogPic($dogPic);
 			}
 			$this->connection->commit();
 		} catch (\Exception $e) {
 			$this->connection->rollback();
 		}
+	}
+
+	/**
+	 * @param DogPicEntity $dogPicEntity
+	 */
+	public function saveDogPic(DogPicEntity $dogPicEntity) {
+		$picQuery = ["insert into appdata_pes_obrazky ", $dogPicEntity->extract()];
+		$this->connection->query($picQuery);
 	}
 
 	/**

@@ -106,7 +106,7 @@ define("USER_EDIT_STATE_LABEL", 'Stát');
 define("USER_EDIT_WEB_LABEL", 'WWW');
 define("USER_EDIT_PHONE_LABEL", 'Telefon');
 define("USER_EDIT_FAX_LABEL", 'Fax');
-define("USER_EDIT_STATION_LABEL", 'Chovná stanice');
+define("USER_EDIT_STATION_LABEL", 'Chovatelská stanice');
 define("USER_EDIT_BREED_LABEL", 'Plemeno');
 define("USER_EDIT_SHARING_LABEL", 'Sdílení informací');
 
