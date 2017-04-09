@@ -80,9 +80,12 @@ class DogFilterForm {
 		$form->addSelect(self::DOG_FILTER_HEALTH, DOG_TABLE_HEADER_HEALTH, $zdravi)
 			->setAttribute("class", "form-control");
 
-		$states = new StateEnum();
-		$form->addSelect(self::DOG_FILTER_LAND, DOG_TABLE_HEADER_LAND, $states->arrayKeyValue())
-			->setDefaultValue("CZECH_REPUBLIC")
+		$statesBase = new StateEnum();
+		$states[0] = EnumerationRepository::NOT_SELECTED;
+		foreach($statesBase->arrayKeyValue() as $key => $value) {
+			$states[$key] = $value;
+		}
+		$form->addSelect(self::DOG_FILTER_LAND, DOG_TABLE_HEADER_LAND, $states)
 			->setAttribute("class", "form-control");
 
 		$chovatele = $this->userRepository->findBreedersForFilter();

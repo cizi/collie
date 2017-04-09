@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Enum\StateEnum;
 use App\Enum\UserRoleEnum;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogOwnerEntity;
@@ -100,7 +101,11 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 			$password .= $input[mt_rand(0, 60)];
 		}
 
-		$query = ["update user set password = %s where email = %s", Passwords::hash($password), $userEntity->getEmail()];
+		$query = [
+			"update user set password = %s where email = %s",
+			Passwords::hash($password),
+			$userEntity->getEmail()
+		];
 		$this->connection->query($query);
 
 		return $password;
@@ -113,7 +118,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	public function deleteUser($id) {
 		$return = false;
 		if (!empty($id)) {
-			$query = ["delete from user where id = %i", $id ];
+			$query = ["delete from user where id = %i", $id];
 			$return = ($this->connection->query($query) == 1 ? true : false);
 		}
 
@@ -188,7 +193,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		foreach ($result->fetchAll() as $row) {
 			$user = new UserEntity();
 			$user->hydrate($row->toArray());
-			$breeders[$user->getId()] = $user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " ". $user->getTitleAfter();
+			$breeders[$user->getId()] = $user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " " . $user->getTitleAfter();
 		}
 
 		return $breeders;
@@ -205,7 +210,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		foreach ($result->fetchAll() as $row) {
 			$user = new UserEntity();
 			$user->hydrate($row->toArray());
-			$breeders[$user->getId()] = $user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " ". $user->getTitleAfter();
+			$breeders[$user->getId()] = $user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " " . $user->getTitleAfter();
 		}
 
 		return $breeders;
@@ -249,7 +254,11 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	 */
 	public function findDogPreviousOwners($pID) {
 		$owners = [];
-		$query = ["select * from appdata_majitel as am left join user as u on am.uID = u.id where am.pID = %i and am.Soucasny = %i", $pID, 0];
+		$query = [
+			"select * from appdata_majitel as am left join user as u on am.uID = u.id where am.pID = %i and am.Soucasny = %i",
+			$pID,
+			0
+		];
 		$result = $this->connection->query($query);
 
 		foreach ($result->fetchAll() as $row) {
@@ -272,11 +281,92 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		foreach ($result->fetchAll() as $row) {
 			$user = new UserEntity();
 			$user->hydrate($row->toArray());
-			$name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter());
-			$name = (strlen($name) > 60 ? substr($name, 0, 60)."..." : $name);
+			$name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " " . trim($user->getTitleAfter());
+			$name = (strlen($name) > 60 ? substr($name, 0, 60) . "..." : $name);
 			$owners[$user->getId()] = $name;
 		}
 
 		return $owners;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function migrateUserFromOldStructure() {
+		$result['zmigrováno'] = 0;
+		$result['duplicita'] = 0;
+		$result['chyba'] = 0;
+		$query = "select * from uzivatel";
+		$users = $this->connection->query($query);
+		foreach ($users->fetchAll() as $user) {
+			$role = UserRoleEnum::USER_REGISTERED;
+			if ($user['Editor'] == 1) {
+				$role = UserRoleEnum::USER_EDITOR;
+			} else if ($user['Administrator'] == 1) {
+				$role = UserRoleEnum::USER_ROLE_ADMINISTRATOR;
+			}
+
+			$states = new StateEnum();
+			$state = array_keys($states->arrayKeyValue());
+			if (isset($state[$user['Stat'] - 1])) {
+				$userState = $state[$user['Stat'] - 1];
+			} else {
+				$userState = "CZECH_REPUBLIC";
+			}
+
+			switch ($user['Sdileni']) {
+				case 1:
+					$sharing = 31;
+					break;
+				case 2:
+					$sharing = 32;
+					break;
+				case 3:
+					$sharing = 33;
+					break;
+				case 4:
+					$sharing = 34;
+					break;
+				default:
+					$sharing = NULL;
+					break;
+			}
+
+			$newUserData = [
+				'id' => $user['ID'],
+				'email' => $user['Email'],
+				'password' => $user['Password'],
+				'role' => $role,
+				'active' => 1,
+				'register_timestamp' => date('Y-m-d H:i:s'),
+				'last_login' => '0000-00-00 00:00:00',
+				'title_before' => $user['TitulyPrefix'],
+				'name' => $user['Jmeno'],
+				'surname' => $user['Prijmeni'],
+				'title_after' => $user['TitulySuffix'],
+				'street' => $user['Ulice'],
+				'city' => $user['Mesto'],
+				'zip' => $user['PSC'],
+				'state' => $userState,
+				'web' => $user['Www'],
+				'phone' => $user['Telefon'],
+				'fax' => $user['Fax'],
+				'station' => $user['CHS'],
+				'sharing' => $sharing,
+				'news' => $user['News'],
+				'breed' => "",
+				'deleted' => 0
+			];
+			$userEntity = new UserEntity();
+			$userEntity->hydrate($newUserData);
+			$userEntity->setPassword(Passwords::hash($userEntity->getPassword()));
+			// $this->saveUser($userEntity);
+		}
+		/* => $user['ClenKCHBO'];
+				=> $user['Klub'];
+				=> $user['KlubCislo']; */
+
+		// $this->connection->query("RENAME TABLE uzivatel TO migrated_uzivatel");
+		return $result;
 	}
 }

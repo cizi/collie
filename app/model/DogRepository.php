@@ -106,9 +106,7 @@ class DogRepository extends BaseRepository {
 		if (empty($filter)) {
 			$query = ["select * from appdata_pes limit %i , %i", $paginator->getOffset(), $paginator->getLength()];
 		} else {
-			$query[] = "select *, ap.ID as ID from appdata_pes as ap
-					left join `appdata_chovatel` as ac on ap.ID = ac.pID
-					left join `user` as u on ac.uID = u.ID";
+			$query[] = "select *, ap.ID as ID from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter) as $join) {
 				$query[] = $join;
 			}
@@ -138,9 +136,7 @@ class DogRepository extends BaseRepository {
 		if (empty($filter)) {
 			$query = "select count(ID) as pocet from appdata_pes";
 		} else {
-			$query[] = "select count(distinct ap.ID) as pocet from appdata_pes as ap
-						left join `appdata_chovatel` as ac on ap.ID = ac.pID
-						left join `user` as u on ac.uID = u.ID";
+			$query[] = "select count(distinct ap.ID) as pocet from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter) as $join) {
 				$query[] = $join;
 			}
@@ -159,12 +155,19 @@ class DogRepository extends BaseRepository {
 	 */
 	private function getJoinsToArray($filter) {
 		$joins = [];
+		if (isset($filter[DogFilterForm::DOG_FILTER_LAND]) || isset($filter[DogFilterForm::DOG_FILTER_BREEDER])) {
+			$joins[] = "left join `appdata_chovatel` as ac on ap.ID = ac.pID
+						left join `user` as u on ac.uID = u.ID ";
+			unset($filter[DogFilterForm::DOG_FILTER_LAND]);
+			unset($filter[DogFilterForm::DOG_FILTER_BREEDER]);
+		}
+
 		if (
 			isset($filter[DogFilterForm::DOG_FILTER_HEALTH])
 			|| isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK])
 			|| isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]
 		)) {
-			$joins[] = "left join `appdata_zdravi` as az on ap.ID = az.pID";
+			$joins[] = "left join `appdata_zdravi` as az on ap.ID = az.pID ";
 			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
 			unset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]);
 			unset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
@@ -192,10 +195,11 @@ class DogRepository extends BaseRepository {
 			unset($filter[DogFilterForm::DOG_FILTER_BREEDER]);
 		}
 		if (isset($filter["Jmeno"])) {
-			$return .= "(Jmeno like '%" . $filter["Jmeno"] . "%' or ";
+			$return .= "(CONCAT_WS(' ', TitulyPredJmenem, Jmeno, TitulyZaJmenem) like '%" . $filter["Jmeno"] . "%')";
+			/* $return .= "(Jmeno like '%" . $filter["Jmeno"] . "%' or ";
 			$return .= "TitulyPredJmenem like '%" . $filter["Jmeno"] . "%' or ";
 			$return .= "TitulyZaJmenem like '%" . $filter["Jmeno"] . "%')";
-			$return .= (count($filter) > 1 ? " and " : "");
+			$return .= (count($filter) > 1 ? " and " : ""); */
 			unset($filter["Jmeno"]);
 		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH])) {

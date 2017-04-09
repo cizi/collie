@@ -4,6 +4,7 @@ namespace App\FrontendModule\Presenters;
 
 use App\Model\DogRepository;
 use App\Model\Entity\DogPicEntity;
+use App\Model\UserRepository;
 use Nette\Http\FileUpload;
 use Nette\Utils\Finder;
 
@@ -12,8 +13,12 @@ class MigrationPresenter extends BasePresenter	 {
 	/** @var DogRepository */
 	private $dogRepository;
 
-	public function __construct(DogRepository $dogRepository) {
+	/** @var UserRepository  */
+	private$userRepository;
+
+	public function __construct(DogRepository $dogRepository, UserRepository $userRepository) {
 		$this->dogRepository = $dogRepository;
+		$this->userRepository = $userRepository;
 	}
 
 	/**
@@ -52,6 +57,13 @@ class MigrationPresenter extends BasePresenter	 {
 			}
 		}
 		echo "Zpracováno obrázků: " . $pocet;
+		$this->terminate();
+	}
+
+	public function actionUserMigration() {
+		$migrationResult = $this->userRepository->migrateUserFromOldStructure();
+
+		echo "Zpracováno uživatelů: ";
 		$this->terminate();
 	}
 }
