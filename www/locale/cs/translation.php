@@ -109,6 +109,9 @@ define("USER_EDIT_FAX_LABEL", 'Fax');
 define("USER_EDIT_STATION_LABEL", 'Chovatelská stanice');
 define("USER_EDIT_BREED_LABEL", 'Plemeno');
 define("USER_EDIT_SHARING_LABEL", 'Sdílení informací');
+define("USER_EDIT_CLUB", 'Člen klubu');
+define("USER_EDIT_CLUB_NO", 'Členské číslo');
+define("USER_EDIT_NEWS", 'Souhlasím s použitím mé e-mailové adresy pro zasílání zpráv, novinek a akcí.');
 
 // user roles - select
 define("USER_ROLE_LAYOUT_CHANGER", "Plná práva");

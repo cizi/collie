@@ -296,6 +296,8 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		$result['zmigrováno'] = 0;
 		$result['duplicita'] = 0;
 		$result['chyba'] = 0;
+		$result['prazdne_emaily'] = [];
+		$fakeEmailCounter = 1;
 		$query = "select * from uzivatel";
 		$users = $this->connection->query($query);
 		foreach ($users->fetchAll() as $user) {
@@ -313,6 +315,14 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 			} else {
 				$userState = "CZECH_REPUBLIC";
 			}
+
+			if ((trim($user['Email']) == "")) {
+				$emailAddress = "unknow_{$fakeEmailCounter}@email.cz";
+				$fakeEmailCounter++;
+			} else {
+				$emailAddress = $user['Email'];
+			}
+
 
 			switch ($user['Sdileni']) {
 				case 1:
@@ -334,7 +344,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 
 			$newUserData = [
 				'id' => $user['ID'],
-				'email' => $user['Email'],
+				'email' => $emailAddress,
 				'password' => $user['Password'],
 				'role' => $role,
 				'active' => 1,
@@ -355,16 +365,15 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 				'sharing' => $sharing,
 				'news' => $user['News'],
 				'breed' => "",
-				'deleted' => 0
+				'deleted' => 0,
+				'club' => $user['Klub'],
+				'clubNo' => $user['KlubCislo']
 			];
 			$userEntity = new UserEntity();
 			$userEntity->hydrate($newUserData);
 			$userEntity->setPassword(Passwords::hash($userEntity->getPassword()));
 			// $this->saveUser($userEntity);
 		}
-		/* => $user['ClenKCHBO'];
-				=> $user['Klub'];
-				=> $user['KlubCislo']; */
 
 		// $this->connection->query("RENAME TABLE uzivatel TO migrated_uzivatel");
 		return $result;

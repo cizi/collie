@@ -144,15 +144,29 @@ class UserForm extends Nette\Object {
 			->setAttribute("placeholder", USER_EDIT_SHARING_LABEL)
 			->setAttribute("tabindex", "19");
 
-		$form->addSubmit("confirm", USER_EDIT_SAVE_BTN_LABEL)
-			->setAttribute("class","btn btn-primary")
+		$clubs = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 17);
+		$form->addSelect("club", USER_EDIT_CLUB, $clubs)
+			->setAttribute("class", "form-control")
+			->setAttribute("placeholder", USER_EDIT_CLUB)
 			->setAttribute("tabindex", "20");
 
+		$form->addText("clubNo", USER_EDIT_CLUB_NO)
+			->setAttribute("class", "form-control")
+			->setAttribute("placeholder", USER_EDIT_CLUB_NO)
+			->setAttribute("tabindex", "21");
+
+		$form->addCheckbox("news", USER_EDIT_NEWS)
+			->setAttribute("placeholder", USER_EDIT_NEWS)
+			->setAttribute("tabindex", "22");
+
+		$form->addSubmit("confirm", USER_EDIT_SAVE_BTN_LABEL)
+			->setAttribute("class","btn btn-primary")
+			->setAttribute("tabindex", "23");
 
 		$form->addButton("back", USER_EDIT_BACK_BTN_LABEL)
 			->setAttribute("class", "btn btn-secondary")
 			->setAttribute("onclick", "location.assign('". $linkBack ."')")
-			->setAttribute("tabindex", "21");
+			->setAttribute("tabindex", "24");
 
 		return $form;
 	}

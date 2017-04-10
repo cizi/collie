@@ -60,7 +60,7 @@ class UserEntity {
 	/** @var string */
 	private $fax;
 
-	/** @var int */
+	/** @var string */
 	private $station;
 
 	/** @var int */
@@ -68,6 +68,19 @@ class UserEntity {
 
 	/** @var int */
 	private $breed;
+
+	/** @var bool  */
+	private $news;
+
+	/** @var int */
+	private $club;
+
+	/** @var string */
+	private $clubNo;
+
+	/** @var bool */
+	private $deleted;
+
 
 	/**
 	 * @return string
@@ -279,9 +292,6 @@ class UserEntity {
 		$this->deleted = $deleted;
 	}
 
-	/** @var bool */
-	private $deleted;
-
 	/**
 	 * @return int
 	 */
@@ -381,6 +391,48 @@ class UserEntity {
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getClub() {
+		return $this->club;
+	}
+
+	/**
+	 * @param int $club
+	 */
+	public function setClub($club) {
+		$this->club = $club;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getClubNo() {
+		return $this->clubNo;
+	}
+
+	/**
+	 * @param string $clubNo
+	 */
+	public function setClubNo($clubNo) {
+		$this->clubNo = $clubNo;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isNews() {
+		return $this->news;
+	}
+
+	/**
+	 * @param boolean $news
+	 */
+	public function setNews($news) {
+		$this->news = $news;
+	}
+
+	/**
 	 * @param array $data
 	 */
 	public function hydrate(array $data) {
@@ -405,6 +457,9 @@ class UserEntity {
 		$this->station = (isset($data['station']) ? $data['station'] : null);
 		$this->sharing = (isset($data['sharing']) ? $data['sharing'] : null);
 		$this->breed = (isset($data['breed']) ? $data['breed'] : null);
+		$this->news = (isset($data['news']) ? $data['news'] : null);
+		$this->club = (isset($data['club']) ? $data['club'] : null);
+		$this->clubNo = (isset($data['clubNo']) ? $data['clubNo'] : null);
 		$this->deleted = (isset($data['deleted']) ? $data['deleted'] : null);
 	}
 
@@ -434,6 +489,9 @@ class UserEntity {
 			'station' => $this->getStation(),
 			'sharing' => $this->getSharing(),
 			'breed' => $this->getBreed(),
+			'news' => $this->isNews(),
+			'club' => $this->getClub(),
+			'clubNo' => $this->getClubNo(),
 			'deleted' => $this->isDeleted()
 		];
 	}

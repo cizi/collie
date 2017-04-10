@@ -67,6 +67,8 @@ class UserPresenter extends SignPresenter {
 		$userEntity = new UserEntity();
 		$userEntity->hydrate((array)$values);
 		$userEntity->setPassword(Passwords::hash($userEntity->getPassword()));
+		$userEntity->setBreed((isset($values['breed']) && $values['breed'] != 0) ? $values['breed'] : NULL);
+		$userEntity->setClub((isset($values['club']) && $values['club'] != 0) ? $values['club'] : NULL);
 		$isEditation = (isset($values['id']) && $values['id'] != "");
 
 		try {
