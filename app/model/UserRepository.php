@@ -6,6 +6,7 @@ use App\Enum\StateEnum;
 use App\Enum\UserRoleEnum;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogOwnerEntity;
+use Dibi\Exception;
 use Nette;
 use App\Model\Entity\UserEntity;
 use Nette\Security\Passwords;
@@ -14,7 +15,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 
 	const PASSWORD_COLUMN = 'password';
 
-	/** string znak pro nevybran�ho veterin�� v selectu  */
+	/** string znak pro nevybraného veterinář v selectu  */
 	const NOT_SELECTED = "-";
 
 	/**
@@ -293,89 +294,172 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	 * @return array
 	 */
 	public function migrateUserFromOldStructure() {
-		$result['zmigrov�no'] = 0;
-		$result['duplicita'] = 0;
-		$result['chyba'] = 0;
+		$defaultPass = "geneAheslo";
+		$result['zmigrováno'] = 0;
+		$result['duplicita'] = [];
+		$result['chyba'] = [];
 		$result['prazdne_emaily'] = [];
 		$fakeEmailCounter = 1;
 		$query = "select * from uzivatel";
 		$users = $this->connection->query($query);
 		foreach ($users->fetchAll() as $user) {
-			$role = UserRoleEnum::USER_REGISTERED;
-			if ($user['Editor'] == 1) {
-				$role = UserRoleEnum::USER_EDITOR;
-			} else if ($user['Administrator'] == 1) {
-				$role = UserRoleEnum::USER_ROLE_ADMINISTRATOR;
+			// flagy co vše se mohlo po...
+			$emptyEmail = false;
+			$duplicateEmail = false;
+			try {
+				$role = UserRoleEnum::USER_REGISTERED;
+				if ($user['Editor'] == 1) {
+					$role = UserRoleEnum::USER_EDITOR;
+				} else {
+					if ($user['Administrator'] == 1) {
+						$role = UserRoleEnum::USER_ROLE_ADMINISTRATOR;
+					}
+				}
+
+				$states = new StateEnum();
+				$state = array_keys($states->arrayKeyValue());
+				if (isset($state[$user['Stat'] - 1])) {
+					$userState = $state[$user['Stat'] - 1];
+				} else {
+					$userState = "CZECH_REPUBLIC";
+				}
+
+				if ((trim($user['Email']) == "")) {
+					$emptyEmail = true;
+					$emailAddress = "unknow_{$fakeEmailCounter}@email.cz";
+					$fakeEmailCounter++;
+				} else {
+					$emailAddress = $user['Email'];
+				}
+
+				/** @var UserEntity $userByEmail */
+				$userByEmail = $this->getUserByEmail($emailAddress);
+				while ($userByEmail != null){
+					$emailAddress = "migracniPrefix_" . $fakeEmailCounter . $userByEmail->getEmail();
+					$fakeEmailCounter++;
+					$duplicateEmail = true;
+					$userByEmail = $this->getUserByEmail($emailAddress) != null;
+				}
+
+				switch ($user['Sdileni']) {
+					case 1:
+						$sharing = 31;
+						break;
+					case 2:
+						$sharing = 32;
+						break;
+					case 3:
+						$sharing = 33;
+						break;
+					case 4:
+						$sharing = 34;
+						break;
+					default:
+						$sharing = null;
+						break;
+				}
+
+				switch ($user['Klub']) {
+					case 1:
+						$klub = 82;
+						break;
+
+					case 2:
+						$klub = 83;
+						break;
+
+					case 3:
+						$klub = 85;
+						break;
+
+					case 4:
+						$klub = 84;
+						break;
+
+					case 5:
+						$klub = 86;
+						break;
+
+					case 6:
+						$klub = 87;
+						break;
+
+					case 7:
+						$klub = 88;
+						break;
+
+					default:
+						$klub = null;
+						break;
+				}
+
+				$newUserData = [
+					'id' => $user['ID'],
+					'email' => $emailAddress,
+					'password' => (trim($user['Password']) == "" ? $defaultPass : trim($user['Password'])),
+					'role' => $role,
+					'active' => 1,
+					'register_timestamp' => date('Y-m-d H:i:s'),
+					'last_login' => '0000-00-00 00:00:00',
+					'title_before' => $user['TitulyPrefix'],
+					'name' => $user['Jmeno'],
+					'surname' => $user['Prijmeni'],
+					'title_after' => $user['TitulySuffix'],
+					'street' => $user['Ulice'],
+					'city' => $user['Mesto'],
+					'zip' => $user['PSC'],
+					'state' => $userState,
+					'web' => $user['Www'],
+					'phone' => $user['Telefon'],
+					'fax' => $user['Fax'],
+					'station' => $user['CHS'],
+					'sharing' => $sharing,
+					'news' => $user['News'],
+					'breed' => NULL,
+					'deleted' => 0,
+					'club' => $klub,
+					'clubNo' => $user['KlubCislo']
+				];
+				$userEntity = new UserEntity();
+				$userEntity->hydrate($newUserData);
+				$userEntity->setPassword(Passwords::hash($userEntity->getPassword()));
+				$query = ["insert into user ", $userEntity->extract()];
+				$this->connection->query($query);
+			} catch (\Exception $ex) {
+				$result['chyba'][] = (isset($newUserData) ? implode(";", $newUserData) . "; " . $ex->getMessage() : "");
+			} finally {
+				// zápis stavu migrace
+				if ($emptyEmail) {
+					$result['prazdne_emaily'][] = (isset($newUserData) ? implode(";", $newUserData) : "");
+				} else if ($duplicateEmail) {
+					$result['duplicita'][] = (isset($newUserData) ? implode(";", $newUserData) : "");
+				} else {
+					$result['zmigrováno'] = $result['zmigrováno'] + 1;	//
+				}
 			}
-
-			$states = new StateEnum();
-			$state = array_keys($states->arrayKeyValue());
-			if (isset($state[$user['Stat'] - 1])) {
-				$userState = $state[$user['Stat'] - 1];
-			} else {
-				$userState = "CZECH_REPUBLIC";
-			}
-
-			if ((trim($user['Email']) == "")) {
-				$emailAddress = "unknow_{$fakeEmailCounter}@email.cz";
-				$fakeEmailCounter++;
-			} else {
-				$emailAddress = $user['Email'];
-			}
-
-
-			switch ($user['Sdileni']) {
-				case 1:
-					$sharing = 31;
-					break;
-				case 2:
-					$sharing = 32;
-					break;
-				case 3:
-					$sharing = 33;
-					break;
-				case 4:
-					$sharing = 34;
-					break;
-				default:
-					$sharing = NULL;
-					break;
-			}
-
-			$newUserData = [
-				'id' => $user['ID'],
-				'email' => $emailAddress,
-				'password' => $user['Password'],
-				'role' => $role,
-				'active' => 1,
-				'register_timestamp' => date('Y-m-d H:i:s'),
-				'last_login' => '0000-00-00 00:00:00',
-				'title_before' => $user['TitulyPrefix'],
-				'name' => $user['Jmeno'],
-				'surname' => $user['Prijmeni'],
-				'title_after' => $user['TitulySuffix'],
-				'street' => $user['Ulice'],
-				'city' => $user['Mesto'],
-				'zip' => $user['PSC'],
-				'state' => $userState,
-				'web' => $user['Www'],
-				'phone' => $user['Telefon'],
-				'fax' => $user['Fax'],
-				'station' => $user['CHS'],
-				'sharing' => $sharing,
-				'news' => $user['News'],
-				'breed' => "",
-				'deleted' => 0,
-				'club' => $user['Klub'],
-				'clubNo' => $user['KlubCislo']
-			];
-			$userEntity = new UserEntity();
-			$userEntity->hydrate($newUserData);
-			$userEntity->setPassword(Passwords::hash($userEntity->getPassword()));
-			// $this->saveUser($userEntity);
 		}
 
+		try {
+			$admin = new UserEntity();
+			$admin->setEmail('cizi@email.cz');
+			$admin->setPassword(Passwords::hash("123"));
+			$admin->setRole(UserRoleEnum::USER_ROLE_ADMINISTRATOR);
+			$admin->setActive(1);
+			$admin->setRegisterTimestamp(date('Y-m-d H:i:s'));
+			$admin->setName("Jan");
+			$admin->setSurname("Cimler");
+			$admin->setStreet("Studánkova 4");
+			$admin->setCity("elHomo");
+			$admin->setZip("37001");
+			$admin->setStreet("CZECH_REPUBLIC");
+			$admin->setWeb("cizinet.cz");
+			$admin->setLastLogin('0000-00-00 00:00:00');
+			$this->connection->query(["insert into user ", $admin->extract()]);
+		} catch (\Exception $ex) {
+			$result['chyba'][] = (isset($newUserData) ? implode(";", $newUserData) . "; " . $ex->getMessage() : "");
+		}
 		// $this->connection->query("RENAME TABLE uzivatel TO migrated_uzivatel");
+
 		return $result;
 	}
 }

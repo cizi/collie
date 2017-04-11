@@ -60,10 +60,12 @@ class MigrationPresenter extends BasePresenter	 {
 		$this->terminate();
 	}
 
+	/**
+	 * Migrace uživatelů
+	 */
 	public function actionUserMigration() {
 		$migrationResult = $this->userRepository->migrateUserFromOldStructure();
-
-		echo "Zpracováno uživatelů: ";
+		dump($migrationResult);
 		$this->terminate();
 	}
 }

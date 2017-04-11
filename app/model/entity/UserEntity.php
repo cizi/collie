@@ -331,7 +331,7 @@ class UserEntity {
 	 * @param string $login
 	 */
 	public function setEmail($email) {
-		$this->login = $email;
+		$this->email = $email;
 	}
 
 	/**
