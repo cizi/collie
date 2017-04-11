@@ -520,3 +520,5 @@ define("DOG_FORM_FEMALE", 'Mother');
 
 define("DOG_FORM_OWNERS", 'Owner/s');
 define("DOG_FORM_PREVIOUS_OWNERS", 'Previous owners');
+define("DOG_FORM_OWNERS_SELECT_TEXT", 'Select some options');
+define("DOG_FORM_OWNERS_SELECT_NO_MATCH", 'No resut match');

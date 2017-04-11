@@ -442,7 +442,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		try {
 			$admin = new UserEntity();
 			$admin->setEmail('cizi@email.cz');
-			$admin->setPassword(Passwords::hash("123"));
+			$admin->setPassword(Passwords::hash("kreslo"));
 			$admin->setRole(UserRoleEnum::USER_ROLE_ADMINISTRATOR);
 			$admin->setActive(1);
 			$admin->setRegisterTimestamp(date('Y-m-d H:i:s'));

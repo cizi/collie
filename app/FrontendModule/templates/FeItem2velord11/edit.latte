@@ -108,6 +108,26 @@
 				minView: 2,
 				forceParse: 0
 			});
+
+			$("#frm-dogForm-owners-uID").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+
+			$("#frm-dogForm-oID").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+
+			$("#frm-dogForm-mID").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
+
+			$("#frm-dogForm-breeder-uID").chosen({
+				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
+			});
 		});
 
 		$("[type=text][name^='dogHealth']").parent().parent().toggle();

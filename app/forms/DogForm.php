@@ -174,7 +174,8 @@ class DogForm {
 
 		$vlastnici = $this->userRepository->findOwnersForSelect();
 		$ownerContainer = $form->addContainer("owners");
-		$ownerContainer->addMultiSelect("uID", DOG_FORM_OWNERS, $vlastnici)->setAttribute("class", "form-control");
+		$ownerContainer->addMultiSelect("uID", DOG_FORM_OWNERS, $vlastnici)
+			->setAttribute("class", "form-control chosen-select");
 
 		$males = $this->dogRepository->findMaleDogsForSelect();
 		$form->addSelect("oID", DOG_FORM_MALE, $males)

@@ -540,4 +540,6 @@ define("DOG_FORM_FEMALE", 'Matka');
 
 define("DOG_FORM_OWNERS", 'Majitel/é');
 define("DOG_FORM_PREVIOUS_OWNERS", 'Předchozí majitelé');
+define("DOG_FORM_OWNERS_SELECT_TEXT", 'Vyberte možnosti');
+define("DOG_FORM_OWNERS_SELECT_NO_MATCH", 'Žádná shoda');
 
