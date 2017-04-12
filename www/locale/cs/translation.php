@@ -542,4 +542,5 @@ define("DOG_FORM_OWNERS", 'Majitel/é');
 define("DOG_FORM_PREVIOUS_OWNERS", 'Předchozí majitelé');
 define("DOG_FORM_OWNERS_SELECT_TEXT", 'Vyberte možnosti');
 define("DOG_FORM_OWNERS_SELECT_NO_MATCH", 'Žádná shoda');
-
+define("DOG_FORM_MID_OID_FAILED_TITLE", 'Referenční chyba genealogie');
+define("DOG_FORM_MID_OID_FAILED_MESSAGE", 'Matka nebo otec psa neodpovídají pohlaví pro matku/otce.');

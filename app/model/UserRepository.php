@@ -307,7 +307,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 			$emptyEmail = false;
 			$duplicateEmail = false;
 			try {
-				$role = UserRoleEnum::USER_REGISTERED;
+				$role = UserRoleEnum::USER_BREEDER;
 				if ($user['Editor'] == 1) {
 					$role = UserRoleEnum::USER_EDITOR;
 				} else {
@@ -441,7 +441,12 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 
 		try {
 			$admin = new UserEntity();
-			$admin->setEmail('cizi@email.cz');
+			$alreadyExist = $this->getUserByEmail('cizi@email.cz');
+			if ($alreadyExist != null) {
+				$admin->setId($alreadyExist->getId());
+			} else {
+				$admin->setEmail('cizi@email.cz');
+			}
 			$admin->setPassword(Passwords::hash("kreslo"));
 			$admin->setRole(UserRoleEnum::USER_ROLE_ADMINISTRATOR);
 			$admin->setActive(1);
@@ -454,7 +459,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 			$admin->setStreet("CZECH_REPUBLIC");
 			$admin->setWeb("cizinet.cz");
 			$admin->setLastLogin('0000-00-00 00:00:00');
-			$this->connection->query(["insert into user ", $admin->extract()]);
+			$this->saveUser($admin);
 		} catch (\Exception $ex) {
 			$result['chyba'][] = (isset($newUserData) ? implode(";", $newUserData) . "; " . $ex->getMessage() : "");
 		}

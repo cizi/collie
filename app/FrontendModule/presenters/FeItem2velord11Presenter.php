@@ -164,6 +164,18 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		} else {
 			$dog = $this->dogRepository->getDog($id);
 			$this->template->currentDog = $dog;
+			$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
+
+			$this->template->mIDFound = (isset($this['dogForm']['mID']->getItems()[$dog->getMID()]));
+			if ($this->template->mIDFound == false) {	// pokud mID psa není v selectu vyjmu ho
+				$dog->setMID(0);
+			}
+
+			$this->template->oIDFound = (isset($this['dogForm']['oID']->getItems()[$dog->getOID()]));
+			if ($this->template->oIDFound == false) {	// pokud oID psa není v selectu vyjmu ho
+				$dog->setOID(0);
+			}
+
 			$this['dogForm']->setDefaults($dog->extract());
 			if ($dog) {
 				$this['dogForm']->addHidden('ID', $dog->getID());
@@ -185,8 +197,6 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 
 			$owners = $this->userRepository->findDogOwners($id);
 			$this['dogForm']['owners']['uID']->setDefaultValue($owners);
-
-			$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
 		}
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->dogPics = $this->dogRepository->findDogPics($id);

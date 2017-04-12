@@ -65,6 +65,7 @@ class MigrationPresenter extends BasePresenter	 {
 	 */
 	public function actionUserMigration() {
 		$migrationResult = $this->userRepository->migrateUserFromOldStructure();
+		file_put_contents('user_migration_log.txt', print_r($migrationResult, true));
 		dump($migrationResult);
 		$this->terminate();
 	}

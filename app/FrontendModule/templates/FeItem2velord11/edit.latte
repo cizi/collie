@@ -59,6 +59,21 @@
 		</div>
 	</div>
 
+	{* modální start *}
+	<div class="modal fade" id="tinym_info_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=DOG_FORM_MID_OID_FAILED_TITLE}
+				</div>
+				<div class="modal-body">{=DOG_FORM_MID_OID_FAILED_MESSAGE}</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">{=MODAL_BUTTON_OK}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script>
 		$('#confirm-delete').on('show.bs.modal', function(e) {
 			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
@@ -115,12 +130,12 @@
 			});
 
 			$("#frm-dogForm-oID").chosen({
-				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				placeholder_text: {=DOG_FORM_OWNERS_SELECT_TEXT},
 				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
 			});
 
 			$("#frm-dogForm-mID").chosen({
-				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
+				placeholder_text: {=DOG_FORM_OWNERS_SELECT_TEXT},
 				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
 			});
 
@@ -128,6 +143,14 @@
 				placeholder_text_multiple: {=DOG_FORM_OWNERS_SELECT_TEXT},
 				no_results_text: {=DOG_FORM_OWNERS_SELECT_NO_MATCH}
 			});
+
+			{if $oIDFound == false}
+				$("#tinym_info_modal").modal();
+			{/if}
+
+			{if $mIDFound == false}
+				$("#tinym_info_modal").modal();
+			{/if}
 		});
 
 		$("[type=text][name^='dogHealth']").parent().parent().toggle();

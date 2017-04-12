@@ -37,6 +37,9 @@ class DogRepository extends BaseRepository {
 	/** @var LangRepository */
 	private $langRepository;
 
+	/** @var DogEntity[] */
+	private $dogs;
+
 	/**
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param Connection $connection
@@ -69,14 +72,15 @@ class DogRepository extends BaseRepository {
 	 * @return array
 	 */
 	public function findFemaleDogsForSelect() {
-		$query = ["select * from appdata_pes where Pohlavi = %i", self::FEMALE_ORDER];
-		$result = $this->connection->query($query);
+		if (empty($this->dogs)) {
+			$this->findAllDogs();
+		}
 
 		$dogs[0] = self::NOT_SELECTED;
-		foreach ($result->fetchAll() as $row) {
-			$dog = new DogEntity();
-			$dog->hydrate($row->toArray());
-			$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
+		foreach ($this->dogs as $dog) {
+			if ($dog->getPohlavi() == self::FEMALE_ORDER) {
+				$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
+			}
 		}
 
 		return $dogs;
@@ -86,17 +90,34 @@ class DogRepository extends BaseRepository {
 	 * @return DogEntity[]
 	 */
 	public function findMaleDogsForSelect() {
-		$query = ["select * from appdata_pes where Pohlavi = %i", self::MALE_ORDER];
-		$result = $this->connection->query($query);
+		if (empty($this->dogs)) {
+			$this->findAllDogs();
+		}
 
 		$dogs[0] = self::NOT_SELECTED;
-		foreach ($result->fetchAll() as $row) {
-			$dog = new DogEntity();
-			$dog->hydrate($row->toArray());
-			$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
+		foreach ($this->dogs as $dog) {
+			if ($dog->getPohlavi() == self::MALE_ORDER) {
+				$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
+			}
 		}
 
 		return $dogs;
+	}
+
+	/**
+	 * Naplní interní proměnnou jako keš pro psy
+	 */
+	public function findAllDogs() {
+		$query = ["select * from appdata_pes"];
+		$result = $this->connection->query($query);
+
+		$dogs = [];
+		foreach ($result->fetchAll() as $row) {
+			$dog = new DogEntity();
+			$dog->hydrate($row->toArray());
+			$dogs[$dog->getID()] = $dog;
+		}
+		$this->dogs = $dogs;
 	}
 
 	/**
@@ -122,7 +143,7 @@ class DogRepository extends BaseRepository {
 		foreach ($result->fetchAll() as $row) {
 			$dog = new DogEntity();
 			$dog->hydrate($row->toArray());
-			$dogs[] = $dog;
+			$dogs[$dog->getID()] = $dog;
 		}
 
 		return $dogs;
