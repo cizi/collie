@@ -544,3 +544,13 @@ define("DOG_FORM_OWNERS_SELECT_TEXT", 'Vyberte možnosti');
 define("DOG_FORM_OWNERS_SELECT_NO_MATCH", 'Žádná shoda');
 define("DOG_FORM_MID_OID_FAILED_TITLE", 'Referenční chyba genealogie');
 define("DOG_FORM_MID_OID_FAILED_MESSAGE", 'Matka nebo otec psa neodpovídají pohlaví pro matku/otce.');
+
+define("MATING_FORM_CLUB", 'Krycí list');
+define("MATING_FORM_FID", 'Pes');
+define("MATING_FORM_MID", 'Fena');
+define("MATING_FORM_SAVE", 'Další krok');
+define("MATING_FORM_PICK_MALE", 'Vyberte psa');
+define("MATING_FORM_PICK_FEMALE", 'Vyberte fenu');
+define("MATING_FORM_NO_MATCH", 'Shoda nenalezena');
+
+

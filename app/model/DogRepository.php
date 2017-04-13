@@ -67,11 +67,14 @@ class DogRepository extends BaseRepository {
 	/**
 	 * @return array
 	 */
-	public function findFemaleDogsForSelect() {
+	public function findFemaleDogsForSelect($withNotSelectedOption = true) {
 		$query = ["select * from appdata_pes where Pohlavi = %i", self::FEMALE_ORDER];
 		$result = $this->connection->query($query);
+		$dogs = [];
 
-		$dogs[0] = self::NOT_SELECTED;
+		if ($withNotSelectedOption) {
+			$dogs[0] = self::NOT_SELECTED;
+		}
 		foreach ($result->fetchAll() as $row) {
 			$dog = new DogEntity();
 			$dog->hydrate($row->toArray());
@@ -84,11 +87,14 @@ class DogRepository extends BaseRepository {
 	/**
 	 * @return DogEntity[]
 	 */
-	public function findMaleDogsForSelect() {
+	public function findMaleDogsForSelect($withNotSelectedOption = true) {
 		$query = ["select * from appdata_pes where Pohlavi = %i", self::MALE_ORDER];
 		$result = $this->connection->query($query);
+		$dogs = [];
 
-		$dogs[0] = self::NOT_SELECTED;
+		if ($withNotSelectedOption) {
+			$dogs[0] = self::NOT_SELECTED;
+		}
 		foreach ($result->fetchAll() as $row) {
 			$dog = new DogEntity();
 			$dog->hydrate($row->toArray());
