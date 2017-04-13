@@ -552,5 +552,3 @@ define("MATING_FORM_SAVE", 'Další krok');
 define("MATING_FORM_PICK_MALE", 'Vyberte psa');
 define("MATING_FORM_PICK_FEMALE", 'Vyberte fenu');
 define("MATING_FORM_NO_MATCH", 'Shoda nenalezena');
-
-

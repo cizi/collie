@@ -524,3 +524,11 @@ define("DOG_FORM_OWNERS_SELECT_TEXT", 'Select some options');
 define("DOG_FORM_OWNERS_SELECT_NO_MATCH", 'No resut match');
 define("DOG_FORM_MID_OID_FAILED_TITLE", 'Reference genealogy error');
 define("DOG_FORM_MID_OID_FAILED_MESSAGE", 'Mother or father of this dog does not match sex of mother/father.');
+
+define("MATING_FORM_CLUB", 'Mating list');
+define("MATING_FORM_FID", 'Male');
+define("MATING_FORM_MID", 'Female');
+define("MATING_FORM_SAVE", 'Next step');
+define("MATING_FORM_PICK_MALE", 'Choose a male');
+define("MATING_FORM_PICK_FEMALE", 'Choose a female');
+define("MATING_FORM_NO_MATCH", 'No match found');

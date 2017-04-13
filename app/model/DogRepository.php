@@ -68,7 +68,7 @@ class DogRepository extends BaseRepository {
 	 * @return array
 	 */
 	public function findFemaleDogsForSelect($withNotSelectedOption = true) {
-		$query = ["select * from appdata_pes where Pohlavi = %i", self::FEMALE_ORDER];
+		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes where Pohlavi = %i", self::FEMALE_ORDER];
 		$result = $this->connection->query($query);
 		$dogs = [];
 
@@ -88,7 +88,7 @@ class DogRepository extends BaseRepository {
 	 * @return DogEntity[]
 	 */
 	public function findMaleDogsForSelect($withNotSelectedOption = true) {
-		$query = ["select * from appdata_pes where Pohlavi = %i", self::MALE_ORDER];
+		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes where Pohlavi = %i", self::MALE_ORDER];
 		$result = $this->connection->query($query);
 		$dogs = [];
 
