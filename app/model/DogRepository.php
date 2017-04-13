@@ -76,9 +76,8 @@ class DogRepository extends BaseRepository {
 			$dogs[0] = self::NOT_SELECTED;
 		}
 		foreach ($result->fetchAll() as $row) {
-			$dog = new DogEntity();
-			$dog->hydrate($row->toArray());
-			$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
+			$dog = $row->toArray();
+			$dogs[$dog['ID']] = $dog['TitulyPredJmenem'] . " " . $dog['Jmeno'] . " " . $dog['TitulyZaJmenem'];
 		}
 
 		return $dogs;
@@ -96,9 +95,8 @@ class DogRepository extends BaseRepository {
 			$dogs[0] = self::NOT_SELECTED;
 		}
 		foreach ($result->fetchAll() as $row) {
-			$dog = new DogEntity();
-			$dog->hydrate($row->toArray());
-			$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
+			$dog = $row->toArray();
+			$dogs[$dog['ID']] = $dog['TitulyPredJmenem'] . " " . $dog['Jmeno'] . " " . $dog['TitulyZaJmenem'];
 		}
 
 		return $dogs;
