@@ -444,9 +444,8 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 			$alreadyExist = $this->getUserByEmail('cizi@email.cz');
 			if ($alreadyExist != null) {
 				$admin->setId($alreadyExist->getId());
-			} else {
-				$admin->setEmail('cizi@email.cz');
 			}
+			$admin->setEmail($alreadyExist->getEmail());
 			$admin->setPassword(Passwords::hash("kreslo"));
 			$admin->setRole(UserRoleEnum::USER_ROLE_ADMINISTRATOR);
 			$admin->setActive(1);

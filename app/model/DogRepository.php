@@ -9,7 +9,6 @@ use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
 use Dibi\Connection;
-use Dibi\Exception;
 use Nette\Http\Session;
 use Nette\Utils\DateTime;
 use Nette\Utils\Paginator;
@@ -36,9 +35,6 @@ class DogRepository extends BaseRepository {
 
 	/** @var LangRepository */
 	private $langRepository;
-
-	/** @var DogEntity[] */
-	private $dogs;
 
 	/**
 	 * @param EnumerationRepository $enumerationRepository
@@ -72,15 +68,14 @@ class DogRepository extends BaseRepository {
 	 * @return array
 	 */
 	public function findFemaleDogsForSelect() {
-		if (empty($this->dogs)) {
-			$this->findAllDogs();
-		}
+		$query = ["select * from appdata_pes where Pohlavi = %i", self::FEMALE_ORDER];
+		$result = $this->connection->query($query);
 
 		$dogs[0] = self::NOT_SELECTED;
-		foreach ($this->dogs as $dog) {
-			if ($dog->getPohlavi() == self::FEMALE_ORDER) {
-				$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
-			}
+		foreach ($result->fetchAll() as $row) {
+			$dog = new DogEntity();
+			$dog->hydrate($row->toArray());
+			$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
 		}
 
 		return $dogs;
@@ -90,34 +85,17 @@ class DogRepository extends BaseRepository {
 	 * @return DogEntity[]
 	 */
 	public function findMaleDogsForSelect() {
-		if (empty($this->dogs)) {
-			$this->findAllDogs();
-		}
-
-		$dogs[0] = self::NOT_SELECTED;
-		foreach ($this->dogs as $dog) {
-			if ($dog->getPohlavi() == self::MALE_ORDER) {
-				$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
-			}
-		}
-
-		return $dogs;
-	}
-
-	/**
-	 * Naplní interní proměnnou jako keš pro psy
-	 */
-	public function findAllDogs() {
-		$query = ["select * from appdata_pes"];
+		$query = ["select * from appdata_pes where Pohlavi = %i", self::MALE_ORDER];
 		$result = $this->connection->query($query);
 
-		$dogs = [];
+		$dogs[0] = self::NOT_SELECTED;
 		foreach ($result->fetchAll() as $row) {
 			$dog = new DogEntity();
 			$dog->hydrate($row->toArray());
-			$dogs[$dog->getID()] = $dog;
+			$dogs[$dog->getID()] = $dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem();
 		}
-		$this->dogs = $dogs;
+
+		return $dogs;
 	}
 
 	/**
@@ -143,7 +121,7 @@ class DogRepository extends BaseRepository {
 		foreach ($result->fetchAll() as $row) {
 			$dog = new DogEntity();
 			$dog->hydrate($row->toArray());
-			$dogs[$dog->getID()] = $dog;
+			$dogs[] = $dog;
 		}
 
 		return $dogs;
@@ -187,7 +165,7 @@ class DogRepository extends BaseRepository {
 			isset($filter[DogFilterForm::DOG_FILTER_HEALTH])
 			|| isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK])
 			|| isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]
-		)) {
+			)) {
 			$joins[] = "left join `appdata_zdravi` as az on ap.ID = az.pID ";
 			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
 			unset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]);

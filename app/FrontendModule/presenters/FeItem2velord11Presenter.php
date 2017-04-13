@@ -161,11 +161,10 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		if ($id == null) {
 			$this->template->currentDog = null;
 			$this->template->previousOwners = [];
+			$this->template->mIDFound = true;
+			$this->template->oIDFound = true;
 		} else {
 			$dog = $this->dogRepository->getDog($id);
-			$this->template->currentDog = $dog;
-			$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
-
 			$this->template->mIDFound = (isset($this['dogForm']['mID']->getItems()[$dog->getMID()]));
 			if ($this->template->mIDFound == false) {	// pokud mID psa není v selectu vyjmu ho
 				$dog->setMID(0);
@@ -175,6 +174,12 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			if ($this->template->oIDFound == false) {	// pokud oID psa není v selectu vyjmu ho
 				$dog->setOID(0);
 			}
+
+
+			$this->template->currentDog = $dog;
+			$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
+
+
 
 			$this['dogForm']->setDefaults($dog->extract());
 			if ($dog) {
