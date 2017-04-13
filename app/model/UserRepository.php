@@ -6,7 +6,6 @@ use App\Enum\StateEnum;
 use App\Enum\UserRoleEnum;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogOwnerEntity;
-use Dibi\Exception;
 use Nette;
 use App\Model\Entity\UserEntity;
 use Nette\Security\Passwords;
@@ -186,32 +185,14 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	/**
 	 * @return array
 	 */
-	public function findBreedersForFilter() {
-		$breeders[0] = self::NOT_SELECTED;
-		$query = ["select * from appdata_chovatel as ac left join user as u on ac.uID = u.ID"];
-		$result = $this->connection->query($query);
-
-		foreach ($result->fetchAll() as $row) {
-			$user = new UserEntity();
-			$user->hydrate($row->toArray());
-			$breeders[$user->getId()] = $user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " " . $user->getTitleAfter();
-		}
-
-		return $breeders;
-	}
-
-	/**
-	 * @return array
-	 */
 	public function findBreedersForSelect() {
 		$breeders[0] = self::NOT_SELECTED;
-		$query = ["select * from user where role = %i", UserRoleEnum::USER_BREEDER];
+		$query = ["select `id`,`title_before`,`name`,`surname`,`title_after` from user where role = %i", UserRoleEnum::USER_BREEDER];
 		$result = $this->connection->query($query);
 
 		foreach ($result->fetchAll() as $row) {
-			$user = new UserEntity();
-			$user->hydrate($row->toArray());
-			$breeders[$user->getId()] = $user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " " . $user->getTitleAfter();
+			$user = $row->toArray();
+			$breeders[$user['id']] = $user['title_before'] . " " . $user['name'] . " " . $user['surname'] . " " . $user['title_after'];
 		}
 
 		return $breeders;

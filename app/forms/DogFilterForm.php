@@ -88,7 +88,7 @@ class DogFilterForm {
 		$form->addSelect(self::DOG_FILTER_LAND, DOG_TABLE_HEADER_LAND, $states)
 			->setAttribute("class", "form-control");
 
-		$chovatele = $this->userRepository->findBreedersForFilter();
+		$chovatele = $this->userRepository->findBreedersForSelect();
 		$form->addSelect(self::DOG_FILTER_BREEDER, DOG_TABLE_HEADER_BREEDER, $chovatele)
 			->setAttribute("class", "form-control");
 

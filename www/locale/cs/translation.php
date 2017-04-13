@@ -474,7 +474,7 @@ define("DOG_TABLE_HEADER_PROB_DLK", 'DLK');
 define("DOG_TABLE_HEADER_HEALTH", 'zdraví');
 define("DOG_TABLE_HEADER_MOTHER", 'matka');
 define("DOG_TABLE_HEADER_FATHER", 'otec');
-define("DOG_TABLE_HEADER_LAND", 'kraj');
+define("DOG_TABLE_HEADER_LAND", 'země');
 define("DOG_TABLE_HEADER_BREEDER", 'chovatel');
 define("DOG_TABLE_HEADER_EXAM", 'zkouška');
 define("DOG_TABLE_HEADER_HEIGHT", 'výška');
