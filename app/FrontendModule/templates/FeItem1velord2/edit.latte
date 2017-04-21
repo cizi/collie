@@ -10,10 +10,10 @@
 				<div class="row">
 					<fieldset>
 						<legend>{=DOG_FORM_HEADER}{if $currentDog != null}: {$currentDog->getTitulyPredJmenem()} {$currentDog->getJmeno()} {$currentDog->getTitulyZaJmenem()} {/if} </legend>
-						<div class="col-lg-8"><br /><br />
+						<div class="col-lg-9"><br /><br />
 							{control dogForm}
 						</div>
-						<div class="col-lg-4">
+						<div class="col-lg-3">
 							{if count($previousOwners) > 0}
 								<h4>{=DOG_FORM_PREVIOUS_OWNERS}</h4>
 								<div>

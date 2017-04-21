@@ -84,7 +84,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 */
 	public function actionDefault($id) {
 		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
-			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-info");
+			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("Homepage:Default");
 		}
 
@@ -150,8 +150,8 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$renderer->wrappers['controls']['container'] = NULL;
 		$renderer->wrappers['pair']['container'] = 'div class=form-group';
 		$renderer->wrappers['pair']['.error'] = 'has-error';
-		$renderer->wrappers['control']['container'] = 'div class=col-md-5';
-		$renderer->wrappers['label']['container'] = 'div class="col-md-5 control-label"';
+		$renderer->wrappers['control']['container'] = 'div class=col-md-6';
+		$renderer->wrappers['label']['container'] = 'div class="col-md-4 control-label"';
 		$renderer->wrappers['control']['description'] = 'span class=help-block';
 		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
 		$form->getElementPrototype()->class('form-horizontal');
@@ -164,7 +164,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 */
 	public function actionEdit($id) {
 		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
-			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-info");
+			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("Homepage:Default");
 		}
 
@@ -178,7 +178,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		} else {
 			$owners = $this->userRepository->findDogOwners($id);	// pokud nejsem majitelem, nemůžu ho editovat
 			if (in_array($this->getUser()->getId(), $owners) == false) {
-				$this->flashMessage(DOG_FORM_NOT_TRUE_OWNER, "alert-info");
+				$this->flashMessage(DOG_FORM_NOT_TRUE_OWNER, "alert-danger");
 				$this->redirect("default");
 			}
 
@@ -244,7 +244,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	public function actionDelete($id) {
 		$owners = $this->userRepository->findDogOwners($id);	// pokud nejsem majitelem, nemůžu ho mazat
 		if ($this->getUser()->isLoggedIn() == false || (in_array($this->getUser()->getId(), $owners) == false)) { // pokud nejsen přihlášen nemám tady co dělat
-			$this->flashMessage(DOG_FORM_NOT_TRUE_OWNER, "alert-info");
+			$this->flashMessage(DOG_FORM_NOT_TRUE_OWNER, "alert-danger");
 			$this->redirect("default");
 		}
 
@@ -263,7 +263,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	public function actionDeleteDogPic($id, $pID) {
 		$owners = $this->userRepository->findDogOwners($pID);	// pokud nejsem majitelem, nemůžu mazat
 		if ($this->getUser()->isLoggedIn() == false || (in_array($this->getUser()->getId(), $owners) == false)) {
-			$this->flashMessage(DOG_FORM_NOT_TRUE_OWNER, "alert-info");
+			$this->flashMessage(DOG_FORM_NOT_TRUE_OWNER, "alert-danger");
 			$this->redirect("default");
 		} else {
 			$this->dogRepository->deleteDogPic($id);

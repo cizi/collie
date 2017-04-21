@@ -185,22 +185,22 @@ class DogForm {
 		$form->addSelect("mID", DOG_FORM_FEMALE, $females)
 			->setAttribute("class", "form-control");
 
-		$form->addTextArea("TitulyKomentar", DOG_FORM_TITLES)
+		$form->addTextArea("TitulyKomentar", DOG_FORM_TITLES, null, 7)
 			->setAttribute("class", "form-control");
 
-		$form->addTextArea("Posudek", DOG_FORM_BON_TEXT)
+		$form->addTextArea("Posudek", DOG_FORM_BON_TEXT, null, 7)
 			->setAttribute("class", "form-control");
 
-		$form->addTextArea("Oceneni", DOG_FORM_SHOWS_NEXT_TEXT)		// oceněšní z DB bude zobrazeno jinak
+		$form->addTextArea("Oceneni", DOG_FORM_SHOWS_NEXT_TEXT, null, 7)		// oceněšní z DB bude zobrazeno jinak
 			->setAttribute("class", "form-control");
 
-		$form->addTextArea("Zkousky", DOG_FORM_SHOWS_EXAMS)
+		$form->addTextArea("Zkousky", DOG_FORM_SHOWS_EXAMS, null, 7)
 			->setAttribute("class", "form-control");
 
-		$form->addTextArea("Zavody", DOG_FORM_SHOWS_RACES)
+		$form->addTextArea("Zavody", DOG_FORM_SHOWS_RACES, null, 7)
 			->setAttribute("class", "form-control");
 
-		$form->addTextArea("Komentar",DOG_FORM_SHOWS_NOTE)
+		$form->addTextArea("Komentar",DOG_FORM_SHOWS_NOTE, null, 7)
 			->setAttribute("class", "form-control");
 
 
