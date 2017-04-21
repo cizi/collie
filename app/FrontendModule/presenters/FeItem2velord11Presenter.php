@@ -83,17 +83,22 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * @param int $id
 	 */
 	public function actionDefault($id) {
+		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
+			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-info");
+			$this->redirect("Homepage:Default");
+		}
+
 		$filter = $this->decodeFilterFromQuery();
 		$this['dogFilterForm']->setDefaults($filter);
 
 		$page = (empty($id) ? 1 : $id);
 		$paginator = new Paginator();
-		$paginator->setItemCount($this->dogRepository->getDogsCount($filter)); // celkový počet položek
+		$paginator->setItemCount($this->dogRepository->getDogsCount($filter, $this->getUser()->getId())); // celkový počet položek
 		$paginator->setItemsPerPage(50); // počet položek na stránce
 		$paginator->setPage($page); // číslo aktuální stránky, číslováno od 1
 
 		$this->template->paginator = $paginator;
-		$this->template->dogs = $this->dogRepository->findDogs($paginator, $filter);
+		$this->template->dogs = $this->dogRepository->findDogs($paginator, $filter, $this->getUser()->getId());
 		$this->template->dogRepository = $this->dogRepository;
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->enumRepository = $this->enumerationRepository;
@@ -158,28 +163,38 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * @param int $id
 	 */
 	public function actionEdit($id) {
+		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
+			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-info");
+			$this->redirect("Homepage:Default");
+		}
+
 		if ($id == null) {
 			$this->template->currentDog = null;
 			$this->template->previousOwners = [];
 			$this->template->mIDFound = true;
 			$this->template->oIDFound = true;
+			$owners[] = $this->getUser()->getId();
+			$this['dogForm']['owners']['uID']->setDefaultValue($owners);
 		} else {
+			$owners = $this->userRepository->findDogOwners($id);	// pokud nejsem majitelem, nemůžu ho editovat
+			if (in_array($this->getUser()->getId(), $owners) == false) {
+				$this->flashMessage(DOG_FORM_NOT_TRUE_OWNER, "alert-info");
+				$this->redirect("default");
+			}
+
 			$dog = $this->dogRepository->getDog($id);
-			$this->template->mIDFound = (isset($this['dogForm']['mID']->getItems()[$dog->getMID()]));
+			$this->template->mIDFound = ($dog->getMID() == NULL || isset($this['dogForm']['mID']->getItems()[$dog->getMID()]));
 			if ($this->template->mIDFound == false) {	// pokud mID psa není v selectu vyjmu ho
 				$dog->setMID(0);
 			}
 
-			$this->template->oIDFound = (isset($this['dogForm']['oID']->getItems()[$dog->getOID()]));
+			$this->template->oIDFound = ($dog->getOID() == NULL || isset($this['dogForm']['oID']->getItems()[$dog->getOID()]));
 			if ($this->template->oIDFound == false) {	// pokud oID psa není v selectu vyjmu ho
 				$dog->setOID(0);
 			}
 
-
 			$this->template->currentDog = $dog;
 			$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
-
-
 
 			$this['dogForm']->setDefaults($dog->extract());
 			if ($dog) {
@@ -215,7 +230,10 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$dogId = (isset($data['dogId']) ? $data['dogId'] : null);
 		$picId = (isset($data['picId']) ? $data['picId'] : null);
 		if ($dogId != null && ($picId != null)) {
-			$this->dogRepository->setDefaultDogPic($dogId, $picId);
+			$owners = $this->userRepository->findDogOwners($dogId);	// pokud nejsem majitelem, nemůžu ho mazat
+			if ($this->getUser()->isLoggedIn() == true && in_array($this->getUser()->getId(), $owners)) {
+				$this->dogRepository->setDefaultDogPic($dogId, $picId);
+			}
 		}
 		$this->terminate();
 	}
@@ -224,6 +242,12 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * @param int $id
 	 */
 	public function actionDelete($id) {
+		$owners = $this->userRepository->findDogOwners($id);	// pokud nejsem majitelem, nemůžu ho mazat
+		if ($this->getUser()->isLoggedIn() == false || (in_array($this->getUser()->getId(), $owners) == false)) { // pokud nejsen přihlášen nemám tady co dělat
+			$this->flashMessage(DOG_FORM_NOT_TRUE_OWNER, "alert-info");
+			$this->redirect("default");
+		}
+
 		if ($this->dogRepository->delete($id)) {
 			$this->flashMessage(DOG_TABLE_DOG_DELETED, "alert-success");
 		} else {
@@ -237,7 +261,13 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * @param int $pID
 	 */
 	public function actionDeleteDogPic($id, $pID) {
-		$this->dogRepository->deleteDogPic($id);
+		$owners = $this->userRepository->findDogOwners($pID);	// pokud nejsem majitelem, nemůžu mazat
+		if ($this->getUser()->isLoggedIn() == false || (in_array($this->getUser()->getId(), $owners) == false)) {
+			$this->flashMessage(DOG_FORM_NOT_TRUE_OWNER, "alert-info");
+			$this->redirect("default");
+		} else {
+			$this->dogRepository->deleteDogPic($id);
+		}
 		$this->redirect("edit", $pID);
 	}
 

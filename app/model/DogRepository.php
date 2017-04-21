@@ -105,16 +105,16 @@ class DogRepository extends BaseRepository {
 	/**
 	 * @return DogEntity[]
 	 */
-	public function findDogs(Paginator $paginator, array $filter) {
-		if (empty($filter)) {
+	public function findDogs(Paginator $paginator, array $filter, $owner = null) {
+		if (empty($filter) && ($owner == null)) {
 			$query = ["select * from appdata_pes limit %i , %i", $paginator->getOffset(), $paginator->getLength()];
 		} else {
 			$query[] = "select *, ap.ID as ID from appdata_pes as ap ";
-			foreach ($this->getJoinsToArray($filter) as $join) {
+			foreach ($this->getJoinsToArray($filter, $owner) as $join) {
 				$query[] = $join;
 			}
 			$query[] = "where 1 and ";
-			$query[] = $this->getWhereFromKeyValueArray($filter);
+			$query[] = $this->getWhereFromKeyValueArray($filter, $owner);
 			$query[] = " limit %i , %i";
 			$query[] = $paginator->getOffset();
 			$query[] = $paginator->getLength();
@@ -135,16 +135,16 @@ class DogRepository extends BaseRepository {
 	 * @param array $filter
 	 * @return int
 	 */
-	public function getDogsCount(array $filter) {
-		if (empty($filter)) {
+	public function getDogsCount(array $filter, $owner = null) {
+		if (empty($filter) && ($owner == null)) {
 			$query = "select count(ID) as pocet from appdata_pes";
 		} else {
 			$query[] = "select count(distinct ap.ID) as pocet from appdata_pes as ap ";
-			foreach ($this->getJoinsToArray($filter) as $join) {
+			foreach ($this->getJoinsToArray($filter, $owner) as $join) {
 				$query[] = $join;
 			}
 			$query[] = "where 1 and ";
-			$query[] = $this->getWhereFromKeyValueArray($filter);
+			$query[] = $this->getWhereFromKeyValueArray($filter, $owner);
 		}
 		$row = $this->connection->query($query);
 
@@ -156,8 +156,11 @@ class DogRepository extends BaseRepository {
 	 * @param array $filter
 	 * @return array
 	 */
-	private function getJoinsToArray($filter) {
+	private function getJoinsToArray($filter, $owner = null) {
 		$joins = [];
+		if ($owner != null) {
+			$joins[] = "left join `appdata_majitel` as am on ap.ID = am.pID";
+		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_LAND]) || isset($filter[DogFilterForm::DOG_FILTER_BREEDER])) {
 			$joins[] = "left join `appdata_chovatel` as ac on ap.ID = ac.pID
 						left join `user` as u on ac.uID = u.ID ";
@@ -183,10 +186,14 @@ class DogRepository extends BaseRepository {
 	 * @param array $filer
 	 * @return string
 	 */
-	private function getWhereFromKeyValueArray(array $filter) {
+	private function getWhereFromKeyValueArray(array $filter, $owner = null) {
 		$return = "";
 		$currentLang = $this->langRepository->getCurrentLang($this->session);
-		$i = 0;
+		if ($owner != null) {
+			$return .= "am.uID = {$owner}";
+			$return .= (count($filter) > 0 ? " and " : "");
+		}
+
 		if (isset($filter[DogFilterForm::DOG_FILTER_LAND])) {
 			$return .= "u.state = '" . $filter[DogFilterForm::DOG_FILTER_LAND] . "'";
 			$return .= (count($filter) > 1 ? " and " : "");
@@ -199,10 +206,6 @@ class DogRepository extends BaseRepository {
 		}
 		if (isset($filter["Jmeno"])) {
 			$return .= "(CONCAT_WS(' ', TitulyPredJmenem, Jmeno, TitulyZaJmenem) like '%" . $filter["Jmeno"] . "%')";
-			/* $return .= "(Jmeno like '%" . $filter["Jmeno"] . "%' or ";
-			$return .= "TitulyPredJmenem like '%" . $filter["Jmeno"] . "%' or ";
-			$return .= "TitulyZaJmenem like '%" . $filter["Jmeno"] . "%')";
-			$return .= (count($filter) > 1 ? " and " : ""); */
 			unset($filter["Jmeno"]);
 		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH])) {
@@ -227,6 +230,7 @@ class DogRepository extends BaseRepository {
 			$return .= (count($filter) > 0 ? " and " : "");
 		}
 
+		$i = 0;
 		foreach ($filter as $key => $value) {
 			$return .= $key . "=" . $value;
 			if (($i+1) != count($filter)) {

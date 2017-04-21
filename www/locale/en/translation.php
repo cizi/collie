@@ -467,6 +467,7 @@ define("DOG_TABLE_DOG_DELETATION_TITLE", 'Dog erase');
 define("DOG_TABLE_DOG_DELETATION_CONFIRM", 'Are you really want to delete the dog?');
 define("DOG_TABLE_DOG_DELETATION_CONFIRM_YES", 'Delete');
 define("DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL", 'Cancel');
+define("DOG_TABLE_DOG_ACTION_NOT_ALLOWED", 'This action requires administration privilege!');
 
 define("DOG_FORM_NAME_PREFIX", 'Titles before name');
 define("DOG_FORM_NAME", 'Name');
@@ -524,6 +525,7 @@ define("DOG_FORM_OWNERS_SELECT_TEXT", 'Select some options');
 define("DOG_FORM_OWNERS_SELECT_NO_MATCH", 'No resut match');
 define("DOG_FORM_MID_OID_FAILED_TITLE", 'Reference genealogy error');
 define("DOG_FORM_MID_OID_FAILED_MESSAGE", 'Mother or father of this dog does not match sex of mother/father.');
+define("DOG_FORM_NOT_TRUE_OWNER", 'You are not owner of this dog!');
 
 define("MATING_FORM_CLUB", 'Mating list');
 define("MATING_FORM_FID", 'Male');

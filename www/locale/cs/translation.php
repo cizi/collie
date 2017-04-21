@@ -487,6 +487,7 @@ define("DOG_TABLE_DOG_DELETATION_TITLE", 'Smazání psa');
 define("DOG_TABLE_DOG_DELETATION_CONFIRM", 'Opravdu chcete smazat psa?');
 define("DOG_TABLE_DOG_DELETATION_CONFIRM_YES", 'Smazat');
 define("DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL", 'Zpět');
+define("DOG_TABLE_DOG_ACTION_NOT_ALLOWED", 'K požadované akci nemáte dostatečná oprávnění!');
 
 define("DOG_FORM_NAME_PREFIX", 'Tituly před jménem');
 define("DOG_FORM_NAME", 'Jméno');
@@ -544,6 +545,7 @@ define("DOG_FORM_OWNERS_SELECT_TEXT", 'Vyberte možnosti');
 define("DOG_FORM_OWNERS_SELECT_NO_MATCH", 'Žádná shoda');
 define("DOG_FORM_MID_OID_FAILED_TITLE", 'Referenční chyba genealogie');
 define("DOG_FORM_MID_OID_FAILED_MESSAGE", 'Matka nebo otec psa neodpovídají pohlaví pro matku/otce.');
+define("DOG_FORM_NOT_TRUE_OWNER", 'Nemůžete editovat toho psa, nejste jeho majitelem!');
 
 define("MATING_FORM_CLUB", 'Krycí list');
 define("MATING_FORM_FID", 'Pes');
