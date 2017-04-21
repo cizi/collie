@@ -12,7 +12,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="container userTable">
-						<table class="table table-striped">
+						<table class="table table-striped dogList">
 							<thead>
 							<tr>
 								<th>{=DOG_TABLE_HEADER_NAME}</th>
@@ -39,11 +39,14 @@
 							<tbody>
 							{foreach $dogs as $dog}
 								<tr>
-									<td>{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</td>
+									<td nowrap>
+										<a href={link edit, $dog->getID()}>{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</a><br />
+										<i>{$dog->getCisloZapisu()}</i>
+									</td>
 									<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getPlemeno())}</td>
 									<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getBarva())}</td>
 									<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getPohlavi())}</td>
-									<td>{$dog->getDatNarozeni()}</td>
+									<td nowrap>{if $dog->getDatNarozeni() != NULL}{$dog->getDatNarozeni()->format('d.m.Y')}{/if}</td>
 									<td>{$enumRepository->findEnumItemByOrder($currentLang, $dog->getChovnost())}</td>
 									<td>
 										{var dkk = $dogRepository->getDkkByDogId($dog->getID())}
@@ -61,7 +64,9 @@
 										{var healths = $dogRepository->findHealthsByDogId($dog->getID())}
 										{if count($healths) > 0}
 											{foreach $healths as $health}
-												{$enumRepository->findEnumItemByOrder($currentLang, $health->getTyp())}: {$health->getVysledek()}<br />
+												{if $health->getVysledek() != ""}
+													{$enumRepository->findEnumItemByOrder($currentLang, $health->getTyp())}: {$health->getVysledek()}
+												{/if}
 											{/foreach}
 										{/if}
 									</td>

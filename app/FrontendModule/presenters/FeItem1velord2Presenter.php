@@ -253,6 +253,13 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->redirect("edit", $pID);
 	}
 
+	/**
+	 * @param $id
+	 */
+	public function actionView($id) {
+
+	}
+
 	public function saveDog(Form $form){
 		$supportedFileFormats = ["jpg", "png", "gif"];
 		$dogEntity = new DogEntity();

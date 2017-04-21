@@ -4,7 +4,7 @@ namespace App\Model\Entity;
 
 use Dibi\DateTime;
 
-class DogHealthEntity extends BaseEntity {
+class DogHealthEntity {
 
 	/** @const formát data */
 	const MASKA_DATA = 'Y-m-d';
@@ -108,12 +108,10 @@ class DogHealthEntity extends BaseEntity {
 	}
 
 	/**
-	 * @param DateTime $Datum
+	 * @param $Datum
 	 */
 	public function setDatum($Datum) {
-		if ($this->isDateValid($Datum, self::MASKA_DATA)) {
-			$this->Datum = \DateTime::createFromFormat(self::MASKA_DATA, $Datum);
-		}
+		$this->Datum = $Datum;
 	}
 
 	/**
@@ -154,8 +152,14 @@ class DogHealthEntity extends BaseEntity {
 		$this->setTyp(isset($data['Typ']) ? $data['Typ'] : null);
 		$this->setVysledek(isset($data['Vysledek']) ? $data['Vysledek'] : null);
 		$this->setKomentar(isset($data['Komentar']) ? $data['Komentar'] : null);
-		$this->setDatum(isset($data['Datum']) ? $data['Datum'] : null);
 		$this->setVeterinar(isset($data['Veterinar']) ? $data['Veterinar'] : null);
+
+		if (isset($data['Datum']) && ($data['Datum'] != NULL)) {
+			if (($data['Datum'] instanceof DateTime) == false) {
+				$data['Datum'] = DateTime::createFromFormat(self::MASKA_DATA, $data['Datum']);
+			}
+			$this->setDatum($data['Datum']);
+		}
 	}
 
 }

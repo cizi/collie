@@ -64,9 +64,9 @@ class DogForm {
 			->setAttribute("validation", USER_EDIT_SURNAME_LABEL_VALIDATION)
 			->setAttribute("placeholder", DOG_FORM_NAME);
 
-		$form->addText("TitulyZaJmenem", DOG_FORM_NAME_SUFFIX)
+		/* $form->addText("TitulyZaJmenem", DOG_FORM_NAME_SUFFIX)
 			->setAttribute("class", "form-control")
-			->setAttribute("placeholder", DOG_FORM_NAME_SUFFIX);
+			->setAttribute("placeholder", DOG_FORM_NAME_SUFFIX); */
 
 		$plemeno = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 7);
 		$form->addSelect("Plemeno", DOG_FORM_BREED, $plemeno)

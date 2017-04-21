@@ -4,7 +4,7 @@ namespace App\Model\Entity;
 
 use Dibi\DateTime;
 
-class DogEntity extends BaseEntity {
+class DogEntity {
 
 	/** @const formát data */
 	const MASKA_DATA = 'Y-m-d';
@@ -190,12 +190,10 @@ class DogEntity extends BaseEntity {
 	}
 
 	/**
-	 * @param DateTime $DatNarozeni
+	 * @param $DatNarozeni
 	 */
 	public function setDatNarozeni($DatNarozeni) {
-		if ($this->isDateValid($DatNarozeni, self::MASKA_DATA)) {
-			$this->DatNarozeni = \DateTime::createFromFormat(self::MASKA_DATA, $DatNarozeni);
-		}
+		$this->DatNarozeni = $DatNarozeni;
 	}
 
 	/**
@@ -206,12 +204,10 @@ class DogEntity extends BaseEntity {
 	}
 
 	/**
-	 * @param DateTime $DatUmrti
+	 * @param $DatUmrti
 	 */
 	public function setDatUmrti($DatUmrti) {
-		if ($this->isDateValid($DatUmrti, self::MASKA_DATA)) {
-			$this->DatUmrti = \DateTime::createFromFormat(self::MASKA_DATA, $DatUmrti);
-		}
+		$this->DatUmrti = $DatUmrti;
 	}
 
 	/**
@@ -681,8 +677,6 @@ class DogEntity extends BaseEntity {
 		$this->setTitulyPredJmenem(isset($data['TitulyPredJmenem']) ? $data['TitulyPredJmenem'] : null);
 		$this->setTitulyZaJmenem(isset($data['TitulyZaJmenem']) ? $data['TitulyZaJmenem'] : null);
 		$this->setJmeno(isset($data['Jmeno']) ? $data['Jmeno'] : null);
-		$this->setDatNarozeni(isset($data['DatNarozeni']) ? $data['DatNarozeni'] : null);
-		$this->setDatUmrti(isset($data['DatUmrti']) ? $data['DatUmrti'] : null);
 		$this->setUmrtiKomentar(isset($data['UmrtiKomentar']) ? $data['UmrtiKomentar'] : null);
 		$this->setPohlavi((isset($data['Pohlavi']) && ($data['Pohlavi'] != 0)) ? $data['Pohlavi'] : null);
 		$this->setPlemeno((isset($data['Plemeno']) && ($data['Plemeno'] != 0)) ? $data['Plemeno'] : null);
@@ -716,6 +710,19 @@ class DogEntity extends BaseEntity {
 		$this->setImpID(isset($data['ImpID']) ? $data['ImpID'] : null);
 		$this->setoIDupdate(isset($data['oIDupdate']) ? $data['oIDupdate'] : null);
 		$this->setmIDupdate(isset($data['mIDupdate']) ? $data['mIDupdate'] : null);
+
+		if (isset($data['DatNarozeni']) && ($data['DatNarozeni'] != NULL)) {
+			if (($data['DatNarozeni'] instanceof DateTime) == false) {
+				$data['DatNarozeni'] = DateTime::createFromFormat(self::MASKA_DATA, $data['DatNarozeni']);
+			}
+			$this->setDatNarozeni($data['DatNarozeni']);
+		}
+		if (isset($data['DatUmrti']) && ($data['DatUmrti'] != NULL)) {
+			if (($data['DatUmrti'] instanceof DateTime) == false) {
+				$data['DatUmrti'] = DateTime::createFromFormat(self::MASKA_DATA, $data['DatUmrti']);
+			}
+			$this->setDatUmrti($data['DatUmrti']);
+		}
 	}
 
 	public function extract() {

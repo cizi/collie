@@ -441,7 +441,7 @@ define("UNSUPPORTED_UPLOAD_FORMAT", " You are trying to upload unsupported forma
 // tabulka psi
 define("DOG_TABLE_FILTER_LABEL", 'Filter');
 define("DOG_TABLE_HEADER_ADD_DOG", 'add dog');
-define("DOG_TABLE_FILTER_TOGGLE", 'show/hide filter');
+define("DOG_TABLE_FILTER_TOGGLE", 'filter');
 define("DOG_TABLE_BTN_FILTER", 'filter');
 define("DOG_TABLE_HEADER_NAME", 'name');
 define("DOG_TABLE_HEADER_BREED", 'breed');

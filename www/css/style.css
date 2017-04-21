@@ -306,5 +306,10 @@ div.colorExample {
 	color: white;
 }
 
-
+.dogList {
+	font-size: 12px!important;
+}
+.dogList tbody tr td a {
+	font-weight: bold;
+}
 

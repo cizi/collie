@@ -461,7 +461,7 @@ define("UNSUPPORTED_UPLOAD_FORMAT", "Pokoušíte se nahrát nepodporovaný form�
 // tabulka psi
 define("DOG_TABLE_FILTER_LABEL", 'Filtr tabulky');
 define("DOG_TABLE_HEADER_ADD_DOG", 'přidat psa');
-define("DOG_TABLE_FILTER_TOGGLE", 'zobrazit/skrýt filtr');
+define("DOG_TABLE_FILTER_TOGGLE", 'filtr');
 define("DOG_TABLE_BTN_FILTER", 'filtrovat');
 define("DOG_TABLE_HEADER_NAME", 'jméno');
 define("DOG_TABLE_HEADER_BREED", 'plemeno');
