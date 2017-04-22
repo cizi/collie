@@ -88,6 +88,7 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 			}
 		}
 		$latteParams['basePath'] = $this->getHttpRequest()->getUrl()->basePath;
+		$latteParams['title'] = $this->enumerationRepository->findEnumItemByOrder($currentLang, $form->getValues()['cID']);
 
 		$template = $latte->renderToString(__DIR__ . '/../templates/FeItem2velord16/pdf.latte', $latteParams);
 
@@ -104,6 +105,7 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 	 */
 	public function actionDetails($cID, $pID, $fID) {
 		$pes = $this->dogRepository->getDog($pID);
+		$this['matingListDetailForm']['cID']->setDefaultValue($cID);
 		$this['matingListDetailForm']['pID']->setDefaults($pes->extract());
 		$this['matingListDetailForm']['pID']['Jmeno']->setDefaultValue(trim($pes->getTitulyPredJmenem() . " " . $pes->getJmeno() . " " . $pes->getTitulyZaJmenem()));
 
@@ -111,6 +113,7 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 		$this['matingListDetailForm']['fID']->setDefaults($fena->extract());
 		$this['matingListDetailForm']['fID']['Jmeno']->setDefaultValue(trim($fena->getTitulyPredJmenem() . " " . $fena->getJmeno() . " " . $fena->getTitulyZaJmenem()));
 
+		$this->template->title = $this->enumerationRepository->findEnumItemByOrder($this->langRepository->getCurrentLang($this->session), $cID);
 		$this->template->cID = $cID;
 	}
 	

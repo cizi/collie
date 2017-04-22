@@ -564,7 +564,6 @@ define("MATING_FORM_INSEMINATION", 'Inseminace');
 define("MATING_FORM_AGREEMENT", 'Dohoda');
 define("MATING_FORM_MALE_OWNER", 'Jméno a adresa majitele psa');
 define("MATING_FORM_FEMALE_OWNER", 'Jméno a adresa majitele feny');
-define("MATING_FORM_TITLE", 'Klub chovatelů collií a sheltií');
 define("DOG_FORM_NAME_FEMALE", 'Jméno feny');
 define("DOG_FORM_NAME_MALE", 'Jméno psa');
 define("MATING_FORM_DISCLAIMER", 'Podpisem stvrzuji, že pes je přeregistrován v Plemenné knize č.1 – ČMKU');

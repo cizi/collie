@@ -35,6 +35,8 @@ class MatingListDetailForm extends Nette\Object {
 		$barvy = $this->enumerationRepository->findEnumItemsForSelect($currentLang, 4);
 
 		$plemeno = $this->enumerationRepository->findEnumItemsForSelect($currentLang, 7);
+		$form->addHidden('cID');
+
 		$form->addSelect("Plemeno", DOG_FORM_BREED, $plemeno)
 			->setAttribute("tabindex", $counter);
 

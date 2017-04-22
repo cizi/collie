@@ -544,7 +544,6 @@ define("MATING_FORM_INSEMINATION", 'Insemination');
 define("MATING_FORM_AGREEMENT", 'Agreement');
 define("MATING_FORM_MALE_OWNER", 'Name of the male dog owner');
 define("MATING_FORM_FEMALE_OWNER", 'Name of the female owner');
-define("MATING_FORM_TITLE", 'Club of breeders of collie and sheltie');
 define("DOG_FORM_NAME_FEMALE", 'Female name');
 define("DOG_FORM_NAME_MALE", 'Male name');
 define("MATING_FORM_DISCLAIMER", 'Signature confirmation, that the dog registered in the breeder book no. 1 – CMKU');

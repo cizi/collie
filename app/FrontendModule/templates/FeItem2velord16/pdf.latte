@@ -101,9 +101,13 @@
 
 						<div class="prihlaska">
 							<div class="prihlaska_top">
-								<img src="{$basePath}/images/logo-prihlaska.jpg">
+								{if $cID == 89}
+									<img src="{$basePath}/images/logo-prihlaska.jpg">
+								{else}
+									<img src="{$basePath}/images/logo-prihlaskaCKCHS.jpg">
+								{/if}
 							</div>
-							<div class="heading1">{=MATING_FORM_TITLE|upper}
+							<div class="heading1">{$title|upper}
 
 							</div>
 							<div class="heading2">{=MATING_FORM_CLUB|upper}</div>
