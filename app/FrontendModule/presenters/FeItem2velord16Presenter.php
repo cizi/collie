@@ -2,7 +2,9 @@
 
 namespace App\FrontendModule\Presenters;
 
+use App\Forms\MatingListDetailForm;
 use App\Forms\MatingListForm;
+use App\Model\DogRepository;
 use Nette\Forms\Form;
 
 class FeItem2velord16Presenter extends FrontendPresenter {
@@ -10,8 +12,16 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 	/** @var  MatingListForm */
 	private $matingListForm;
 
-	public function __construct(MatingListForm $matingListForm) {
+	/** @var  DogRepository */
+	private $dogRepository;
+
+	/** @var  MatingListDetailForm */
+	private $matingListDetailForm;
+
+	public function __construct(MatingListForm $matingListForm, DogRepository $dogRepository, MatingListDetailForm $matingListDetailForm) {
 		$this->matingListForm = $matingListForm;
+		$this->dogRepository = $dogRepository;
+		$this->matingListDetailForm = $matingListDetailForm;
 	}
 
 	public function createComponentMatingListForm() {
@@ -31,8 +41,40 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 		return $form;
 	}
 
-	public function submitMatingList(Form $form) {
+	public function createComponentMatingListDetailForm() {
+		$form = $this->matingListDetailForm->create($this->langRepository->getCurrentLang($this->session), $this->link(("default")));
+		$form->onSubmit[] = $this->submitMatingListDetail;
 
+		return $form;
+	}
+
+	public function submitMatingList(Form $form) {
+		$values = $form->getHttpData();
+		if (!empty($values['cID']) && !empty($values['pID']) && !empty($values['fID'])) {
+			$this->redirect("details", [$values['cID'], $values['pID'], $values['fID']]);
+		}
+;	}
+
+	public function submitMatingListDetail(Form $form) {
+		$values = $form->getHttpData();
+		if (!empty($values['cID']) && !empty($values['pID']) && !empty($values['fID'])) {
+			$this->redirect("details", [$values['cID'], $values['pID'], $values['fID']]);
+		}
+	}
+
+	/**
+	 * @param int $cID
+	 * @param int $pID
+	 * @param int $fID
+	 */
+	public function actionDetails($cID, $pID, $fID) {
+		$pes = $this->dogRepository->getDog($pID);
+		$this['matingListDetailForm']['pID']->setDefaults($pes->extract());
+
+		$fena = $this->dogRepository->getDog($fID);
+		$this['matingListDetailForm']['fID']->setDefaults($fena->extract());
+
+		$this->template->cID = $cID;
 	}
 	
 }

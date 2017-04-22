@@ -187,29 +187,30 @@ class DogRepository extends BaseRepository {
 	 * @return string
 	 */
 	private function getWhereFromKeyValueArray(array $filter, $owner = null) {
+		$dbDriver = $this->connection->getDriver();
 		$return = "";
 		$currentLang = $this->langRepository->getCurrentLang($this->session);
 		if ($owner != null) {
-			$return .= "am.uID = {$owner}";
+			$return .= sprintf("am.uID = %d", $dbDriver->escapeIdentifier($owner));
 			$return .= (count($filter) > 0 ? " and " : "");
 		}
 
 		if (isset($filter[DogFilterForm::DOG_FILTER_LAND])) {
-			$return .= "u.state = '" . $filter[DogFilterForm::DOG_FILTER_LAND] . "'";
+			$return .= sprintf("u.state = %s", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_LAND]));
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_LAND]);
 		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_BREEDER])) {
-			$return .= "ac.uID = " . $filter[DogFilterForm::DOG_FILTER_BREEDER];
+			$return .= sprintf("ac.uID = %d", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_BREEDER]));
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_BREEDER]);
 		}
 		if (isset($filter["Jmeno"])) {
-			$return .= "(CONCAT_WS(' ', TitulyPredJmenem, Jmeno, TitulyZaJmenem) like '%" . $filter["Jmeno"] . "%')";
+			$return .= 	sprintf("(CONCAT_WS(' ', TitulyPredJmenem, Jmeno, TitulyZaJmenem) like %s)", $dbDriver->escapeLike($filter["Jmeno"], 0));
 			unset($filter["Jmeno"]);
 		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH])) {
-			$return .= "az.Typ = " . $filter[DogFilterForm::DOG_FILTER_HEALTH];
+			$return .= sprintf("az.Typ = %d", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_HEALTH]));
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
 		}
@@ -218,12 +219,12 @@ class DogRepository extends BaseRepository {
 			$dkk = $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DKK]);
 			$dlk = $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
 			if ($dkk != "" && $dlk != "") {
-				$return .= "(az.Typ in (65,66) and az.Vysledek in ('"  . $dkk . "','" . $dlk . "'))";
+				$return .= sprintf("(az.Typ in (65,66) and az.Vysledek in (%s, %s))", $dbDriver->escapeText($dkk), $dbDriver->escapeText($dlk));
 				//$return .= "((az.Typ = 65 and az.Vysledek = '"  . $dkk . "') and (az.Typ = 66 and az.Vysledek = '"  . $dlk . "'))";
 			} else if ($dkk != "") {
-				$return .= "(az.Typ = 65 and az.Vysledek = '"  . $dkk . "')";
+				$return .= sprintf("(az.Typ = 65 and az.Vysledek = %s)", $dbDriver->escapeText($dkk));
 			} else if ($dlk != "") {
-				$return .= "(az.Typ = 66 and az.Vysledek = '"  . $dlk . "')";
+				$return .= sprintf("(az.Typ = 66 and az.Vysledek = %s)", $dbDriver->escapeText($dlk));
 			}
 			unset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]);
 			unset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
@@ -247,7 +248,7 @@ class DogRepository extends BaseRepository {
 	 * @return DogHealthEntity[]
 	 */
 	public function findHealthsByDogId($id) {
-		$query = ["select * from appdata_zdravi where pID = %i", $id];
+		$query = ["select * from appdata_zdravi where pID = %i and Vysledek <> ''", $id];
 		$result = $this->connection->query($query);
 
 		$dogHealths = [];

@@ -69,9 +69,7 @@
 										{var healths = $dogRepository->findHealthsByDogId($dog->getID())}
 										{if count($healths) > 0}
 											{foreach $healths as $health}
-												{if $health->getVysledek() != ""}
-													{$enumRepository->findEnumItemByOrder($currentLang, $health->getTyp())}: {$health->getVysledek()}
-												{/if}
+												{$enumRepository->findEnumItemByOrder($currentLang, $health->getTyp())}: {$health->getVysledek()}
 											{/foreach}
 										{/if}
 									</td>
