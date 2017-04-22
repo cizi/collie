@@ -67,6 +67,10 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 	 * @param Form $form
 	 */
 	public function submitMatingListDetail(Form $form) {
+		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen pøihlášen nemám tady co dìlat
+			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
+			$this->redirect("Homepage:Default");
+		}
 		try {
 			$currentLang = $this->langRepository->getCurrentLang($this->session);
 			$latte = new \Latte\Engine();
@@ -112,6 +116,10 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 	 * @param int $fID
 	 */
 	public function actionDetails($cID, $pID, $fID) {
+		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen pøihlášen nemám tady co dìlat
+			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
+			$this->redirect("Homepage:Default");
+		}
 		$pes = $this->dogRepository->getDog($pID);
 		$this['matingListDetailForm']['cID']->setDefaultValue($cID);
 		$this['matingListDetailForm']['pID']->setDefaults($pes->extract());
