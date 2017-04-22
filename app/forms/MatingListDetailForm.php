@@ -135,11 +135,11 @@ class MatingListDetailForm extends Nette\Object {
 		$form->addButton("back", MATING_FORM_OVERAGAIN)
 			->setAttribute("class", "btn margin10")
 			->setAttribute("onclick", "location.assign('" . $linkBack . "')")
-			->setAttribute("tabindex", $counter + 23);
+			->setAttribute("tabindex", $counter + 24);
 
 		$form->addSubmit("generate", MATING_FORM_GENERATE)
 			->setAttribute("class", "btn btn-primary margin10")
-			->setAttribute("tabindex", $counter + 24);
+			->setAttribute("tabindex", $counter + 23);
 
 		return $form;
 	}

@@ -34,7 +34,8 @@
 		"dg/adminer-custom": "~1.6",
 	  	"voda/php-translator": "*",
 	  	"php-gettext/php-gettext" : "1.0.*",
-		"dibi/dibi" : "3.0.*"
+		"dibi/dibi" : "3.0.*",
+		"joseki/pdf-response": ">= 2.1"
 	},
 	"require-dev": {
 		"nette/tester": "~1.3"

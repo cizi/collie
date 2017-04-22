@@ -569,5 +569,5 @@ define("DOG_FORM_NAME_FEMALE", 'Jméno feny');
 define("DOG_FORM_NAME_MALE", 'Jméno psa');
 define("MATING_FORM_DISCLAIMER", 'Podpisem stvrzuji, že pes je přeregistrován v Plemenné knize č.1 – ČMKU');
 define("MATING_FORM_SIGNATURE", 'podpis');
-define("MATING_FORM_OVERAGAIN", 'začít znovu');
-define("MATING_FORM_GENERATE", 'generovat PDF');
+define("MATING_FORM_OVERAGAIN", 'Začít znovu');
+define("MATING_FORM_GENERATE", 'Generovat PDF');

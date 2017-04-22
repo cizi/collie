@@ -5,7 +5,9 @@ namespace App\FrontendModule\Presenters;
 use App\Forms\MatingListDetailForm;
 use App\Forms\MatingListForm;
 use App\Model\DogRepository;
+use App\Model\EnumerationRepository;
 use Nette\Forms\Form;
+use Nette\Utils\ArrayHash;
 
 class FeItem2velord16Presenter extends FrontendPresenter {
 
@@ -18,10 +20,14 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 	/** @var  MatingListDetailForm */
 	private $matingListDetailForm;
 
-	public function __construct(MatingListForm $matingListForm, DogRepository $dogRepository, MatingListDetailForm $matingListDetailForm) {
+	/** @var  EnumerationRepository */
+	private $enumerationRepository;
+
+	public function __construct(MatingListForm $matingListForm, DogRepository $dogRepository, MatingListDetailForm $matingListDetailForm, EnumerationRepository $enumerationRepository) {
 		$this->matingListForm = $matingListForm;
 		$this->dogRepository = $dogRepository;
 		$this->matingListDetailForm = $matingListDetailForm;
+		$this->enumerationRepository = $enumerationRepository;
 	}
 
 	public function createComponentMatingListForm() {
@@ -55,11 +61,40 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 		}
 ;	}
 
+	/**
+	 * @param Form $form
+	 */
 	public function submitMatingListDetail(Form $form) {
-		$values = $form->getHttpData();
-		if (!empty($values['cID']) && !empty($values['pID']) && !empty($values['fID'])) {
-			$this->redirect("details", [$values['cID'], $values['pID'], $values['fID']]);
+		$currentLang = $this->langRepository->getCurrentLang($this->session);
+		$latte = new \Latte\Engine;
+		$latte->setTempDirectory(__DIR__ . '/../../../temp/cache');
+
+		$latteParams = [];
+		foreach ($form->getValues() as $inputName => $value) {
+			if ($value instanceof ArrayHash) {
+				foreach ($value as $dogInputName => $dogValue) {
+					if ($dogInputName == 'Barva') {
+						$latteParams[$inputName . $dogInputName] = $this->enumerationRepository->findEnumItemByOrder($currentLang, $dogValue);
+					} else {
+						$latteParams[$inputName . $dogInputName] = $dogValue;
+					}
+				}
+			} else {
+				if ($inputName == 'Plemeno') {
+					$latteParams[$inputName]= $this->enumerationRepository->findEnumItemByOrder($currentLang, $value);
+				} else {
+					$latteParams[$inputName] = $value;
+				}
+			}
 		}
+		$latteParams['basePath'] = $this->getHttpRequest()->getUrl()->basePath;
+
+		$template = $latte->renderToString(__DIR__ . '/../templates/FeItem2velord16/pdf.latte', $latteParams);
+
+		$pdf = new \Joseki\Application\Responses\PdfResponse($template);
+		$pdf->documentTitle = MATING_FORM_CLUB . "_" . date("Y-m-d_His");
+
+		$this->sendResponse($pdf);
 	}
 
 	/**
@@ -70,9 +105,11 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 	public function actionDetails($cID, $pID, $fID) {
 		$pes = $this->dogRepository->getDog($pID);
 		$this['matingListDetailForm']['pID']->setDefaults($pes->extract());
+		$this['matingListDetailForm']['pID']['Jmeno']->setDefaultValue(trim($pes->getTitulyPredJmenem() . " " . $pes->getJmeno() . " " . $pes->getTitulyZaJmenem()));
 
 		$fena = $this->dogRepository->getDog($fID);
 		$this['matingListDetailForm']['fID']->setDefaults($fena->extract());
+		$this['matingListDetailForm']['fID']['Jmeno']->setDefaultValue(trim($fena->getTitulyPredJmenem() . " " . $fena->getJmeno() . " " . $fena->getTitulyZaJmenem()));
 
 		$this->template->cID = $cID;
 	}

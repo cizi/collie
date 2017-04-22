@@ -536,3 +536,18 @@ define("MATING_FORM_SAVE", 'Next step');
 define("MATING_FORM_PICK_MALE", 'Choose a male');
 define("MATING_FORM_PICK_FEMALE", 'Choose a female');
 define("MATING_FORM_NO_MATCH", 'No match found');
+
+define("MATING_FORM_DATE", 'Mating date');
+define("MATING_FORM_PLACE", 'Mating place');
+define("MATING_FORM_PLACE2", 'Place');
+define("MATING_FORM_INSEMINATION", 'Insemination');
+define("MATING_FORM_AGREEMENT", 'Agreement');
+define("MATING_FORM_MALE_OWNER", 'Name of the male dog owner');
+define("MATING_FORM_FEMALE_OWNER", 'Name of the female owner');
+define("MATING_FORM_TITLE", 'Club of breeders of collie and sheltie');
+define("DOG_FORM_NAME_FEMALE", 'Female name');
+define("DOG_FORM_NAME_MALE", 'Male name');
+define("MATING_FORM_DISCLAIMER", 'Signature confirmation, that the dog registered in the breeder book no. 1 – CMKU');
+define("MATING_FORM_SIGNATURE", 'signature');
+define("MATING_FORM_OVERAGAIN", 'Start again');
+define("MATING_FORM_GENERATE", 'Generate PDF');
