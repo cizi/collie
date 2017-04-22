@@ -6,6 +6,8 @@ use App\Forms\MatingListDetailForm;
 use App\Forms\MatingListForm;
 use App\Model\DogRepository;
 use App\Model\EnumerationRepository;
+use Dibi\Exception;
+use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use Nette\Utils\ArrayHash;
 
@@ -65,37 +67,43 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 	 * @param Form $form
 	 */
 	public function submitMatingListDetail(Form $form) {
-		$currentLang = $this->langRepository->getCurrentLang($this->session);
-		$latte = new \Latte\Engine;
-		$latte->setTempDirectory(__DIR__ . '/../../../temp/cache');
+		try {
+			$currentLang = $this->langRepository->getCurrentLang($this->session);
+			$latte = new \Latte\Engine();
+			$latte->setTempDirectory(__DIR__ . '/../../../temp/cache');
 
-		$latteParams = [];
-		foreach ($form->getValues() as $inputName => $value) {
-			if ($value instanceof ArrayHash) {
-				foreach ($value as $dogInputName => $dogValue) {
-					if ($dogInputName == 'Barva') {
-						$latteParams[$inputName . $dogInputName] = $this->enumerationRepository->findEnumItemByOrder($currentLang, $dogValue);
+			$latteParams = [];
+			foreach ($form->getValues() as $inputName => $value) {
+				if ($value instanceof ArrayHash) {
+					foreach ($value as $dogInputName => $dogValue) {
+						if ($dogInputName == 'Barva') {
+							$latteParams[$inputName . $dogInputName] = $this->enumerationRepository->findEnumItemByOrder($currentLang,
+								$dogValue);
+						} else {
+							$latteParams[$inputName . $dogInputName] = $dogValue;
+						}
+					}
+				} else {
+					if ($inputName == 'Plemeno') {
+						$latteParams[$inputName] = $this->enumerationRepository->findEnumItemByOrder($currentLang, $value);
 					} else {
-						$latteParams[$inputName . $dogInputName] = $dogValue;
+						$latteParams[$inputName] = $value;
 					}
 				}
-			} else {
-				if ($inputName == 'Plemeno') {
-					$latteParams[$inputName]= $this->enumerationRepository->findEnumItemByOrder($currentLang, $value);
-				} else {
-					$latteParams[$inputName] = $value;
-				}
 			}
+			$latteParams['basePath'] = $this->getHttpRequest()->getUrl()->basePath;
+			$latteParams['title'] = $this->enumerationRepository->findEnumItemByOrder($currentLang,
+				$form->getValues()['cID']);
+
+			$template = $latte->renderToString(__DIR__ . '/../templates/FeItem2velord16/pdf.latte', $latteParams);
+
+			$pdf = new \Joseki\Application\Responses\PdfResponse($template);
+			$pdf->documentTitle = MATING_FORM_CLUB . "_" . date("Y-m-d_His");
+			$this->sendResponse($pdf);
+		} catch (AbortException $e) {
+			throw $e;
+		} catch (\Exception $e) {
 		}
-		$latteParams['basePath'] = $this->getHttpRequest()->getUrl()->basePath;
-		$latteParams['title'] = $this->enumerationRepository->findEnumItemByOrder($currentLang, $form->getValues()['cID']);
-
-		$template = $latte->renderToString(__DIR__ . '/../templates/FeItem2velord16/pdf.latte', $latteParams);
-
-		$pdf = new \Joseki\Application\Responses\PdfResponse($template);
-		$pdf->documentTitle = MATING_FORM_CLUB . "_" . date("Y-m-d_His");
-
-		$this->sendResponse($pdf);
 	}
 
 	/**
