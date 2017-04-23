@@ -2,6 +2,187 @@
 	{include '../@block.latte'}
 
 	<div class="myContent">
-		tady bude pohled
+		<div class="row">
+			<h3 class="dogViewTitle">{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</h3>
+			<div class="col-md-6 col-lg-9">
+				<table class="table table-striped dogView">
+					<tr>
+						<th>{=DOG_FORM_BREED}:</th>
+						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getPlemeno())}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_FUR}:</th>
+						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getBarva())}, {$enumRepo->findEnumItemByOrder($lang, $dog->getSrst())}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_SEX}:</th>
+						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getPohlavi())}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_BIRT}:</th>
+						<td>{$dog->getDatNarozeni()->format('d.m.Y')}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_HEIGHT}:</th>
+						<td>{$dog->getVyska()} cm</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_WEIGHT}:</th>
+						<td>{$dog->getVaha()} kg</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_NO_OF_REC}:</th>
+						<td>{$dog->getCisloZapisu()}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_NO_OF_CHIP}:</th>
+						<td>{$dog->getCip()}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_NO_OF_REC2}:</th>
+						<td >{$dog->getPCisloZapisu()}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_NO_OF_TATTOO}:</th>
+						<td>{$dog->getTetovani()}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_BON}:</th>
+						<td>{$dog->getBonitace()}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_PIC_UPLOAD_FILE}:</th>
+						<td>
+							{foreach $dogFiles as $file}
+								<a href={$file->getCesta()} target="_blank">{$file->getNazevSouboru()}</a>
+								{if isset($dogFileEnum->arrayValueKey()[$file->getTyp()])}
+									{var typ = $dogFileEnum->arrayValueKey()[$file->getTyp()]}
+									<small>({constant($typ)|lower})</small>
+								{/if}
+								<br />
+							{/foreach}
+						</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_BREEDING}:</th>
+						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getChovnost())}
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_HEALTH}:</th>
+						<td>
+							{foreach $zdravi as $polozka}
+								{$enumRepo->findEnumItemByOrder($lang, $polozka->getTyp())}: {$polozka->getVysledek()} <br />
+							{/foreach}
+						</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_CHEW}:</th>
+						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getSkus())}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_TEETH_COM}:</th>
+						<td>{$dog->getZubyKomentar()}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_BREEDER}:</th>
+						<td>
+						{if $chovatel != null}
+							<b><a href="index.php?action=ulist&amp;ID=7299">{$chovatel->getTitleBefore()} {$chovatel->getName()} {$chovatel->getSurname()} {$chovatel->getTitleAfter()}</a></b>
+						{/if}
+						</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_OWNERS}:</th>
+						<td>
+							{foreach $majitele as $majitel}
+								{$majitel->getTitleBefore()} {$majitel->getName()} {$majitel->getSurname()} {$majitel->getTitleAfter()} <br />
+							{/foreach}
+						</td>
+					</tr>
+
+
+					<tr>
+						<th>{=DOG_FORM_TITLES}:</th>
+						<td> </td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_BON_TEXT}:</th>
+						<td>{$dog->getPosudek()}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_SHOWS_TEXT}:</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_SHOWS_NEXT_TEXT}:</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_SHOWS_EXAMS}:</th>
+						<td>{$dog->getZkousky()}</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_SHOWS_RACES}:</th>
+						<td>{$dog->getZavody()}</td>
+					</tr>
+
+					<tr>
+						<th>{=DOG_FORM_SHOWS_NOTE}:</th>
+						<td>{$dog->getKomentar()}</td>
+					</tr>
+
+					<tr>
+						<th>{=DOG_FORM_DESCENDANTS}:</th>
+						<td>
+							{foreach $descendants as $descennt}
+							{/foreach}
+						</td>
+					</tr>
+
+					<tr>
+						<th>{=DOG_FORM_SIBLINGS}:</th>
+						<td>
+							<table class="table table-striped dogSiblings">
+								{foreach $siblings as $sibling}
+									<tr>
+										<td>
+											<a href={link view, $sibling->getID()}>{$sibling->getTitulyPredJmenem()} {$sibling->getJmeno()} {$sibling->getTitulyZaJmenem()}</a>
+										</td>
+										<td>
+											{$enumRepo->findEnumItemByOrder($lang, $sibling->getPohlavi())}
+										</td>
+										<td>
+											{$enumRepo->findEnumItemByOrder($lang, $sibling->getPlemeno())}
+										</td>
+										<td>
+											{$enumRepo->findEnumItemByOrder($lang, $sibling->getBarva())}, {$enumRepo->findEnumItemByOrder($lang, $sibling->getSrst())}
+										</td>
+									</tr>
+								{/foreach}
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<div class="col-md-6 col-lg-3">
+				{if count($previousOwners) > 0}
+					<h4>{=DOG_FORM_PREVIOUS_OWNERS}</h4>
+					<div>
+						{foreach $previousOwners as $user}
+							{var $name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter())}
+							{(strlen($name) > 35 ? substr($name, 0, 35) . "..." : $name)}<br />
+						{/foreach}
+					</div>
+				{/if}
+
+				{if count($dogPics) > 0}
+					<h4>{=DOG_FORM_PICS}</h4>
+					{foreach $dogPics as $dogPic}
+						<img src="{$dogPic->getCesta()}" class="dogEditPic"  />
+					{/foreach}
+				{/if}
+			</div>
+		</div>
 	</div>
 {/block}

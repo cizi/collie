@@ -5,6 +5,7 @@ namespace App\Model;
 use App\Forms\DogFilterForm;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
+use App\Model\Entity\DogFileEntity;
 use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
@@ -191,7 +192,7 @@ class DogRepository extends BaseRepository {
 		$return = "";
 		$currentLang = $this->langRepository->getCurrentLang($this->session);
 		if ($owner != null) {
-			$return .= sprintf("am.uID = %d", $dbDriver->escapeIdentifier($owner));
+			$return .= sprintf("am.uID = %d", $owner);
 			$return .= (count($filter) > 0 ? " and " : "");
 		}
 
@@ -244,6 +245,28 @@ class DogRepository extends BaseRepository {
 	}
 
 	/**
+	 * @param int $pID
+	 */
+	public function findSiblings($pID) {
+		$siblings = [];
+		$dog= $this->getDog($pID);
+		if (($dog != null) && ($dog->getMID() != null) && ($dog->getOID() != null)) {
+			$query = ["select * from appdata_pes where mID = %i and oID = %i", $dog->getMID(), $dog->getOID()];
+			$result = $this->connection->query($query);
+
+			foreach ($result->fetchAll() as $row) {
+				$sibling = new DogEntity();
+				$sibling->hydrate($row->toArray());
+				if ($pID != $sibling->getID()) {
+					$siblings[] = $sibling;
+				}
+			}
+		}
+
+		return $siblings;
+	}
+
+	/**
 	 * @param int $id
 	 * @return DogHealthEntity[]
 	 */
@@ -272,6 +295,9 @@ class DogRepository extends BaseRepository {
 				$this->connection->begin();
 
 				$query = ["delete from appdata_pes_obrazky where pID = %i", $id];    // nejdříve smažu obrázky
+				$this->connection->query($query);
+
+				$query = ["delete from appdata_pes_soubory where pID = %i", $id];    // pak smažu ostaní soubory
 				$this->connection->query($query);
 
 				$this->deleteHealthByDogId($id);
@@ -336,8 +362,9 @@ class DogRepository extends BaseRepository {
 	 * @param DogHealthEntity[]
 	 * @param BreederEntity[]
 	 * @param DogOwnerEntity[]
+	 * @param DogFileEntity[]
 	 */
-	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders, array $owners) {
+	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders, array $owners, array $dogFiles) {
 		try {
 			$this->connection->begin();
 			$dogEntity->setPosledniZmena(new DateTime());
@@ -402,6 +429,13 @@ class DogRepository extends BaseRepository {
 				$dogPic->setVychozi(0);
 				$this->saveDogPic($dogPic);
 			}
+
+			/** @var DogFileEntity $dogFile */
+			foreach ($dogFiles as $dogFile) {
+				$dogFile->setPID($dogEntity->getID());
+				$this->saveDogFile($dogFile);
+			}
+
 			$this->connection->commit();
 		} catch (\Exception $e) {
 			$this->connection->rollback();
@@ -413,6 +447,14 @@ class DogRepository extends BaseRepository {
 	 */
 	public function saveDogPic(DogPicEntity $dogPicEntity) {
 		$picQuery = ["insert into appdata_pes_obrazky ", $dogPicEntity->extract()];
+		$this->connection->query($picQuery);
+	}
+
+	/**
+	 * @param DogPicEntity $dogFileEntity
+	 */
+	public function saveDogFile(DogFileEntity $dogFileEntity) {
+		$picQuery = ["insert into appdata_pes_soubory ", $dogFileEntity->extract()];
 		$this->connection->query($picQuery);
 	}
 
@@ -435,6 +477,24 @@ class DogRepository extends BaseRepository {
 	}
 
 	/**
+	 * @param int $pID
+	 * @return DogFileEntity[]
+	 */
+	public function findDogFiles($pID) {
+		$query = ["select * from appdata_pes_soubory where pID = %i order by id, typ desc", $pID];
+		$result = $this->connection->query($query);
+
+		$files = [];
+		foreach ($result->fetchAll() as $row) {
+			$dogFile = new DogFileEntity();
+			$dogFile->hydrate($row->toArray());
+			$files[] = $dogFile;
+		}
+
+		return $files;
+	}
+
+	/**
 	 * @param int $dogId
 	 * @param int $picId
 	 */
@@ -453,6 +513,20 @@ class DogRepository extends BaseRepository {
 		$return = true;
 		if (!empty($id)) {
 			$query = ["delete from appdata_pes_obrazky where id = %i", $id];
+			$return = $this->connection->query($query) == 1 ? true : false;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * @param int $id
+	 * @return bool
+	 */
+	public function deleteDogFile($id) {
+		$return = true;
+		if (!empty($id)) {
+			$query = ["delete from appdata_pes_soubory where id = %i", $id];
 			$return = $this->connection->query($query) == 1 ? true : false;
 		}
 

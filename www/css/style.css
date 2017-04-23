@@ -312,4 +312,17 @@ div.colorExample {
 .dogList tbody tr td a {
 	font-weight: bold;
 }
+.dogView{
+	font-size: 12px!important;
+}
 
+.dogView tr th {
+	width: 40%;
+}
+.dogViewTitle {
+	margin-left: 30px;
+}
+.dogSiblings {
+	font-size: 12px!important;
+	margin-top: -9px;
+}

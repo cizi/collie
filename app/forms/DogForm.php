@@ -130,6 +130,9 @@ class DogForm {
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", DOG_FORM_BON);
 
+		$form->addMultiUpload("BonitaceSoubory", DOG_FORM_PIC_UPLOAD_FILE)
+			->setAttribute("class", "form-control");
+
 		$chovnost = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 5);
 		$form->addSelect("Chovnost", DOG_FORM_BREEDING, $chovnost)
 			->setAttribute("class", "form-control");

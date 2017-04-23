@@ -3,12 +3,14 @@
 namespace App\FrontendModule\Presenters;
 
 use App\Controller\FileController;
+use App\Enum\DogFileEnum;
 use App\Enum\UserRoleEnum;
 use App\Forms\DogFilterForm;
 use App\Forms\DogForm;
 use App\Model\DogRepository;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
+use App\Model\Entity\DogFileEntity;
 use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
@@ -21,6 +23,7 @@ use Nette\Http\FileUpload;
 use Nette\Utils\Paginator;
 
 class FeItem1velord2Presenter extends FrontendPresenter {
+	
 	/** @persistent */
 	public $filter;
 
@@ -93,9 +96,9 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 
 		$page = (empty($id) ? 1 : $id);
 		$paginator = new Paginator();
-		$paginator->setItemCount($this->dogRepository->getDogsCount($filter)); // celkový poèet položek
-		$paginator->setItemsPerPage(50); // poèet položek na stránce
-		$paginator->setPage($page); // èíslo aktuální stránky, èíslováno od 1
+		$paginator->setItemCount($this->dogRepository->getDogsCount($filter)); // celkovÃ½ poÄet poloÅ¾ek
+		$paginator->setItemsPerPage(50); // poÄet poloÅ¾ek na strÃ¡nce
+		$paginator->setPage($page); // ÄÃ­slo aktuÃ¡lnÃ­ strÃ¡nky, ÄÃ­slovÃ¡no od 1
 
 		$this->template->paginator = $paginator;
 		$this->template->dogs = $this->dogRepository->findDogs($paginator, $filter);
@@ -120,7 +123,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	}
 
 	/**
-	 * Vytvoøí komponentu pro zmìnu hesla uživatele
+	 * VytvoÅ™Ã­ komponentu pro zmÄ›nu hesla uÅ¾ivatele
 	 */
 	public function createComponentDogFilterForm() {
 		$form = $this->dogFilterForm->create($this->langRepository->getCurrentLang($this->session));
@@ -140,7 +143,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	}
 
 	/**
-	 * Vytvoøí komponentu pro zmìnu hesla uživatele
+	 * VytvoÅ™Ã­ komponentu pro zmÄ›nu hesla uÅ¾ivatele
 	 */
 	public function createComponentDogForm() {
 		$form = $this->dogForm->create($this->langRepository->getCurrentLang($this->session), $this->link("default"));
@@ -163,7 +166,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	 * @param int $id
 	 */
 	public function actionEdit($id) {
-		if ($this->template->amIAdmin == false) {	// pokud nejsem admin nemùžu editovat
+		if ($this->template->amIAdmin == false) {	// pokud nejsem admin nemÅ¯Å¾u editovat
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("default");
 		}
@@ -171,22 +174,25 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		if ($id == null) {
 			$this->template->currentDog = null;
 			$this->template->previousOwners = [];
+			$this->template->dogFiles = [];
 			$this->template->mIDFound = true;
 			$this->template->oIDFound = true;
 		} else {
 			$dog = $this->dogRepository->getDog($id);
 			$this->template->mIDFound = ($dog->getMID() == NULL || isset($this['dogForm']['mID']->getItems()[$dog->getMID()]));
-			if ($this->template->mIDFound == false) {	// pokud mID psa není v selectu vyjmu ho
+			if ($this->template->mIDFound == false) {	// pokud mID psa nenÃ­ v selectu vyjmu ho
 				$dog->setMID(0);
 			}
 
 			$this->template->oIDFound = ($dog->getOID() == NULL || isset($this['dogForm']['oID']->getItems()[$dog->getOID()]));
-			if ($this->template->oIDFound == false) {	// pokud oID psa není v selectu vyjmu ho
+			if ($this->template->oIDFound == false) {	// pokud oID psa nenÃ­ v selectu vyjmu ho
 				$dog->setOID(0);
 			}
 
 			$this->template->currentDog = $dog;
 			$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
+			$this->template->dogFiles = $this->dogRepository->findDogFiles($id);
+			$this->template->dogFileEnum = new DogFileEnum();
 
 			$this['dogForm']->setDefaults($dog->extract());
 			if ($dog) {
@@ -215,7 +221,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	}
 
 	/**
-	 * Aktualizuje vychozí obrázek u psa
+	 * Aktualizuje vychozÃ­ obrÃ¡zek u psa
 	 */
 	public function actionDefaultDogPic() {
 		$data = $this->getHttpRequest()->getQuery();
@@ -231,7 +237,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	 * @param int $id
 	 */
 	public function actionDelete($id) {
-		if ($this->template->amIAdmin == false) {	// pokud nejsem admin nemùžu mazat
+		if ($this->template->amIAdmin == false) {	// pokud nejsem admin nemÅ¯Å¾u mazat
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("default");
 		}
@@ -254,22 +260,53 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	}
 
 	/**
-	 * @param $id
+	 * @param int $id
 	 */
 	public function actionView($id) {
+		$zdravi = [];
+		$zdraviOptions = $this->enumerationRepository->findEnumItems($this->langRepository->getCurrentLang($this->session), 14);
+		/** @var EnumerationItemEntity $enumEntity */
+		foreach ($zdraviOptions as $enumEntity) {
+			$dogHealthEntity = $this->dogRepository->getHealthEntityByDogAndType($enumEntity->getOrder(), $id);
+			if ($dogHealthEntity != null) {
+				$zdravi[] = $dogHealthEntity;
+			}
+		}
 
+		$dog = $this->dogRepository->getDog($id);
+		if ($dog == NULL) {
+			$this->template->dog = new DogEntity();
+		} else {
+			$this->template->dog = $dog;
+		}
+		$this->template->dogPics = $this->dogRepository->findDogPics($id);
+		$this->template->dogFiles = $this->dogRepository->findDogFiles($id);
+		$this->template->dogFileEnum = new DogFileEnum();
+		$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
+		$this->template->lang = $this->langRepository->getCurrentLang($this->session);
+		$this->template->enumRepo = $this->enumerationRepository;
+		$this->template->majitele = $this->userRepository->findDogOwnersAsUser($id);
+		$this->template->chovatel = $this->userRepository->getBreederByDogAsUser($id);
+		$this->template->zdravi = $zdravi;
+		$this->template->siblings = $this->dogRepository->findSiblings($id);
+		$this->template->descendants = [];
 	}
 
+	/**
+	 * @param Form $form
+	 */
 	public function saveDog(Form $form){
-		$supportedFileFormats = ["jpg", "png", "gif"];
+		$supportedPicFormats = ["jpg", "png", "gif"];
+		$supportedFileFormats = ["jpg", "png", "gif", "doc", "docx", "pdf", "xls", "xlsx"];
 		$dogEntity = new DogEntity();
 		$pics = [];
+		$files = [];
 		$health = [];
 		$breeders = [];
 		$owners = [];
 		try {
 			$formData = $form->getHttpData();
-			// zdraví
+			// zdravÃ­
 			foreach($formData['dogHealth'] as $typ => $hodnoty) {
 				$healthEntity = new DogHealthEntity();
 				$healthEntity->hydrate($hodnoty);
@@ -282,8 +319,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			foreach($formData['pics'] as $file) {
 				if ($file != null) {
 					$fileController = new FileController();
-					if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
-						throw new \Exception("Nelze nahrát soubor.");
+					if ($fileController->upload($file, $supportedPicFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+						throw new \Exception("Nelze nahrÃ¡t soubor.");
 						break;
 					}
 					$dogPic = new DogPicEntity();
@@ -312,9 +349,24 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 				unset($formData['owners']['uID']);
 			}
 
+			// bonitaÄnÃ­ soubory
+			/** @var FileUpload $file */
+			foreach($formData['BonitaceSoubory'] as $file) {
+				if ($file != null) {
+					$fileController = new FileController();
+					if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+						throw new \Exception("Nelze nahrÃ¡t soubor.");
+						break;
+					}
+					$dogFile = new DogFileEntity();
+					$dogFile->setCesta($fileController->getPathDb());
+					$dogFile->setTyp(DogFileEnum::BONITACNI_POSUDEK);
+					$files[] = $dogFile;
+				}
+			}
 			$dogEntity->hydrate($formData);
 
-			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners);
+			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files);
 			$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			$this->redirect("default");
 		} catch (\Exception $e) {

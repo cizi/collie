@@ -3,11 +3,13 @@
 namespace App\FrontendModule\Presenters;
 
 use App\Controller\FileController;
+use App\Enum\DogFileEnum;
 use App\Forms\DogFilterForm;
 use App\Forms\DogForm;
 use App\Model\DogRepository;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
+use App\Model\Entity\DogFileEntity;
 use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
@@ -171,6 +173,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		if ($id == null) {
 			$this->template->currentDog = null;
 			$this->template->previousOwners = [];
+			$this->template->dogFiles = [];
 			$this->template->mIDFound = true;
 			$this->template->oIDFound = true;
 			$owners[] = $this->getUser()->getId();
@@ -195,6 +198,8 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 
 			$this->template->currentDog = $dog;
 			$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
+			$this->template->dogFiles = $this->dogRepository->findDogFiles($id);
+			$this->template->dogFileEnum = new DogFileEnum();
 
 			$this['dogForm']->setDefaults($dog->extract());
 			if ($dog) {
@@ -240,24 +245,6 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 
 	/**
 	 * @param int $id
-	 */
-	public function actionDelete($id) {
-		$owners = $this->userRepository->findDogOwners($id);	// pokud nejsem majitelem, nemůžu ho mazat
-		if ($this->getUser()->isLoggedIn() == false || (in_array($this->getUser()->getId(), $owners) == false)) { // pokud nejsen přihlášen nemám tady co dělat
-			$this->flashMessage(DOG_FORM_NOT_TRUE_OWNER, "alert-danger");
-			$this->redirect("default");
-		}
-
-		if ($this->dogRepository->delete($id)) {
-			$this->flashMessage(DOG_TABLE_DOG_DELETED, "alert-success");
-		} else {
-			$this->flashMessage(DOG_TABLE_DOG_DELETED_FAILED, "alert-danger");
-		}
-		$this->redirect("default");
-	}
-
-	/**
-	 * @param int $id
 	 * @param int $pID
 	 */
 	public function actionDeleteDogPic($id, $pID) {
@@ -272,9 +259,11 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	}
 
 	public function saveDog(Form $form){
-		$supportedFileFormats = ["jpg", "png", "gif"];
+		$supportedPicFormats = ["jpg", "png", "gif"];
+		$supportedFileFormats = ["jpg", "png", "gif", "doc", "docx", "pdf", "xls", "xlsx"];
 		$dogEntity = new DogEntity();
 		$pics = [];
+		$files = [];
 		$health = [];
 		$breeders = [];
 		$owners = [];
@@ -293,7 +282,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			foreach($formData['pics'] as $file) {
 				if ($file != null) {
 					$fileController = new FileController();
-					if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+					if ($fileController->upload($file, $supportedPicFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
 						throw new \Exception("Nelze nahrát soubor.");
 						break;
 					}
@@ -323,9 +312,26 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				unset($formData['owners']['uID']);
 			}
 
+			// bonitační soubory
+			/** @var FileUpload $file */
+			foreach($formData['BonitaceSoubory'] as $file) {
+				if ($file != null) {
+					$fileController = new FileController();
+					if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+						throw new \Exception("Nelze nahrát soubor.");
+						break;
+					}
+					$dogFile = new DogFileEntity();
+					$dogFile->setCesta($fileController->getPathDb());
+					$dogFile->setTyp(DogFileEnum::BONITACNI_POSUDEK);
+					$files[] = $dogFile;
+				}
+			}
+			unset($formData['BonitaceSoubory']);
+
 			$dogEntity->hydrate($formData);
 
-			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners);
+			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files);
 			$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			$this->redirect("default");
 		} catch (\Exception $e) {
@@ -337,4 +343,22 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			}
 		}
 	}
+
+	/**
+	 * @param int $id
+	public function actionDelete($id) {
+		$owners = $this->userRepository->findDogOwners($id);	// pokud nejsem majitelem, nemůžu ho mazat
+		if ($this->getUser()->isLoggedIn() == false || (in_array($this->getUser()->getId(), $owners) == false)) { // pokud nejsen přihlášen nemám tady co dělat
+			$this->flashMessage(DOG_FORM_NOT_TRUE_OWNER, "alert-danger");
+			$this->redirect("default");
+		}
+
+		if ($this->dogRepository->delete($id)) {
+			$this->flashMessage(DOG_TABLE_DOG_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(DOG_TABLE_DOG_DELETED_FAILED, "alert-danger");
+		}
+		$this->redirect("default");
+	}
+	 */
 }

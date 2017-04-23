@@ -214,6 +214,20 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 
 	/**
 	 * @param int $pID
+	 * @return BreederEntity
+	 */
+	public function getBreederByDogAsUser($pID) {
+		$query = ["select *, u.id as id from appdata_chovatel as ac left join `user` as u on ac.uID = u.id where pID = %i", $pID];
+		$row = $this->connection->query($query)->fetch();
+		if ($row) {
+			$userEntity = new UserEntity();
+			$userEntity->hydrate($row->toArray());
+			return $userEntity;
+		}
+	}
+
+	/**
+	 * @param int $pID
 	 * @return array
 	 */
 	public function findDogOwners($pID) {
@@ -228,6 +242,24 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		}
 
 		return $owners;
+	}
+
+	/**
+	 * @param int $pID
+	 * @return UserEntity[]
+	 */
+	public function findDogOwnersAsUser($pID) {
+		$users = [];
+		$query = ["select *, u.id as id from appdata_majitel as am left join `user` as u on am.uID = u.id where am.pID = %i and Soucasny = %i", $pID, 1];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$userEntity = new UserEntity();
+			$userEntity->hydrate($row->toArray());
+			$users[] = $userEntity;
+		}
+
+		return $users;
 	}
 
 	/**

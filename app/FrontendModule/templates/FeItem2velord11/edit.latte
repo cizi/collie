@@ -24,16 +24,30 @@
 								</div>
 							{/if}
 
-							<h4>{=DOG_FORM_PICS}</h4>
 							<form action="">
 								{if $currentDog != null}<input type="hidden" id="currentDogId" value={$currentDog->getID()}>{/if}
-								{foreach $dogPics as $dogPic}
-									<input type="radio" name="defaultPic" value={$dogPic->getId()}  {if $dogPic->isVychozi()} checked="checked" {/if}> {=DOG_FORM_PIC_DEFAULT}
-									<a href="#" data-href={link deleteDogPic, $dogPic->getId(), $dogPic->getpID()}  data-toggle="modal" data-target="#confirm-delete" title={=DOG_FORM_PIC_DELETE}>
-										<img src="{$dogPic->getCesta()}" class="dogEditPic"  />
-									</a>
-								{/foreach}
+								{if count($dogPics) > 0}
+									<h4>{=DOG_FORM_PICS}</h4>
+									{foreach $dogPics as $dogPic}
+										<input type="radio" name="defaultPic" value={$dogPic->getId()}  {if $dogPic->isVychozi()} checked="checked" {/if}> {=DOG_FORM_PIC_DEFAULT}
+										<a href="#" data-href={link deleteDogPic, $dogPic->getId(), $dogPic->getpID()}  data-toggle="modal" data-target="#confirm-delete" title={=DOG_FORM_PIC_DELETE}>
+											<img src="{$dogPic->getCesta()}" class="dogEditPic"  />
+										</a>
+									{/foreach}
+								{/if}
 							</form>
+
+							{if count($dogFiles) > 0}
+								<h4>{=DOG_FORM_FILES}</h4>
+								{foreach $dogFiles as $file}
+									<a href={$file->getCesta()} target="_blank">{$file->getNazevSouboru()}</a>
+									{if isset($dogFileEnum->arrayValueKey()[$file->getTyp()])}
+										{var typ = $dogFileEnum->arrayValueKey()[$file->getTyp()]}
+										<small>({constant($typ)|lower})</small>
+									{/if}
+									<br />
+								{/foreach}
+							{/if}
 						</div>
 					</fieldset>
 				</div>
