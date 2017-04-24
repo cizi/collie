@@ -20,7 +20,7 @@
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_BIRT}:</th>
-						<td>{$dog->getDatNarozeni()->format('d.m.Y')}</td>
+						<td>{if $dog->getDatNarozeni() != null}{$dog->getDatNarozeni()->format('d.m.Y')}{/if}</td>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_HEIGHT}:</th>
@@ -71,7 +71,9 @@
 						<th>{=DOG_FORM_HEALTH}:</th>
 						<td>
 							{foreach $zdravi as $polozka}
-								{$enumRepo->findEnumItemByOrder($lang, $polozka->getTyp())}: {$polozka->getVysledek()} <br />
+								{if $polozka->getVysledek() != ""}
+									{$enumRepo->findEnumItemByOrder($lang, $polozka->getTyp())}: {$polozka->getVysledek()} <br />
+								{/if}
 							{/foreach}
 						</td>
 					</tr>
@@ -137,6 +139,38 @@
 							{foreach $descendants as $descennt}
 							{/foreach}
 						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<table style="width: 100%">
+								<tr>
+									<td>
+										<strong>{=DOG_FORM_PEDIGREE}</strong>
+										(
+										{for $i=3;$i<8;$i++}
+											{if $i == $genLev}
+												<strong> {$i} </strong>
+											{else}
+												<a href={link view, $dog->getID(), $i}> {$i} </a>
+											{/if}
+										{/for}
+										{if $genLev > 4}
+											{=DOG_FORM_PEDIGREE_GENERATION_NO}
+										{else}
+											{=DOG_FORM_PEDIGREE_GENERATION_NO}
+										{/if}
+										)
+									</td>
+									<td style="text-align: right">
+										<span class="pedigreeCoef">{=DOG_FORM_PEDIGREE_COEF}. {$coef|number:2:',':' '}% <small>{$coefComment}</small></span>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="2">{!$pedigreeTable}</td>
 					</tr>
 
 					<tr>

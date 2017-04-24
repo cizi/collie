@@ -545,6 +545,12 @@ define("DOG_FORM_MALE", 'Otec');
 define("DOG_FORM_FEMALE", 'Matka');
 define("DOG_FORM_DESCENDANTS", 'Potomci');
 define("DOG_FORM_SIBLINGS", 'Sourozenci');
+define("DOG_FORM_PEDIGREE", 'Rodokmen');
+define("DOG_FORM_PEDIGREE_COEF", 'Koeficient příbuznosti');
+define("DOG_FORM_PEDIGREE_COEF_NOT_FULL", 'neúplný (méně než 5 generací)');
+define("DOG_FORM_PEDIGREE_GENERATION_NO", 'generace');
+define("DOG_FORM_PEDIGREE_GENERATIONS_NO", 'generací');
+define("DOG_FORM_PEDIGREE_ADD_MISSING", 'Přidat psa');
 
 define("DOG_FORM_OWNERS", 'Majitel/é');
 define("DOG_FORM_PREVIOUS_OWNERS", 'Předchozí majitelé');

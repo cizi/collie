@@ -326,3 +326,13 @@ div.colorExample {
 	font-size: 12px!important;
 	margin-top: -9px;
 }
+.pedigreeCoef {
+	font-weight: bold;;
+}
+.genTable{
+	width: 100%;
+}
+.genTable tr td {
+	border: 1px solid lightgrey;
+	padding: 5px;
+}

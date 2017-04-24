@@ -525,6 +525,12 @@ define("DOG_FORM_MALE", 'Father');
 define("DOG_FORM_FEMALE", 'Mother');
 define("DOG_FORM_DESCENDANTS", 'Descendants');
 define("DOG_FORM_SIBLINGS", 'Siblings');
+define("DOG_FORM_PEDIGREE", 'Pedigree');
+define("DOG_FORM_PEDIGREE_COEF", 'Affinity factor');
+define("DOG_FORM_PEDIGREE_COEF_NOT_FULL", 'incomplete (less than 5 generations)');
+define("DOG_FORM_PEDIGREE_GENERATION_NO", 'generation');
+define("DOG_FORM_PEDIGREE_GENERATIONS_NO", 'generations');
+define("DOG_FORM_PEDIGREE_ADD_MISSING", 'Add dog');
 
 define("DOG_FORM_OWNERS", 'Owner/s');
 define("DOG_FORM_PREVIOUS_OWNERS", 'Previous owners');

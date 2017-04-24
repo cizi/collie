@@ -10,11 +10,15 @@ use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
 use Dibi\Connection;
+use Nette\Application\UI\Presenter;
 use Nette\Http\Session;
 use Nette\Utils\DateTime;
 use Nette\Utils\Paginator;
 
 class DogRepository extends BaseRepository {
+
+	/** @const klíč pro poslední předcůdce psa */
+	const SESSION_LAST_PREDECESSOR = 'lastPredecessor';
 
 	/** @const znak pro nevybraného psa v selectu  */
 	const NOT_SELECTED = "-";
@@ -251,15 +255,13 @@ class DogRepository extends BaseRepository {
 		$siblings = [];
 		$dog= $this->getDog($pID);
 		if (($dog != null) && ($dog->getMID() != null) && ($dog->getOID() != null)) {
-			$query = ["select * from appdata_pes where mID = %i and oID = %i", $dog->getMID(), $dog->getOID()];
+			$query = ["select * from appdata_pes where mID = %i and oID = %i and ID <> %i", $dog->getMID(), $dog->getOID(), $dog->getID()];
 			$result = $this->connection->query($query);
 
 			foreach ($result->fetchAll() as $row) {
 				$sibling = new DogEntity();
 				$sibling->hydrate($row->toArray());
-				if ($pID != $sibling->getID()) {
-					$siblings[] = $sibling;
-				}
+				$siblings[] = $sibling;
 			}
 		}
 
@@ -563,5 +565,303 @@ class DogRepository extends BaseRepository {
 			$dogHealth->hydrate($row->toArray());
 			return $dogHealth;
 		}
+	}
+
+	// ------ příbuzbost ----
+	/**
+	 * @param int $pID
+	 * @param int $fID
+	 * @return float
+	 */
+	public function genealogRelationship($pID,$fID) {
+		$coef = floor($this->genealogRshipGo($pID,$fID,1)*10000)/100;
+		return $coef;
+	}
+
+	/**
+	 * @param int $ID1
+	 * @param int $ID2
+	 * @param int $level
+	 * @return number
+	 */
+	public function genealogRshipGo($ID1,$ID2,$level) {
+		$deepMarkArray = [];
+		$tree1 = array(array());
+		$this->genealogGetRshipPedigree(NULL, $ID1, 0, 4, $tree1);
+		$tree1Toc = array_shift($tree1);
+
+		$tree2 = array(array());
+		$this->genealogGetRshipPedigree(NULL, $ID2, 0, 4, $tree2);
+		$tree2Toc = array_shift($tree2);
+
+		$coef = 0;
+		foreach ($tree1 as $index1 => $dog1) {
+			if (in_array($dog1['ID'], $tree2Toc)) {
+
+				//naslo se!!! Najdeme vyskyty v Tree2 a promazeme
+				foreach ($tree2 as $index2 => $dog2) {
+					if (($dog2['ID'] == $dog1['ID']) and ($dog1['dID'] != $dog2['dID'])) {
+						if (!in_array($dog1['ID'], $deepMarkArray)) {
+							$deepMarkArray[] = $dog1['ID'];
+						}
+						$subcoef = pow(0.5, $dog1['level'] + $dog2['level'] + 1);
+						$coef += $subcoef;
+					}
+				}
+			}
+		}
+
+		return $coef;
+	}
+
+	/**
+	 * Funkce pro zjisteni pribuznosti
+	 *
+	 * @param $dID
+	 * @param $ID
+	 * @param $level
+	 * @param $levels
+	 * @param $output
+	 * @param array $route
+	 */
+	private function genealogGetRshipPedigree($dID,$ID,$level,$levels,&$output,$route = array()) {
+		if (($level > $levels)) {
+			return;
+		}
+		if (($ID == NULL)) {
+			$GLOBALS['lastRship'] = false;
+			return;
+		}
+		$query = ["select pes.ID AS ID, pes.Jmeno AS Jmeno, pes.oID AS oID, pes.mID AS mID FROM appdata_pes as pes WHERE ID= %i LIMIT 1", $ID];
+		$row = $this->connection->query($query)->fetch()->toArray();
+		$output[0][] = $ID;
+		$output[] = array(
+			'ID' => $ID,
+			'Jmeno' => $row['Jmeno'],
+			'dID' => $dID,
+			'oID' => $row['oID'],
+			'mID' => $row['mID'],
+			'level' => $level,
+			'route' => $route
+		);
+
+		$route[] = $ID;
+		//if (isset($row['oID'])) {
+			$this->genealogGetRshipPedigree($ID,$row['oID'],$level+1,$levels,$output,$route);
+		//}
+		//if (isset($row['mID'])) {
+			$this->genealogGetRshipPedigree($ID,$row['mID'],$level+1,$levels,$output,$route);
+		//}
+	}
+
+	/**
+	 * @param int $ID
+	 * @param int $max
+	 * @param string $lang
+	 * @param Presenter $presenter
+	 * @return string
+	 */
+	public function genealogDeepPedigree($ID, $max, $lang, Presenter $presenter) {
+		global $pedigree,$tmpColors;
+		$query = ["SELECT pes.ID AS ID, pes.Jmeno AS Jmeno, pes.oID AS oID, pes.mID AS mID FROM appdata_pes as pes
+										WHERE pes.ID= %i LIMIT 1", $ID];
+		$row = $this->connection->query($query)->fetch()->toArray();
+		$pedigree = array();
+		$this->genealogDPTrace($row['oID'],1,$max, $lang);
+		$this->genealogDPTrace($row['mID'],1,$max, $lang);
+
+		return $this->genealogShowDeepPTable($max, $presenter);
+	}
+
+	/**
+	 * @param int $ID
+	 * @param int $level
+	 * @param int $max
+	 * @param string $lang
+	 */
+	private function genealogDPTrace($ID,$level,$max, $lang) {
+		global $pedigree;
+		if ($level > $max) {
+			return;
+		};
+		if ($ID != NULL) { // predek existuje
+			$query = ["SELECT pes.ID AS ID, pes.Jmeno AS Jmeno, pes.oID AS oID, pes.mID AS mID, pes.Vyska AS Vyska, pes.Pohlavi As Pohlavi,
+										pes.Plemeno As Plemeno,
+										pes.Barva As BarvaOrder,
+										plemeno.item as Varieta,
+										pes.TitulyPredJmenem AS TitulyPredJmenem,
+										pes.TitulyZaJmenem AS TitulyZaJmenem,
+										barva.item AS Barva
+										FROM appdata_pes as pes
+										LEFT JOIN enum_item as plemeno
+											ON (pes.Plemeno = plemeno.order && plemeno.enum_header_id = 7 && plemeno.lang = %s)
+										LEFT JOIN enum_item as barva
+											ON (pes.Barva = barva.order && barva.enum_header_id = 4 && barva.lang = %s)
+										WHERE pes.ID = %i
+										LIMIT 1", $lang, $lang, $ID];
+			$row = $this->connection->query($query)->fetch()->toArray();
+			
+			$query = ["SELECT item as Nazev, Vysledek FROM appdata_zdravi as zdravi LEFT JOIN enum_item as ciselnik
+				ON (ciselnik.enum_header_id = 14 AND ciselnik.order = zdravi.Typ) WHERE pID = %i ORDER BY Datum DESC", $row['ID']];
+			$zdravi = $this->connection->query($query)->fetch();
+			$zdravi = $zdravi === false ? '' : $zdravi->toArray();
+
+			$query = ["SELECT Vysledek AS DKK FROM appdata_zdravi WHERE pID = %i && Typ=65 ORDER BY Datum DESC LIMIT 1", $row['ID']];
+			$DKK = $this->connection->query($query)->fetch();
+			$DKK = $DKK === false ? '' : $DKK->toArray()['DKK'];
+
+			$query = ["SELECT Vysledek AS DLK FROM appdata_zdravi WHERE pID = %i && Typ=66 ORDER BY Datum DESC LIMIT 1", $row['ID']];
+			$DLK = $this->connection->query($query)->fetch();
+			$DLK = $DLK === false ? '' : $DLK->toArray()['DLK'];
+
+			$pedigree[] = array(
+				'Uroven' => $level,
+				'ID' => $row['ID'],
+				'Jmeno' => $this->arGet($row,'Jmeno'),
+				'Barva' => $this->arGet($row,'Barva'),
+				'Varieta' => $this->arGet($row,'Varieta'),
+				'TitulyPredJmenem' => $this->arGet($row,'TitulyPredJmenem'),
+				'TitulyZaJmenem' => $this->arGet($row,'TitulyZaJmenem'),
+				'mID' => $this->arGet($row,'mID'),
+				'oID' => $this->arGet($row,'oID'),
+				'Pohlavi' => $this->arGet($row,'Pohlavi'),
+				'Plemeno' => $this->arGet($row,'Plemeno'),
+				'BarvaOrder' => $this->arGet($row,'BarvaOrder'),
+				'DKK' => $DKK,
+				'DLK' => $DLK,
+				'Vyska' => $this->arGet($row,'Vyska'),
+				'zdravi' => $zdravi
+			);
+			$this->setLastPredecessorSession($level . 'mID', $this->arGet($row,'mID'));
+			$this->setLastPredecessorSession($level . 'oID', $this->arGet($row,'oID'));
+			$this->setLastPredecessorSession($level . 'Pohlavi', $this->arGet($row,'Pohlavi'));
+			$this->setLastPredecessorSession($level . 'Plemeno', $this->arGet($row,'Plemeno'));
+			$this->setLastPredecessorSession($level . 'BarvaOrder', $this->arGet($row,'BarvaOrder'));
+
+			$this->genealogDPTrace($row['oID'], $level + 1, $max, $lang);
+			$this->genealogDPTrace($row['mID'], $level + 1, $max, $lang);
+		} else { // predek neexistuje
+			$pedigree[] = array(
+				'Uroven' => $level,
+				'ID' => 0,
+				'Jmeno' => '&nbsp;',
+				'Barva' => '&nbsp;',
+				'mID' => $this->getLastPredecessorSession(($level - 2) . 'mID'),
+				'oID' => $this->getLastPredecessorSession(($level - 2) . 'oID'),
+				'Pohlavi' => $this->getLastPredecessorSession(($level - 1) . 'Pohlavi'),
+				'Plemeno' => $this->getLastPredecessorSession(($level - 2) . 'Plemeno'),
+				'BarvaOrder' => $this->getLastPredecessorSession(($level - 2) . 'BarvaOrder')
+			);
+			$this->genealogDPTrace(NULL, $level + 1, $max, $lang);
+			$this->genealogDPTrace(NULL, $level + 1, $max, $lang);
+		}
+	}
+
+	/**
+	 * @param array $array
+	 * @param string $name
+	 * @return string
+	 */
+	private function arGet($array,$name) {
+		if (isset($array[$name]) and trim($array[$name]) != '') {
+			return ($array[$name]);
+		} else {
+			return('');
+		}
+	}
+
+	/**
+	 * @param int $max
+	 * @param Presenter $presenter
+	 * @return string
+	 */
+	private function genealogShowDeepPTable($max, Presenter $presenter) {
+		global $pedigree;
+		global $deepMarkArray;
+		global $deepMark;
+		$maxLevel = $max;
+		$htmlOutput = "<table border='0' cellspacing='1' cellpadding='3' class='genTable'><tr>";
+		$lastLevel = 0;
+		for ($i = 0; $i < count($pedigree); $i++) {
+			if ($pedigree[$i]['Uroven'] <= $lastLevel) {
+				$htmlOutput .= '<tr>';
+			}
+			$lastLevel = $pedigree[$i]['Uroven'];
+			$adds = array();
+			if (isset($pedigree[$i]['Varieta']) && $pedigree[$i]['Varieta'] != '') {
+				$adds[] = $pedigree[$i]['Varieta'];
+			}
+			if (isset($pedigree[$i]['Barva']) && $pedigree[$i]['Barva'] != '') {
+				$adds[] = $pedigree[$i]['Barva'];
+			}
+			if (isset($pedigree[$i]['Vyska']) && $pedigree[$i]['Vyska'] != '0') {
+				$adds[] = ($pedigree[$i]['Vyska']/10) . ' cm';
+			}
+			if (isset($pedigree[$i]['zdravi']) && $pedigree[$i]['zdravi'] != '') {
+				foreach ($pedigree[$i]['zdravi'] as $z) {
+					$adds[] = '' . $pedigree[$i]['zdravi']['Nazev'] . ': ' . $pedigree[$i]['zdravi']['Vysledek'];
+				}
+			}
+			if (count($adds) > 0) {
+				$adds = '<br />'.implode(', ',$adds);
+			} else {
+				$adds = '';
+			}
+			if (isset($pedigree[$i]['TitulyPredJmenem']) && trim($pedigree[$i]['TitulyPredJmenem']) != '') {
+				$pedigree[$i]['Jmeno'] = $pedigree[$i]['TitulyPredJmenem'] . ' ' . $pedigree[$i]['Jmeno'];
+			}
+			if (isset($pedigree[$i]['TitulyZaJmenem']) && trim($pedigree[$i]['TitulyZaJmenem']) != '') {
+				$pedigree[$i]['Jmeno'] = $pedigree[$i]['Jmeno'] . ', ' . $pedigree[$i]['TitulyZaJmenem'];
+			}
+
+			if ($pedigree[$i]['ID'] != NULL) {
+				if ($deepMark and in_array($pedigree[$i]['ID'], $deepMarkArray)) {
+					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'" style="background:#CDA265">'
+					. '<b><a href="' . $presenter->link('view', $pedigree[$i]['ID']) . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds . '</td>';
+				} else {
+					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">
+					<b><a href="' . $presenter->link('view', $pedigree[$i]['ID']) . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds.'</td>';
+				}
+			} else {
+				$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">';
+				if (($pedigree[$i]['oID'] != "") || ($pedigree[$i]['mID'] != "")) {
+					if ($pedigree[$i]['Pohlavi'] == self::MALE_ORDER) {
+						$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", $pedigree[$i]['oID'], null, $pedigree[$i]['Plemeno'], $pedigree[$i]['BarvaOrder']) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
+					} else if ($pedigree[$i]['Pohlavi'] == self::FEMALE_ORDER) {
+						$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", null, $pedigree[$i]['mID'], $pedigree[$i]['Plemeno'], $pedigree[$i]['BarvaOrder']) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
+					}
+				}
+				$htmlOutput .= '</td>'; // <b>' . $pedigree[$i]['Jmeno'].'</b><br/> '.$adds.'</td>';
+			}
+			if ($pedigree[$i]['Uroven'] == $maxLevel) {
+				$htmlOutput .= '</tr>';
+			}
+		}
+		$htmlOutput .= "</table>";
+
+		return $htmlOutput;
+	}
+
+	/**
+	 * @param string $key
+	 * @return string
+	 */
+	private function getLastPredecessorSession($key) {
+		$return = "";
+		if ($this->session->hasSection(self::SESSION_LAST_PREDECESSOR)) {
+			$section = $this->session->getSection(self::SESSION_LAST_PREDECESSOR);
+			$return = $section->{$key};
+		}
+
+		return $return;
+	}
+
+	/**
+	 * @param string $key
+	 * @param string $value
+	 */
+	private function setLastPredecessorSession($key, $value) {
+		$section = $this->session->getSection(self::SESSION_LAST_PREDECESSOR);
+		$section->{$key} = $value;
 	}
 }

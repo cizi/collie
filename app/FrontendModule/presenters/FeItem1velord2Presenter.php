@@ -58,6 +58,11 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 
 	public function startup() {
 		$this->template->amIAdmin = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] == UserRoleEnum::USER_ROLE_ADMINISTRATOR);
+		// odstraním posledně použite mID a oID u rokomene
+		$section = $this->session->getSection(DogRepository::SESSION_LAST_PREDECESSOR);
+		foreach($section as $key => $value) {
+			unset($section->{$key});
+		}
 		parent::startup();
 	}
 
@@ -261,9 +266,11 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 
 	/**
 	 * @param int $id
+	 * @param int $genLev
 	 */
-	public function actionView($id) {
+	public function actionView($id, $genLev = 3) {
 		$zdravi = [];
+		$lang = $this->langRepository->getCurrentLang($this->session);
 		$zdraviOptions = $this->enumerationRepository->findEnumItems($this->langRepository->getCurrentLang($this->session), 14);
 		/** @var EnumerationItemEntity $enumEntity */
 		foreach ($zdraviOptions as $enumEntity) {
@@ -279,11 +286,16 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		} else {
 			$this->template->dog = $dog;
 		}
+		$this->template->coef = $this->dogRepository->genealogRelationship($dog->getOID(), $dog->getMID());
+		$this->template->coefComment = ((isset($GLOBALS['lastRship']) &&  ($GLOBALS['lastRship'] === false)) ? DOG_FORM_PEDIGREE_COEF_NOT_FULL : "");
+		$this->template->genLev = $genLev;
+		$this->template->pedigreeTable = $this->dogRepository->genealogDeepPedigree($dog->getID(), $genLev, $lang, $this->presenter);
+
 		$this->template->dogPics = $this->dogRepository->findDogPics($id);
 		$this->template->dogFiles = $this->dogRepository->findDogFiles($id);
 		$this->template->dogFileEnum = new DogFileEnum();
 		$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
-		$this->template->lang = $this->langRepository->getCurrentLang($this->session);
+		$this->template->lang = $lang;
 		$this->template->enumRepo = $this->enumerationRepository;
 		$this->template->majitele = $this->userRepository->findDogOwnersAsUser($id);
 		$this->template->chovatel = $this->userRepository->getBreederByDogAsUser($id);
@@ -376,6 +388,38 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 				$form->addError(DOG_FORM_ADD_FAILED);
 				$this->flashMessage(DOG_FORM_ADD_FAILED, "alert-danger");
 			}
+		}
+	}
+
+	/**
+	 * @param int $oID
+	 * @param int $mID
+	 */
+	public function actionAddMissingDog($oID, $mID, $plemeno, $barva) {
+		if ($this->template->amIAdmin == false) {	// pokud nejsem admin nemůžu sem
+			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
+			$this->redirect("default");
+		}
+
+		$this->setView("edit");
+		$this->template->currentDog = null;
+		$this->template->previousOwners = [];
+		$this->template->dogFiles = [];
+		$this->template->mIDFound = true;
+		$this->template->oIDFound = true;
+		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
+		$this->template->dogPics = [];
+		if ($mID != "") {
+			$this['dogForm']['mID']->setDefaultValue($mID);
+		}
+		if ($oID != "") {
+			$this['dogForm']['oID']->setDefaultValue($oID);
+		}
+		if ($plemeno != "") {
+			$this['dogForm']['Plemeno']->setDefaultValue($plemeno);
+		}
+		if ($barva != "") {
+			$this['dogForm']['Barva']->setDefaultValue($barva);
 		}
 	}
 }
