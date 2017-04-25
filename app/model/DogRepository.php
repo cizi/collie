@@ -70,6 +70,20 @@ class DogRepository extends BaseRepository {
 	}
 
 	/**
+	 * @param int $id
+	 * @return string
+	 */
+	public function getName($id) {
+		$name = "";
+		$dog = $this->getDog($id);
+		if ($dog != null) {
+			$name = trim($dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem());
+		}
+
+		return $name;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function findFemaleDogsForSelect($withNotSelectedOption = true) {
@@ -277,9 +291,9 @@ class DogRepository extends BaseRepository {
 		$dog = $this->getDog($pID);
 		if ($dog != null) {
 			if ($dog->getPohlavi() == self::MALE_ORDER) {
-				$query = ["select * from appdata_pes where oID = %i", $dog->getID()];
+				$query = ["select * from appdata_pes where oID = %i order by mID", $dog->getID()];
 			} else {
-				$query = ["select * from appdata_pes where mID = %i", $dog->getID()];
+				$query = ["select * from appdata_pes where mID = %i order by oID", $dog->getID()];
 			}
 			$result = $this->connection->query($query);
 			foreach ($result->fetchAll() as $row) {

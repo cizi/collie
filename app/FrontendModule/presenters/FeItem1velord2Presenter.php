@@ -286,6 +286,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		} else {
 			$this->template->dog = $dog;
 		}
+		$this->template->dogRepository = $this->dogRepository;
 		$this->template->coef = $this->dogRepository->genealogRelationship($dog->getOID(), $dog->getMID());
 		$this->template->coefComment = ((isset($GLOBALS['lastRship']) &&  ($GLOBALS['lastRship'] === false)) ? DOG_FORM_PEDIGREE_COEF_NOT_FULL : "");
 		$this->template->genLev = $genLev;
