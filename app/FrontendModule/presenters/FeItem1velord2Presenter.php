@@ -301,7 +301,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->template->chovatel = $this->userRepository->getBreederByDogAsUser($id);
 		$this->template->zdravi = $zdravi;
 		$this->template->siblings = $this->dogRepository->findSiblings($id);
-		$this->template->descendants = [];
+		$this->template->descendants = $this->dogRepository->findDescendants($id);
 	}
 
 	/**

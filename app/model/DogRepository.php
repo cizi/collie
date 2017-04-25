@@ -269,6 +269,30 @@ class DogRepository extends BaseRepository {
 	}
 
 	/**
+	 * @param int $pID
+	 * @return DogEntity[]
+	 */
+	public function findDescendants($pID) {
+		$descendants = [];
+		$dog = $this->getDog($pID);
+		if ($dog != null) {
+			if ($dog->getPohlavi() == self::MALE_ORDER) {
+				$query = ["select * from appdata_pes where oID = %i", $dog->getID()];
+			} else {
+				$query = ["select * from appdata_pes where mID = %i", $dog->getID()];
+			}
+			$result = $this->connection->query($query);
+			foreach ($result->fetchAll() as $row) {
+				$descendant = new DogEntity();
+				$descendant->hydrate($row->toArray());
+				$descendants[] = $descendant;
+			}
+		}
+
+		return $descendants;
+	}
+
+	/**
 	 * @param int $id
 	 * @return DogHealthEntity[]
 	 */

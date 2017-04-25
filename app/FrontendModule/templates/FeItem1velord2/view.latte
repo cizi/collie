@@ -132,14 +132,6 @@
 						<th>{=DOG_FORM_SHOWS_NOTE}:</th>
 						<td>{$dog->getKomentar()}</td>
 					</tr>
-
-					<tr>
-						<th>{=DOG_FORM_DESCENDANTS}:</th>
-						<td>
-							{foreach $descendants as $descennt}
-							{/foreach}
-						</td>
-					</tr>
 					<tr>
 						<td colspan="2">
 							<table style="width: 100%">
@@ -190,6 +182,29 @@
 										</td>
 										<td>
 											{$enumRepo->findEnumItemByOrder($lang, $sibling->getBarva())}, {$enumRepo->findEnumItemByOrder($lang, $sibling->getSrst())}
+										</td>
+									</tr>
+								{/foreach}
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th>{=DOG_FORM_DESCENDANTS}:</th>
+						<td>
+							<table class="table table-striped dogSiblings">
+								{foreach $descendants as $descennt}
+									<tr>
+										<td>
+											<a href={link view, $descennt->getID()}>{$descennt->getTitulyPredJmenem()} {$descennt->getJmeno()} {$descennt->getTitulyZaJmenem()}</a>
+										</td>
+										<td>
+											{$enumRepo->findEnumItemByOrder($lang, $descennt->getPohlavi())}
+										</td>
+										<td>
+											{$enumRepo->findEnumItemByOrder($lang, $descennt->getPlemeno())}
+										</td>
+										<td>
+											{$enumRepo->findEnumItemByOrder($lang, $descennt->getBarva())}, {$enumRepo->findEnumItemByOrder($lang, $descennt->getSrst())}
 										</td>
 									</tr>
 								{/foreach}
