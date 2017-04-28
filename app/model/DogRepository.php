@@ -29,6 +29,12 @@ class DogRepository extends BaseRepository {
 	/** @const pořadí pro psa */
 	const MALE_ORDER = 29;
 
+	/** @const pořadí pro jednotlivá zdraví  */
+	const DKK_ORDER = 65;
+	const DLK_ORDER = 66;
+	const DOV_ORDER = 69;
+	const MDR_ORDER = 62;
+
 	/** @var EnumerationRepository  */
 	private $enumRepository;
 
@@ -96,7 +102,7 @@ class DogRepository extends BaseRepository {
 		}
 		foreach ($result->fetchAll() as $row) {
 			$dog = $row->toArray();
-			$dogs[$dog['ID']] = $dog['TitulyPredJmenem'] . " " . $dog['Jmeno'] . " " . $dog['TitulyZaJmenem'];
+			$dogs[$dog['ID']] = trim($dog['TitulyPredJmenem'] . " " . $dog['Jmeno'] . " " . $dog['TitulyZaJmenem']);
 		}
 
 		return $dogs;
@@ -115,7 +121,7 @@ class DogRepository extends BaseRepository {
 		}
 		foreach ($result->fetchAll() as $row) {
 			$dog = $row->toArray();
-			$dogs[$dog['ID']] = $dog['TitulyPredJmenem'] . " " . $dog['Jmeno'] . " " . $dog['TitulyZaJmenem'];
+			$dogs[$dog['ID']] = trim($dog['TitulyPredJmenem'] . " " . $dog['Jmeno'] . " " . $dog['TitulyZaJmenem']);
 		}
 
 		return $dogs;
@@ -394,6 +400,24 @@ class DogRepository extends BaseRepository {
 			$healthEntity->hydrate($row->toArray());
 			return $healthEntity;
 		}
+	}
+
+	/***
+	 * @param int $typ
+	 * @param int $pID
+	 * @param string $delimiter
+	 * @return string
+	 */
+	public function getHealthByTypeAsStringWithDesc($pID,$typ, $delimiter = ": ") {
+		$result = "";
+		$query = ["select az.Vysledek, ei.item as Popis from enum_item as ei left join appdata_zdravi as az on ei.order = az.Typ
+				where az.Vysledek <> '' and az.pID = %i and az.Typ = %i", $pID, $typ];
+		$row = $this->connection->query($query)->fetch();
+		if ($row) {
+			$result = $row['Popis'] . $delimiter . $row['Vysledek'];
+		}
+
+		return $result;
 	}
 
 	/**
