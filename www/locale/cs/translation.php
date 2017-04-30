@@ -460,7 +460,7 @@ define("UNSUPPORTED_UPLOAD_FORMAT", "Pokoušíte se nahrát nepodporovaný form�
 
 // tabulka psi
 define("DOG_TABLE_FILTER_LABEL", 'Filtr tabulky');
-define("DOG_TABLE_HEADER_ADD_DOG", 'přidat psa');
+define("DOG_TABLE_HEADER_ADD_DOG", 'nový');
 define("DOG_TABLE_FILTER_TOGGLE", 'filtr');
 define("DOG_TABLE_BTN_FILTER", 'filtrovat');
 define("DOG_TABLE_HEADER_NAME", 'jméno');
@@ -488,6 +488,7 @@ define("DOG_TABLE_DOG_DELETATION_CONFIRM", 'Opravdu chcete smazat psa?');
 define("DOG_TABLE_DOG_DELETATION_CONFIRM_YES", 'Smazat');
 define("DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL", 'Zpět');
 define("DOG_TABLE_DOG_ACTION_NOT_ALLOWED", 'K požadované akci nemáte dostatečná oprávnění!');
+define("DOG_TABLE_DOG_YEAR_FROM", 'od');
 
 define("DOG_FORM_NAME_PREFIX", 'Tituly před jménem');
 define("DOG_FORM_NAME", 'Jméno');

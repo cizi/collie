@@ -24,6 +24,7 @@
 	<link rel="stylesheet" href="{$basePath}/css/bootstrap-datetimepicker.min.css">
 	<link rel="stylesheet" href="{$basePath}/css/chosen.css">
 	<link rel="stylesheet" href="{$basePath}/css/chosen_form_control.css">
+	<link rel="stylesheet" href="{$basePath}/css/ekko-lightbox.css">
 	<meta name="viewport" content="width=device-width">
 
 	{* if isset($currentLink)}	{* probably any page absolutelly not root }
@@ -141,6 +142,7 @@
 			<script src="{$basePath}/js/bootstrap-datetimepicker.js"></script>
 			<script src="{$basePath}/js/datetimepicker-locales/bootstrap-datetimepicker.cs.js"></script>
 			<script src="{$basePath}/js/chosen.jquery.min.js"></script>
+			<script src="{$basePath}/js/ekko-lightbox.js"></script>
 		{/block}
 
 		{if $googleAnalytics != ""}
@@ -152,7 +154,7 @@
 		<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
 	</div>
 
-	<div class="container content" style="{if $bodyWidth != ""}width: {!$bodyWidth};{/if}">
+	<div class="container content" style="{if $bodyWidth != ""}min-width: {!$bodyWidth};{/if}; max-width: 100%;">
 		{if isset($currentLink)}
 			{include content, pageKeywords => $currentLink->getTitle()}
 		{else}
@@ -208,6 +210,11 @@
 
 			return submitForm;
 		}
+
+		$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+			event.preventDefault();
+			$(this).ekkoLightbox();
+		});
 	</script>
 	{* modal end *}
 

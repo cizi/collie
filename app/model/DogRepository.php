@@ -232,6 +232,7 @@ class DogRepository extends BaseRepository {
 		}
 		if (isset($filter["Jmeno"])) {
 			$return .= 	sprintf("(CONCAT_WS(' ', TitulyPredJmenem, Jmeno, TitulyZaJmenem) like %s)", $dbDriver->escapeLike($filter["Jmeno"], 0));
+			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter["Jmeno"]);
 		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH])) {
@@ -255,10 +256,20 @@ class DogRepository extends BaseRepository {
 			unset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
 			$return .= (count($filter) > 0 ? " and " : "");
 		}
+		if (isset($filter[DogFilterForm::DOG_FILTER_BIRTDATE])) {	// datum narození
+			if (strpos($filter[DogFilterForm::DOG_FILTER_BIRTDATE], 'from') !== false) {
+				$return .= sprintf(" YEAR(DatNarozeni) >= %s", $dbDriver->escapeText(str_replace("from", "", $filter[DogFilterForm::DOG_FILTER_BIRTDATE])));
+			} else {
+				$return .= sprintf(" YEAR(DatNarozeni) = %s", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_BIRTDATE]));
+			}
+			$return .= (count($filter) > 1 ? " and " : "");
+			unset($filter[DogFilterForm::DOG_FILTER_BIRTDATE]);
+		}
+
 
 		$i = 0;
 		foreach ($filter as $key => $value) {
-			$return .= $key . "=" . $value;
+			$return .= $key . "='" . $value . "'";
 			if (($i+1) != count($filter)) {
 				$return .= " and ";
 			}
@@ -266,6 +277,27 @@ class DogRepository extends BaseRepository {
 		}
 
 		return $return;
+	}
+
+	/**
+	 * @param bool|true $withNotSelectedOption
+	 * @return array
+	 */
+	public function findBirtYearsForSelect($withNotSelectedOption = true) {
+		$years = [];
+		if ($withNotSelectedOption) {
+			 $years[0] = self::NOT_SELECTED;
+		}
+		$query = ["select DISTINCT YEAR(DatNarozeni) as DatNarozeni from appdata_pes ORDER BY DatNarozeni DESC"];
+		$result = $this->connection->query($query);
+		foreach ($result->fetchAll() as $row) {
+			if ($row['DatNarozeni'] != "") {
+				$years[$row['DatNarozeni']] = $row['DatNarozeni'];
+				$years['from' . $row['DatNarozeni']] = DOG_TABLE_DOG_YEAR_FROM . " " . $row['DatNarozeni'];
+			}
+		}
+
+		return $years;
 	}
 
 	/**

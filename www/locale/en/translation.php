@@ -440,7 +440,7 @@ define("UNSUPPORTED_UPLOAD_FORMAT", " You are trying to upload unsupported forma
 
 // tabulka psi
 define("DOG_TABLE_FILTER_LABEL", 'Filter');
-define("DOG_TABLE_HEADER_ADD_DOG", 'add dog');
+define("DOG_TABLE_HEADER_ADD_DOG", 'new');
 define("DOG_TABLE_FILTER_TOGGLE", 'filter');
 define("DOG_TABLE_BTN_FILTER", 'filter');
 define("DOG_TABLE_HEADER_NAME", 'name');
@@ -468,6 +468,7 @@ define("DOG_TABLE_DOG_DELETATION_CONFIRM", 'Are you really want to delete the do
 define("DOG_TABLE_DOG_DELETATION_CONFIRM_YES", 'Delete');
 define("DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL", 'Cancel');
 define("DOG_TABLE_DOG_ACTION_NOT_ALLOWED", 'This action requires administration privilege!');
+define("DOG_TABLE_DOG_YEAR_FROM", 'from');
 
 define("DOG_FORM_NAME_PREFIX", 'Titles before name');
 define("DOG_FORM_NAME", 'Name');

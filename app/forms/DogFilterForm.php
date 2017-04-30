@@ -3,6 +3,7 @@
 namespace App\Forms;
 
 use App\Enum\StateEnum;
+use App\Model\DogRepository;
 use App\Model\EnumerationRepository;
 use App\Model\UserRepository;
 use Nette\Application\UI\Form;
@@ -16,6 +17,7 @@ class DogFilterForm {
 	const DOG_FILTER_LAND = "DOG_FILTER_LAND";
 	const DOG_FILTER_BREEDER = "DOG_FILTER_BREEDER";
 	const DOG_FILTER_EXAM = "DOG_FILTER_EXAM";
+	const DOG_FILTER_BIRTDATE = "DatNarozeni";
 
 	/** @var FormFactory */
 	private $factory;
@@ -26,15 +28,20 @@ class DogFilterForm {
 	/** @var UserRepository */
 	private $userRepository;
 
+	/** @var  DogRepository */
+	private $dogRepository;
+
 	/**
 	 * @param FormFactory $factory
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param UserRepository $userRepository
+	 * @param DogRepository $dogRepository
 	 */
-	public function __construct(FormFactory $factory, EnumerationRepository $enumerationRepository, UserRepository $userRepository) {
+	public function __construct(FormFactory $factory, EnumerationRepository $enumerationRepository, UserRepository $userRepository, DogRepository $dogRepository) {
 		$this->factory = $factory;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->userRepository = $userRepository;
+		$this->dogRepository = $dogRepository;
 	}
 
 	/**
@@ -60,8 +67,9 @@ class DogFilterForm {
 		$form->addSelect("Pohlavi", DOG_TABLE_HEADER_SEX, $pohlavi)
 			->setAttribute("class", "form-control");
 
-		$form->addText("DatNarozeni", DOG_TABLE_HEADER_BIRT)
-			->setAttribute("id", "DatNarozeni")
+		$years = $this->dogRepository->findBirtYearsForSelect();
+		$form->addSelect(self::DOG_FILTER_BIRTDATE, DOG_TABLE_HEADER_BIRT, $years)
+			//->setAttribute("id", "DatNarozeni")
 			->setAttribute("class", "form-control");
 
 		$chovnost = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 5);

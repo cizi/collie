@@ -147,7 +147,9 @@
 				{if count($dogPics) > 0}
 					<h4>{=DOG_FORM_PICS}</h4>
 					{foreach $dogPics as $dogPic}
-						<img src="{$dogPic->getCesta()}" class="dogEditPic"  />
+						<a href={$dogPic->getCesta()} data-toggle="lightbox">
+							<img src="{$dogPic->getCesta()}" class="dogEditPic img-fluid" />
+						</a>
 					{/foreach}
 				{/if}
 			</div>
