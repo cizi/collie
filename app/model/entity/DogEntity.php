@@ -105,10 +105,10 @@ class DogEntity {
 	/** @var  DateTime */
 	private $PosledniZmena;
 
-	/** @var  int */
+	/** @var  float */
 	private $Vyska;
 
-	/** @var  int */
+	/** @var  float */
 	private $Vaha;
 
 	/** @var  string */
@@ -575,28 +575,28 @@ class DogEntity {
 	}
 
 	/**
-	 * @return int
+	 * @return float
 	 */
 	public function getVyska() {
 		return $this->Vyska;
 	}
 
 	/**
-	 * @param int $Vyska
+	 * @param float $Vyska
 	 */
 	public function setVyska($Vyska) {
 		$this->Vyska = $Vyska;
 	}
 
 	/**
-	 * @return int
+	 * @return float
 	 */
 	public function getVaha() {
 		return $this->Vaha;
 	}
 
 	/**
-	 * @param int $Vaha
+	 * @param float $Vaha
 	 */
 	public function setVaha($Vaha) {
 		$this->Vaha = $Vaha;

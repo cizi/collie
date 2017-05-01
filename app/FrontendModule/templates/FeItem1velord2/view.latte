@@ -3,9 +3,11 @@
 
 	<div class="myContent">
 		<div class="row">
-			<h3 class="dogViewTitle">{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</h3>
 			<div class="col-md-6 col-lg-9">
 				<table class="table table-striped dogView">
+					<tr>
+						<th colspan="2" class="viewHeader viewHeaderTitle">{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</th>
+					</tr>
 					<tr>
 						<th>{=DOG_FORM_BREED}:</th>
 						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getPlemeno())}</td>

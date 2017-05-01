@@ -481,6 +481,7 @@ define("DOG_TABLE_HEADER_HEIGHT", 'výška');
 define("DOG_TABLE_HEADER_FULLTEXT", 'fullextové hledání');
 define("DOG_TABLE_DOG_DELETED", 'Pes úspěšně smazán.');
 define("DOG_TABLE_DOG_DELETED_FAILED", 'Při mazání psa došlo k chybě.');
+define("DOG_TABLE_DOG_DETAIL", 'Detail psa');
 define("DOG_TABLE_DOG_EDIT", 'Editace psa');
 define("DOG_TABLE_DOG_DELETE", 'Smazat psa');
 define("DOG_TABLE_DOG_DELETATION_TITLE", 'Smazání psa');
@@ -533,6 +534,8 @@ define("DOG_FORM_HEALTH_SUMMARY", 'Výsledek');
 define("DOG_FORM_HEALTH_DATE", 'Datum');
 define("DOG_FORM_HEALTH_VET", 'Veterinář');
 define("DOG_FORM_HEALTH", 'Zdraví');
+define("DOG_FORM_HEIGHT_NUMBER", 'Výška psa musí být číslo na dvě desetinná místa (v cm), oddělovačem je tečka (.)!');
+define("DOG_FORM_WEIGHT_NUMBER", 'Váha psa musí být číslo na dvě desetinná místa (v kg), oddělovačem je tečka (.)!');
 
 define("DOG_FORM_TITLES", 'Tituly');
 define("DOG_FORM_BON_TEXT", 'Bonitační posudek');

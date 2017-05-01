@@ -461,6 +461,7 @@ define("DOG_TABLE_HEADER_HEIGHT", 'height');
 define("DOG_TABLE_HEADER_FULLTEXT", 'searching');
 define("DOG_TABLE_DOG_DELETED", 'Dog successfully deleted.');
 define("DOG_TABLE_DOG_DELETED_FAILED", 'An error occurred during dog deleting, try again later.');
+define("DOG_TABLE_DOG_DETAIL", 'Detail of the dog');
 define("DOG_TABLE_DOG_EDIT", 'Edit dog');
 define("DOG_TABLE_DOG_DELETE", 'Delete dog');
 define("DOG_TABLE_DOG_DELETATION_TITLE", 'Dog erase');
@@ -513,6 +514,8 @@ define("DOG_FORM_HEALTH_SUMMARY", 'Summary');
 define("DOG_FORM_HEALTH_DATE", 'Date');
 define("DOG_FORM_HEALTH_VET", 'Vet');
 define("DOG_FORM_HEALTH", 'Health');
+define("DOG_FORM_HEIGHT_NUMBER", 'Height of the dog must be a valid number with two decimals (in cm), separator is point (.)!');
+define("DOG_FORM_WEIGHT_NUMBER", 'Weight of the dog must be a valid number with two decimals (in kg), separotor is point (.)!');
 
 define("DOG_FORM_TITLES", 'Titles');
 define("DOG_FORM_BON_TEXT", 'Breeding report');
