@@ -286,7 +286,11 @@ div.colorExample {
 	margin: 10px;
 	display: block;
 }
-
+.dogPicSmall{
+	width: 130px;
+	margin: 10px;
+	display: block;
+}
 .paginator{
 	margin: auto;
 	text-align: center;
@@ -316,7 +320,10 @@ div.colorExample {
 	font-size: 12px!important;
 }
 .dogView tr th {
-	width: 30%;
+	width: 25%;
+}
+.dogView tr td {
+	width: 25%;
 }
 .dogSiblings {
 	font-size: 12px!important;
@@ -362,4 +369,7 @@ table.viewHeader{
 }
 .black{
 	color: black;
+}
+.dogViewSingleContent{
+	margin: 10px 30px;
 }

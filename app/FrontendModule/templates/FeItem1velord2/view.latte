@@ -6,53 +6,47 @@
 			<div class="col-md-6 col-lg-9">
 				<table class="table table-striped dogView">
 					<tr>
-						<th colspan="2" class="viewHeader viewHeaderTitle">{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</th>
+						<th colspan="4" class="viewHeader viewHeaderTitle">{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</th>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_BREED}:</th>
 						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getPlemeno())}</td>
-					</tr>
-					<tr>
+
 						<th>{=DOG_FORM_FUR}:</th>
 						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getBarva())}, {$enumRepo->findEnumItemByOrder($lang, $dog->getSrst())}</td>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_SEX}:</th>
 						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getPohlavi())}</td>
-					</tr>
-					<tr>
+
 						<th>{=DOG_FORM_BIRT}:</th>
 						<td>{if $dog->getDatNarozeni() != null}{$dog->getDatNarozeni()->format('d.m.Y')}{/if}</td>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_HEIGHT}:</th>
 						<td>{$dog->getVyska()} cm</td>
-					</tr>
-					<tr>
+
 						<th>{=DOG_FORM_WEIGHT}:</th>
 						<td>{$dog->getVaha()} kg</td>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_NO_OF_REC}:</th>
 						<td>{$dog->getCisloZapisu()}</td>
-					</tr>
-					<tr>
+
 						<th>{=DOG_FORM_NO_OF_CHIP}:</th>
 						<td>{$dog->getCip()}</td>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_NO_OF_REC2}:</th>
 						<td >{$dog->getPCisloZapisu()}</td>
-					</tr>
-					<tr>
+
 						<th>{=DOG_FORM_NO_OF_TATTOO}:</th>
 						<td>{$dog->getTetovani()}</td>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_BON}:</th>
 						<td>{$dog->getBonitace()}</td>
-					</tr>
-					<tr>
+
 						<th>{=DOG_FORM_PIC_UPLOAD_FILE}:</th>
 						<td>
 							{foreach $dogFiles as $file}
@@ -68,8 +62,7 @@
 					<tr>
 						<th>{=DOG_FORM_BREEDING}:</th>
 						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getChovnost())}
-					</tr>
-					<tr>
+
 						<th>{=DOG_FORM_HEALTH}:</th>
 						<td>
 							{foreach $zdravi as $polozka}
@@ -82,8 +75,7 @@
 					<tr>
 						<th>{=DOG_FORM_CHEW}:</th>
 						<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getSkus())}</td>
-					</tr>
-					<tr>
+
 						<th>{=DOG_FORM_TEETH_COM}:</th>
 						<td>{$dog->getZubyKomentar()}</td>
 					</tr>
@@ -91,46 +83,37 @@
 						<th>{=DOG_FORM_BREEDER}:</th>
 						<td>
 						{if $chovatel != null}
-							<b><a href="index.php?action=ulist&amp;ID=7299">{$chovatel->getTitleBefore()} {$chovatel->getName()} {$chovatel->getSurname()} {$chovatel->getTitleAfter()}</a></b>
+							<b><a href="index.php?action=ulist&amp;ID=7299">{$chovatel->getTitleBefore()} {$chovatel->getName()} {$chovatel->getSurname()} {$chovatel->getTitleAfter()}</a></b><br />
+							{var usr = $userRepository->getUser($chovatel->getID())}
+							<b>{=USER_EDIT_STATION_LABEL_SHORT}:</b> {$usr->getStation()}<br />
+							<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($usr->getState())}<br />
+							<b>{=VET_ADDRESS}:</b> {$usr->getCity()}, {$usr->getZip()}<br />
+							<b>{=USER_EDIT_PHONE_LABEL}:</b> {$usr->getPhone()}<br />
+							<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$usr->getEmail()}<br />
+							<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$usr->getWeb()}>{$usr->getWeb()}</a>
 						{/if}
 						</td>
-					</tr>
-					<tr>
+
 						<th>{=DOG_FORM_OWNERS}:</th>
 						<td>
 							{foreach $majitele as $majitel}
 								{$majitel->getTitleBefore()} {$majitel->getName()} {$majitel->getSurname()} {$majitel->getTitleAfter()} <br />
+								{var usr = $userRepository->getUser($majitel->getID())}
+								<b>{=USER_EDIT_STATION_LABEL_SHORT}:</b> {$usr->getStation()}<br />
+								<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($usr->getState())}<br />
+								<b>{=VET_ADDRESS}:</b> {$usr->getCity()}, {$usr->getZip()}<br />
+								<b>{=USER_EDIT_PHONE_LABEL}:</b> {$usr->getPhone()}<br />
+								<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$usr->getEmail()}<br />
+								<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$usr->getWeb()}>{$usr->getWeb()}</a>
 							{/foreach}
 						</td>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_TITLES}:</th>
 						<td> </td>
-					</tr>
-					<tr>
+
 						<th>{=DOG_FORM_BON_TEXT}:</th>
 						<td>{$dog->getPosudek()}</td>
-					</tr>
-					<tr>
-						<th>{=DOG_FORM_SHOWS_TEXT}:</th>
-						<td></td>
-					</tr>
-					<tr>
-						<th>{=DOG_FORM_SHOWS_NEXT_TEXT}:</th>
-						<td></td>
-					</tr>
-					<tr>
-						<th>{=DOG_FORM_SHOWS_EXAMS}:</th>
-						<td>{$dog->getZkousky()}</td>
-					</tr>
-					<tr>
-						<th>{=DOG_FORM_SHOWS_RACES}:</th>
-						<td>{$dog->getZavody()}</td>
-					</tr>
-
-					<tr>
-						<th>{=DOG_FORM_SHOWS_NOTE}:</th>
-						<td>{$dog->getKomentar()}</td>
 					</tr>
 				</table>
 			</div>
@@ -150,7 +133,7 @@
 					<h4>{=DOG_FORM_PICS}</h4>
 					{foreach $dogPics as $dogPic}
 						<a href={$dogPic->getCesta()} data-toggle="lightbox">
-							<img src="{$dogPic->getCesta()}" class="dogEditPic img-fluid" />
+							<img src="{$dogPic->getCesta()}" class="dogPicSmall img-fluid" />
 						</a>
 					{/foreach}
 				{/if}
@@ -293,6 +276,21 @@
 						{/if}
 					{/foreach}
 				</table>
+
+				<div class="viewHeader">{=DOG_FORM_SHOWS_TEXT}</div>
+				{* TODO *}
+
+				<div class="viewHeader">{=DOG_FORM_SHOWS_NEXT_TEXT}</div>
+				<div class="dogViewSingleContent">{$dog->getOceneni()}</div>
+
+				<div class="viewHeader">{=DOG_FORM_SHOWS_NOTE}</div>
+				<div class="dogViewSingleContent">{$dog->getKomentar()}</div>
+
+				<div class="viewHeader">{=DOG_FORM_SHOWS_EXAMS}</div>
+				<div class="dogViewSingleContent">{$dog->getZkousky()}</div>
+
+				<div class="viewHeader">{=DOG_FORM_SHOWS_RACES}</div>
+				<div class="dogViewSingleContent">{$dog->getZavody()}</div>
 			</div>
 		</div>
 	</div>

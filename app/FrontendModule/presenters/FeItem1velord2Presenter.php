@@ -4,6 +4,7 @@ namespace App\FrontendModule\Presenters;
 
 use App\Controller\FileController;
 use App\Enum\DogFileEnum;
+use App\Enum\StateEnum;
 use App\Enum\UserRoleEnum;
 use App\Forms\DogFilterForm;
 use App\Forms\DogForm;
@@ -58,11 +59,6 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 
 	public function startup() {
 		$this->template->amIAdmin = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] == UserRoleEnum::USER_ROLE_ADMINISTRATOR);
-		// odstraním posledně použite mID a oID u rokomene
-		$section = $this->session->getSection(DogRepository::SESSION_LAST_PREDECESSOR);
-		foreach($section as $key => $value) {
-			unset($section->{$key});
-		}
 		parent::startup();
 	}
 
@@ -287,6 +283,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			$this->template->dog = $dog;
 		}
 		$this->template->dogRepository = $this->dogRepository;
+		$this->template->userRepository = $this->userRepository;
+		$this->template->stateEnum = new StateEnum();
 		$this->template->coef = $this->dogRepository->genealogRelationship($dog->getOID(), $dog->getMID());
 		$this->template->coefComment = ((isset($GLOBALS['lastRship']) &&  ($GLOBALS['lastRship'] === false)) ? DOG_FORM_PEDIGREE_COEF_NOT_FULL : "");
 		$this->template->genLev = $genLev;

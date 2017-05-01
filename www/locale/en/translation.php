@@ -99,6 +99,7 @@ define("USER_EDIT_WEB_LABEL", 'WWW');
 define("USER_EDIT_PHONE_LABEL", 'Phone');
 define("USER_EDIT_FAX_LABEL", 'Fax');
 define("USER_EDIT_STATION_LABEL", 'Cattery');
+define("USER_EDIT_STATION_LABEL_SHORT", 'Cattery');
 define("USER_EDIT_BREED_LABEL", 'Breed');
 define("USER_EDIT_SHARING_LABEL", 'Sharing');
 define("USER_EDIT_CLUB", 'Club');

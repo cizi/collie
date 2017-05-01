@@ -756,7 +756,7 @@ class DogRepository extends BaseRepository {
 	 * @return string
 	 */
 	public function genealogDeepPedigree($ID, $max, $lang, Presenter $presenter) {
-		global $pedigree,$tmpColors;
+		global $pedigree;
 		$query = ["SELECT pes.ID AS ID, pes.Jmeno AS Jmeno, pes.oID AS oID, pes.mID AS mID FROM appdata_pes as pes
 										WHERE pes.ID= %i LIMIT 1", $ID];
 		$row = $this->connection->query($query)->fetch()->toArray();
@@ -774,6 +774,10 @@ class DogRepository extends BaseRepository {
 	 * @param string $lang
 	 */
 	private function genealogDPTrace($ID,$level,$max, $lang) {
+		if ($level == 1) {
+			$this->clearPedigreeSession();
+		}
+
 		global $pedigree;
 		if ($level > $max) {
 			return;
@@ -957,5 +961,16 @@ class DogRepository extends BaseRepository {
 	private function setLastPredecessorSession($key, $value) {
 		$section = $this->session->getSection(self::SESSION_LAST_PREDECESSOR);
 		$section->{$key} = $value;
+	}
+
+	/**
+	 * Vyčistím sešnu
+	 */
+	private function clearPedigreeSession() {
+		// odstraním posledně použite mID a oID u rokomene
+		$section = $this->session->getSection(self::SESSION_LAST_PREDECESSOR);
+		foreach($section as $key => $value) {
+			unset($section->{$key});
+		}
 	}
 }
