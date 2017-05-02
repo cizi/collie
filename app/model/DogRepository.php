@@ -460,7 +460,7 @@ class DogRepository extends BaseRepository {
 	 * @param DogOwnerEntity[]
 	 * @param DogFileEntity[]
 	 */
-	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders, array $owners, array $dogFiles) {
+	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders, array $owners, array $dogFiles, $mIdOrOidForNewDog = null) {
 		try {
 			$this->connection->begin();
 			$dogEntity->setPosledniZmena(new DateTime());
@@ -530,6 +530,19 @@ class DogRepository extends BaseRepository {
 			foreach ($dogFiles as $dogFile) {
 				$dogFile->setPID($dogEntity->getID());
 				$this->saveDogFile($dogFile);
+			}
+
+			if ($mIdOrOidForNewDog != null) {	// aktualizujeme potomka o rodiče - pokud je z čeho
+				$descendantDog = $this->getDog($mIdOrOidForNewDog);
+				if ($descendantDog != null) {
+					if ($dogEntity->getPohlavi() == self::MALE_ORDER) {
+						$descendantDog->setOID($dogEntity->getID());
+					} else {
+						$descendantDog->setMID($dogEntity->getID());
+					}
+					$query = ["update appdata_pes set ", $descendantDog->extract(), "where ID=%i", $descendantDog->getID()];
+					$this->connection->query($query);
+				}
 			}
 
 			$this->connection->commit();
@@ -813,9 +826,11 @@ class DogRepository extends BaseRepository {
 	 * @param int $max
 	 * @param string $lang
 	 * @param Presenter $presenter
+	 * @param bool $isUserLoggedIn
 	 * @return string
 	 */
-	public function genealogDeepPedigree($ID, $max, $lang, Presenter $presenter) {
+	public function genealogDeepPedigree($ID, $max, $lang, Presenter $presenter, $isUserLoggedIn) {
+		$this->clearPedigreeSession();
 		global $pedigree;
 		$query = ["SELECT pes.ID AS ID, pes.Jmeno AS Jmeno, pes.oID AS oID, pes.mID AS mID FROM appdata_pes as pes
 										WHERE pes.ID= %i LIMIT 1", $ID];
@@ -824,7 +839,7 @@ class DogRepository extends BaseRepository {
 		$this->genealogDPTrace($row['oID'],1,$max, $lang);
 		$this->genealogDPTrace($row['mID'],1,$max, $lang);
 
-		return $this->genealogShowDeepPTable($max, $presenter);
+		return $this->genealogShowDeepPTable($max, $presenter, $ID, $isUserLoggedIn);
 	}
 
 	/**
@@ -834,10 +849,6 @@ class DogRepository extends BaseRepository {
 	 * @param string $lang
 	 */
 	private function genealogDPTrace($ID,$level,$max, $lang) {
-		if ($level == 1) {
-			$this->clearPedigreeSession();
-		}
-
 		global $pedigree;
 		if ($level > $max) {
 			return;
@@ -880,35 +891,20 @@ class DogRepository extends BaseRepository {
 				'Varieta' => $this->arGet($row,'Varieta'),
 				'TitulyPredJmenem' => $this->arGet($row,'TitulyPredJmenem'),
 				'TitulyZaJmenem' => $this->arGet($row,'TitulyZaJmenem'),
-				'mID' => $this->arGet($row,'mID'),
-				'oID' => $this->arGet($row,'oID'),
-				'Pohlavi' => $this->arGet($row,'Pohlavi'),
-				'Plemeno' => $this->arGet($row,'Plemeno'),
-				'BarvaOrder' => $this->arGet($row,'BarvaOrder'),
 				'DKK' => $DKK,
 				'DLK' => $DLK,
 				'Vyska' => $this->arGet($row,'Vyska'),
 				'zdravi' => $zdravi
 			);
-			$this->setLastPredecessorSession($level . 'mID', $this->arGet($row,'mID'));
-			$this->setLastPredecessorSession($level . 'oID', $this->arGet($row,'oID'));
-			$this->setLastPredecessorSession($level . 'Pohlavi', $this->arGet($row,'Pohlavi'));
-			$this->setLastPredecessorSession($level . 'Plemeno', $this->arGet($row,'Plemeno'));
-			$this->setLastPredecessorSession($level . 'BarvaOrder', $this->arGet($row,'BarvaOrder'));
 
 			$this->genealogDPTrace($row['oID'], $level + 1, $max, $lang);
 			$this->genealogDPTrace($row['mID'], $level + 1, $max, $lang);
 		} else { // predek neexistuje
 			$pedigree[] = array(
 				'Uroven' => $level,
-				'ID' => 0,
+				'ID' => NULL,
 				'Jmeno' => '&nbsp;',
-				'Barva' => '&nbsp;',
-				'mID' => $this->getLastPredecessorSession(($level - 2) . 'mID'),
-				'oID' => $this->getLastPredecessorSession(($level - 2) . 'oID'),
-				'Pohlavi' => $this->getLastPredecessorSession(($level - 1) . 'Pohlavi'),
-				'Plemeno' => $this->getLastPredecessorSession(($level - 2) . 'Plemeno'),
-				'BarvaOrder' => $this->getLastPredecessorSession(($level - 2) . 'BarvaOrder')
+				'Barva' => '&nbsp;'
 			);
 			$this->genealogDPTrace(NULL, $level + 1, $max, $lang);
 			$this->genealogDPTrace(NULL, $level + 1, $max, $lang);
@@ -931,9 +927,11 @@ class DogRepository extends BaseRepository {
 	/**
 	 * @param int $max
 	 * @param Presenter $presenter
+	 * @param int $ID
+	 * @param bool $isUserLoggedIn
 	 * @return string
 	 */
-	private function genealogShowDeepPTable($max, Presenter $presenter) {
+	private function genealogShowDeepPTable($max, Presenter $presenter, $ID, $isUserLoggedIn) {
 		global $pedigree;
 		global $deepMarkArray;
 		global $deepMark;
@@ -953,7 +951,7 @@ class DogRepository extends BaseRepository {
 				$adds[] = $pedigree[$i]['Barva'];
 			}
 			if (isset($pedigree[$i]['Vyska']) && $pedigree[$i]['Vyska'] != '0') {
-				$adds[] = ($pedigree[$i]['Vyska']/10) . ' cm';
+				$adds[] = ($pedigree[$i]['Vyska']) . ' cm';
 			}
 			if (isset($pedigree[$i]['zdravi']) && $pedigree[$i]['zdravi'] != '') {
 				foreach ($pedigree[$i]['zdravi'] as $z) {
@@ -979,14 +977,27 @@ class DogRepository extends BaseRepository {
 				} else {
 					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">
 					<b><a href="' . $presenter->link('view', $pedigree[$i]['ID']) . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds.'</td>';
+					if ($i > 0) {
+						$this->setLastPredecessorSession($pedigree[$i]['Uroven'], $pedigree[$i - 1]['ID']);
+						$this->setLastPredecessorSession($pedigree[$i]['Uroven'] . 'Uroven', $pedigree[$i]['Uroven']);
+					}
 				}
 			} else {
 				$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">';
-				if (($pedigree[$i]['oID'] != "") || ($pedigree[$i]['mID'] != "")) {
-					if ($pedigree[$i]['Pohlavi'] == self::MALE_ORDER) {
-						$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", $pedigree[$i]['oID'], null, $pedigree[$i]['Plemeno'], $pedigree[$i]['BarvaOrder']) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
-					} else if ($pedigree[$i]['Pohlavi'] == self::FEMALE_ORDER) {
-						$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", null, $pedigree[$i]['mID'], $pedigree[$i]['Plemeno'], $pedigree[$i]['BarvaOrder']) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
+				if ($isUserLoggedIn) {
+					if (($i - 1) < 0 || $pedigree[$i]['Uroven'] < 2) {
+						$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", $ID) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
+					} elseif (($pedigree[$i - 1]['ID'] != null)) {
+						$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", $pedigree[$i - 1]['ID']) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
+						$this->setLastPredecessorSession($pedigree[$i]['Uroven'], $pedigree[$i - 1]['ID']);
+						$this->setLastPredecessorSession($pedigree[$i]['Uroven'] . 'Uroven', $pedigree[$i]['Uroven']);
+					} elseif ($this->getLastPredecessorSession($pedigree[$i]['Uroven'] . 'Uroven') == $pedigree[$i]['Uroven']) {
+						if (($this->getLastPredecessorSession($pedigree[$i]['Uroven']-1 . 'Uroven') != null)) {
+							$htmlOutput .= '<a href="' . $presenter->link("addMissingDog",
+									$this->getLastPredecessorSession($pedigree[$i]['Uroven'])) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
+						}
+						$this->clearPedigreeKey($pedigree[$i]['Uroven']);
+						$this->clearPedigreeKey($pedigree[$i]['Uroven'] . 'Uroven');
 					}
 				}
 				$htmlOutput .= '</td>'; // <b>' . $pedigree[$i]['Jmeno'].'</b><br/> '.$adds.'</td>';
@@ -1021,6 +1032,19 @@ class DogRepository extends BaseRepository {
 	private function setLastPredecessorSession($key, $value) {
 		$section = $this->session->getSection(self::SESSION_LAST_PREDECESSOR);
 		$section->{$key} = $value;
+	}
+
+	/**
+	 * Vyčistím sešnu
+	 */
+	private function clearPedigreeKey($wantToDeleteKey) {
+		// odstraním posledně použite mID a oID u rokomene
+		$section = $this->session->getSection(self::SESSION_LAST_PREDECESSOR);
+		foreach($section as $key => $value) {
+			if ($wantToDeleteKey == $key) {
+				unset($section->{$key});
+			}
+		}
 	}
 
 	/**

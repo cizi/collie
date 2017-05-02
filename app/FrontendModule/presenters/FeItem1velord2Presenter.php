@@ -288,7 +288,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->template->coef = $this->dogRepository->genealogRelationship($dog->getOID(), $dog->getMID());
 		$this->template->coefComment = ((isset($GLOBALS['lastRship']) &&  ($GLOBALS['lastRship'] === false)) ? DOG_FORM_PEDIGREE_COEF_NOT_FULL : "");
 		$this->template->genLev = $genLev;
-		$this->template->pedigreeTable = $this->dogRepository->genealogDeepPedigree($dog->getID(), $genLev, $lang, $this->presenter);
+		$this->template->pedigreeTable = $this->dogRepository->genealogDeepPedigree($dog->getID(), $genLev, $lang, $this->presenter, $this->getUser()->isLoggedIn());
 
 		$this->template->dogPics = $this->dogRepository->findDogPics($id);
 		$this->template->dogFiles = $this->dogRepository->findDogFiles($id);
@@ -394,7 +394,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			}
 			$dogEntity->hydrate($formData);
 
-			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files);
+			$mIdOrOidForNewDog = (isset($formData['mIdOrOidForNewDog']) ? $formData['mIdOrOidForNewDog'] : null);
+			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files, $mIdOrOidForNewDog);
 			$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			$this->redirect("default");
 		} catch (\Exception $e) {
@@ -408,10 +409,9 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	}
 
 	/**
-	 * @param int $oID
-	 * @param int $mID
+	 * @param int $pID
 	 */
-	public function actionAddMissingDog($oID, $mID, $plemeno, $barva) {
+	public function actionAddMissingDog($pID) {
 		if ($this->template->amIAdmin == false) {	// pokud nejsem admin nemůžu sem
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("default");
@@ -425,17 +425,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->template->oIDFound = true;
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->dogPics = [];
-		if ($mID != "") {
-			$this['dogForm']['mID']->setDefaultValue($mID);
-		}
-		if ($oID != "") {
-			$this['dogForm']['oID']->setDefaultValue($oID);
-		}
-		if ($plemeno != "") {
-			$this['dogForm']['Plemeno']->setDefaultValue($plemeno);
-		}
-		if ($barva != "") {
-			$this['dogForm']['Barva']->setDefaultValue($barva);
+		if ($pID != "") {
+			$this['dogForm']->addHidden("mIdOrOidForNewDog", $pID);
 		}
 	}
 }

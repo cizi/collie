@@ -95,12 +95,12 @@ class DogForm {
 
 		$form->addText("Vyska", DOG_FORM_HEIGHT)
 			->setAttribute("class", "form-control")
-			->addRule(Form::PATTERN, DOG_FORM_HEIGHT_NUMBER, '[0-9]*\.[0-9]{2}')
+			->addRule(Form::PATTERN, DOG_FORM_HEIGHT_NUMBER, '\d*(?:\.\d+)?')
 			->setAttribute("placeholder", DOG_FORM_HEIGHT);
 
 		$form->addText("Vaha", DOG_FORM_WEIGHT)
 			->setAttribute("class", "form-control")
-			->addRule(Form::PATTERN, DOG_FORM_WEIGHT_NUMBER,  '[0-9]*\.[0-9]{2}')
+			->addRule(Form::PATTERN, DOG_FORM_WEIGHT_NUMBER,  '\d*(?:\.\d+)?')
 			->setAttribute("placeholder", DOG_FORM_WEIGHT);
 
 		$form->addText("DatUmrti", DOG_FORM_DEAD)
