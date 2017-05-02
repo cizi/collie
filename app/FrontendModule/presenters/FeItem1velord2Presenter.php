@@ -304,6 +304,23 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	}
 
 	/**
+	 * @param int $id
+	 */
+	public function actionUserView($id) {
+		$user = $this->userRepository->getUser($id);
+		if ($user != null) {
+			$this->template->lang = $this->langRepository->getCurrentLang($this->session);
+			$this->template->user = $user;
+			$this->template->stateEnum = new StateEnum();
+			$this->template->enumRepo = $this->enumerationRepository;
+			$this->template->dogRepository = $this->dogRepository;
+			$this->template->dogsByBreeder = $this->dogRepository->findDogsByBreeder($id);
+			$this->template->dogByCurrentOwner = $this->dogRepository->findDogsByCurrentOwner($id);
+			$this->template->dogByPreviousOwner = $this->dogRepository->findDogsByPreviousOwner($id);
+		}
+	}
+
+	/**
 	 * @param Form $form
 	 */
 	public function saveDog(Form $form){

@@ -586,3 +586,8 @@ define("MATING_FORM_DISCLAIMER", 'Podpisem stvrzuji, že pes je přeregistrován
 define("MATING_FORM_SIGNATURE", 'podpis');
 define("MATING_FORM_OVERAGAIN", 'Začít znovu');
 define("MATING_FORM_GENERATE", 'Generovat PDF');
+
+// user view
+define("USER_VIEW_OWNER", 'Je uveden/a jako vlastník u');
+define("USER_VIEW_OWNER_PREVIOUS", 'Je uveden/a jako dřívější vlastník u');
+define("USER_VIEW_BREEDER", 'Odchoval/a');

@@ -566,3 +566,7 @@ define("MATING_FORM_DISCLAIMER", 'Signature confirmation, that the dog registere
 define("MATING_FORM_SIGNATURE", 'signature');
 define("MATING_FORM_OVERAGAIN", 'Start again');
 define("MATING_FORM_GENERATE", 'Generate PDF');
+
+define("USER_VIEW_OWNER", 'User is owner for');
+define("USER_VIEW_OWNER_PREVIOUS", 'User is previous owner for');
+define("USER_VIEW_BREEDER", 'Breeder');

@@ -83,7 +83,7 @@
 						<th>{=DOG_FORM_BREEDER}:</th>
 						<td>
 						{if $chovatel != null}
-							<b><a href="index.php?action=ulist&amp;ID=7299">{$chovatel->getTitleBefore()} {$chovatel->getName()} {$chovatel->getSurname()} {$chovatel->getTitleAfter()}</a></b><br />
+							<b><a href={link userView, $chovatel->getID()}>{$chovatel->getTitleBefore()} {$chovatel->getName()} {$chovatel->getSurname()} {$chovatel->getTitleAfter()}</a></b><br />
 							{var usr = $userRepository->getUser($chovatel->getID())}
 							<b>{=USER_EDIT_STATION_LABEL_SHORT}:</b> {$usr->getStation()}<br />
 							<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($usr->getState())}<br />
