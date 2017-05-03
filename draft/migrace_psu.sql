@@ -180,6 +180,28 @@ FROM zdravi;
 # RENAME TABLE zdravi TO migrated_zdravi;
 
 ###############################################################################
- 
+
+############### ROZHODCI #################
+
+INSERT INTO appdata_rozhodci (
+  `ID`,
+  `Jmeno`,
+  `Prijmeni`,
+  `TitulyPrefix`,
+  `TitulySuffix`,
+  `Ulice`,
+  `Mesto`,
+  `PSC`
+)
+SELECT `ID`,
+  `Jmeno`,
+  `Prijmeni`,
+  `TitulyPrefix`,
+  `TitulySuffix`,
+  `Ulice`,
+  `Mesto`,
+  `PSC`
+FROM rozhodci;
+#RENAME TABLE rozhodci to migrated_rozhodci;
   
 SET FOREIGN_KEY_CHECKS=1;

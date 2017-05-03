@@ -570,3 +570,17 @@ define("MATING_FORM_GENERATE", 'Generate PDF');
 define("USER_VIEW_OWNER", 'User is owner for');
 define("USER_VIEW_OWNER_PREVIOUS", 'User is previous owner for');
 define("USER_VIEW_BREEDER", 'Breeder');
+
+// referees
+define("REFEREE_MENU", 'Referees');
+define("REFEREE_TITLE", 'Referees');
+define("REFEREE_INFO", 'Here you are able to manage details of referee used in the application.');
+define("REFEREE_NAME", 'Name');
+define("REFEREE_ADDRESS", 'Address');
+define("REFEREE_ADD", 'Add referee');
+define("REFEREE_EDIT", 'Edit referee');
+define("REFEREE_DELETE", 'Delete referee');
+define("REFEREE_DELETE_MODAL_HEADER", 'Referee delete');
+define("REFEREE_DELETE_MODAL_QUESTION", 'Are you really want to delete the referee?');
+define("REFEREE_ADDED", 'Referee successfully added');
+define("REFEREE_ADDED_FAILED", 'An error occurred, the data haven not been proceed');

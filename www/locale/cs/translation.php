@@ -591,3 +591,17 @@ define("MATING_FORM_GENERATE", 'Generovat PDF');
 define("USER_VIEW_OWNER", 'Je uveden/a jako vlastník u');
 define("USER_VIEW_OWNER_PREVIOUS", 'Je uveden/a jako dřívější vlastník u');
 define("USER_VIEW_BREEDER", 'Odchoval/a');
+
+// rozhodčí
+define("REFEREE_MENU", 'Rozhodčí');
+define("REFEREE_TITLE", 'Rozhodčí');
+define("REFEREE_INFO", 'Pořizováni a editace rozhodčích, které je možné následně používat v aplikaci.');
+define("REFEREE_NAME", 'Jméno');
+define("REFEREE_ADDRESS", 'Adresa');
+define("REFEREE_ADD", 'Přidat rozhodčího');
+define("REFEREE_EDIT", 'Editace rozhodčího');
+define("REFEREE_DELETE", 'Smazání rozhodčího');
+define("REFEREE_DELETE_MODAL_HEADER", 'Smazání rozhodčího');
+define("REFEREE_DELETE_MODAL_QUESTION", 'Opravdu smazat rozhodčího?');
+define("REFEREE_ADDED", 'Rozhodčí úspěšně vložen');
+define("REFEREE_ADDED_FAILED", 'Při uložení došlo k chybě - záznam nebyl uložen');
