@@ -977,33 +977,30 @@ class DogRepository extends BaseRepository {
 				} else {
 					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">
 					<b><a href="' . $presenter->link('view', $pedigree[$i]['ID']) . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds.'</td>';
-					if ($i > 0) {
-						$this->setLastPredecessorSession($pedigree[$i]['Uroven'], $pedigree[$i - 1]['ID']);
+					if (($pedigree[$i]['Uroven'] > 0) && ($pedigree[$i]['Uroven'] != $maxLevel)) {
+						$this->setLastPredecessorSession($pedigree[$i]['Uroven'], $pedigree[$i]['ID']);
 						$this->setLastPredecessorSession($pedigree[$i]['Uroven'] . 'Uroven', $pedigree[$i]['Uroven']);
 					}
 				}
 			} else {
-				$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">';
+				$htmlOutput .= '<td rowspan="' . pow(2, $maxLevel - $pedigree[$i]['Uroven']) . '">';
 				if ($isUserLoggedIn) {
-					if (($i - 1) < 0 || $pedigree[$i]['Uroven'] < 2) {
+					if ($pedigree[$i]['Uroven'] == 1) {
 						$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", $ID) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
-					} elseif (($pedigree[$i - 1]['ID'] != null)) {
-						$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", $pedigree[$i - 1]['ID']) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
-						$this->setLastPredecessorSession($pedigree[$i]['Uroven'], $pedigree[$i - 1]['ID']);
-						$this->setLastPredecessorSession($pedigree[$i]['Uroven'] . 'Uroven', $pedigree[$i]['Uroven']);
-					} elseif ($this->getLastPredecessorSession($pedigree[$i]['Uroven'] . 'Uroven') == $pedigree[$i]['Uroven']) {
-						if (($this->getLastPredecessorSession($pedigree[$i]['Uroven']-1 . 'Uroven') != null)) {
-							$htmlOutput .= '<a href="' . $presenter->link("addMissingDog",
-									$this->getLastPredecessorSession($pedigree[$i]['Uroven'])) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
+					} else {
+						if ($this->getLastPredecessorSession($pedigree[$i]['Uroven'] - 1) != null) {
+							$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", $this->getLastPredecessorSession($pedigree[$i]['Uroven'] - 1)) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
 						}
-						$this->clearPedigreeKey($pedigree[$i]['Uroven']);
-						$this->clearPedigreeKey($pedigree[$i]['Uroven'] . 'Uroven');
 					}
+					for ($y = ($pedigree[$i]['Uroven']); $y <= $maxLevel; $y++) {	// jakmile jsem tady už jednou vypsal zbylá data nepotřebuji
+						$this->clearPedigreeKey($y);
+						$this->clearPedigreeKey($y . 'Uroven');
+					}
+					$htmlOutput .= '</td>'; // <b>' . $pedigree[$i]['Jmeno'].'</b><br/> '.$adds.'</td>';
 				}
-				$htmlOutput .= '</td>'; // <b>' . $pedigree[$i]['Jmeno'].'</b><br/> '.$adds.'</td>';
-			}
-			if ($pedigree[$i]['Uroven'] == $maxLevel) {
-				$htmlOutput .= '</tr>';
+				if ($pedigree[$i]['Uroven'] == $maxLevel) {
+					$htmlOutput .= '</tr>';
+				}
 			}
 		}
 		$htmlOutput .= "</table>";
