@@ -14,6 +14,7 @@ class DogFilterForm {
 	const DOG_FILTER_PROB_DKK = "DOG_FILTER_PROB_DKK";
 	const DOG_FILTER_PROB_DLK = "DOG_FILTER_PROB_DLK";
 	const DOG_FILTER_HEALTH = "DOG_FILTER_HEALTH";
+	const DOG_FILTER_HEALTH_TEXT = "DOG_FILTER_HEALTH_TEXT";
 	const DOG_FILTER_LAND = "DOG_FILTER_LAND";
 	const DOG_FILTER_BREEDER = "DOG_FILTER_BREEDER";
 	const DOG_FILTER_EXAM = "DOG_FILTER_EXAM";
@@ -86,6 +87,9 @@ class DogFilterForm {
 
 		$zdravi = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($langCurrent, 14);
 		$form->addSelect(self::DOG_FILTER_HEALTH, DOG_TABLE_HEADER_HEALTH, $zdravi)
+			->setAttribute("class", "form-control");
+
+		$form->addText(self::DOG_FILTER_HEALTH_TEXT, DOG_TABLE_HEADER_HEALTH_TEXT)
 			->setAttribute("class", "form-control");
 
 		$statesBase = new StateEnum();

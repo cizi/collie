@@ -473,6 +473,7 @@ define("DOG_TABLE_HEADER_BREEDING", 'chovnost');
 define("DOG_TABLE_HEADER_PROB_DKK", 'DKK');
 define("DOG_TABLE_HEADER_PROB_DLK", 'DLK');
 define("DOG_TABLE_HEADER_HEALTH", 'zdraví');
+define("DOG_TABLE_HEADER_HEALTH_TEXT", 'zdraví výsledek');
 define("DOG_TABLE_HEADER_MOTHER", 'matka');
 define("DOG_TABLE_HEADER_FATHER", 'otec');
 define("DOG_TABLE_HEADER_LAND", 'země');

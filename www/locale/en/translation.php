@@ -453,6 +453,7 @@ define("DOG_TABLE_HEADER_BREEDING", 'breeding');
 define("DOG_TABLE_HEADER_PROB_DKK", 'DKK');
 define("DOG_TABLE_HEADER_PROB_DLK", 'DLK');
 define("DOG_TABLE_HEADER_HEALTH", 'health');
+define("DOG_TABLE_HEADER_HEALTH_TEXT", 'health result');
 define("DOG_TABLE_HEADER_MOTHER", 'mother');
 define("DOG_TABLE_HEADER_FATHER", 'father');
 define("DOG_TABLE_HEADER_LAND", 'land');

@@ -226,7 +226,7 @@ class DogRepository extends BaseRepository {
 			unset($filter[DogFilterForm::DOG_FILTER_LAND]);
 		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_BREEDER])) {
-			$return .= sprintf("ac.uID = %d", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_BREEDER]));
+			$return .= sprintf("ac.uID = %d", $filter[DogFilterForm::DOG_FILTER_BREEDER]);
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_BREEDER]);
 		}
@@ -236,9 +236,14 @@ class DogRepository extends BaseRepository {
 			unset($filter["Jmeno"]);
 		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH])) {
-			$return .= sprintf("az.Typ = %d", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_HEALTH]));
+			$return .= sprintf("az.Typ = %d", $filter[DogFilterForm::DOG_FILTER_HEALTH]);
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
+		}
+		if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT])) {
+			$return .= sprintf("az.Vysledek = %s", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]));
+			$return .= (count($filter) > 1 ? " and " : "");
+			unset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]);
 		}
 
 		if (isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]) || isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK])) {
@@ -266,10 +271,9 @@ class DogRepository extends BaseRepository {
 			unset($filter[DogFilterForm::DOG_FILTER_BIRTDATE]);
 		}
 
-
 		$i = 0;
 		foreach ($filter as $key => $value) {
-			$return .= $key . "='" . $value . "'";
+			$return .= sprintf("%s = %s", $key, $dbDriver->escapeText($value));
 			if (($i+1) != count($filter)) {
 				$return .= " and ";
 			}
