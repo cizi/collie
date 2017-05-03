@@ -606,3 +606,21 @@ define("REFEREE_DELETE_MODAL_HEADER", 'Smazání rozhodčího');
 define("REFEREE_DELETE_MODAL_QUESTION", 'Opravdu smazat rozhodčího?');
 define("REFEREE_ADDED", 'Rozhodčí úspěšně vložen');
 define("REFEREE_ADDED_FAILED", 'Při uložení došlo k chybě - záznam nebyl uložen');
+
+// výstavy
+define("SHOW_MENU", 'Výstavy');
+define("SHOW_TITLE", 'Výstavy');
+define("SHOW_INFO", 'Ve zde je možné založit výstavu, editovat ji nebo zapsat výsledky');
+define("SHOW_TABLE_TYPE", 'Typ');
+define("SHOW_TABLE_DATE", 'Datum');
+define("SHOW_TABLE_NAME", 'Název');
+define("SHOW_TABLE_PLACE", 'Místo');
+define("SHOW_TABLE_DONE", 'Hotovo');
+define("SHOW_TABLE_REFEREE", 'Rozhodčí');
+define("SHOW_TABLE_ADD_SHOW", 'Přidat výstavu');
+define("SHOW_TABLE_DETAIL", 'Detail výstavy');
+define("SHOW_TABLE_EDIT", 'Editace výstavy');
+define("SHOW_TABLE_DELETE", 'Smazání výstavy');
+define("SHOW_TABLE_DELETE_SHOW_HEADER", 'Smazání výstavy');
+define("SHOW_TABLE_DELETE_SHOW_INFO", 'Opravdu chcete smazat výstavu?');
+

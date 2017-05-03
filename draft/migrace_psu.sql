@@ -203,5 +203,39 @@ SELECT `ID`,
   `PSC`
 FROM rozhodci;
 #RENAME TABLE rozhodci to migrated_rozhodci;
-  
+
+#################################################
+
+###################### VYSTAVA ##################
+ INSERT INTO appdata_vystava (
+  `ID`,
+  `Typ`,
+  `Datum`,
+  `Nazev`,
+  `Misto`,
+  `Hotovo`,
+  `Rozhodci`
+)
+SELECT `ID`,
+  CASE `Typ`
+    WHEN 'M' THEN 92
+    WHEN 'N' THEN 93
+    WHEN 'O' THEN 94
+    WHEN 'K' THEN 95
+    WHEN 'L' THEN 96
+    WHEN 'S' THEN 97
+    WHEN 'W' THEN 98
+    WHEN 'E' THEN 99
+    WHEN 'D' THEN 100
+    WHEN 'B' THEN 101
+  END,
+  `Datum`,
+  `Nazev`,
+  `Misto`,
+  `Hotovo`,
+  IF(`Rozhodci` = 0, NULL, `Rozhodci`)
+FROM vystava;
+#RENAME TABLE vystava to migrated_vystava;
+############################################
+
 SET FOREIGN_KEY_CHECKS=1;

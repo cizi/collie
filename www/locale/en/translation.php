@@ -585,3 +585,20 @@ define("REFEREE_DELETE_MODAL_HEADER", 'Referee delete');
 define("REFEREE_DELETE_MODAL_QUESTION", 'Are you really want to delete the referee?');
 define("REFEREE_ADDED", 'Referee successfully added');
 define("REFEREE_ADDED_FAILED", 'An error occurred, the data haven not been proceed');
+
+// shows
+define("SHOW_MENU", 'Shows');
+define("SHOW_TITLE", 'Shows');
+define("SHOW_INFO", 'Here you can add, edit, delete or manage show activity in the applicaion.');
+define("SHOW_TABLE_TYPE", 'Type');
+define("SHOW_TABLE_DATE", 'Date');
+define("SHOW_TABLE_NAME", 'Title');
+define("SHOW_TABLE_PLACE", 'Place');
+define("SHOW_TABLE_DONE", 'Done');
+define("SHOW_TABLE_REFEREE", 'Rozhodčí');
+define("SHOW_TABLE_ADD_SHOW", 'Add show');
+define("SHOW_TABLE_DETAIL", 'Show detail');
+define("SHOW_TABLE_EDIT", 'Edit show');
+define("SHOW_TABLE_DELETE", 'Delete show');
+define("SHOW_TABLE_DELETE_SHOW_HEADER", 'Delete show');
+define("SHOW_TABLE_DELETE_SHOW_INFO", 'Are you really want to delete the show?');
