@@ -235,16 +235,17 @@ class DogRepository extends BaseRepository {
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter["Jmeno"]);
 		}
-		if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH])) {
+		if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH])) {	// pokud mám zdraví omezím výběr
 			$return .= sprintf("az.Typ = %d", $filter[DogFilterForm::DOG_FILTER_HEALTH]);
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
+
+			if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT])) { // ale musím připojit vysledek
+				$return .= sprintf("az.Vysledek = %s", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]));
+				$return .= (count($filter) > 1 ? " and " : "");
+			}
 		}
-		if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT])) {
-			$return .= sprintf("az.Vysledek = %s", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]));
-			$return .= (count($filter) > 1 ? " and " : "");
-			unset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]);
-		}
+		unset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]);	// tohle musím pro unsetnout vždy, protože když to někdo vyplní a nevybere typ zdravi tak je to bezpředmětný
 
 		if (isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]) || isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK])) {
 			$dkk = $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DKK]);
@@ -830,10 +831,10 @@ class DogRepository extends BaseRepository {
 	 * @param int $max
 	 * @param string $lang
 	 * @param Presenter $presenter
-	 * @param bool $isUserLoggedIn
+	 * @param bool $isUserAdmin
 	 * @return string
 	 */
-	public function genealogDeepPedigree($ID, $max, $lang, Presenter $presenter, $isUserLoggedIn) {
+	public function genealogDeepPedigree($ID, $max, $lang, Presenter $presenter, $isUserAdmin) {
 		$this->clearPedigreeSession();
 		global $pedigree;
 		$query = ["SELECT pes.ID AS ID, pes.Jmeno AS Jmeno, pes.oID AS oID, pes.mID AS mID FROM appdata_pes as pes
@@ -843,7 +844,7 @@ class DogRepository extends BaseRepository {
 		$this->genealogDPTrace($row['oID'],1,$max, $lang);
 		$this->genealogDPTrace($row['mID'],1,$max, $lang);
 
-		return $this->genealogShowDeepPTable($max, $presenter, $ID, $isUserLoggedIn);
+		return $this->genealogShowDeepPTable($max, $presenter, $ID, $isUserAdmin);
 	}
 
 	/**
@@ -932,10 +933,10 @@ class DogRepository extends BaseRepository {
 	 * @param int $max
 	 * @param Presenter $presenter
 	 * @param int $ID
-	 * @param bool $isUserLoggedIn
+	 * @param bool $isUserAdmin
 	 * @return string
 	 */
-	private function genealogShowDeepPTable($max, Presenter $presenter, $ID, $isUserLoggedIn) {
+	private function genealogShowDeepPTable($max, Presenter $presenter, $ID, $isUserAdmin) {
 		global $pedigree;
 		global $deepMarkArray;
 		global $deepMark;
@@ -975,12 +976,13 @@ class DogRepository extends BaseRepository {
 			}
 
 			if ($pedigree[$i]['ID'] != NULL) {
+				$link = ($isUserAdmin ? $presenter->link('edit', $pedigree[$i]['ID']) : $presenter->link('view', $pedigree[$i]['ID']));
 				if ($deepMark and in_array($pedigree[$i]['ID'], $deepMarkArray)) {
 					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'" style="background:#CDA265">'
-					. '<b><a href="' . $presenter->link('view', $pedigree[$i]['ID']) . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds . '</td>';
+					. '<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds . '</td>';
 				} else {
 					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">
-					<b><a href="' . $presenter->link('view', $pedigree[$i]['ID']) . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds.'</td>';
+					<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds.'</td>';
 					if (($pedigree[$i]['Uroven'] > 0) && ($pedigree[$i]['Uroven'] != $maxLevel)) {
 						$this->setLastPredecessorSession($pedigree[$i]['Uroven'], $pedigree[$i]['ID']);
 						$this->setLastPredecessorSession($pedigree[$i]['Uroven'] . 'Uroven', $pedigree[$i]['Uroven']);
@@ -988,7 +990,7 @@ class DogRepository extends BaseRepository {
 				}
 			} else {
 				$htmlOutput .= '<td rowspan="' . pow(2, $maxLevel - $pedigree[$i]['Uroven']) . '">';
-				if ($isUserLoggedIn) {
+				if ($isUserAdmin) {
 					if ($pedigree[$i]['Uroven'] == 1) {
 						$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", $ID) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
 					} else {
