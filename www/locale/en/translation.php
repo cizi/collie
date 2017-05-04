@@ -621,3 +621,12 @@ define("SHOW_DOG_FORM_DOG_TITLES_ADDON", 'Additions');
 define("SHOW_REFEREE_FORM_REFEREE", 'Referee');
 define("SHOW_REFEREE_FORM_CLASS", 'Class');
 define("SHOW_REFEREE_FORM_BREED", 'Breed');
+
+define("SHOW_DONE", 'Yes');
+define("SHOW_UNDONE", 'No');
+define("REFEREE_EMPTY_SAVE", 'No data to save. Please, choose at least a referee, a breed and a class!');
+define("REFEREE_SAVED", 'Referee of the show has been saved');
+define("REFEREE_DELETED", 'Item of the referee has been deleted');
+define("REFEREE_SAVED_FAILED", 'An error occurred during request');
+define("SHOW_ITEM_DELETE_HEADER", 'Delete item');
+define("SHOW_ITEM_DELETE_QUESTION", 'Are you really want to delete the item?');

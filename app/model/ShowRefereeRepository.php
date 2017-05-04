@@ -37,6 +37,25 @@ class ShowRefereeRepository extends BaseRepository {
 	}
 
 	/**
+	 * @param int $vID
+	 * @param int $rID
+	 * @param array $refereees
+	 */
+	public function saveReferees($vID, $rID, array $refereees) {
+		try {
+			$this->connection->begin();
+			$this->deleteByVIDAndRID($vID, $rID);
+			/** @var ShowRefereeEntity $referee */
+			foreach ($refereees as $referee) {
+				$this->save($referee);
+			}
+			$this->connection->commit();
+		} catch (\Exception $e) {
+			$this->connection->rollback();
+		}
+	}
+
+	/**
 	 * @param $id
 	 * @return bool
 	 */
@@ -44,6 +63,21 @@ class ShowRefereeRepository extends BaseRepository {
 		$return = false;
 		if (!empty($id)) {
 			$query = ["delete from appdata_vystava_rozhodci where ID = %i", $id ];
+			$return = ($this->connection->query($query) == 1 ? true : false);
+		}
+
+		return $return;
+	}
+
+	/**
+	 * @param int $vID
+	 * @param int $rID
+	 * @return bool
+	 */
+	public function deleteByVIDAndRID($vID, $rID) {
+		$return = false;
+		if (!empty($vID) && !empty($rID)) {
+			$query = ["delete from appdata_vystava_rozhodci where vID = %i and rID = %i", $vID, $rID];
 			$return = ($this->connection->query($query) == 1 ? true : false);
 		}
 

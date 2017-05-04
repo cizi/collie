@@ -4,6 +4,8 @@ namespace App\Model\Entity;
 
 class ShowRefereeEntity {
 
+	const NOT_SELECTED = "-";
+
 	/** @var  int */
 	private $ID;
 

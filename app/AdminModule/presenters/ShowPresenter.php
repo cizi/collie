@@ -6,6 +6,7 @@ use App\Forms\ShowDogForm;
 use App\Forms\ShowForm;
 use App\Forms\ShowRefereeForm;
 use App\Model\Entity\ShowEntity;
+use App\Model\Entity\ShowRefereeEntity;
 use App\Model\EnumerationRepository;
 use App\Model\RefereeRepository;
 use App\Model\ShowDogRepository;
@@ -70,11 +71,16 @@ class ShowPresenter extends SignPresenter {
 		$this->showRefereeRepository = $showRefereeRepository;
 	}
 
-	public function actionDefault() {
+	public function startup() {
+		parent::startup();
 		$this->template->lang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->enumRepo= $this->enumerationRepository;
 		$this->template->shows = $this->showRepository->findShows();
 		$this->template->refereeRepository = $this->refereeRepository;
+	}
+
+	public function actionDefault() {
+
 	}
 
 	/**
@@ -97,7 +103,99 @@ class ShowPresenter extends SignPresenter {
 
 
 	public function actionDetail($id) {
+		$this->template->show = $this->showRepository->getShow($id);
+		$this->template->referees = $this->showRefereeRepository->findRefereeByShow($id);
+		$this->template->dogs = [];
 		
+	}
+
+	/**
+	 * @param int $id
+	 * @param int $vID
+	 */
+	public function actionDeleteShowReferee($id, $vID) {
+		if ($this->showRefereeRepository->delete($id)) {
+			$this->flashMessage(REFEREE_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(REFEREE_SAVED_FAILED, "alert-danger");
+		}
+		$this->redirect("detail", $vID);
+	}
+
+	public function actionEditShowReferee($id) {
+		$this['showRefereeForm']['vID']->setDefaultValue($id);
+
+	}
+
+	public function actionEditShowDog($id) {
+		
+	}
+
+	public function createComponentShowRefereeForm() {
+		$form = $this->showRefereeForm->create($this->link("detail"), $this->langRepository->getCurrentLang($this->session));
+		$form->onSubmit[] = $this->saveShowReferee;
+
+		$renderer = $form->getRenderer();
+		$renderer->wrappers['controls']['container'] = NULL;
+		$renderer->wrappers['pair']['container'] = 'div class=form-group';
+		$renderer->wrappers['pair']['.error'] = 'has-error';
+		$renderer->wrappers['control']['container'] = 'div class=col-md-6';
+		$renderer->wrappers['label']['container'] = 'div class="col-md-4 control-label margin5"';
+		$renderer->wrappers['control']['description'] = 'span class=help-block';
+		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
+
+		return $form;
+	}
+
+	/**
+	 * @param Form $form
+	 */
+	public function saveShowReferee(Form $form) {
+		$arrayValues = $form->getHttpData();
+		$refereesToSave = [];
+		try {
+			if (ShowRefereeEntity::NOT_SELECTED != $arrayValues['rID']) {
+				if (isset($arrayValues['Plemeno']) && isset($arrayValues['Trida'])) {
+					foreach ($arrayValues['Plemeno'] as $key => $value) {
+						foreach ($arrayValues['Trida'] as $keyTrida => $valueTrida) {
+							$ref = new ShowRefereeEntity();
+							$ref->setPlemeno($key);
+							$ref->setRID($arrayValues['rID']);
+							$ref->setTrida($keyTrida);
+							$ref->setVID($arrayValues['vID']);
+							$refereesToSave[] = $ref;
+						}
+					}
+					$this->showRefereeRepository->saveReferees($arrayValues['vID'], $arrayValues['rID'], $refereesToSave);
+					$this->flashMessage(REFEREE_SAVED, "alert-success");
+					$this->redirect("detail", $arrayValues['vID']);
+				}
+			}
+			$this->flashMessage(REFEREE_EMPTY_SAVE, "alert-danger");
+			$this->redirect("detail", $arrayValues['vID']);
+		} catch (\Exception $e) {
+			if ($e instanceof AbortException) {
+				throw $e;
+			} else {
+				$form->addError(REFEREE_SAVED_FAILED);
+				$this->flashMessage(REFEREE_SAVED_FAILED, "alert-danger");
+			}
+		}
+	}
+
+	public function createComponentShowDogForm() {
+		$form = $this->showDogForm->create($this->link("detail"), $this->langRepository->getCurrentLang($this->session));
+
+		$renderer = $form->getRenderer();
+		$renderer->wrappers['controls']['container'] = NULL;
+		$renderer->wrappers['pair']['container'] = 'div class=form-group';
+		$renderer->wrappers['pair']['.error'] = 'has-error';
+		$renderer->wrappers['control']['container'] = 'div class=col-md-6';
+		$renderer->wrappers['label']['container'] = 'div class="col-md-4 control-label margin5"';
+		$renderer->wrappers['control']['description'] = 'span class=help-block';
+		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
+
+		return $form;
 	}
 
 	/**

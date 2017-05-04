@@ -643,3 +643,11 @@ define("SHOW_REFEREE_FORM_REFEREE", 'Rozhodčí');
 define("SHOW_REFEREE_FORM_CLASS", 'Třída');
 define("SHOW_REFEREE_FORM_BREED", 'Plemeno');
 
+define("SHOW_DONE", 'Ano');
+define("SHOW_UNDONE", 'Ne');
+define("REFEREE_EMPTY_SAVE", 'Žádná data k uložení. Prosím, vyberte rozhodčího, plemeno a třídu!');
+define("REFEREE_SAVED", 'Rozhodčí výstavy uložen');
+define("REFEREE_DELETED", 'Položka rozhodčího smazána');
+define("REFEREE_SAVED_FAILED", 'Chyba během zpracování');
+define("SHOW_ITEM_DELETE_HEADER", 'Smazání položky');
+define("SHOW_ITEM_DELETE_QUESTION", 'Opravdu smazat položku?');

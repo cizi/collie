@@ -281,6 +281,9 @@ div.colorExample {
 .margin10 {
 	margin: 10px!important;
 }
+.margin5 {
+	margin: 5px!important;
+}
 .dogEditPic{
 	width: 260px;
 	margin: 10px;

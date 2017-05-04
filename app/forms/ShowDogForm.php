@@ -40,45 +40,52 @@ class ShowDogForm {
 		$index = 0;
 		$form->addHidden("vID");
 
+		$form->addGroup(SHOW_DOG_FORM_DOG);
 		$dogs = $this->dogRepository->findDogsForSelect();
 		$form->addSelect("pID", SHOW_DOG_FORM_DOG, $dogs)
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", SHOW_TABLE_REFEREE)
 			->setAttribute("tabindex", $index + 1);
 
+		$form->addGroup(SHOW_DOG_FORM_CLASS);
 		$classes = $this->enumRepository->findEnumItemsForSelect($lang, 20);
 		$form->addSelect("Trida", SHOW_DOG_FORM_CLASS, $classes)
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", SHOW_TABLE_DATE)
 			->setAttribute("tabindex", $index + 2);
 
+		$form->addGroup(SHOW_DOG_FORM_REPUTATION);
 		$oceneni = $this->enumRepository->findEnumItemsForSelect($lang, 21);
 		$form->addSelect("Oceneni", SHOW_DOG_FORM_REPUTATION, $oceneni)
 			->setAttribute("class", "form-control")
 			->setAttribute("tabindex", $index + 3);
 
+		$form->addGroup(SHOW_DOG_FORM_DOG_ORDER);
 		$poradi = $this->enumRepository->findEnumItemsForSelect($lang, 22);
 		$form->addSelect("Poradi", SHOW_DOG_FORM_DOG_ORDER, $poradi)
 			->setAttribute("class", "form-control")
 			->setAttribute("tabindex", $index + 4);
 
+		$form->addGroup(SHOW_DOG_FORM_DOG_TITLES);
 		$tituly = $this->enumRepository->findEnumItemsForSelect($lang, 23);
-		$form->addSelect("Titul", SHOW_DOG_FORM_DOG_TITLES, $tituly)
-			->setAttribute("class", "form-control")
-			->setAttribute("tabindex", $index + 5);
+		$titlesContainer = $form->addContainer("Titul");
+		foreach ($tituly as $key => $value) {
+			$titlesContainer->addCheckbox($key, $value)
+				->setAttribute("tabindex", $index++);
+		}
 
 		$form->addText("TitulyDodatky", SHOW_DOG_FORM_DOG_TITLES_ADDON)
 			->setAttribute("class", "form-control")
-			->setAttribute("tabindex", $index + 6);
+			->setAttribute("tabindex", $index++);
 
 		$form->addButton("back", VET_EDIT_BACK)
 			->setAttribute("class","btn margin10")
 			->setAttribute("onclick", "location.assign('". $linkBack ."')")
-			->setAttribute("tabindex", $index + 7);
+			->setAttribute("tabindex", $index++);
 
 		$form->addSubmit("confirm", VET_EDIT_SAVE)
 			->setAttribute("class","btn btn-primary margin10")
-			->setAttribute("tabindex", $index + 8);
+			->setAttribute("tabindex", $index++);
 
 		return $form;
 	}
