@@ -2,9 +2,13 @@
 
 namespace App\AdminModule\Presenters;
 
+use App\Forms\ShowForm;
+use App\Model\Entity\ShowEntity;
 use App\Model\EnumerationRepository;
 use App\Model\RefereeRepository;
 use App\Model\ShowRepository;
+use Nette\Application\AbortException;
+use Nette\Forms\Form;
 
 class ShowPresenter extends SignPresenter {
 
@@ -17,10 +21,14 @@ class ShowPresenter extends SignPresenter {
 	/** @var  RefereeRepository */
 	private $refereeRepository;
 
-	public function __construct(ShowRepository $showRepository, EnumerationRepository $enumerationRepository, RefereeRepository $refereeRepository) {
+	/** @var ShowForm */
+	private $showForm;
+
+	public function __construct(ShowRepository $showRepository, EnumerationRepository $enumerationRepository, RefereeRepository $refereeRepository, ShowForm $showForm) {
 		$this->showRepository = $showRepository;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->refereeRepository = $refereeRepository;
+		$this->showForm = $showForm;
 	}
 
 	public function actionDefault() {
@@ -53,13 +61,60 @@ class ShowPresenter extends SignPresenter {
 		
 	}
 
-	public function actionEdit($id) {
-		
-		
+	/**
+	 * @param int $id
+	 */
+	public function actionDelete($id) {
+		if ($this->showRepository->delete($id)) {
+			$this->flashMessage(SHOW_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(SHOW_DELETED_FAILED, "alert-danger");
+		}
+		$this->redirect('default');
 	}
 
-	public function actionDelete($id) {
-		
+	public function createComponentEditForm() {
+		$form = $this->showForm->create($this->link("default"), $this->langRepository->getCurrentLang($this->session));
+		$form->onSuccess[] = $this->saveShow;
+
+		return $form;
+	}
+
+	/**
+	 * @param Form $form
+	 */
+	public function saveShow(Form $form) {
+		$showEntity = new ShowEntity();
+		try {
+			$showEntity->hydrate($form->getHttpData());
+			$this->showRepository->save($showEntity);
+			$this->flashMessage(SHOW_FORM_NEW_ADDED, "alert-success");
+			$this->redirect("default");
+		} catch (\Exception $e) {
+			if ($e instanceof AbortException) {
+				throw $e;
+			} else {
+				$form->addError(SHOW_FORM_NEW_FAILED);
+				$this->flashMessage(SHOW_FORM_NEW_FAILED, "alert-danger");
+			}
+		}
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function actionEdit($id) {
+		$showEntity = $this->showRepository->getShow($id);
+		$this->template->show = $showEntity;
+		$this->template->lang = $this->langRepository->getCurrentLang($this->session);
+
+		if ($showEntity) {
+			$this['editForm']->addHidden('ID', $showEntity->getID());
+			$this['editForm']->setDefaults($showEntity->extract());
+			if ($showEntity->getDatum() != null) {
+				$this['editForm']['Datum']->setDefaultValue($showEntity->getDatum()->format(ShowEntity::MASKA_DATA));
+			}
+		}
 	}
 
 }

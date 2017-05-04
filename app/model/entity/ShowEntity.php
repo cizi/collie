@@ -111,7 +111,7 @@ class ShowEntity {
 	 * @param boolean $Hotovo
 	 */
 	public function setHotovo($Hotovo) {
-		$this->Hotovo = $Hotovo;
+		$this->Hotovo = ($Hotovo != "" ? 1 : 0);
 	}
 
 	/**
@@ -139,7 +139,7 @@ class ShowEntity {
 			'Nazev' => $this->getNazev(),
 			'Misto' => $this->getMisto(),
 			'Hotovo' => $this->isHotovo(),
-			'Rozhodci' => $this->getRozhodci(),
+			'Rozhodci' => $this->getRozhodci()
 		];
 	}
 
@@ -151,7 +151,8 @@ class ShowEntity {
 		$this->setTyp(isset($data['Typ']) ? $data['Typ'] : null);
 		$this->setNazev(isset($data['Nazev']) ? $data['Nazev'] : null);
 		$this->setMisto(isset($data['Misto']) ? $data['Misto'] : null);
-		$this->setHotovo(isset($data['Hotovo']) ? $data['Hotovo'] : null);
+		$this->setHotovo(isset($data['Hotovo']) ? $data['Hotovo'] : false);
+		$this->setRozhodci(isset($data['Rozhodci']) ? $data['Rozhodci'] : null);
 
 		if (isset($data['Datum']) && ($data['Datum'] != NULL)) {
 			if (($data['Datum'] instanceof DateTime) == false) {

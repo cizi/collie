@@ -602,3 +602,12 @@ define("SHOW_TABLE_EDIT", 'Edit show');
 define("SHOW_TABLE_DELETE", 'Delete show');
 define("SHOW_TABLE_DELETE_SHOW_HEADER", 'Delete show');
 define("SHOW_TABLE_DELETE_SHOW_INFO", 'Are you really want to delete the show?');
+
+define("SHOW_FORM_ADD", 'Addition of a new show');
+define("SHOW_FORM_EDIT", 'Show edit');
+define("SHOW_FORM_NEW_ADDED", 'Show has been added');
+define("SHOW_FORM_NEW_FAILED", 'Show saving failed');
+define("SHOW_DELETED", 'Show deleted');
+define("SHOW_DELETED_FAILED", 'An error occurred during show show delete');
+define("SHOW_TABLE_DATE_VALIDATION", 'Date of the show is mandatory!');
+define("SHOW_TABLE_NAME_VALIDATION", 'Title of the show is mandatory!');

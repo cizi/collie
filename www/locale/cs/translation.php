@@ -624,3 +624,12 @@ define("SHOW_TABLE_DELETE", 'Smazání výstavy');
 define("SHOW_TABLE_DELETE_SHOW_HEADER", 'Smazání výstavy');
 define("SHOW_TABLE_DELETE_SHOW_INFO", 'Opravdu chcete smazat výstavu?');
 
+define("SHOW_FORM_ADD", 'Přidání nové výstavy');
+define("SHOW_FORM_EDIT", 'Editace výstavy');
+define("SHOW_FORM_NEW_ADDED", 'Výstava byla přidána');
+define("SHOW_FORM_NEW_FAILED", 'Při ukládání výstavy došlo k chybě');
+define("SHOW_DELETED", 'Výstava smazána');
+define("SHOW_DELETED_FAILED", 'Během mazání výstavy nastala chyba');
+define("SHOW_TABLE_DATE_VALIDATION", 'Datum výstavy je povinná položka!');
+define("SHOW_TABLE_NAME_VALIDATION", 'Název výstavy je povinná položka!');
+
