@@ -109,6 +109,25 @@ class DogRepository extends BaseRepository {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function findDogsForSelect($withNotSelectedOption = true) {
+		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes"];
+		$result = $this->connection->query($query);
+		$dogs = [];
+
+		if ($withNotSelectedOption) {
+			$dogs[0] = self::NOT_SELECTED;
+		}
+		foreach ($result->fetchAll() as $row) {
+			$dog = $row->toArray();
+			$dogs[$dog['ID']] = trim($dog['TitulyPredJmenem'] . " " . $dog['Jmeno'] . " " . $dog['TitulyZaJmenem']);
+		}
+
+		return $dogs;
+	}
+
+	/**
 	 * @return DogEntity[]
 	 */
 	public function findMaleDogsForSelect($withNotSelectedOption = true) {

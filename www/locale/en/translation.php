@@ -611,3 +611,13 @@ define("SHOW_DELETED", 'Show deleted');
 define("SHOW_DELETED_FAILED", 'An error occurred during show show delete');
 define("SHOW_TABLE_DATE_VALIDATION", 'Date of the show is mandatory!');
 define("SHOW_TABLE_NAME_VALIDATION", 'Title of the show is mandatory!');
+
+define("SHOW_DOG_FORM_DOG", 'Dog');
+define("SHOW_DOG_FORM_CLASS", 'Class');
+define("SHOW_DOG_FORM_REPUTATION", 'Evaluation');
+define("SHOW_DOG_FORM_DOG_ORDER", 'Placing');
+define("SHOW_DOG_FORM_DOG_TITLES", 'Titles');
+define("SHOW_DOG_FORM_DOG_TITLES_ADDON", 'Additions');
+define("SHOW_REFEREE_FORM_REFEREE", 'Referee');
+define("SHOW_REFEREE_FORM_CLASS", 'Class');
+define("SHOW_REFEREE_FORM_BREED", 'Breed');

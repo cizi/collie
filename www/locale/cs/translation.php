@@ -633,3 +633,13 @@ define("SHOW_DELETED_FAILED", 'Během mazání výstavy nastala chyba');
 define("SHOW_TABLE_DATE_VALIDATION", 'Datum výstavy je povinná položka!');
 define("SHOW_TABLE_NAME_VALIDATION", 'Název výstavy je povinná položka!');
 
+define("SHOW_DOG_FORM_DOG", 'Pes');
+define("SHOW_DOG_FORM_CLASS", 'Třída');
+define("SHOW_DOG_FORM_REPUTATION", 'Ocenění');
+define("SHOW_DOG_FORM_DOG_ORDER", 'Pořadí');
+define("SHOW_DOG_FORM_DOG_TITLES", 'Tituly');
+define("SHOW_DOG_FORM_DOG_TITLES_ADDON", 'Tituly dodatek');
+define("SHOW_REFEREE_FORM_REFEREE", 'Rozhodčí');
+define("SHOW_REFEREE_FORM_CLASS", 'Třída');
+define("SHOW_REFEREE_FORM_BREED", 'Plemeno');
+

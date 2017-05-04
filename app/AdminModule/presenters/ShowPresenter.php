@@ -2,10 +2,14 @@
 
 namespace App\AdminModule\Presenters;
 
+use App\Forms\ShowDogForm;
 use App\Forms\ShowForm;
+use App\Forms\ShowRefereeForm;
 use App\Model\Entity\ShowEntity;
 use App\Model\EnumerationRepository;
 use App\Model\RefereeRepository;
+use App\Model\ShowDogRepository;
+use App\Model\ShowRefereeRepository;
 use App\Model\ShowRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
@@ -24,11 +28,46 @@ class ShowPresenter extends SignPresenter {
 	/** @var ShowForm */
 	private $showForm;
 
-	public function __construct(ShowRepository $showRepository, EnumerationRepository $enumerationRepository, RefereeRepository $refereeRepository, ShowForm $showForm) {
+	/** @var  ShowDogForm */
+	private $showDogForm;
+
+	/** @var ShowRefereeForm  */
+	private $showRefereeForm;
+
+	/** @var  ShowDogRepository */
+	private $showDogRepository;
+
+	/** @var  ShowRefereeRepository */
+	private $showRefereeRepository;
+
+	/**
+	 * @param ShowRepository $showRepository
+	 * @param EnumerationRepository $enumerationRepository
+	 * @param RefereeRepository $refereeRepository
+	 * @param ShowForm $showForm
+	 * @param ShowDogForm $showDogForm
+	 * @param ShowRefereeForm $showRefereeForm
+	 * @param ShowDogRepository $showDogRepository
+	 * @param ShowRefereeRepository $showRefereeRepository
+	 */
+	public function __construct(
+		ShowRepository $showRepository,
+		EnumerationRepository $enumerationRepository,
+		RefereeRepository $refereeRepository,
+		ShowForm $showForm,
+		ShowDogForm $showDogForm,
+		ShowRefereeForm $showRefereeForm,
+		ShowDogRepository $showDogRepository,
+		ShowRefereeRepository $showRefereeRepository
+	) {
 		$this->showRepository = $showRepository;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->refereeRepository = $refereeRepository;
 		$this->showForm = $showForm;
+		$this->showDogForm = $showDogForm;
+		$this->showRefereeForm = $showRefereeForm;
+		$this->showDogRepository = $showDogRepository;
+		$this->showRefereeRepository = $showRefereeRepository;
 	}
 
 	public function actionDefault() {
