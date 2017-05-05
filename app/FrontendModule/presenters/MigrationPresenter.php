@@ -4,8 +4,9 @@ namespace App\FrontendModule\Presenters;
 
 use App\Model\DogRepository;
 use App\Model\Entity\DogPicEntity;
+use App\Model\ShowDogRepository;
+use App\Model\ShowRefereeRepository;
 use App\Model\UserRepository;
-use Nette\Http\FileUpload;
 use Nette\Utils\Finder;
 
 class MigrationPresenter extends BasePresenter	 {
@@ -16,9 +17,22 @@ class MigrationPresenter extends BasePresenter	 {
 	/** @var UserRepository  */
 	private$userRepository;
 
-	public function __construct(DogRepository $dogRepository, UserRepository $userRepository) {
+	/** @var ShowRefereeRepository  */
+	private $showRefereeRepository;
+
+	/** @var  ShowDogRepository */
+	private $showDogRepository;
+
+	public function __construct(
+		DogRepository $dogRepository,
+		UserRepository $userRepository,
+		ShowRefereeRepository $showRefereeRepository,
+		ShowDogRepository $showDogRepository
+	) {
 		$this->dogRepository = $dogRepository;
 		$this->userRepository = $userRepository;
+		$this->showRefereeRepository = $showRefereeRepository;
+		$this->showDogRepository = $showDogRepository;
 	}
 
 	/**
@@ -67,6 +81,19 @@ class MigrationPresenter extends BasePresenter	 {
 		$migrationResult = $this->userRepository->migrateUserFromOldStructure();
 		file_put_contents('user_migration_log.txt', print_r($migrationResult, true));
 		dump($migrationResult);
+		$this->terminate();
+	}
+
+	/**
+	 * Migrace rozhodčích ve výstvách
+	 */
+	public function actionShowRefereeMigration() {
+		try {
+			$this->showRefereeRepository->migrateRefereeFromOldStructure();
+		} catch (\Exception $e) {
+			echo $e->getMessage();
+		}
+		echo "<br />hotovo";
 		$this->terminate();
 	}
 }

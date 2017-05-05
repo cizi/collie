@@ -83,4 +83,86 @@ class ShowRefereeRepository extends BaseRepository {
 
 		return $return;
 	}
+
+	public function migrateRefereeFromOldStructure() {
+		$result = $this->connection->query("select * from v2j");
+		$showRepository = new ShowRepository($this->connection);
+		$refereeRepositoty = new RefereeRepository($this->connection);
+		try {
+			$this->connection->begin();
+			foreach ($result->fetchAll() as $row) {
+				$showRefereeEntity = new ShowRefereeEntity();
+
+				if ($showRepository->getShow($row['vID']) == null) {    // v DB chybí odkaz na výstavu = nemùžu zmigrovat
+					continue;
+				}
+				$showRefereeEntity->setVID($row['vID']);
+
+				if ($refereeRepositoty->getReferee($row['jID']) == null) { // pokud v DB chybí odkaz na rozhodciho nemuzu to migrovat
+					continue;
+				}
+				$showRefereeEntity->setRID($row['jID']);
+
+				$plemenaStara = ["p1" => 18, "p2" => 17, "p3" => 19];
+				foreach ($plemenaStara as $stary => $novy) {
+					if ($row[$stary] == 1) {
+						$showRefereeEntity->setPlemeno($novy);
+						if ($row['t10'] == 1) {
+							$showRefereeEntity->setTrida(102);
+							$this->save($showRefereeEntity);
+						}
+						if ($row['t20'] == 1) {
+							$showRefereeEntity->setTrida(103);
+							$this->save($showRefereeEntity);
+						}
+						if ($row['t30'] == 1) {
+							$showRefereeEntity->setTrida(104);
+							$this->save($showRefereeEntity);
+						}
+						if ($row['t40'] == 1) {
+							$showRefereeEntity->setTrida(105);
+							$this->save($showRefereeEntity);
+						}
+						if ($row['t50'] == 1) {
+							$showRefereeEntity->setTrida(106);
+							$this->save($showRefereeEntity);
+						}
+						if ($row['t60'] == 1) {
+							$showRefereeEntity->setTrida(107);
+							$this->save($showRefereeEntity);
+						}
+						if ($row['t70'] == 1) {
+							$showRefereeEntity->setTrida(108);
+							$this->save($showRefereeEntity);
+						}
+						if ($row['t80'] == 1) {
+							$showRefereeEntity->setTrida(109);
+							$this->save($showRefereeEntity);
+						}
+						if ($row['t90'] == 1) {
+							$showRefereeEntity->setTrida(110);
+							$this->save($showRefereeEntity);
+						}
+						if ($row['t100'] == 1) {
+							$showRefereeEntity->setTrida(111);
+							$this->save($showRefereeEntity);
+						}
+						if ($row['t110'] == 1) {
+							$showRefereeEntity->setTrida(112);
+							$this->save($showRefereeEntity);
+						}
+						if ($row['t120'] == 1) {
+							$showRefereeEntity->setTrida(113);
+							$this->save($showRefereeEntity);
+						}
+					}
+				}
+			}
+			//$this->connection->query("#RENAME TABLE v2j to migrated_v2j");
+			$this->connection->commit();
+		} catch (\Exception $e) {
+				$this->connection->rollback();
+				throw $e;
+		}
+	}
 }
