@@ -630,3 +630,8 @@ define("REFEREE_DELETED", 'Item of the referee has been deleted');
 define("REFEREE_SAVED_FAILED", 'An error occurred during request');
 define("SHOW_ITEM_DELETE_HEADER", 'Delete item');
 define("SHOW_ITEM_DELETE_QUESTION", 'Are you really want to delete the item?');
+define("SHOW_DOG_SAVED", 'Dog saved in the show');
+define("SHOW_DOG_DELETED", 'Item of the dog has been deleted');
+define("SHOW_DOG_SAVED_FAILED", 'An error eccurred during operation');
+define("DOG_EMPTY_SAVE", 'No data to save. Please, choose at least a dog and a title!');
+define("SHOW_FRONTEND_YEAR", 'Year');

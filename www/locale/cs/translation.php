@@ -651,3 +651,8 @@ define("REFEREE_DELETED", 'Položka rozhodčího smazána');
 define("REFEREE_SAVED_FAILED", 'Chyba během zpracování');
 define("SHOW_ITEM_DELETE_HEADER", 'Smazání položky');
 define("SHOW_ITEM_DELETE_QUESTION", 'Opravdu smazat položku?');
+define("SHOW_DOG_SAVED", 'Pes výstavy uložen');
+define("SHOW_DOG_DELETED", 'Položka psa smazána');
+define("SHOW_DOG_SAVED_FAILED", 'Chyba během zpracování');
+define("DOG_EMPTY_SAVE", 'Žádná data k uložení. Prosím, vyberte psa a titul!');
+define("SHOW_FRONTEND_YEAR", 'Rok');

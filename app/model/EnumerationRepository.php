@@ -98,6 +98,24 @@ class EnumerationRepository extends BaseRepository {
 	 * @param int $enumHeaderId
 	 * @return array
 	 */
+	public function findEnumItemsForSelectIgnoreEmpty($lang, $enumHeaderId) {
+		$return = [];
+		$query = ["select * from enum_item where enum_header_id = %i and lang = %s", $enumHeaderId, $lang];
+		$result = $this->connection->query($query)->fetchAll();
+		foreach ($result as $item) {
+			$enumItem = new EnumerationItemEntity();
+			$enumItem->hydrate($item->toArray());
+			$return[$enumItem->getOrder()] = $enumItem->getItem();
+		}
+
+		return $return;
+	}
+
+	/**
+	 * @param string $lang
+	 * @param int $enumHeaderId
+	 * @return array
+	 */
 	public function findEnumItemsForSelect($lang, $enumHeaderId) {
 		$return = [];
 		$query = ["select * from enum_item where enum_header_id = %i and lang = %s", $enumHeaderId, $lang];

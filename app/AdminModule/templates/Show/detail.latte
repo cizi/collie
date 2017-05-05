@@ -67,14 +67,14 @@
 							<table class="table table-striped">
 								<thead>
 								<tr>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
+									<th>{=SHOW_DOG_FORM_DOG}</th>
+									<th>{=SHOW_DOG_FORM_CLASS}</th>
+									<th>{=SHOW_DOG_FORM_REPUTATION}</th>
+									<th>{=SHOW_DOG_FORM_DOG_ORDER}</th>
+									<th>{=SHOW_DOG_FORM_DOG_TITLES}</th>
+									<th>{=SHOW_DOG_FORM_DOG_TITLES_ADDON}</th>
 									<th class="alignRight">
-										<button type="button" class="btn btn-success" onclick="window.location.assign({link editShowDog});">
+										<button type="button" class="btn btn-success" onclick="window.location.assign({link editShowDog, $show->getID()});">
 											<span class="glyphicon glyphicon-plus"></span>	{=DOG_FORM_PEDIGREE_ADD_MISSING}
 										</button>
 									</th>
@@ -83,30 +83,18 @@
 								<tbody>
 								{foreach $dogs as $dog}
 									<tr>
-										<td>{$enumRepo->findEnumItemByOrder($lang, $show->getTyp())}</td>
-										<td>{if $show->getDatum() != null}{$show->getDatum()->format('d.m.Y')}{/if}</td>
-										<td>{$show->getNazev()}</td>
-										<td>{$show->getMisto()}</td>
 										<td>
-											{if $show->isHotovo()}
-												<label class="checkbox-inline">
-													<input class="activeToggleEvent" user-data={$show->getID()} type="checkbox" checked data-toggle="toggle" data-height="25" data-width="50">
-												</label>
-											{else}
-												<label class="checkbox-inline">
-													<input class="activeToggleEvent" user-data={$show->getID()} type="checkbox" data-toggle="toggle" data-height="25" data-width="50">
-												</label>
-											{/if}
+											{var dogDetail = $dogRepository->getDog($dog->getPID())}
+											{$dogDetail->getTitulyPredJmenem()} {$dogDetail->getJmeno()} {$dogDetail->getTitulyZaJmenem()}
 										</td>
-										<td>
-											{if $show->getRozhodci() != null}
-												{var refe = $refereeRepository->getReferee($show->getRozhodci())}
-												{$refe->getTitulyPrefix()|trim} {$refe->getJmeno()|trim} {$refe->getPrijmeni()|trim} {$refe->getTitulySuffix()|trim}
-											{/if}
-										</td>
+										<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getTrida())}</td>
+										<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getOceneni())}</td>
+										<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getPoradi())}</td>
+										<td>{$enumRepo->findEnumItemByOrder($lang, $dog->getTitul())}</td>
+										<td>{$dog->getTitulyDodatky()}</td>
 										<td class="alignRight">
-											<a href={link editShowDog, $show->getID()} title={=SHOW_TABLE_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
-											<a href="#" data-href={link Show:Delete, $show->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=SHOW_TABLE_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+											{* <a href={link editShowDog, $show->getID()} title={=SHOW_TABLE_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp; *}
+											<a href="#" data-href={link deleteShowDog, $dog->getID(), $dog->getVID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=SHOW_TABLE_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 										</td>
 									</tr>
 								{/foreach}

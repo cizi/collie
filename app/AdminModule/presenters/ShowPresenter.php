@@ -5,6 +5,8 @@ namespace App\AdminModule\Presenters;
 use App\Forms\ShowDogForm;
 use App\Forms\ShowForm;
 use App\Forms\ShowRefereeForm;
+use App\Model\DogRepository;
+use App\Model\Entity\ShowDogEntity;
 use App\Model\Entity\ShowEntity;
 use App\Model\Entity\ShowRefereeEntity;
 use App\Model\EnumerationRepository;
@@ -41,6 +43,9 @@ class ShowPresenter extends SignPresenter {
 	/** @var  ShowRefereeRepository */
 	private $showRefereeRepository;
 
+	/** @var DogRepository  */
+	private $dogRepository;
+
 	/**
 	 * @param ShowRepository $showRepository
 	 * @param EnumerationRepository $enumerationRepository
@@ -50,6 +55,7 @@ class ShowPresenter extends SignPresenter {
 	 * @param ShowRefereeForm $showRefereeForm
 	 * @param ShowDogRepository $showDogRepository
 	 * @param ShowRefereeRepository $showRefereeRepository
+	 * @param DogRepository $dogRepository
 	 */
 	public function __construct(
 		ShowRepository $showRepository,
@@ -59,7 +65,8 @@ class ShowPresenter extends SignPresenter {
 		ShowDogForm $showDogForm,
 		ShowRefereeForm $showRefereeForm,
 		ShowDogRepository $showDogRepository,
-		ShowRefereeRepository $showRefereeRepository
+		ShowRefereeRepository $showRefereeRepository,
+		DogRepository $dogRepository
 	) {
 		$this->showRepository = $showRepository;
 		$this->enumerationRepository = $enumerationRepository;
@@ -69,6 +76,7 @@ class ShowPresenter extends SignPresenter {
 		$this->showRefereeForm = $showRefereeForm;
 		$this->showDogRepository = $showDogRepository;
 		$this->showRefereeRepository = $showRefereeRepository;
+		$this->dogRepository = $dogRepository;
 	}
 
 	public function startup() {
@@ -77,6 +85,7 @@ class ShowPresenter extends SignPresenter {
 		$this->template->enumRepo= $this->enumerationRepository;
 		$this->template->shows = $this->showRepository->findShows();
 		$this->template->refereeRepository = $this->refereeRepository;
+		$this->template->dogRepository = $this->dogRepository;
 	}
 
 	public function actionDefault() {
@@ -85,7 +94,6 @@ class ShowPresenter extends SignPresenter {
 
 	/**
 	 * Oznaèí výstavu jakko ukonèenou/neukonèenou
-	 * @throws \Nette\Application\AbortException
 	 */
 	public function handleDoneSwitch() {
 		$data = $this->request->getParameters();
@@ -101,12 +109,13 @@ class ShowPresenter extends SignPresenter {
 		$this->terminate();
 	}
 
-
+	/**
+	 * @param int $id
+	 */
 	public function actionDetail($id) {
 		$this->template->show = $this->showRepository->getShow($id);
 		$this->template->referees = $this->showRefereeRepository->findRefereeByShow($id);
-		$this->template->dogs = [];
-		
+		$this->template->dogs = $this->showDogRepository->findDogsByShow($id);
 	}
 
 	/**
@@ -122,13 +131,31 @@ class ShowPresenter extends SignPresenter {
 		$this->redirect("detail", $vID);
 	}
 
-	public function actionEditShowReferee($id) {
-		$this['showRefereeForm']['vID']->setDefaultValue($id);
-
+	/**
+	 * @param int $id
+	 * @param int $vID
+	 */
+	public function actionDeleteShowDog($id, $vID) {
+		if ($this->showDogRepository->delete($id)) {
+			$this->flashMessage(SHOW_DOG_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(SHOW_DOG_SAVED_FAILED, "alert-danger");
+		}
+		$this->redirect("detail", $vID);
 	}
 
+	/**
+	 * @param int $id vystavy
+	 */
+	public function actionEditShowReferee($id) {
+		$this['showRefereeForm']['vID']->setDefaultValue($id);
+	}
+
+	/**
+	 * @param int $id vystavy
+	 */
 	public function actionEditShowDog($id) {
-		
+		$this['showDogForm']['vID']->setDefaultValue($id);
 	}
 
 	public function createComponentShowRefereeForm() {
@@ -185,6 +212,7 @@ class ShowPresenter extends SignPresenter {
 
 	public function createComponentShowDogForm() {
 		$form = $this->showDogForm->create($this->link("detail"), $this->langRepository->getCurrentLang($this->session));
+		$form->onSubmit[] = $this->saveShowDog;
 
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = NULL;
@@ -196,6 +224,41 @@ class ShowPresenter extends SignPresenter {
 		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
 
 		return $form;
+	}
+
+	/**
+	 * @param Form $form
+	 */
+	public function saveShowDog(Form $form) {
+		$arrayValues = $form->getHttpData();
+		$dogsToSave = [];
+		try {
+			if ((DogRepository::NOT_SELECTED != $arrayValues['pID']) && isset($arrayValues['Titul'])) {
+				foreach ($arrayValues['Titul'] as $key => $value) {
+					$showDogEntity = new ShowDogEntity();
+					$showDogEntity->setPID($arrayValues['pID']);
+					$showDogEntity->setVID($arrayValues['vID']);
+					$showDogEntity->setTrida($arrayValues['Trida']);
+					$showDogEntity->setOceneni($arrayValues['Oceneni']);
+					$showDogEntity->setPoradi($arrayValues['Poradi']);
+					$showDogEntity->setTitulyDodatky($arrayValues['TitulyDodatky']);
+					$showDogEntity->setTitul($key);
+					$dogsToSave[] = $showDogEntity;
+				}
+				$this->showDogRepository->saveDogs($arrayValues['vID'], $arrayValues['pID'], $dogsToSave);
+				$this->flashMessage(SHOW_DOG_SAVED, "alert-success");
+				$this->redirect("detail", $arrayValues['vID']);
+			}
+			$this->flashMessage(DOG_EMPTY_SAVE, "alert-danger");
+			$this->redirect("detail", $arrayValues['vID']);
+		} catch (\Exception $e) {
+			if ($e instanceof AbortException) {
+				throw $e;
+			} else {
+				$form->addError(REFEREE_SAVED_FAILED);
+				$this->flashMessage(REFEREE_SAVED_FAILED, "alert-danger");
+			}
+		}
 	}
 
 	/**

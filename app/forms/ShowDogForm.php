@@ -61,7 +61,7 @@ class ShowDogForm {
 			->setAttribute("tabindex", $index + 3);
 
 		$form->addGroup(SHOW_DOG_FORM_DOG_ORDER);
-		$poradi = $this->enumRepository->findEnumItemsForSelect($lang, 22);
+		$poradi = $this->enumRepository->findEnumItemsForSelectIgnoreEmpty($lang, 22);
 		$form->addSelect("Poradi", SHOW_DOG_FORM_DOG_ORDER, $poradi)
 			->setAttribute("class", "form-control")
 			->setAttribute("tabindex", $index + 4);

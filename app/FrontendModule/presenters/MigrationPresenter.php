@@ -96,4 +96,14 @@ class MigrationPresenter extends BasePresenter	 {
 		echo "<br />hotovo";
 		$this->terminate();
 	}
+
+	public function actionShowDogMigration() {
+		try {
+			$this->showDogRepository->migrateDogsFromOldStructure();
+		} catch (\Exception $e) {
+			echo $e->getMessage();
+		}
+		echo "<br />hotovo";
+		$this->terminate();
+	}
 }

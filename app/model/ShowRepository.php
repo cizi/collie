@@ -10,7 +10,7 @@ class ShowRepository extends BaseRepository {
 	 * @return ShowEntity[]
 	 */
 	public function findShows() {
-		$query = ["select * from appdata_vystava"];
+		$query = ["select * from appdata_vystava order by Datum desc"];
 		$result = $this->connection->query($query);
 
 		$shows = [];
