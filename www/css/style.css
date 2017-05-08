@@ -312,7 +312,13 @@ div.colorExample {
 .paginator a:hover{
 	color: white;
 }
-
+.showDetail {
+	font-size: 12px!important;
+	width: 92%!important;
+}
+.showDetail tbody tr td a {
+	font-weight: bold;
+}
 .dogList {
 	font-size: 12px!important;
 }

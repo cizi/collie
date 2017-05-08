@@ -211,6 +211,13 @@ class DogEntity {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isPesMrtvy() {
+		return ($this->getDatUmrti() != null);
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getUmrtiKomentar() {

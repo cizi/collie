@@ -4,6 +4,7 @@ namespace App\FrontendModule\Presenters;
 
 use App\Model\DogRepository;
 use App\Model\EnumerationRepository;
+use App\Model\RefereeRepository;
 use App\Model\ShowDogRepository;
 use App\Model\ShowRefereeRepository;
 use App\Model\ShowRepository;
@@ -25,18 +26,23 @@ class FeItem1velord7Presenter extends FrontendPresenter {
 	/** @var DogRepository  */
 	private $dogRepository;
 
+	/** @var  RefereeRepository */
+	private $refereeRepository;
+
 	public function __construct(
 		ShowRepository $showRepository,
 		EnumerationRepository $enumerationRepository,
 		ShowRefereeRepository $showRefereeRepository,
 		ShowDogRepository $showDogRepository,
-		DogRepository $dogRepository
+		DogRepository $dogRepository,
+		RefereeRepository $refereeRepository
 	) {
 		$this->showRepository = $showRepository;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->showRefereeRepository = $showRefereeRepository;
 		$this->showDogRepository = $showDogRepository;
 		$this->dogRepository = $dogRepository;
+		$this->refereeRepository = $refereeRepository;
 	}
 
 	public function startup() {
@@ -46,6 +52,7 @@ class FeItem1velord7Presenter extends FrontendPresenter {
 		$this->template->showRefereeRepository = $this->showRefereeRepository;
 		$this->template->showDogRepository = $this->showDogRepository;
 		$this->template->dogRepository = $this->dogRepository;
+		$this->template->refereeRepository = $this->refereeRepository;
 	}
 
 	public function actionDefault() {
@@ -59,6 +66,13 @@ class FeItem1velord7Presenter extends FrontendPresenter {
 	public function actionDetail($id) {
 		$this->template->show = $this->showRepository->getShow($id);
 		$this->template->referees = $this->showRefereeRepository->findRefereeByShow($id);
-		$this->template->dogs = $this->showDogRepository->findDogsByShow($id);
+		$this->template->dogs = $this->showDogRepository->findDogsByShowForDetail($id);
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function actionReferee($id) {
+		$this->template->referee = $this->refereeRepository->getReferee($id);
 	}
 }

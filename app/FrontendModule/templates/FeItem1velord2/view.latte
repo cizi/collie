@@ -23,6 +23,13 @@
 						<td>{if $dog->getDatNarozeni() != null}{$dog->getDatNarozeni()->format('d.m.Y')}{/if}</td>
 					</tr>
 					<tr>
+						<th>{=DOG_FORM_DEAD}:</th>
+						<td>{if $dog->getDatUmrti() != null}{$dog->getDatUmrti()->format('d.m.Y')}{/if}</td>
+
+						<th></th>
+						<td></td>
+					</tr>
+					<tr>
 						<th>{=DOG_FORM_HEIGHT}:</th>
 						<td>{$dog->getVyska()} cm</td>
 
