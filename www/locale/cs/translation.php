@@ -659,3 +659,7 @@ define("SHOW_DOG_DELETED", 'Položka psa smazána');
 define("SHOW_DOG_SAVED_FAILED", 'Chyba během zpracování');
 define("DOG_EMPTY_SAVE", 'Žádná data k uložení. Prosím, vyberte psa a titul!');
 define("SHOW_FRONTEND_YEAR", 'Rok');
+
+define("KINSHIP_VERIFICATION", "Zjišťoval jsem příbuznost");
+define("KINSHIP_VERIFICATION_AND", "a");
+define("KINSHIP_VERIFICATION_CROSS", "V úvahu se bere i křížení předků");

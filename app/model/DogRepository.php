@@ -782,6 +782,7 @@ class DogRepository extends BaseRepository {
 	 * @return number
 	 */
 	public function genealogRshipGo($ID1,$ID2,$level) {
+		global $deepMarkArray;
 		$deepMarkArray = [];
 		$tree1 = array(array());
 		$this->genealogGetRshipPedigree(NULL, $ID1, 0, 4, $tree1);
@@ -859,7 +860,7 @@ class DogRepository extends BaseRepository {
 	 * @param bool $isUserAdmin
 	 * @return string
 	 */
-	public function genealogDeepPedigree($ID, $max, $lang, Presenter $presenter, $isUserAdmin) {
+	public function genealogDeepPedigree($ID, $max, $lang, Presenter $presenter, $isUserAdmin, $deepMark = false) {
 		$this->clearPedigreeSession();
 		global $pedigree;
 		$query = ["SELECT pes.ID AS ID, pes.Jmeno AS Jmeno, pes.oID AS oID, pes.mID AS mID FROM appdata_pes as pes
@@ -869,7 +870,7 @@ class DogRepository extends BaseRepository {
 		$this->genealogDPTrace($row['oID'],1,$max, $lang);
 		$this->genealogDPTrace($row['mID'],1,$max, $lang);
 
-		return $this->genealogShowDeepPTable($max, $presenter, $ID, $isUserAdmin);
+		return $this->genealogShowDeepPTable($max, $presenter, $ID, $isUserAdmin, $deepMark);
 	}
 
 	/**
@@ -959,12 +960,12 @@ class DogRepository extends BaseRepository {
 	 * @param Presenter $presenter
 	 * @param int $ID
 	 * @param bool $isUserAdmin
+	 * @param bool $deepMark
 	 * @return string
 	 */
-	private function genealogShowDeepPTable($max, Presenter $presenter, $ID, $isUserAdmin) {
+	private function genealogShowDeepPTable($max, Presenter $presenter, $ID, $isUserAdmin, $deepMark) {
 		global $pedigree;
 		global $deepMarkArray;
-		global $deepMark;
 		$maxLevel = $max;
 		$htmlOutput = "<table border='0' cellspacing='1' cellpadding='3' class='genTable'><tr>";
 		$lastLevel = 0;
@@ -1001,26 +1002,26 @@ class DogRepository extends BaseRepository {
 			}
 
 			if ($pedigree[$i]['ID'] != NULL) {
-				$link = ($isUserAdmin ? $presenter->link('edit', $pedigree[$i]['ID']) : $presenter->link('view', $pedigree[$i]['ID']));
-				if ($deepMark and in_array($pedigree[$i]['ID'], $deepMarkArray)) {
-					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'" style="background:#CDA265">'
+				$link = ($isUserAdmin ? $presenter->link('FeItem1velord2:edit', $pedigree[$i]['ID']) : $presenter->link('FeItem1velord2:view', $pedigree[$i]['ID']));
+				if ($deepMark && in_array($pedigree[$i]['ID'], $deepMarkArray)) {
+					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'" style="background:#FFFFCC">'
 					. '<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds . '</td>';
 				} else {
 					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">
 					<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds.'</td>';
-					if (($pedigree[$i]['Uroven'] > 0) && ($pedigree[$i]['Uroven'] != $maxLevel)) {
-						$this->setLastPredecessorSession($pedigree[$i]['Uroven'], $pedigree[$i]['ID']);
-						$this->setLastPredecessorSession($pedigree[$i]['Uroven'] . 'Uroven', $pedigree[$i]['Uroven']);
-					}
+				}
+				if (($pedigree[$i]['Uroven'] > 0) && ($pedigree[$i]['Uroven'] != $maxLevel)) {
+					$this->setLastPredecessorSession($pedigree[$i]['Uroven'], $pedigree[$i]['ID']);
+					$this->setLastPredecessorSession($pedigree[$i]['Uroven'] . 'Uroven', $pedigree[$i]['Uroven']);
 				}
 			} else {
 				$htmlOutput .= '<td rowspan="' . pow(2, $maxLevel - $pedigree[$i]['Uroven']) . '">';
 				if ($isUserAdmin) {
 					if ($pedigree[$i]['Uroven'] == 1) {
-						$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", $ID) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
+						$htmlOutput .= '<a href="' . $presenter->link("FeItem1velord2:addMissingDog", $ID) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
 					} else {
 						if ($this->getLastPredecessorSession($pedigree[$i]['Uroven'] - 1) != null) {
-							$htmlOutput .= '<a href="' . $presenter->link("addMissingDog", $this->getLastPredecessorSession($pedigree[$i]['Uroven'] - 1)) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
+							$htmlOutput .= '<a href="' . $presenter->link("FeItem1velord2:addMissingDog", $this->getLastPredecessorSession($pedigree[$i]['Uroven'] - 1)) . '">' . DOG_FORM_PEDIGREE_ADD_MISSING . '</a>';
 						}
 					}
 					for ($y = ($pedigree[$i]['Uroven']); $y <= $maxLevel; $y++) {	// jakmile jsem tady už jednou vypsal zbylá data nepotřebuji

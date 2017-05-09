@@ -638,3 +638,7 @@ define("SHOW_DOG_DELETED", 'Item of the dog has been deleted');
 define("SHOW_DOG_SAVED_FAILED", 'An error eccurred during operation');
 define("DOG_EMPTY_SAVE", 'No data to save. Please, choose at least a dog and a title!');
 define("SHOW_FRONTEND_YEAR", 'Year');
+
+define("KINSHIP_VERIFICATION", "Inbreeding checking");
+define("KINSHIP_VERIFICATION_AND", "and");
+define("KINSHIP_VERIFICATION_CROSS", "Crossing of ancestors is taking in consideration");

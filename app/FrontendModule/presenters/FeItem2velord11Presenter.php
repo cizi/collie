@@ -202,6 +202,12 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			$this->template->dogFileEnum = new DogFileEnum();
 
 			$this['dogForm']->setDefaults($dog->extract());
+			if ($dog->getDatNarozeni() != null) {
+				$this['dogForm']['DatNarozeni']->setDefaultValue($dog->getDatNarozeni()->format(DogEntity::MASKA_DATA));
+			}
+			if ($dog->getDatUmrti() != null) {
+				$this['dogForm']['DatUmrti']->setDefaultValue($dog->getDatUmrti()->format(DogEntity::MASKA_DATA));
+			}
 			if ($dog) {
 				$this['dogForm']->addHidden('ID', $dog->getID());
 			}
