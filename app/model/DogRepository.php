@@ -236,7 +236,7 @@ class DogRepository extends BaseRepository {
 	private function getWhereFromKeyValueArray(array $filter, $owner = null) {
 		// odstraním data, která jsou součástí filteru, ale nepatří do WHERE klauzule
 		unset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]);	// tohle sem v podstatě nepatří, ale je to souččástí filtru
-		$return = (count($filter) > 0 ? " and " : "");
+		$return = ((count($filter) > 0) || ($owner != null) ? " and " : "");
 
 		$dbDriver = $this->connection->getDriver();
 		$currentLang = $this->langRepository->getCurrentLang($this->session);
