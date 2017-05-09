@@ -32,9 +32,13 @@ class Enum {
 	/**
 	 * @return array
 	 */
-	public function translatedForSelect() {
+	public function translatedForSelect($withEmptyOption = false) {
 		$data = $this->arrayValueKey();
 		$result = [];
+
+		if ($withEmptyOption) {
+			$result[0] = "-";
+		}
 		foreach ($data as $value => $key) {
 			$result[$value] = constant($key);
 		}

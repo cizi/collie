@@ -153,12 +153,15 @@ class DogRepository extends BaseRepository {
 		if (empty($filter) && ($owner == null)) {
 			$query = ["select * from appdata_pes limit %i , %i", $paginator->getOffset(), $paginator->getLength()];
 		} else {
-			$query[] = "select *, ap.ID as ID from appdata_pes as ap ";
+			$query[] = "select *, SPLIT_STR(CisloZapisu, '/', 3) as PlemenoCZ, ap.ID as ID from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter, $owner) as $join) {
 				$query[] = $join;
 			}
-			$query[] = "where 1 and ";
+			$query[] = "where 1 ";
 			$query[] = $this->getWhereFromKeyValueArray($filter, $owner);
+			if (isset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER])) {
+				$query[] = "order by PlemenoCZ " . (($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]) == 2 ? "desc" : "asc");
+			}
 			$query[] = " limit %i , %i";
 			$query[] = $paginator->getOffset();
 			$query[] = $paginator->getLength();
@@ -187,7 +190,7 @@ class DogRepository extends BaseRepository {
 			foreach ($this->getJoinsToArray($filter, $owner) as $join) {
 				$query[] = $join;
 			}
-			$query[] = "where 1 and ";
+			$query[] = "where 1 ";
 			$query[] = $this->getWhereFromKeyValueArray($filter, $owner);
 		}
 		$row = $this->connection->query($query);
@@ -231,8 +234,11 @@ class DogRepository extends BaseRepository {
 	 * @return string
 	 */
 	private function getWhereFromKeyValueArray(array $filter, $owner = null) {
+		// odstraním data, která jsou součástí filteru, ale nepatří do WHERE klauzule
+		unset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]);	// tohle sem v podstatě nepatří, ale je to souččástí filtru
+		$return = (count($filter) > 0 ? " and " : "");
+
 		$dbDriver = $this->connection->getDriver();
-		$return = "";
 		$currentLang = $this->langRepository->getCurrentLang($this->session);
 		if ($owner != null) {
 			$return .= sprintf("am.uID = %d", $owner);

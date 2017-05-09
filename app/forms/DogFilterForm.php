@@ -2,6 +2,7 @@
 
 namespace App\Forms;
 
+use App\Enum\OrderingEnum;
 use App\Enum\StateEnum;
 use App\Model\DogRepository;
 use App\Model\EnumerationRepository;
@@ -19,6 +20,7 @@ class DogFilterForm {
 	const DOG_FILTER_BREEDER = "DOG_FILTER_BREEDER";
 	const DOG_FILTER_EXAM = "DOG_FILTER_EXAM";
 	const DOG_FILTER_BIRTDATE = "DatNarozeni";
+	const DOG_FILTER_ORDER_NUMBER = "CisloZapisuOrder";
 
 	/** @var FormFactory */
 	private $factory;
@@ -38,7 +40,12 @@ class DogFilterForm {
 	 * @param UserRepository $userRepository
 	 * @param DogRepository $dogRepository
 	 */
-	public function __construct(FormFactory $factory, EnumerationRepository $enumerationRepository, UserRepository $userRepository, DogRepository $dogRepository) {
+	public function __construct(
+		FormFactory $factory,
+		EnumerationRepository $enumerationRepository,
+		UserRepository $userRepository,
+		DogRepository $dogRepository
+	) {
 		$this->factory = $factory;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->userRepository = $userRepository;
@@ -58,6 +65,11 @@ class DogFilterForm {
 
 		$plemena = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 7);
 		$form->addSelect("Plemeno", DOG_TABLE_HEADER_BREED, $plemena)
+			->setAttribute("class", "form-control");
+
+		$orderingEnum = new OrderingEnum();
+		$ordering = $orderingEnum->translatedForSelect(true);
+		$form->addSelect(self::DOG_FILTER_ORDER_NUMBER, DOG_TABLE_HEADER_WRITE_NUMBER, $ordering)
 			->setAttribute("class", "form-control");
 
 		$barvy = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 4);
