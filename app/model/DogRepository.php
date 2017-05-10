@@ -986,7 +986,6 @@ class DogRepository extends BaseRepository {
 				$adds[] = ($pedigree[$i]['Vyska']) . ' cm';
 			}
 			if (isset($pedigree[$i]['zdravi']) && $pedigree[$i]['zdravi'] != '') {
-				/** @var  $zdraviData Row */
 				foreach ($pedigree[$i]['zdravi'] as $zdraviTyp => $zdraviVysledek) {
 					if (trim($zdraviVysledek) != "") {
 						$adds[] = '' . $zdraviTyp . ': ' . $zdraviVysledek;
