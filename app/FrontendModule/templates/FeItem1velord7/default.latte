@@ -12,7 +12,7 @@
 							{foreach $shows as $show}
 								{if $lastShowYear != $show->getDatum()->format("Y")}
 									<h4><strong>{=SHOW_FRONTEND_YEAR}: {$show->getDatum()->format('Y')}</strong></h4>
-									<table class="table table-striped dogList">
+									<table class="table table-striped showList">
 										<thead>
 											<tr>
 												<th>{=SHOW_TABLE_TYPE}</th>
@@ -41,7 +41,7 @@
 										<td>
 											{if $show->getRozhodci() != null}
 												{var refe = $refereeRepository->getReferee($show->getRozhodci())}
-												{$refe->getTitulyPrefix()|trim} {$refe->getJmeno()|trim} {$refe->getPrijmeni()|trim} {$refe->getTitulySuffix()|trim}
+												<a href={link Referee, $refe->getID()}>{$refe->getTitulyPrefix()|trim} {$refe->getJmeno()|trim} {$refe->getPrijmeni()|trim} {$refe->getTitulySuffix()|trim}</a>
 											{/if}
 										</td>
 										<td class="alignRight">

@@ -325,6 +325,12 @@ div.colorExample {
 .dogList tbody tr td a {
 	font-weight: bold;
 }
+.showList {
+	font-size: 12px!important;
+}
+.showList thead tr th{
+	width: 14%;
+}
 .dogView{
 	font-size: 12px!important;
 }
