@@ -37,21 +37,36 @@ class ShowRefereeRepository extends BaseRepository {
 	}
 
 	/**
-	 * @param int $vID
-	 * @param int $rID
+	 * @param ShowRefereeEntity $showRefereeEntity
+	 * @return bool
+	 */
+	public function existsRefereeForShowClassBreed(ShowRefereeEntity $showRefereeEntity) {
+		$query = ["select * from appdata_vystava_rozhodci where vID = %i and rID = %i and Trida = %i and Plemeno = %i",
+			$showRefereeEntity->getVID(),
+			$showRefereeEntity->getRID(),
+			$showRefereeEntity->getTrida(),
+			$showRefereeEntity->getPlemeno()
+		];
+
+		return (count($this->connection->query($query)->fetchAll()) ? true : false);
+	}
+
+	/**
 	 * @param array $refereees
 	 */
-	public function saveReferees($vID, $rID, array $refereees) {
+	public function saveReferees(array $refereees) {
 		try {
 			$this->connection->begin();
-			$this->deleteByVIDAndRID($vID, $rID);
 			/** @var ShowRefereeEntity $referee */
 			foreach ($refereees as $referee) {
-				$this->save($referee);
+				if ($this->existsRefereeForShowClassBreed($referee) == false) {
+					$this->save($referee);
+				}
 			}
 			$this->connection->commit();
 		} catch (\Exception $e) {
 			$this->connection->rollback();
+			throw $e;
 		}
 	}
 

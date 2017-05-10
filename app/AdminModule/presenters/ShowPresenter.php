@@ -193,7 +193,7 @@ class ShowPresenter extends SignPresenter {
 							$refereesToSave[] = $ref;
 						}
 					}
-					$this->showRefereeRepository->saveReferees($arrayValues['vID'], $arrayValues['rID'], $refereesToSave);
+					$this->showRefereeRepository->saveReferees($refereesToSave);
 					$this->flashMessage(REFEREE_SAVED, "alert-success");
 					$this->redirect("detail", $arrayValues['vID']);
 				}
@@ -245,7 +245,7 @@ class ShowPresenter extends SignPresenter {
 					$showDogEntity->setTitul($key);
 					$dogsToSave[] = $showDogEntity;
 				}
-				$this->showDogRepository->saveDogs($arrayValues['vID'], $arrayValues['pID'], $dogsToSave);
+				$this->showDogRepository->saveDogs($dogsToSave);
 				$this->flashMessage(SHOW_DOG_SAVED, "alert-success");
 				$this->redirect("detail", $arrayValues['vID']);
 			}

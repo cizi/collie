@@ -72,19 +72,38 @@ class ShowDogRepository extends BaseRepository {
 	}
 
 	/**
+	 * @param ShowDogEntity $showDogEntity
+	 * @return bool
+	 */
+	public function existsDogByShowClassValOrderTitle(ShowDogEntity $showDogEntity) {
+		$query = ["select * from appdata_vystava_pes where vID = %i and pID = %i and Trida = %i and Oceneni = %i and Poradi = %i and Titul = %i",
+			$showDogEntity->getVID(),
+			$showDogEntity->getPID(),
+			$showDogEntity->getTrida(),
+			$showDogEntity->getOceneni(),
+			$showDogEntity->getPoradi(),
+			$showDogEntity->getTitul()
+		];
+
+		return (count($this->connection->query($query)->fetchAll()) ? true : false);
+	}
+
+	/**
 	 * @param ShowDogEntity[] $dogs
 	 */
-	public function saveDogs($vID, $pID, array $dogs) {
+	public function saveDogs(array $dogs) {
 		try {
 			$this->connection->begin();
-			$this->deleteByVIDAndPID($vID, $pID);
 			/** @var ShowDogEntity $dog */
 			foreach ($dogs as $dog) {
-				$this->save($dog);
+				if ($this->existsDogByShowClassValOrderTitle($dog) == false) {
+					$this->save($dog);
+				}
 			}
 			$this->connection->commit();
 		} catch (\Exception $e) {
 			$this->connection->rollback();
+			throw $e;
 		}
 	}
 
