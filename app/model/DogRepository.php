@@ -10,6 +10,7 @@ use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
 use Dibi\Connection;
+use Dibi\Row;
 use Nette\Application\UI\Presenter;
 use Nette\Http\Session;
 use Nette\Utils\DateTime;
@@ -903,8 +904,8 @@ class DogRepository extends BaseRepository {
 			
 			$query = ["SELECT item as Nazev, Vysledek FROM appdata_zdravi as zdravi LEFT JOIN enum_item as ciselnik
 				ON (ciselnik.enum_header_id = 14 AND ciselnik.order = zdravi.Typ) WHERE pID = %i ORDER BY Datum DESC", $row['ID']];
-			$zdravi = $this->connection->query($query)->fetch();
-			$zdravi = $zdravi === false ? '' : $zdravi->toArray();
+			$zdravi = $this->connection->query($query)->fetchPairs("Nazev","Vysledek");
+			$zdravi = $zdravi === null ? '' : $zdravi;
 
 			$query = ["SELECT Vysledek AS DKK FROM appdata_zdravi WHERE pID = %i && Typ=65 ORDER BY Datum DESC LIMIT 1", $row['ID']];
 			$DKK = $this->connection->query($query)->fetch();
@@ -985,8 +986,11 @@ class DogRepository extends BaseRepository {
 				$adds[] = ($pedigree[$i]['Vyska']) . ' cm';
 			}
 			if (isset($pedigree[$i]['zdravi']) && $pedigree[$i]['zdravi'] != '') {
-				foreach ($pedigree[$i]['zdravi'] as $z) {
-					$adds[] = '' . $pedigree[$i]['zdravi']['Nazev'] . ': ' . $pedigree[$i]['zdravi']['Vysledek'];
+				/** @var  $zdraviData Row */
+				foreach ($pedigree[$i]['zdravi'] as $zdraviTyp => $zdraviVysledek) {
+					if (trim($zdraviVysledek) != "") {
+						$adds[] = '' . $zdraviTyp . ': ' . $zdraviVysledek;
+					}
 				}
 			}
 			if (count($adds) > 0) {
