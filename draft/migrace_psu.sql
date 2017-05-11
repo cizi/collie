@@ -238,4 +238,36 @@ FROM vystava;
 #RENAME TABLE vystava to migrated_vystava;
 ############################################
 
+######## prihlaska vrhu #############
+INSERT INTO appdata_prihlaska (
+  `ID`,
+  `Datum`,
+  `oID`,
+  `mID`,
+  `DatumNarozeni`,
+  `Data`,
+  `Formular`,
+  `Zavedeno`,
+  `Plemeno`
+)
+SELECT
+  `ID`,
+  IF(`Datum` != '', `Datum`, NULL),
+  `oID`,
+  `mID`,
+  IF(`DatumNarozeni` != '', `DatumNarozeni`, NULL),
+  `Data`,
+  `Formular`,
+  `Zavedeno`,
+  CASE `Plemeno`
+    WHEN 0 THEN NULL
+    WHEN 1 THEN 17
+    WHEN 2 THEN 18
+    WHEN 3 THEN 19
+  END
+FROM prihlaska;
+#RENAME TABLE prihlaska to migrated_prihlaska;
+
+######################################
+
 SET FOREIGN_KEY_CHECKS=1;
