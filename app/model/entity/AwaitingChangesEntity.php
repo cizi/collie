@@ -1,0 +1,236 @@
+<?php
+
+namespace App\Model\Entity;
+
+use Dibi\DateTime;
+
+class AwaitingChangesEntity {
+
+	/** @var  int */
+	private $ID;
+
+	/** @var  int */
+	private $pID;
+
+	/** @var int */
+	private $uID;
+
+	/** @var DateTime */
+	private $datimVlozeno;
+
+	/** @var  DateTime */
+	private $aktualniHodnota;
+
+	/** @var string */
+	private $pozadovanaHodnota;
+
+	/** @var int */
+	private $uIDKdoSchvalil;
+
+	/** @var DateTime */
+	private $datimZpracovani;
+
+	/** @var int */
+	private $stav;
+
+	/** @var string */
+	private $tabulka;
+
+	/** @var string */
+	private $sloupec;
+
+	/**
+	 * @return int
+	 */
+	public function getID() {
+		return $this->ID;
+	}
+
+	/**
+	 * @param int $ID
+	 */
+	public function setID($ID) {
+		$this->ID = $ID;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getPID() {
+		return $this->pID;
+	}
+
+	/**
+	 * @param int $pID
+	 */
+	public function setPID($pID) {
+		$this->pID = $pID;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getUID() {
+		return $this->uID;
+	}
+
+	/**
+	 * @param int $uID
+	 */
+	public function setUID($uID) {
+		$this->uID = $uID;
+	}
+
+	/**
+	 * @return DateTime
+	 */
+	public function getDatimVlozeno() {
+		return $this->datimVlozeno;
+	}
+
+	/**
+	 * @param DateTime $datimVlozeno
+	 */
+	public function setDatimVlozeno($datimVlozeno) {
+		$this->datimVlozeno = $datimVlozeno;
+	}
+
+	/**
+	 * @return DateTime
+	 */
+	public function getAktualniHodnota() {
+		return $this->aktualniHodnota;
+	}
+
+	/**
+	 * @param DateTime $aktualniHodnota
+	 */
+	public function setAktualniHodnota($aktualniHodnota) {
+		$this->aktualniHodnota = $aktualniHodnota;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPozadovanaHodnota() {
+		return $this->pozadovanaHodnota;
+	}
+
+	/**
+	 * @param string $pozadovanaHodnota
+	 */
+	public function setPozadovanaHodnota($pozadovanaHodnota) {
+		$this->pozadovanaHodnota = $pozadovanaHodnota;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getUIDKdoSchvalil() {
+		return $this->uIDKdoSchvalil;
+	}
+
+	/**
+	 * @param int $uIDKdoSchvalil
+	 */
+	public function setUIDKdoSchvalil($uIDKdoSchvalil) {
+		$this->uIDKdoSchvalil = $uIDKdoSchvalil;
+	}
+
+	/**
+	 * @return DateTime
+	 */
+	public function getDatimZpracovani() {
+		return $this->datimZpracovani;
+	}
+
+	/**
+	 * @param DateTime $datimZpracovani
+	 */
+	public function setDatimZpracovani($datimZpracovani) {
+		$this->datimZpracovani = $datimZpracovani;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getStav() {
+		return $this->stav;
+	}
+
+	/**
+	 * @param int $stav
+	 */
+	public function setStav($stav) {
+		$this->stav = $stav;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTabulka() {
+		return $this->tabulka;
+	}
+
+	/**
+	 * @param string $tabulka
+	 */
+	public function setTabulka($tabulka) {
+		$this->tabulka = $tabulka;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSloupec() {
+		return $this->sloupec;
+	}
+
+	/**
+	 * @param string $sloupec
+	 */
+	public function setSloupec($sloupec) {
+		$this->sloupec = $sloupec;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function extract() {
+		return [
+			'ID' => $this->getID(),
+			'pID' => $this->getpID(),
+			'uID' => $this->getuID(),
+			'datimVlozeno' => $this->getdatimVlozeno(),
+			'aktualniHodnota' => $this->getaktualniHodnota(),
+			'pozadovanaHodnota' => $this->getpozadovanaHodnota(),
+			'uIDKdoSchvalil' => $this->getuIDKdoSchvalil(),
+			'datimZpracovani' => $this->getdatimZpracovani(),
+			'stav' => $this->getstav(),
+			'tabulka' => $this->gettabulka(),
+			'sloupec' => $this->getsloupec()
+		];
+	}
+
+	/**
+	 * @param array $data
+	 */
+	public function hydrate(array $data) {
+		$this->setID(isset($data['ID']) ? $data['ID'] : null);
+		$this->setpID(isset($data['pID']) ? $data['pID'] : null);
+		$this->setuID(isset($data['uID']) ? $data['uID'] : null);
+		$this->setdatimVlozeno(isset($data['datimVlozeno']) ? $data['datimVlozeno'] : null);
+		$this->setaktualniHodnota(isset($data['aktualniHodnota']) ? $data['aktualniHodnota'] : null);
+		$this->setpozadovanaHodnota(isset($data['pozadovanaHodnota']) ? $data['pozadovanaHodnota'] : null);
+		$this->setuIDKdoSchvalil(isset($data['uIDKdoSchvalil']) ? $data['uIDKdoSchvalil'] : null);
+		$this->setdatimZpracovani(isset($data['datimZpracovani']) ? $data['datimZpracovani'] : null);
+		$this->setstav(isset($data['stav']) ? $data['stav'] : null);
+		$this->settabulka(isset($data['tabulka']) ? $data['tabulka'] : null);
+	}
+}
+
+
+
+
+
+

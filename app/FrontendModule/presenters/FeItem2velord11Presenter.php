@@ -275,6 +275,13 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$owners = [];
 		try {
 			$formData = $form->getHttpData();
+
+			// načtu si aktuální data psa
+			$currentDog = $this->dogRepository->getDog($formData['ID']);
+			$currentDogHealth =$this->dogRepository->findHealthsByDogId($formData['ID']);
+			$currentBreeders = $this->userRepository->getBreederByDog($formData['ID']);
+			$currentOwners = $this->userRepository->findDogOwners($formData['ID']);
+
 			// zdraví
 			foreach($formData['dogHealth'] as $typ => $hodnoty) {
 				$healthEntity = new DogHealthEntity();
@@ -337,7 +344,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 
 			$dogEntity->hydrate($formData);
 
-			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files);
+			// $this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files);
 			$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			$this->redirect("default");
 		} catch (\Exception $e) {

@@ -3,10 +3,21 @@
 
 	<div class="myContent">
 		<div class="row">
-			<div class="col-md-6 col-lg-9">
+			<div class="col-md-12 col-lg-12">
 				<table class="table table-striped dogView">
 					<tr>
 						<th colspan="4" class="viewHeader viewHeaderTitle">{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</th>
+					</tr>
+					<tr>
+						<td colspan="4">
+							{if count($dogPics) > 0}
+								{foreach $dogPics as $dogPic}
+									<a href={$dogPic->getCesta()} data-toggle="lightbox">
+										<img src="{$dogPic->getCesta()}" class="dogPicSmall img-fluid" />
+									</a>
+								{/foreach}
+							{/if}
+						</td>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_BREED}:</th>
@@ -116,6 +127,18 @@
 						</td>
 					</tr>
 					<tr>
+						<th>{=DOG_FORM_PREVIOUS_OWNERS}</th>
+						<td>
+							{foreach $previousOwners as $user}
+								{var $name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter())}
+								{(strlen($name) > 35 ? substr($name, 0, 35) . "..." : $name)}<br />
+							{/foreach}
+						</td>
+						<th></th>
+						<td></td>
+					</tr>
+
+					<tr>
 						<th>{=DOG_FORM_TITLES}:</th>
 						<td> </td>
 
@@ -123,27 +146,6 @@
 						<td>{$dog->getPosudek()}</td>
 					</tr>
 				</table>
-			</div>
-
-			<div class="col-md-6 col-lg-3">
-				{if count($previousOwners) > 0}
-					<h4>{=DOG_FORM_PREVIOUS_OWNERS}</h4>
-					<div>
-						{foreach $previousOwners as $user}
-							{var $name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter())}
-							{(strlen($name) > 35 ? substr($name, 0, 35) . "..." : $name)}<br />
-						{/foreach}
-					</div>
-				{/if}
-
-				{if count($dogPics) > 0}
-					<h4>{=DOG_FORM_PICS}</h4>
-					{foreach $dogPics as $dogPic}
-						<a href={$dogPic->getCesta()} data-toggle="lightbox">
-							<img src="{$dogPic->getCesta()}" class="dogPicSmall img-fluid" />
-						</a>
-					{/foreach}
-				{/if}
 			</div>
 		</div>
 

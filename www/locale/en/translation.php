@@ -642,3 +642,12 @@ define("SHOW_FRONTEND_YEAR", 'Year');
 define("KINSHIP_VERIFICATION", "Inbreeding checking");
 define("KINSHIP_VERIFICATION_AND", "and");
 define("KINSHIP_VERIFICATION_CROSS", "Crossing of ancestors is taking in consideration");
+
+define("AWAITING_CHANGES", "Awaiting changes");
+define("AWAITING_CHANGES_DOG", "Dog");
+define("AWAITING_CHANGES_USER", "User");
+define("AWAITING_CHANGES_TIMESTAMP", "Date of request");
+define("AWAITING_CHANGES_ORIGINAL_VALUE", "Original value");
+define("AWAITING_CHANGES_WANTED_VALUE", "Requested value");
+define("AWAITING_CHANGES_CONFIRM", "Confirm");
+define("AWAITING_CHANGES_DECLINE", "Decline");

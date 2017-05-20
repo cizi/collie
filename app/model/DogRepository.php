@@ -603,7 +603,7 @@ class DogRepository extends BaseRepository {
 	 * @return DogPicEntity[]
 	 */
 	public function findDogPics($pID) {
-		$query = ["select * from appdata_pes_obrazky where pID = %i", $pID];
+		$query = ["select * from appdata_pes_obrazky where pID = %i order by `vychozi` desc" , $pID];
 		$result = $this->connection->query($query);
 
 		$pics = [];

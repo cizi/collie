@@ -663,3 +663,12 @@ define("SHOW_FRONTEND_YEAR", 'Rok');
 define("KINSHIP_VERIFICATION", "Zjišťoval jsem příbuznost");
 define("KINSHIP_VERIFICATION_AND", "a");
 define("KINSHIP_VERIFICATION_CROSS", "V úvahu se bere i křížení předků");
+
+define("AWAITING_CHANGES", "Změny čekající na schválení");
+define("AWAITING_CHANGES_DOG", "Pes");
+define("AWAITING_CHANGES_USER", "Uživatel");
+define("AWAITING_CHANGES_TIMESTAMP", "Datum požadavku");
+define("AWAITING_CHANGES_ORIGINAL_VALUE", "Původní hodnota");
+define("AWAITING_CHANGES_WANTED_VALUE", "Požadovaná hodnota");
+define("AWAITING_CHANGES_CONFIRM", "Schválit");
+define("AWAITING_CHANGES_DECLINE", "Zamítnout");
