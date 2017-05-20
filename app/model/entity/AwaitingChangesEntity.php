@@ -39,6 +39,23 @@ class AwaitingChangesEntity {
 	/** @var string */
 	private $sloupec;
 
+	/** @var int */
+	private $zID;
+
+	/**
+	 * @return int
+	 */
+	public function getZID() {
+		return $this->zID;
+	}
+
+	/**
+	 * @param int $zID
+	 */
+	public function setZID($zID) {
+		$this->zID = $zID;
+	}
+
 	/**
 	 * @return int
 	 */
@@ -208,7 +225,8 @@ class AwaitingChangesEntity {
 			'datimZpracovani' => $this->getdatimZpracovani(),
 			'stav' => $this->getstav(),
 			'tabulka' => $this->gettabulka(),
-			'sloupec' => $this->getsloupec()
+			'sloupec' => $this->getsloupec(),
+			'zID' => $this->getZID()
 		];
 	}
 
@@ -217,15 +235,16 @@ class AwaitingChangesEntity {
 	 */
 	public function hydrate(array $data) {
 		$this->setID(isset($data['ID']) ? $data['ID'] : null);
-		$this->setpID(isset($data['pID']) ? $data['pID'] : null);
-		$this->setuID(isset($data['uID']) ? $data['uID'] : null);
-		$this->setdatimVlozeno(isset($data['datimVlozeno']) ? $data['datimVlozeno'] : null);
-		$this->setaktualniHodnota(isset($data['aktualniHodnota']) ? $data['aktualniHodnota'] : null);
-		$this->setpozadovanaHodnota(isset($data['pozadovanaHodnota']) ? $data['pozadovanaHodnota'] : null);
-		$this->setuIDKdoSchvalil(isset($data['uIDKdoSchvalil']) ? $data['uIDKdoSchvalil'] : null);
-		$this->setdatimZpracovani(isset($data['datimZpracovani']) ? $data['datimZpracovani'] : null);
-		$this->setstav(isset($data['stav']) ? $data['stav'] : null);
-		$this->settabulka(isset($data['tabulka']) ? $data['tabulka'] : null);
+		$this->setPID(isset($data['pID']) ? $data['pID'] : null);
+		$this->setUID(isset($data['uID']) ? $data['uID'] : null);
+		$this->setDatimVlozeno(isset($data['datimVlozeno']) ? $data['datimVlozeno'] : null);
+		$this->setAktualniHodnota(isset($data['aktualniHodnota']) ? $data['aktualniHodnota'] : null);
+		$this->setPozadovanaHodnota(isset($data['pozadovanaHodnota']) ? $data['pozadovanaHodnota'] : null);
+		$this->setUIDKdoSchvalil(isset($data['uIDKdoSchvalil']) ? $data['uIDKdoSchvalil'] : null);
+		$this->setDatimZpracovani(isset($data['datimZpracovani']) ? $data['datimZpracovani'] : null);
+		$this->setStav(isset($data['stav']) ? $data['stav'] : null);
+		$this->setTabulka(isset($data['tabulka']) ? $data['tabulka'] : null);
+		$this->setZID(isset($data['zID']) ? $data['zID'] : null);
 	}
 }
 
