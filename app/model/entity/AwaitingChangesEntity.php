@@ -244,6 +244,7 @@ class AwaitingChangesEntity {
 		$this->setDatimZpracovani(isset($data['datimZpracovani']) ? $data['datimZpracovani'] : null);
 		$this->setStav(isset($data['stav']) ? $data['stav'] : null);
 		$this->setTabulka(isset($data['tabulka']) ? $data['tabulka'] : null);
+		$this->setSloupec(isset($data['sloupec']) ? $data['sloupec'] : null);
 		$this->setZID(isset($data['zID']) ? $data['zID'] : null);
 	}
 }

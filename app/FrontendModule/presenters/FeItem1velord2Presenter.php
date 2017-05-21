@@ -28,6 +28,9 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	/** @persistent */
 	public $filter;
 
+	/** @const počet obrázků v hlavičce pohledu  */
+	const TOP_IMAGE_COUNT = 2;
+
 	/** @var DogRepository */
 	private $dogRepository;
 

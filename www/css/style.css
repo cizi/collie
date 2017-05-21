@@ -359,6 +359,13 @@ div.colorExample {
 .parentMarker{
 	font-weight: bold;
 }
+.dogViewName {
+	font-size: 30px;
+	background-color: white;
+}
+.noBorder{
+	border: none!important;
+}
 .viewHeader{
 	width: 100%;
 	font-weight: bold;

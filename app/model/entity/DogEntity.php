@@ -6,125 +6,125 @@ use Dibi\DateTime;
 
 class DogEntity {
 
-	/** @const formát data */
+	/** @const formï¿½t data */
 	const MASKA_DATA = 'Y-m-d';
 
 	/** @var int */
-	private $ID;
+	public $ID;
 
 	/** @var string */
-	private $TitulyPredJmenem;
+	public $TitulyPredJmenem;
 
 	/** @var string */
-	private $TitulyZaJmenem;
+	public $TitulyZaJmenem;
 
 	/** @var string */
-	private $Jmeno;
+	public $Jmeno;
 
 	/** @var DateTime */
-	private $DatNarozeni;
+	public $DatNarozeni;
 
 	/** @var DateTime */
-	private $DatUmrti;
+	public $DatUmrti;
 
 	/** @var string */
-	private $UmrtiKomentar;
+	public $UmrtiKomentar;
 
 	/** @var int */
-	private $Pohlavi;
+	public $Pohlavi;
 
 	/** @var int */
-	private $Plemeno;
+	public $Plemeno;
 
 	/** @var int */
-	private $Barva;
+	public $Barva;
 
 	/** @var int */
-	private $Srst;
+	public $Srst;
 
 	/** @var string */
-	private $BarvaKomentar;
+	public $BarvaKomentar;
 
 	/** @var string */
-	private $CisloZapisu;
+	public $CisloZapisu;
 
 	/** @var string */
-	private $PCisloZapisu;
+	public $PCisloZapisu;
 
 	/** @var string */
-	private $Cip;
+	public $Cip;
 
 	/** @var string */
-	private $Tetovani;
+	public $Tetovani;
 
 	/** @var string */
-	private $ZdravotniKomentar;
+	public $ZdravotniKomentar;
 
 	/** @var int */
-	private $Varlata;
+	public $Varlata;
 
 	/** @var int */
-	private $Skus;
+	public $Skus;
 
 	/** @var int */
-	private $Zuby;
+	public $Zuby;
 
 	/** @var string */
-	private $ZubyKomentar;
+	public $ZubyKomentar;
 
 	/** @var int */
-	private $Chovnost;
+	public $Chovnost;
 
 	/** @var string */
-	private $ChovnyKomentar;
+	public $ChovnyKomentar;
 
 	/** @var string */
-	private $Posudek;
+	public $Posudek;
 
 	/** @var string */
-	private $Zkousky;
+	public $Zkousky;
 
 	/** @var string */
-	private $TitulyKomentar;
+	public $TitulyKomentar;
 
 	/** @var string */
-	private $Oceneni;
+	public $Oceneni;
 
 	/** @var  string */
-	private $Zavody;
+	public $Zavody;
 
 	/** @var int */
-	private $oID;
+	public $oID;
 
 	/** @var int */
-	private $mID;
+	public $mID;
 
 	/** @var  string */
-	private $Komentar;
+	public $Komentar;
 
 	/** @var  DateTime */
-	private $PosledniZmena;
+	public $PosledniZmena;
 
 	/** @var  float */
-	private $Vyska;
+	public $Vyska;
 
 	/** @var  float */
-	private $Vaha;
+	public $Vaha;
 
 	/** @var  string */
-	private $Bonitace;
+	public $Bonitace;
 
 	/** @var  string */
-	private $ImpFrom;
+	public $ImpFrom;
 
 	/** @var  int */
-	private $ImpID;
+	public $ImpID;
 
 	/** @var  int */
-	private $oIDupdate;
+	public $oIDupdate;
 
 	/** @var  int */
-	private $mIDupdate;
+	public $mIDupdate;
 
 	/**
 	 * @return int

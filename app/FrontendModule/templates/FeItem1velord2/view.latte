@@ -6,16 +6,21 @@
 			<div class="col-md-12 col-lg-12">
 				<table class="table table-striped dogView">
 					<tr>
-						<th colspan="4" class="viewHeader viewHeaderTitle">{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</th>
+						<td colspan="4" class="text-center dogViewName noBorder">
+							{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}
+						</td>
 					</tr>
 					<tr>
-						<td colspan="4">
+						<td colspan="4" class="text-center noBorder">
 							{if count($dogPics) > 0}
-								{foreach $dogPics as $dogPic}
-									<a href={$dogPic->getCesta()} data-toggle="lightbox">
-										<img src="{$dogPic->getCesta()}" class="dogPicSmall img-fluid" />
-									</a>
-								{/foreach}
+								{for $i=0; $i < App\FrontendModule\Presenters\FeItem1velord2Presenter::TOP_IMAGE_COUNT; $i++}
+									{if isset($dogPics[$i])}
+										{var $dogPic = $dogPics[$i]}
+										<a href={$dogPic->getCesta()} data-toggle="lightbox">
+											<img src="{$dogPic->getCesta()}" class="dogPicSmall img-fluid" />
+										</a>
+									{/if}
+								{/for}
 							{/if}
 						</td>
 					</tr>
@@ -300,6 +305,18 @@
 
 				<div class="viewHeader">{=DOG_FORM_SHOWS_RACES}</div>
 				<div class="dogViewSingleContent">{$dog->getZavody()}</div>
+
+				<div class="viewHeader">{=DOG_FORM_PICS}</div>
+				<div class="dogViewSingleContent">
+					{for $i=App\FrontendModule\Presenters\FeItem1velord2Presenter::TOP_IMAGE_COUNT; $i < count($dogPics); $i++}
+						{if isset($dogPics[$i])}
+							{var $dogPic = $dogPics[$i]}
+							<a href={$dogPic->getCesta()} data-toggle="lightbox">
+								<img src="{$dogPic->getCesta()}" class="dogPicSmall img-fluid" />
+							</a>
+						{/if}
+					{/for}
+				</div>
 			</div>
 		</div>
 	</div>

@@ -2,6 +2,7 @@
 
 namespace App\FrontendModule\Presenters;
 
+use App\Controller\DogChangesComparatorController;
 use App\Controller\FileController;
 use App\Enum\DogFileEnum;
 use App\Forms\DogFilterForm;
@@ -41,18 +42,23 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	/** @var EnumerationRepository  */
 	private $enumerationRepository;
 
+	/** @var DogChangesComparatorController */
+	private $dogChangesComparatorController;
+
 	public function __construct(
 		DogFilterForm $dogFilterForm,
 		DogForm $dogForm,
 		DogRepository $dogRepository,
 		EnumerationRepository $enumerationRepository,
-		UserRepository $userRepository
+		UserRepository $userRepository,
+		DogChangesComparatorController $changesComparatorController
 	) {
 		$this->dogFilterForm = $dogFilterForm;
 		$this->dogForm = $dogForm;
 		$this->dogRepository = $dogRepository;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->userRepository = $userRepository;
+		$this->dogChangesComparatorController = $changesComparatorController;
 	}
 
 	/**
@@ -264,10 +270,15 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$this->redirect("edit", $pID);
 	}
 
+	/**
+	 * Zapíše změny do logu, který musí schválit admin
+	 * @param Form $form
+	 * @throws AbortException
+	 */
 	public function saveDog(Form $form){
 		$supportedPicFormats = ["jpg", "png", "gif"];
 		$supportedFileFormats = ["jpg", "png", "gif", "doc", "docx", "pdf", "xls", "xlsx"];
-		$dogEntity = new DogEntity();
+		$newDogEntity = new DogEntity();
 		$pics = [];
 		$files = [];
 		$health = [];
@@ -276,76 +287,82 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		try {
 			$formData = $form->getHttpData();
 
-			// načtu si aktuální data psa
-			$currentDog = $this->dogRepository->getDog($formData['ID']);
-			$currentDogHealth =$this->dogRepository->findHealthsByDogId($formData['ID']);
-			$currentBreeders = $this->userRepository->getBreederByDog($formData['ID']);
-			$currentOwners = $this->userRepository->findDogOwners($formData['ID']);
+			if (isset($formData['ID'])) {	// editace => schvalování adminem
+				// načtu si aktuální data psa
+				$currentDogEntity = $this->dogRepository->getDog($formData['ID']);
+				$newDogEntity->hydrate($formData);
+				$newDogEntity->setPosledniZmena($currentDogEntity->getPosledniZmena());	// tohle bych řešit neměl, takže to převezmu ze stávající hotnoty
+				$linkToDogView = $this->presenter->link("FeItem1velord2:view", $currentDogEntity->getID());
+				$this->dogChangesComparatorController->compareSaveDog($currentDogEntity, $newDogEntity, $linkToDogView);
 
-			// zdraví
-			foreach($formData['dogHealth'] as $typ => $hodnoty) {
-				$healthEntity = new DogHealthEntity();
-				$healthEntity->hydrate($hodnoty);
-				$healthEntity->setTyp($typ);
-				$health[] = $healthEntity;
-			}
-			unset($formData['dogHealth']);
+				$currentDogHealth =$this->dogRepository->findHealthsByDogId($formData['ID']);
+				$currentBreeders = $this->userRepository->getBreederByDog($formData['ID']);
+				$currentOwners = $this->userRepository->findDogOwners($formData['ID']);
+				$this->flashMessage(AWAITING_CHANGES_SENT_TO_APPROVAL, "alert-success");
+			} else {	// pořizování
+				foreach($formData['dogHealth'] as $typ => $hodnoty) {	//			// zdraví
+					$healthEntity = new DogHealthEntity();
+					$healthEntity->hydrate($hodnoty);
+					$healthEntity->setTyp($typ);
+					$health[] = $healthEntity;
+				}
+				unset($formData['dogHealth']);
 
-			/** @var FileUpload $file */
-			foreach($formData['pics'] as $file) {
-				if ($file != null) {
-					$fileController = new FileController();
-					if ($fileController->upload($file, $supportedPicFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
-						throw new \Exception("Nelze nahrát soubor.");
-						break;
+				/** @var FileUpload $file */
+				foreach($formData['pics'] as $file) {
+					if ($file != null) {
+						$fileController = new FileController();
+						if ($fileController->upload($file, $supportedPicFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+							throw new \Exception("Nelze nahrát soubor.");
+							break;
+						}
+						$dogPic = new DogPicEntity();
+						$dogPic->setCesta($fileController->getPathDb());
+						$pics[] = $dogPic;
 					}
-					$dogPic = new DogPicEntity();
-					$dogPic->setCesta($fileController->getPathDb());
-					$pics[] = $dogPic;
 				}
-			}
-			unset($formData['pics']);
+				unset($formData['pics']);
 
-			// chovatele
-			if (isset($formData['breeder'])) {
-				$breederEntity = new BreederEntity();
-				$breederEntity->hydrate($formData['breeder']);
-				$breeders[] = $breederEntity;
-			}
-			unset($formData['breeder']);
-
-			// majitel
-			if (isset($formData['owners'])) {
-				foreach ($formData['owners']['uID'] as $owner) {
-					$ownerEntity = new DogOwnerEntity();
-					$ownerEntity->setUID($owner);
-					$ownerEntity->setSoucasny(true);
-					$owners[] = $ownerEntity;
+				// chovatele
+				if (isset($formData['breeder'])) {
+					$breederEntity = new BreederEntity();
+					$breederEntity->hydrate($formData['breeder']);
+					$breeders[] = $breederEntity;
 				}
-				unset($formData['owners']['uID']);
-			}
+				unset($formData['breeder']);
 
-			// bonitační soubory
-			/** @var FileUpload $file */
-			foreach($formData['BonitaceSoubory'] as $file) {
-				if ($file != null) {
-					$fileController = new FileController();
-					if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
-						throw new \Exception("Nelze nahrát soubor.");
-						break;
+				// majitel
+				if (isset($formData['owners'])) {
+					foreach ($formData['owners']['uID'] as $owner) {
+						$ownerEntity = new DogOwnerEntity();
+						$ownerEntity->setUID($owner);
+						$ownerEntity->setSoucasny(true);
+						$owners[] = $ownerEntity;
 					}
-					$dogFile = new DogFileEntity();
-					$dogFile->setCesta($fileController->getPathDb());
-					$dogFile->setTyp(DogFileEnum::BONITACNI_POSUDEK);
-					$files[] = $dogFile;
+					unset($formData['owners']['uID']);
 				}
+
+				// bonitační soubory
+				/** @var FileUpload $file */
+				foreach($formData['BonitaceSoubory'] as $file) {
+					if ($file != null) {
+						$fileController = new FileController();
+						if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+							throw new \Exception("Nelze nahrát soubor.");
+							break;
+						}
+						$dogFile = new DogFileEntity();
+						$dogFile->setCesta($fileController->getPathDb());
+						$dogFile->setTyp(DogFileEnum::BONITACNI_POSUDEK);
+						$files[] = $dogFile;
+					}
+				}
+				unset($formData['BonitaceSoubory']);
+
+				$newDogEntity->hydrate($formData);
+				$this->dogRepository->save($newDogEntity, $pics, $health, $breeders, $owners, $files);
+				$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			}
-			unset($formData['BonitaceSoubory']);
-
-			$dogEntity->hydrate($formData);
-
-			// $this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files);
-			$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			$this->redirect("default");
 		} catch (\Exception $e) {
 			if ($e instanceof AbortException) {
