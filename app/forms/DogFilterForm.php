@@ -63,7 +63,7 @@ class DogFilterForm {
 		$form->addText("Jmeno", DOG_TABLE_HEADER_NAME)
 			->setAttribute("class", "form-control");
 
-		$plemena = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 7);
+		$plemena = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::PLEMENO);
 		$form->addSelect("Plemeno", DOG_TABLE_HEADER_BREED, $plemena)
 			->setAttribute("class", "form-control");
 
@@ -72,11 +72,11 @@ class DogFilterForm {
 		$form->addSelect(self::DOG_FILTER_ORDER_NUMBER, DOG_TABLE_HEADER_WRITE_NUMBER, $ordering)
 			->setAttribute("class", "form-control");
 
-		$barvy = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 4);
+		$barvy = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::BARVA);
 		$form->addSelect("Barva", DOG_TABLE_HEADER_COLOR, $barvy)
 			->setAttribute("class", "form-control");
 
-		$pohlavi = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($langCurrent, 8);
+		$pohlavi = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($langCurrent, EnumerationRepository::POHLAVI);
 		$form->addSelect("Pohlavi", DOG_TABLE_HEADER_SEX, $pohlavi)
 			->setAttribute("class", "form-control");
 
@@ -85,7 +85,7 @@ class DogFilterForm {
 			//->setAttribute("id", "DatNarozeni")
 			->setAttribute("class", "form-control");
 
-		$chovnost = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 5);
+		$chovnost = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::CHOVNOST);
 		$form->addSelect("Chovnost", DOG_TABLE_HEADER_BREEDING, $chovnost)
 			->setAttribute("class", "form-control");
 

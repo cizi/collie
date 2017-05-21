@@ -40,20 +40,20 @@ class AwaitingChangesEntity {
 	private $sloupec;
 
 	/** @var int */
-	private $zID;
+	private $cID;
 
 	/**
 	 * @return int
 	 */
-	public function getZID() {
-		return $this->zID;
+	public function getCID() {
+		return $this->cID;
 	}
 
 	/**
-	 * @param int $zID
+	 * @param int $cID
 	 */
-	public function setZID($zID) {
-		$this->zID = $zID;
+	public function setCID($cID) {
+		$this->cID = $cID;
 	}
 
 	/**
@@ -226,7 +226,7 @@ class AwaitingChangesEntity {
 			'stav' => $this->getstav(),
 			'tabulka' => $this->gettabulka(),
 			'sloupec' => $this->getsloupec(),
-			'zID' => $this->getZID()
+			'cID' => $this->getCID()
 		];
 	}
 
@@ -245,7 +245,7 @@ class AwaitingChangesEntity {
 		$this->setStav(isset($data['stav']) ? $data['stav'] : null);
 		$this->setTabulka(isset($data['tabulka']) ? $data['tabulka'] : null);
 		$this->setSloupec(isset($data['sloupec']) ? $data['sloupec'] : null);
-		$this->setZID(isset($data['zID']) ? $data['zID'] : null);
+		$this->setCID(isset($data['cID']) ? $data['cID'] : null);
 	}
 }
 

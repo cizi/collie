@@ -3,9 +3,12 @@
 namespace App\AdminModule\Presenters;
 
 use App\AdminModule\Presenters;
+use App\Controller\EmailController;
 use App\Model\AwaitingChangesRepository;
 use App\Model\DogRepository;
+use App\Model\EnumerationRepository;
 use App\Model\UserRepository;
+use App\Model\WebconfigRepository;
 
 class DashboardPresenter extends SignPresenter {
 
@@ -18,22 +21,30 @@ class DashboardPresenter extends SignPresenter {
 	/** @var DogRepository */
 	private $dogRepository;
 
+	/** @var EnumerationRepository */
+	private $enumerationRepository;
+
 	public function __construct(
 		AwaitingChangesRepository $awaitingChangesRepository,
 		UserRepository $userRepository,
-		DogRepository $dogRepository
+		DogRepository $dogRepository,
+		EnumerationRepository $enumerationRepository
 	) {
 		$this->awaitingRepository = $awaitingChangesRepository;
 		$this->userRepository = $userRepository;
 		$this->dogRepository = $dogRepository;
+		$this->enumerationRepository = $enumerationRepository;
 	}
 
 	public function actionDefault() {
 		$this->template->awaitingChanges = $this->awaitingRepository->findAwaitingChanges();
 		$this->template->proceededChanges = $this->awaitingRepository->findProceededChanges();
 		$this->template->declinedChanges = $this->awaitingRepository->findDeclinedChanges();
+
+		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->userRepository = $this->userRepository;
 		$this->template->dogRepository = $this->dogRepository;
+		$this->template->enumerationRepository = $this->enumerationRepository;
 	}
 
 	/**
@@ -45,6 +56,12 @@ class DashboardPresenter extends SignPresenter {
 			try {
 				$this->awaitingRepository->proceedChange($awaitingChange, $this->getUser());
 				$this->flashMessage(AWAITING_CHANGE_CHANGE_ACCEPT, "alert-success");
+
+				$userRequestEntity = $this->userRepository->getUser($awaitingChange->getUID());
+				$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+				$linkToDogView = $this->presenter->link(":Frontend:FeItem1velord2:view", $awaitingChange->getPID());
+				$body = sprintf(AWAITING_CHANGE_PROCEEDED_OK_BODY, $linkToDogView);
+				// EmailController::SendPlainEmail($emailFrom, $userRequestEntity->getEmail(), AWAITING_CHANGE_PROCEEDED_OK_SUBJECT, $body);
 			} catch (\Exception $e) {
 				$this->flashMessage(AWAITING_CHANGE_CHANGE_ERR, "alert-danger");
 			}
@@ -61,6 +78,12 @@ class DashboardPresenter extends SignPresenter {
 			try {
 				$this->awaitingRepository->declineChange($awaitingChange, $this->getUser());
 				$this->flashMessage(AWAITING_CHANGE_CHANGE_DECLINE, "alert-success");
+
+				$userRequestEntity = $this->userRepository->getUser($awaitingChange->getUID());
+				$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+				$linkToDogView = $this->presenter->link(":Frontend:FeItem1velord2:view", $awaitingChange->getPID());
+				$body = sprintf(AWAITING_CHANGE_PROCEEDED_DECLINE_BODY, $linkToDogView);
+				// EmailController::SendPlainEmail($emailFrom, $userRequestEntity->getEmail(), AWAITING_CHANGE_PROCEEDED_DECLINE_SUBJECT, $body);
 			} catch (\Exception $e) {
 				$this->flashMessage(AWAITING_CHANGE_CHANGE_ERR, "alert-danger");
 			}

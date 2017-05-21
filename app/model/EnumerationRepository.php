@@ -7,8 +7,17 @@ use App\Model\Entity\EnumerationItemEntity;
 
 class EnumerationRepository extends BaseRepository {
 
-	/** @const string nevybraná poloka */
+	/** @const string nevybranï¿½ poloï¿½ka */
 	const NOT_SELECTED = "-";
+
+	/** @var int ÄÃ­sla ÄÃ­selnÃ­ napÅ™Ã­Ä aplikacÃ­ */
+	const POHLAVI = 8,
+	PLEMENO = 7,
+	BARVA = 4,
+	SRST = 11,
+	VARLATA = 12,
+	SKUS = 10,
+	CHOVNOST = 5;
 
 	/**
 	 * @param int $id
@@ -168,7 +177,7 @@ class EnumerationRepository extends BaseRepository {
 	}
 
 	/**
-	 * Smae hodnotu èíselníku
+	 * Smaï¿½e hodnotu ï¿½ï¿½selnï¿½ku
 	 * @param int $headerId
 	 * @param int $order
 	 */

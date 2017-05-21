@@ -8,6 +8,7 @@ use App\Model\AwaitingChangesRepository;
 use App\Model\Entity\AwaitingChangesEntity;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
+use App\Model\EnumerationRepository;
 use App\Model\UserRepository;
 use App\Model\WebconfigRepository;
 use Dibi\DateTime;
@@ -46,6 +47,16 @@ class DogChangesComparatorController {
 	 * @param string [$dogUrl]
 	 */
 	public function compareSaveDog(DogEntity $currentDog, DogEntity $newDog, $dogUrl = "") {
+		$enumValues = [
+			// název sloupce v DB psa => číslo číselníků
+			'Pohlavi' => EnumerationRepository::POHLAVI,
+			'Plemeno' => EnumerationRepository::PLEMENO,
+			'Barva' => EnumerationRepository::BARVA,
+			'Srst' => EnumerationRepository::SRST,
+			'Varlata' => EnumerationRepository::VARLATA,
+			'Skus' => EnumerationRepository::SKUS,
+			'Chovnost' => EnumerationRepository::CHOVNOST
+		];
 		$changes = [];
 		foreach($currentDog as $property => $currentValue) {
 			$newValue = $newDog->{$property};
@@ -59,6 +70,10 @@ class DogChangesComparatorController {
 				$awaitingEntity->setSloupec($property);
 				$awaitingEntity->setUID($this->user->getId());
 				$awaitingEntity->setStav(DogChangeStateEnum::INSERTED);
+
+				if (array_key_exists($property, $enumValues)) {
+					$awaitingEntity->setCID($enumValues[$property]);
+				}
 
 				$changes[] = $awaitingEntity;
 			}

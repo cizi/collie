@@ -39,8 +39,20 @@
 										</td>
 										<td>{if $awaitingChange->getDatimVlozeno() != null}{$awaitingChange->getDatimVlozeno()->format('d.m.Y H:i:s')}{/if}</td>
 										<td>{$awaitingChange->getSloupec()}</td>
-										<td>{$awaitingChange->getAktualniHodnota()}</td>
-										<td>{$awaitingChange->getPozadovanaHodnota()}</td>
+										<td>
+											{if $awaitingChange->getCID() == null}		{* není číselník *}
+												{$awaitingChange->getAktualniHodnota()}
+											{else}	{* je číselník *}
+												{$enumerationRepository->findEnumItemByOrder($currentLang, $awaitingChange->getAktualniHodnota())}
+											{/if}
+										</td>
+										<td>
+											{if $awaitingChange->getCID() == null}		{* není číselník *}
+												{$awaitingChange->getPozadovanaHodnota()}
+											{else}	{* je číselník *}
+												{$enumerationRepository->findEnumItemByOrder($currentLang, $awaitingChange->getPozadovanaHodnota())}
+											{/if}
+										</td>
 										<td class="alignRight">
 											<a href={link proceedChange, $awaitingChange->getID()}<span class="glyphicon glyphicon-ok colorGreen"></span></a>&nbsp;&nbsp;
 											<a href="#" data-href={link declineChange, $awaitingChange->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=AWAITING_CHANGES_DECLINE}><span class="glyphicon glyphicon-remove colorRed"></span></a>
@@ -84,8 +96,20 @@
 									</td>
 									<td>{if $proceedChange->getDatimVlozeno() != null}{$proceedChange->getDatimVlozeno()->format('d.m.Y H:i:s')}{/if}</td>
 									<td>{$proceedChange->getSloupec()}</td>
-									<td>{$proceedChange->getAktualniHodnota()}</td>
-									<td>{$proceedChange->getPozadovanaHodnota()}</td>
+									<td>
+										{if $proceedChange->getCID() == null}		{* není číselník *}
+											{$proceedChange->getAktualniHodnota()}
+										{else}	{* je číselník *}
+											{$enumerationRepository->findEnumItemByOrder($currentLang, $proceedChange->getAktualniHodnota())}
+										{/if}
+									</td>
+									<td>
+										{if $proceedChange->getCID() == null}		{* není číselník *}
+											{$proceedChange->getPozadovanaHodnota()}
+										{else}	{* je číselník *}
+											{$enumerationRepository->findEnumItemByOrder($currentLang, $proceedChange->getPozadovanaHodnota())}
+										{/if}
+									</td>
 									<td>
 										{var user = $userRepository->getUser($proceedChange->getUIDKdoSchvalil())}
 										{if $user != null}
@@ -132,8 +156,20 @@
 									</td>
 									<td>{if $declineChange->getDatimVlozeno() != null}{$declineChange->getDatimVlozeno()->format('d.m.Y H:i:s')}{/if}</td>
 									<td>{$declineChange->getSloupec()}</td>
-									<td>{$declineChange->getAktualniHodnota()}</td>
-									<td>{$declineChange->getPozadovanaHodnota()}</td>
+									<td>
+										{if $declineChange->getCID() == null}		{* není číselník *}
+											{$declineChange->getAktualniHodnota()}
+										{else}	{* je číselník *}
+											{$enumerationRepository->findEnumItemByOrder($currentLang, $declineChange->getAktualniHodnota())}
+										{/if}
+									</td>
+									<td>
+										{if $declineChange->getCID() == null}		{* není číselník *}
+											{$declineChange->getPozadovanaHodnota()}
+										{else}	{* je číselník *}
+											{$enumerationRepository->findEnumItemByOrder($currentLang, $declineChange->getPozadovanaHodnota())}
+										{/if}
+									</td>
 									<td>
 										{var user = $userRepository->getUser($declineChange->getUIDKdoSchvalil())}
 										{if $user != null}

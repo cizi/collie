@@ -68,15 +68,15 @@ class DogForm {
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", DOG_FORM_NAME_SUFFIX); */
 
-		$plemeno = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 7);
+		$plemeno = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::PLEMENO);
 		$form->addSelect("Plemeno", DOG_FORM_BREED, $plemeno)
 			->setAttribute("class", "form-control");
 
-		$srst = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 11);
+		$srst = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::SRST);
 		$form->addSelect("Srst", DOG_FORM_FUR, $srst)
 			->setAttribute("class", "form-control");
 
-		$barvy = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 4);
+		$barvy = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::BARVA);
 		$form->addSelect("Barva", "", $barvy)
 			->setAttribute("class", "form-control");
 
@@ -84,7 +84,7 @@ class DogForm {
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", DOG_FORM_FUR_COM);
 
-		$pohlavi = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 8);
+		$pohlavi = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::POHLAVI);
 		$form->addSelect("Pohlavi", DOG_FORM_SEX, $pohlavi)
 			->setAttribute("class", "form-control");
 
@@ -135,7 +135,7 @@ class DogForm {
 		$form->addMultiUpload("BonitaceSoubory", DOG_FORM_PIC_UPLOAD_FILE)
 			->setAttribute("class", "form-control");
 
-		$chovnost = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 5);
+		$chovnost = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::CHOVNOST);
 		$form->addSelect("Chovnost", DOG_FORM_BREEDING, $chovnost)
 			->setAttribute("class", "form-control");
 
@@ -147,11 +147,11 @@ class DogForm {
 			->setAttribute("class", "form-control")
 			->setAttribute("placeholder", DOG_FORM_HEALTH_COM);
 
-		$varlata = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 12);
+		$varlata = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::VARLATA);
 		$form->addSelect("Varlata", DOG_FORM_BOLOCKS, $varlata)
 			->setAttribute("class", "form-control");
 
-		$skus = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, 10);
+		$skus = $this->enumerationRepository->findEnumItemsForSelect($langCurrent, EnumerationRepository::SKUS);
 		$form->addSelect("Skus", DOG_FORM_CHEW, $skus)
 			->setAttribute("class", "form-control");
 
