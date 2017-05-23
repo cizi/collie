@@ -287,6 +287,14 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		try {
 			$formData = $form->getHttpData();
 
+			foreach($formData['dogHealth'] as $typ => $hodnoty) {	//			// zdraví
+				$healthEntity = new DogHealthEntity();
+				$healthEntity->hydrate($hodnoty);
+				$healthEntity->setTyp($typ);
+				$health[] = $healthEntity;
+			}
+			unset($formData['dogHealth']);
+
 			if (isset($formData['ID'])) {	// editace => schvalování adminem
 				// načtu si aktuální data psa
 				$currentDogEntity = $this->dogRepository->getDog($formData['ID']);
@@ -296,18 +304,12 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				$this->dogChangesComparatorController->compareSaveDog($currentDogEntity, $newDogEntity, $linkToDogView);
 
 				$currentDogHealth =$this->dogRepository->findHealthsByDogId($formData['ID']);
+				$this->dogChangesComparatorController->compareSaveDogHealth($currentDogHealth, $health);
+
 				$currentBreeders = $this->userRepository->getBreederByDog($formData['ID']);
 				$currentOwners = $this->userRepository->findDogOwners($formData['ID']);
 				$this->flashMessage(AWAITING_CHANGES_SENT_TO_APPROVAL, "alert-success");
 			} else {	// pořizování
-				foreach($formData['dogHealth'] as $typ => $hodnoty) {	//			// zdraví
-					$healthEntity = new DogHealthEntity();
-					$healthEntity->hydrate($hodnoty);
-					$healthEntity->setTyp($typ);
-					$health[] = $healthEntity;
-				}
-				unset($formData['dogHealth']);
-
 				/** @var FileUpload $file */
 				foreach($formData['pics'] as $file) {
 					if ($file != null) {

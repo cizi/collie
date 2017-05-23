@@ -18,7 +18,7 @@ class AwaitingChangesEntity {
 	/** @var DateTime */
 	private $datimVlozeno;
 
-	/** @var  DateTime */
+	/** @var  string */
 	private $aktualniHodnota;
 
 	/** @var string */
@@ -41,6 +41,23 @@ class AwaitingChangesEntity {
 
 	/** @var int */
 	private $cID;
+
+	/**
+	 * @return int
+	 */
+	public function getZID() {
+		return $this->zID;
+	}
+
+	/**
+	 * @param int $zID
+	 */
+	public function setZID($zID) {
+		$this->zID = $zID;
+	}
+
+	/** @var  int */
+	private $zID;
 
 	/**
 	 * @return int
@@ -113,14 +130,14 @@ class AwaitingChangesEntity {
 	}
 
 	/**
-	 * @return DateTime
+	 * @return string
 	 */
 	public function getAktualniHodnota() {
 		return $this->aktualniHodnota;
 	}
 
 	/**
-	 * @param DateTime $aktualniHodnota
+	 * @param string $aktualniHodnota
 	 */
 	public function setAktualniHodnota($aktualniHodnota) {
 		$this->aktualniHodnota = $aktualniHodnota;
@@ -226,7 +243,8 @@ class AwaitingChangesEntity {
 			'stav' => $this->getstav(),
 			'tabulka' => $this->gettabulka(),
 			'sloupec' => $this->getsloupec(),
-			'cID' => $this->getCID()
+			'cID' => $this->getCID(),
+			'zID' => $this->getZID()
 		];
 	}
 
@@ -246,11 +264,6 @@ class AwaitingChangesEntity {
 		$this->setTabulka(isset($data['tabulka']) ? $data['tabulka'] : null);
 		$this->setSloupec(isset($data['sloupec']) ? $data['sloupec'] : null);
 		$this->setCID(isset($data['cID']) ? $data['cID'] : null);
+		$this->setZID(isset($data['zID']) ? $data['zID'] : null);
 	}
 }
-
-
-
-
-
-

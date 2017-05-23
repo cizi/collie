@@ -8,6 +8,7 @@ use App\Model\AwaitingChangesRepository;
 use App\Model\Entity\AwaitingChangesEntity;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
+use App\Model\Entity\DogHealthEntity;
 use App\Model\EnumerationRepository;
 use App\Model\UserRepository;
 use App\Model\WebconfigRepository;
@@ -17,6 +18,7 @@ use Nette\Security\User;
 class DogChangesComparatorController {
 
 	const TBL_DOG_NAME = "appdata_pes";
+	const TBL_DOG_HEALTH_NAME = "appdata_zdravi";
 
 	/** @var AwaitingChangesRepository */
 	private $awaitingChangeRepository;
@@ -37,8 +39,51 @@ class DogChangesComparatorController {
 		$this->userRepository = $userRepository;
 	}
 
+	/**
+	 * @param DogHealthEntity[] $currentDogHealth
+	 * @param DogHealthEntity[] $newDogHealth
+	 */
 	public function compareSaveDogHealth(array $currentDogHealth, array $newDogHealth) {
-
+		$changes = [];
+		foreach ($newDogHealth as $requiredHealth) {
+			foreach ($currentDogHealth as $curDogHealth) {
+				if ($requiredHealth->getTyp() == $curDogHealth->getTyp()) {
+					$change = new AwaitingChangesEntity();
+					$change->setPID($curDogHealth->getPID());
+					$change->setUID($this->user->getId());
+					$change->setZID($curDogHealth->getID());
+					$change->setStav(DogChangeStateEnum::INSERTED);
+					$change->setDatimVlozeno(new DateTime());
+					$change->setTabulka(self::TBL_DOG_HEALTH_NAME);
+					$change->setCID();	// TODO
+					if ($requiredHealth->getVysledek() != $curDogHealth->getVysledek()) {
+						$change->setSloupec("Vysledek");
+						$change->setAktualniHodnota($curDogHealth->getVysledek());
+						$change->setPozadovanaHodnota($requiredHealth->getVysledek());
+						$changes[] = $change;
+					}
+					if ($requiredHealth->getKomentar() != $curDogHealth->getKomentar()) {
+						$change->setSloupec("Komentar");
+						$change->setAktualniHodnota($curDogHealth->getKomentar());
+						$change->setPozadovanaHodnota($requiredHealth->getKomentar());
+						$changes[] = $change;
+					}
+					if ($requiredHealth->getDatum() !== $curDogHealth->getDatum()) {
+						$change->setSloupec("Datum");
+						$change->setAktualniHodnota($curDogHealth->getDatum());
+						$change->setPozadovanaHodnota($requiredHealth->getDatum());
+						$changes[] = $change;
+					}
+					if ($requiredHealth->getVeterinar() != $curDogHealth->getVeterinar()) {
+						$change->setSloupec("Veterinar");
+						$change->setAktualniHodnota($curDogHealth->getVeterinar());
+						$change->setPozadovanaHodnota($requiredHealth->getVeterinar());
+						$changes[] = $change;
+					}
+				}
+			}
+		}
+		dump($currentDogHealth, $newDogHealth); die;
 	}
 
 	/**
