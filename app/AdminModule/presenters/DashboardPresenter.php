@@ -3,6 +3,7 @@
 namespace App\AdminModule\Presenters;
 
 use App\AdminModule\Presenters;
+use App\Controller\DogChangesComparatorController;
 use App\Controller\EmailController;
 use App\Model\AwaitingChangesRepository;
 use App\Model\DogRepository;
@@ -24,22 +25,28 @@ class DashboardPresenter extends SignPresenter {
 	/** @var EnumerationRepository */
 	private $enumerationRepository;
 
+	/** @var DogChangesComparatorController */
+	private $dogChangesComparatorController;
+
 	public function __construct(
 		AwaitingChangesRepository $awaitingChangesRepository,
 		UserRepository $userRepository,
 		DogRepository $dogRepository,
-		EnumerationRepository $enumerationRepository
+		EnumerationRepository $enumerationRepository,
+		DogChangesComparatorController $dogChangesComparatorController
 	) {
 		$this->awaitingRepository = $awaitingChangesRepository;
 		$this->userRepository = $userRepository;
 		$this->dogRepository = $dogRepository;
 		$this->enumerationRepository = $enumerationRepository;
+		$this->dogChangesComparatorController = $dogChangesComparatorController;
 	}
 
 	public function actionDefault() {
-		$this->template->awaitingChanges = $this->awaitingRepository->findAwaitingChanges();
-		$this->template->proceededChanges = $this->awaitingRepository->findProceededChanges();
-		$this->template->declinedChanges = $this->awaitingRepository->findDeclinedChanges();
+		$currentLang = $this->langRepository->getCurrentLang($this->session);
+		$this->template->awaitingChanges = $this->dogChangesComparatorController->generateAwaitingChangesHtml($this->presenter, $currentLang);
+		$this->template->proceededChanges = []; //$this->awaitingRepository->findProceededChanges();
+		$this->template->declinedChanges = []; //$this->awaitingRepository->findDeclinedChanges();
 
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->userRepository = $this->userRepository;

@@ -224,6 +224,9 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				if ($dogHealthEntity != null) {
 					$this['dogForm']['dogHealth'][$enumEntity->getOrder()]->setDefaults($dogHealthEntity->extract());
 					$this['dogForm']['dogHealth'][$enumEntity->getOrder()]->addHidden('ID', $dogHealthEntity->getID());
+					if ($dogHealthEntity->getDatum() != null) {
+						$this['dogForm']['dogHealth'][$enumEntity->getOrder()]['Datum']->setDefaultValue($dogHealthEntity->getDatum()->format(DogHealthEntity::MASKA_DATA));
+					}
 				}
 			}
 			$breeder = $this->userRepository->getBreederByDog($id);
@@ -291,6 +294,9 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				$healthEntity = new DogHealthEntity();
 				$healthEntity->hydrate($hodnoty);
 				$healthEntity->setTyp($typ);
+				if (isset($formData['ID'])) {
+					$healthEntity->setPID($formData['ID']);
+				}
 				$health[] = $healthEntity;
 			}
 			unset($formData['dogHealth']);
@@ -303,7 +309,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				$linkToDogView = $this->presenter->link("FeItem1velord2:view", $currentDogEntity->getID());
 				$this->dogChangesComparatorController->compareSaveDog($currentDogEntity, $newDogEntity, $linkToDogView);
 
-				$currentDogHealth =$this->dogRepository->findHealthsByDogId($formData['ID']);
+				$currentDogHealth =$this->dogRepository->findAllHealthsByDogId($formData['ID']);
 				$this->dogChangesComparatorController->compareSaveDogHealth($currentDogHealth, $health);
 
 				$currentBreeders = $this->userRepository->getBreederByDog($formData['ID']);

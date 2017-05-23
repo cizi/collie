@@ -129,7 +129,7 @@ class AwaitingChangesRepository extends BaseRepository {
 	/**
 	 * @param AwaitingChangesEntity[] $dogAwaitingChangesEntities
 	 */
-	public function writeDogChanges(array $dogAwaitingChangesEntities) {
+	public function writeChanges(array $dogAwaitingChangesEntities) {
 		$this->connection->begin();
 		try {
 			foreach ($dogAwaitingChangesEntities as $dogChangeEnt) {

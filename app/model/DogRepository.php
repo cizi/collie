@@ -379,6 +379,24 @@ class DogRepository extends BaseRepository {
 	 * @param int $id
 	 * @return DogHealthEntity[]
 	 */
+	public function findAllHealthsByDogId($id) {
+		$query = ["select * from appdata_zdravi where pID = %i", $id];
+		$result = $this->connection->query($query);
+
+		$dogHealths = [];
+		foreach ($result->fetchAll() as $row) {
+			$dogHealth = new DogHealthEntity();
+			$dogHealth->hydrate($row->toArray());
+			$dogHealths[] = $dogHealth;
+		}
+
+		return $dogHealths;
+	}
+
+	/**
+	 * @param int $id
+	 * @return DogHealthEntity[]
+	 */
 	public function findHealthsByDogId($id) {
 		$query = ["select * from appdata_zdravi where pID = %i and Vysledek <> ''", $id];
 		$result = $this->connection->query($query);
