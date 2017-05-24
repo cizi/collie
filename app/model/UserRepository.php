@@ -230,6 +230,24 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	 * @param int $pID
 	 * @return array
 	 */
+	public function findDogOwnersAsEntities($pID) {
+		$owners = [];
+		$query = ["select * from appdata_majitel where pID = %i and Soucasny = %i", $pID, 1];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$dogOwnerEntity = new DogOwnerEntity();
+			$dogOwnerEntity->hydrate($row->toArray());
+			$owners[] = $dogOwnerEntity;
+		}
+
+		return $owners;
+	}
+
+	/**
+	 * @param int $pID
+	 * @return array
+	 */
 	public function findDogOwners($pID) {
 		$owners = [];
 		$query = ["select * from appdata_majitel where pID = %i and Soucasny = %i", $pID, 1];

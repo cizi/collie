@@ -17,6 +17,7 @@ use App\Model\Entity\DogPicEntity;
 use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
 use App\Model\UserRepository;
+use App\Model\WebconfigRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use Nette\Http\FileUpload;
@@ -278,7 +279,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * @param Form $form
 	 * @throws AbortException
 	 */
-	public function saveDog(Form $form){
+	public function saveDog(Form $form) {
 		$supportedPicFormats = ["jpg", "png", "gif"];
 		$supportedFileFormats = ["jpg", "png", "gif", "doc", "docx", "pdf", "xls", "xlsx"];
 		$newDogEntity = new DogEntity();
@@ -289,8 +290,8 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$owners = [];
 		try {
 			$formData = $form->getHttpData();
-
-			foreach($formData['dogHealth'] as $typ => $hodnoty) {	//			// zdraví
+			// zdraví
+			foreach($formData['dogHealth'] as $typ => $hodnoty) {
 				$healthEntity = new DogHealthEntity();
 				$healthEntity->hydrate($hodnoty);
 				$healthEntity->setTyp($typ);
@@ -301,7 +302,34 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			}
 			unset($formData['dogHealth']);
 
-			if (isset($formData['ID'])) {	// editace => schvalování adminem
+			// chovatele
+			if (isset($formData['breeder'])) {
+				$breederEntity = new BreederEntity();
+				$breederEntity->hydrate($formData['breeder']);
+				if (isset($formData['ID'])) {
+					$breederEntity->setPID($formData['ID']);
+				}
+				$breeders[] = $breederEntity;
+			}
+			unset($formData['breeder']);
+
+			// majitel
+			if (isset($formData['owners'])) {
+				foreach ($formData['owners']['uID'] as $owner) {
+					$ownerEntity = new DogOwnerEntity();
+					$ownerEntity->setUID($owner);
+					$ownerEntity->setSoucasny(true);
+					if (isset($formData['ID'])) {
+						$ownerEntity->setPID($formData['ID']);
+					}
+					$owners[] = $ownerEntity;
+				}
+				unset($formData['owners']['uID']);
+			}
+
+			$adminsEmails = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+			$loggedUser = $this->userRepository->getUser($this->getUser()->getId());
+			if (isset($formData['ID']) && (strpos($adminsEmails, $loggedUser->getEmail()) === false)) {	// editace => schvalování adminem, ale jen tehndy pokud aktuálně přihlášený uživatel není schvalovací admin
 				// načtu si aktuální data psa
 				$currentDogEntity = $this->dogRepository->getDog($formData['ID']);
 				$newDogEntity->hydrate($formData);
@@ -310,12 +338,15 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				$this->dogChangesComparatorController->compareSaveDog($currentDogEntity, $newDogEntity, $linkToDogView);
 
 				$currentDogHealth =$this->dogRepository->findAllHealthsByDogId($formData['ID']);
-				$this->dogChangesComparatorController->compareSaveDogHealth($currentDogHealth, $health);
+				$this->dogChangesComparatorController->compareSaveDogHealth($currentDogHealth, $health, $linkToDogView);
 
-				$currentBreeders = $this->userRepository->getBreederByDog($formData['ID']);
-				$currentOwners = $this->userRepository->findDogOwners($formData['ID']);
+				$currentBreeder = $this->userRepository->getBreederByDog($formData['ID']);
+				$this->dogChangesComparatorController->compareSaveBreeder($currentBreeder, $breeders, $linkToDogView);
+
+				$currentOwners = $this->userRepository->findDogOwnersAsEntities($formData['ID']);	// najde současné majitele
+				$this->dogChangesComparatorController->compareSaveOwners($currentOwners, $owners, $linkToDogView);
 				$this->flashMessage(AWAITING_CHANGES_SENT_TO_APPROVAL, "alert-success");
-			} else {	// pořizování
+			} else {	// pořizování nebo přímá editace pokud jsem jeden z adminů
 				/** @var FileUpload $file */
 				foreach($formData['pics'] as $file) {
 					if ($file != null) {
@@ -330,25 +361,6 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 					}
 				}
 				unset($formData['pics']);
-
-				// chovatele
-				if (isset($formData['breeder'])) {
-					$breederEntity = new BreederEntity();
-					$breederEntity->hydrate($formData['breeder']);
-					$breeders[] = $breederEntity;
-				}
-				unset($formData['breeder']);
-
-				// majitel
-				if (isset($formData['owners'])) {
-					foreach ($formData['owners']['uID'] as $owner) {
-						$ownerEntity = new DogOwnerEntity();
-						$ownerEntity->setUID($owner);
-						$ownerEntity->setSoucasny(true);
-						$owners[] = $ownerEntity;
-					}
-					unset($formData['owners']['uID']);
-				}
 
 				// bonitační soubory
 				/** @var FileUpload $file */

@@ -13,7 +13,7 @@
 						{!$awaitingChanges}
 					</div>
 
-					{* zpracované změny *}
+					{* zpracované změny
 					<div class="col-lg-12"><br /><br />
 						<h2>{=AWAITING_CHANGE_ACCEPTED}</h2>
 						<table class="table table-striped">
@@ -47,16 +47,16 @@
 									<td>{if $proceedChange->getDatimVlozeno() != null}{$proceedChange->getDatimVlozeno()->format('d.m.Y H:i:s')}{/if}</td>
 									<td>{$proceedChange->getSloupec()}</td>
 									<td>
-										{if $proceedChange->getCID() == null}		{* není číselník *}
+										{if $proceedChange->getCID() == null}		{* není číselník
 											{$proceedChange->getAktualniHodnota()}
-										{else}	{* je číselník *}
+										{else}	{* je číselník
 											{$enumerationRepository->findEnumItemByOrder($currentLang, $proceedChange->getAktualniHodnota())}
 										{/if}
 									</td>
 									<td>
-										{if $proceedChange->getCID() == null}		{* není číselník *}
+										{if $proceedChange->getCID() == null}		{* není číselník
 											{$proceedChange->getPozadovanaHodnota()}
-										{else}	{* je číselník *}
+										{else}	{* je číselník
 											{$enumerationRepository->findEnumItemByOrder($currentLang, $proceedChange->getPozadovanaHodnota())}
 										{/if}
 									</td>
@@ -73,7 +73,7 @@
 						</table>
 					</div>
 
-					{* zamítnuté změny *}
+					{* zamítnuté změny
 					<div class="col-lg-12"><br /><br />
 						<h2>{=AWAITING_CHANGE_DECLINED}</h2>
 						<table class="table table-striped">
@@ -107,16 +107,16 @@
 									<td>{if $declineChange->getDatimVlozeno() != null}{$declineChange->getDatimVlozeno()->format('d.m.Y H:i:s')}{/if}</td>
 									<td>{$declineChange->getSloupec()}</td>
 									<td>
-										{if $declineChange->getCID() == null}		{* není číselník *}
+										{if $declineChange->getCID() == null}		{* není číselník
 											{$declineChange->getAktualniHodnota()}
-										{else}	{* je číselník *}
+										{else}	{* je číselník
 											{$enumerationRepository->findEnumItemByOrder($currentLang, $declineChange->getAktualniHodnota())}
 										{/if}
 									</td>
 									<td>
-										{if $declineChange->getCID() == null}		{* není číselník *}
+										{if $declineChange->getCID() == null}		{* není číselník
 											{$declineChange->getPozadovanaHodnota()}
-										{else}	{* je číselník *}
+										{else}	{* je číselník
 											{$enumerationRepository->findEnumItemByOrder($currentLang, $declineChange->getPozadovanaHodnota())}
 										{/if}
 									</td>
@@ -128,7 +128,7 @@
 									</td>
 									<td>{if $declineChange->getDatimZpracovani() != null}{$declineChange->getDatimZpracovani()->format('d.m.Y H:i:s')}{/if}</td>
 								</tr>
-							{/foreach}
+							{/foreach} *}
 							</tbody>
 						</table>
 					</div>

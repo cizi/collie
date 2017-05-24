@@ -242,7 +242,7 @@ class DogRepository extends BaseRepository {
 		$dbDriver = $this->connection->getDriver();
 		$currentLang = $this->langRepository->getCurrentLang($this->session);
 		if ($owner != null) {
-			$return .= sprintf("am.uID = %d", $owner);
+			$return .= sprintf("am.uID = %d and am.Soucasny = 1", $owner);	// je to soucasny spravne
 			$return .= (count($filter) > 0 ? " and " : "");
 		}
 
@@ -373,6 +373,51 @@ class DogRepository extends BaseRepository {
 		}
 
 		return $descendants;
+	}
+
+	/**
+	 * Uloží/aktualizuje zázanm do tabulky zdraví psa
+	 * @param DogHealthEntity $dogHealthEntity
+	 */
+	public function saveDogHealth(DogHealthEntity $dogHealthEntity) {
+		if ($dogHealthEntity->getID() == null) {
+			$query = ["insert into appdata_zdravi ", $dogHealthEntity->extract()];
+		} else {
+			$query = ["update appdata_zdravi set ", $dogHealthEntity->extract(), "where ID=%i", $dogHealthEntity->getID()];
+		}
+		$this->connection->query($query);
+	}
+
+	/**
+	 * @param BreederEntity $breederEntity
+	 */
+	public function saveBreeder(BreederEntity $breederEntity) {
+		if ($breederEntity->getUID() == 0) {		// pokud je v selectu vybrána nula tak mažu
+			$this->deleteBreederByDogId($breederEntity->getPID());
+		} else {
+			if ($breederEntity->getID() == null ) {
+				$query = ["insert into appdata_chovatel ", $breederEntity->extract()];
+			} else {
+				$query = ["update appdata_chovatel set ", $breederEntity->extract(), "where ID=%i", $breederEntity->getID()];
+			}
+			$this->connection->query($query);
+		}
+	}
+
+	/**
+	 * @param DogOwnerEntity $dogOwnerEntity
+	 */
+	public function saveOwner(DogOwnerEntity $dogOwnerEntity) {
+		$alreadyIn = ["select * from appdata_majitel where uID = %i and pID = %i", $dogOwnerEntity->getUID(), $dogOwnerEntity->getPID()];
+		$row = $this->connection->query($alreadyIn)->fetch();
+		if ($row) {	// pokud existuje akorat přepnu na současného
+			$dogOwn = new DogOwnerEntity();
+			$dogOwn->hydrate($row->toArray());
+			$query = ["update appdata_majitel set Soucasny = %i where ID = %i", $dogOwnerEntity->isSoucasny(), $dogOwn->getID()];
+		} else {	// pokud záznam neexistuje vložím jako nový současný majitel
+			$query = ["insert into appdata_majitel ", $dogOwnerEntity->extract()];
+		}
+		$this->connection->query($query);
 	}
 
 	/**
@@ -533,22 +578,12 @@ class DogRepository extends BaseRepository {
 				if ($dogHealthEntity->getVeterinar() == 0) {	// pokud nebyl veterinář vybrán vynuluji jeho záznam
 					$dogHealthEntity->setVeterinar(null);
 				}
-				if ($dogHealthEntity->getID() == null) {
-					$query = ["insert into appdata_zdravi ", $dogHealthEntity->extract()];
-				} else {
-					$query = ["update appdata_zdravi set ", $dogHealthEntity->extract(), "where ID=%i", $dogHealthEntity->getID()];
-				}
-				$this->connection->query($query);
+				$this->saveDogHealth($dogHealthEntity);
 			}
 			/** @var BreederEntity $breeder */
 			foreach($breeders as $breeder) {
 				$breeder->setPID($dogEntity->getID());
-				if ($breeder->getUID() == 0) {		// pokud je v selectu vybrána nula tak mažu
-					$this->deleteBreederByDogId($dogEntity->getID());
-				} else {
-					$query = ($breeder->getID() == null ? ["insert into appdata_chovatel ", $breeder->extract()] : ["update appdata_chovatel set ", $breeder->extract(), "where ID=%i", $breeder->getID()]);
-					$this->connection->query($query);
-				}
+				$this->saveBreeder($breeder);
 			}
 
 			$query = ["update appdata_majitel set Soucasny = %i where pID = %i", 0, $dogEntity->getID()];	// nevím co mi nyní přijde takže všechny rovnou udělám jako bývalé majitele
@@ -556,16 +591,7 @@ class DogRepository extends BaseRepository {
 			/** @var DogOwnerEntity $owner */
 			foreach($owners as $owner) {
 				$owner->setPID($dogEntity->getID());
-				$alreadyIn = ["select * from appdata_majitel where uID = %i and pID = %i", $owner->getUID(), $dogEntity->getID()];
-				$row = $this->connection->query($alreadyIn)->fetch();
-				if ($row) {	// pokud existuje akorat přepnu na současného
-					$dogOwn = new DogOwnerEntity();
-					$dogOwn->hydrate($row->toArray());
-					$query = ["update appdata_majitel set Soucasny = %i where ID = %i", $owner->isSoucasny(), $dogOwn->getID()];
-				} else {	// pokud záznam neexistuje vložím jako nový současný majitel
-					$query = ["insert into appdata_majitel ", $owner->extract()];
-				}
-				$this->connection->query($query);
+				$this->saveOwner($owner);
 			}
 
 			/** @var DogPicEntity $dogPic */
