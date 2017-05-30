@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Enum\DogStateEnum;
 use App\Forms\DogFilterForm;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
@@ -94,7 +95,7 @@ class DogRepository extends BaseRepository {
 	 * @return array
 	 */
 	public function findFemaleDogsForSelect($withNotSelectedOption = true) {
-		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes where Pohlavi = %i", self::FEMALE_ORDER];
+		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes where Stav = %i and Pohlavi = %i", DogStateEnum::ACTIVE ,self::FEMALE_ORDER];
 		$result = $this->connection->query($query);
 		$dogs = [];
 
@@ -113,7 +114,7 @@ class DogRepository extends BaseRepository {
 	 * @return array
 	 */
 	public function findDogsForSelect($withNotSelectedOption = true) {
-		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes"];
+		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes where Stav = %i", DogStateEnum::ACTIVE];
 		$result = $this->connection->query($query);
 		$dogs = [];
 
@@ -132,7 +133,7 @@ class DogRepository extends BaseRepository {
 	 * @return DogEntity[]
 	 */
 	public function findMaleDogsForSelect($withNotSelectedOption = true) {
-		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes where Pohlavi = %i", self::MALE_ORDER];
+		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes where Stav = %i and Pohlavi = %i", DogStateEnum::ACTIVE, self::MALE_ORDER];
 		$result = $this->connection->query($query);
 		$dogs = [];
 
@@ -152,13 +153,13 @@ class DogRepository extends BaseRepository {
 	 */
 	public function findDogs(Paginator $paginator, array $filter, $owner = null) {
 		if (empty($filter) && ($owner == null)) {
-			$query = ["select * from appdata_pes limit %i , %i", $paginator->getOffset(), $paginator->getLength()];
+			$query = ["select * from appdata_pes where Stav = %i limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
 		} else {
 			$query[] = "select *, SPLIT_STR(CisloZapisu, '/', 3) as PlemenoCZ, ap.ID as ID from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter, $owner) as $join) {
 				$query[] = $join;
 			}
-			$query[] = "where 1 ";
+			$query[] = "where Stav = " . DogStateEnum::ACTIVE . " ";
 			$query[] = $this->getWhereFromKeyValueArray($filter, $owner);
 			if (isset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER])) {
 				$query[] = "order by PlemenoCZ " . (($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]) == 2 ? "desc" : "asc");
@@ -185,13 +186,13 @@ class DogRepository extends BaseRepository {
 	 */
 	public function getDogsCount(array $filter, $owner = null) {
 		if (empty($filter) && ($owner == null)) {
-			$query = "select count(ID) as pocet from appdata_pes";
+			$query = "select count(ID) as pocet from appdata_pes where Stav = " . DogStateEnum::ACTIVE;
 		} else {
 			$query[] = "select count(distinct ap.ID) as pocet from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter, $owner) as $join) {
 				$query[] = $join;
 			}
-			$query[] = "where 1 ";
+			$query[] = "where Stav = " . DogStateEnum::ACTIVE . " ";
 			$query[] = $this->getWhereFromKeyValueArray($filter, $owner);
 		}
 		$row = $this->connection->query($query);
@@ -319,7 +320,7 @@ class DogRepository extends BaseRepository {
 		if ($withNotSelectedOption) {
 			 $years[0] = self::NOT_SELECTED;
 		}
-		$query = ["select DISTINCT YEAR(DatNarozeni) as DatNarozeni from appdata_pes ORDER BY DatNarozeni DESC"];
+		$query = ["select DISTINCT YEAR(DatNarozeni) as DatNarozeni from appdata_pes where Stav = %i ORDER BY DatNarozeni DESC", DogStateEnum::ACTIVE];
 		$result = $this->connection->query($query);
 		foreach ($result->fetchAll() as $row) {
 			if ($row['DatNarozeni'] != "") {
@@ -338,7 +339,7 @@ class DogRepository extends BaseRepository {
 		$siblings = [];
 		$dog= $this->getDog($pID);
 		if (($dog != null) && ($dog->getMID() != null) && ($dog->getOID() != null)) {
-			$query = ["select * from appdata_pes where mID = %i and oID = %i and ID <> %i", $dog->getMID(), $dog->getOID(), $dog->getID()];
+			$query = ["select * from appdata_pes where Stav = %i and mID = %i and oID = %i and ID <> %i", DogStateEnum::ACTIVE, $dog->getMID(), $dog->getOID(), $dog->getID()];
 			$result = $this->connection->query($query);
 
 			foreach ($result->fetchAll() as $row) {
@@ -360,9 +361,9 @@ class DogRepository extends BaseRepository {
 		$dog = $this->getDog($pID);
 		if ($dog != null) {
 			if ($dog->getPohlavi() == self::MALE_ORDER) {
-				$query = ["select * from appdata_pes where oID = %i order by mID", $dog->getID()];
+				$query = ["select * from appdata_pes where Stav = %i and oID = %i order by mID", DogStateEnum::ACTIVE, $dog->getID()];
 			} else {
-				$query = ["select * from appdata_pes where mID = %i order by oID", $dog->getID()];
+				$query = ["select * from appdata_pes where Stav = %i and mID = %i order by oID", DogStateEnum::ACTIVE, $dog->getID()];
 			}
 			$result = $this->connection->query($query);
 			foreach ($result->fetchAll() as $row) {
@@ -457,10 +458,29 @@ class DogRepository extends BaseRepository {
 	}
 
 	/**
+	 * Přepnutí psa do režimu smazání
 	 * @param int $id
 	 * @return bool
 	 */
 	public function delete($id) {
+		$return = true;
+		if (!empty($id)) {
+			try {
+				$query = ["update appdata_pes set `Stav` = %i where ID = %i", DogStateEnum::DELETED, $id];    // pak nastavím psa jako smazaného
+				$this->connection->query($query);
+			} catch (\Exception $e) {
+				$return = false;
+			}
+		}
+
+		return $return;
+	}
+	/**
+	 * Opravdové smazaní psa z DB pokud to cizí klíče dovolí (jakože spíš ne)
+	 * @param int $id
+	 * @return bool
+	 */
+	public function realDelete($id) {
 		$return = true;
 		if (!empty($id)) {
 			try {
@@ -553,6 +573,7 @@ class DogRepository extends BaseRepository {
 	 * @param BreederEntity[]
 	 * @param DogOwnerEntity[]
 	 * @param DogFileEntity[]
+	 * @param int [$mIdOrOidForNewDog]
 	 */
 	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders, array $owners, array $dogFiles, $mIdOrOidForNewDog = null) {
 		try {

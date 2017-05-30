@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Enum\DogChangeStateEnum;
+use App\Enum\DogStateEnum;
 use App\Model\AwaitingChangesRepository;
 use App\Model\DogRepository;
 use App\Model\Entity\AwaitingChangesEntity;
@@ -305,6 +306,36 @@ class DogChangesComparatorController {
 		// email pro admina/y
 		$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
 		EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
+	}
+
+	/**
+	 * Pokud běžný uživatel založí psa je třeba ho schválit, tedy poslat emaily apod.
+	 * @param DogEntity $dogEntity
+	 * @param string $dogUrl
+	 */
+	public function newDogCreated(DogEntity $dogEntity, $dogUrl) {
+		$changes = [];
+		$change = new AwaitingChangesEntity();
+		$change->setPID($dogEntity->getID());
+		$change->setUID($this->user->getId());
+		$change->setStav(DogChangeStateEnum::INSERTED);
+		$change->setDatimVlozeno(new DateTime());
+		$change->setTabulka(self::TBL_DOG_NAME);
+		$change->setSloupec("Stav");
+		$change->setAktualniHodnota($dogEntity->getStav());
+		$change->setPozadovanaHodnota(DogStateEnum::ACTIVE);
+		$changes[] = $change;
+
+		$this->awaitingChangeRepository->writeChanges($changes);        // zapíšu změny
+
+		$userEntity = $this->userRepository->getUser($this->user->getId());
+		$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+
+		// email pro uživatele
+		//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER, AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER);		// TODO
+		// email pro admina/y
+		$body = sprintf(AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN, $dogUrl);
+		EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN, $body);
 	}
 
 	/**

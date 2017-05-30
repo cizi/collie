@@ -670,3 +670,8 @@ define("AWAITING_CHANGE_PROCEEDED_OK_SUBJECT", "Your change request has been app
 define("AWAITING_CHANGE_PROCEEDED_OK_BODY", "Hello, <br />your change request has been approved. Please, take a look here %s.");
 define("AWAITING_CHANGE_PROCEEDED_DECLINE_SUBJECT", "Your change request has been declined");
 define("AWAITING_CHANGE_PROCEEDED_DECLINE_BODY", "Hello, <br />your change request has been declined. Dog's card %s.");
+define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL", "Your dog has been successfully created. The needs to be approved by administrator.");
+define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER", "New dog inserted");
+define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER", "Hello, <br /> in the system has been inserted a new dog . PLease, wait for approval by administrator.");
+define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN", "New dog inserted");
+define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN", "Hello, <br />a new dog card has been created %s. Please, log in for approval or decline the request.");

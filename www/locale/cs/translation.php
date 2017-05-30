@@ -679,7 +679,7 @@ define("AWAITING_CHANGES_SENT_TO_APPROVAL", "Změny byly odeslány ke schválen�
 define("AWAITING_EMAIL_USER_DOG_SUBJECT", "Právě jste provedl(a) změny na kartě psa");
 define("AWAITING_EMAIL_USER_DOG_BODY", "Dobrý den, <br />právě byly provedeny změny na kartě psa  %s. Změny budou vidět až ve chvíli schválení administrátorem.");
 define("AWAITING_EMAIL_ADMIN_DOG_SUBJECT", "Byly provedeny změny na kartě psa");
-define("AWAITING_EMAIL_ADMIN_DOG_BODY", "Dobrý den, <br />na kartě psa %s byly provedeny změny. Pro schválení nebo zamítnutí změn se, prosím, přihlaste do administrace");
+define("AWAITING_EMAIL_ADMIN_DOG_BODY", "Dobrý den, <br />na kartě psa %s byly provedeny změny. Pro schválení nebo zamítnutí změn se, prosím, přihlaste do administrace.");
 define("AWAITING_CHANGE_CHANGE_ERR", "Během zpracování požadavku došlo k chybě, prosím, opakujte později.");
 define("AWAITING_CHANGE_CHANGE_DECLINE", "Požadavek na změnu byl zamítnut.");
 define("AWAITING_CHANGE_CHANGE_ACCEPT", "Změna byla zpracována.");
@@ -691,3 +691,8 @@ define("AWAITING_CHANGE_PROCEEDED_OK_SUBJECT", "Váš požadavek na změnu byl s
 define("AWAITING_CHANGE_PROCEEDED_OK_BODY", "Dobrý den, <br />Váš požadavek na změnu byl schválen. Prosím, proveďte kontrolu zde %s.");
 define("AWAITING_CHANGE_PROCEEDED_DECLINE_SUBJECT", "Váš požadavek na změnu byl zamítnut");
 define("AWAITING_CHANGE_PROCEEDED_DECLINE_BODY", "Dobrý den, <br />Váš požadavek na změnu byl zamítnut. Karta psa %s.");
+define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL", "Váš pes byl v pořádku založen. Pro jeho následné zobrazení musí být schválen administrátorem.");
+define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER", "Vložení nového psa");
+define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER", "Dobrý den, <br /> do systému byl zaveden nový pes. Prosím vyčketje na jeho schválení.");
+define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN", "Založení nového psa");
+define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN", "Dobrý den, <br />byla založena nová karta psa %s. Pro schválení nebo zamítnutí se, prosím, přihlaste do administrace.");

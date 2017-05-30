@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use App\Enum\DogStateEnum;
 use Dibi\DateTime;
 
 class DogEntity {
@@ -125,6 +126,23 @@ class DogEntity {
 
 	/** @var  int */
 	public $mIDupdate;
+
+	/** @var  int */
+	private $stav = DogStateEnum::ACTIVE;
+
+	/**
+	 * @return int
+	 */
+	public function getStav() {
+		return $this->stav;
+	}
+
+	/**
+	 * @param int $stav
+	 */
+	public function setStav($stav) {
+		$this->stav = $stav;
+	}
 
 	/**
 	 * @return int
@@ -717,6 +735,7 @@ class DogEntity {
 		$this->setImpID(isset($data['ImpID']) ? $data['ImpID'] : null);
 		$this->setoIDupdate(isset($data['oIDupdate']) ? $data['oIDupdate'] : null);
 		$this->setmIDupdate(isset($data['mIDupdate']) ? $data['mIDupdate'] : null);
+		$this->setStav(isset($data['Stav']) ? $data['Stav'] : DogStateEnum::ACTIVE);
 
 		if (isset($data['DatNarozeni']) && ($data['DatNarozeni'] != NULL)) {
 			if (($data['DatNarozeni'] instanceof DateTime) == false) {
@@ -772,7 +791,8 @@ class DogEntity {
 			'ImpFrom' => $this->getImpFrom(),
 			'ImpID' => $this->getImpID(),
 			'oIDupdate' => $this->getoIDupdate(),
-			'mIDupdate' => $this->getmIDupdate()
+			'mIDupdate' => $this->getmIDupdate(),
+			'Stav' => $this->getStav()
 		];
 	}
 }

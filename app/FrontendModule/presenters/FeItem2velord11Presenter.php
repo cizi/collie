@@ -5,6 +5,7 @@ namespace App\FrontendModule\Presenters;
 use App\Controller\DogChangesComparatorController;
 use App\Controller\FileController;
 use App\Enum\DogFileEnum;
+use App\Enum\DogStateEnum;
 use App\Forms\DogFilterForm;
 use App\Forms\DogForm;
 use App\Model\DogRepository;
@@ -329,7 +330,8 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 
 			$adminsEmails = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
 			$loggedUser = $this->userRepository->getUser($this->getUser()->getId());
-			if (isset($formData['ID']) && (strpos($adminsEmails, $loggedUser->getEmail()) === false)) {	// editace => schvalování adminem, ale jen tehndy pokud aktuálně přihlášený uživatel není schvalovací admin
+			$isCommonUser = (strpos($adminsEmails, $loggedUser->getEmail()) === false);
+			if (isset($formData['ID']) && $isCommonUser) {	// editace => schvalování adminem, ale jen tehndy pokud aktuálně přihlášený uživatel není schvalovací admin
 				// načtu si aktuální data psa
 				$currentDogEntity = $this->dogRepository->getDog($formData['ID']);
 				$newDogEntity->hydrate($formData);
@@ -380,8 +382,17 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				unset($formData['BonitaceSoubory']);
 
 				$newDogEntity->hydrate($formData);
+				if ($isCommonUser) {	// pokud jsem BFU je nutné psa schválit, tedy mu dám odpovídající flag
+					$newDogEntity->setStav(DogStateEnum::INACTIVE);
+				}
 				$this->dogRepository->save($newDogEntity, $pics, $health, $breeders, $owners, $files);
-				$this->flashMessage(DOG_FORM_ADDED, "alert-success");
+				if ($isCommonUser) {	// pokud jsem BFU tak po založení psa se stavem ke schválení musím udělat zápis a poslat mail
+					$linkToDogView = $this->presenter->link("FeItem1velord2:view", $newDogEntity->getID());
+					$this->dogChangesComparatorController->newDogCreated($newDogEntity, $linkToDogView);
+					$this->flashMessage(AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL, "alert-success");
+				} else {	// pokud jsem jeden z adminů a založil jsem psa jen vypíši hlášku
+					$this->flashMessage(DOG_FORM_ADDED, "alert-success");
+				}
 			}
 			$this->redirect("default");
 		} catch (\Exception $e) {
