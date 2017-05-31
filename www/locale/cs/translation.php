@@ -696,3 +696,20 @@ define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER", "Vložení nového 
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER", "Dobrý den, <br /> do systému byl zaveden nový pes. Prosím vyčketje na jeho schválení.");
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN", "Založení nového psa");
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN", "Dobrý den, <br />byla založena nová karta psa %s. Pro schválení nebo zamítnutí se, prosím, přihlaste do administrace.");
+
+define("LITTER_APPLICATION", "Přihláška vrhu");
+define("LITTER_APPLICATION_DETAIL_TITLE", "Klub chovatelů collií a sheltií");
+define("LITTER_APPLICATION_DETAIL_APPLICATION", "Přihláška k zápisu štěňat do plemené knihy psů");
+define("LITTER_APPLICATION_DETAIL_APPLICATION_REQUEST", "Žádanka pro určení tetovací značky a přihláška k zápisu štěňat do plemenné knihy psů");
+define("LITTER_APPLICATION_DETAIL_BOOK_MANAGER", "Vyplní správa plemenné knihy<br /><br />
+									došlo dne:<br /><br />
+									vyřízeno:<br /><br />
+									průkazy pův. odeslány:");
+define("LITTER_APPLICATION_DETAIL_STATION_TITLE", "Název chovatelské stanice");
+define("LITTER_APPLICATION_DETAIL_DOG_TITLES", "výstavní ocenění a dosažené tituly");
+define("LITTER_APPLICATION_DETAIL_CARD_NO", "číslo průkazu vč. zkratky plemenné knihy");
+define("LITTER_APPLICATION_DETAIL_FUR_TYPE", "druh srsti");
+define("LITTER_APPLICATION_DETAIL_BONITATION", "bonitace");
+define("LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS", "Jméno a adresa chovatele");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY", "Datum narození štěňat");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_INFO", "Údaje o počtu narozených štěňat");

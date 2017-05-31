@@ -50,7 +50,7 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 	}
 
 	public function createComponentMatingListDetailForm() {
-		$form = $this->matingListDetailForm->create($this->langRepository->getCurrentLang($this->session), $this->link(("default")));
+		$form = $this->matingListDetailForm->create($this->langRepository->getCurrentLang($this->session), $this->link("default"));
 		$form->onSubmit[] = $this->submitMatingListDetail;
 
 		return $form;
@@ -67,7 +67,7 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 	 * @param Form $form
 	 */
 	public function submitMatingListDetail(Form $form) {
-		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen p�ihl�en nem�m tady co d�lat
+		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("Homepage:Default");
 		}
@@ -116,7 +116,7 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 	 * @param int $fID
 	 */
 	public function actionDetails($cID, $pID, $fID) {
-		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen p�ihl�en nem�m tady co d�lat
+		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("Homepage:Default");
 		}

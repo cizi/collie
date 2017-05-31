@@ -675,3 +675,20 @@ define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER", "New dog inserted")
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER", "Hello, <br /> in the system has been inserted a new dog . PLease, wait for approval by administrator.");
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN", "New dog inserted");
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN", "Hello, <br />a new dog card has been created %s. Please, log in for approval or decline the request.");
+
+define("LITTER_APPLICATION", "Litter application");
+define("LITTER_APPLICATION_DETAIL_TITLE", "Collie and sheltie breeders club");
+define("LITTER_APPLICATION_DETAIL_APPLICATION", "Registration for puppies in a dog book");
+define("LITTER_APPLICATION_DETAIL_APPLICATION_REQUEST", "Request for identification of the tattoo mark and application for the registration of puppies in the dog book");
+define("LITTER_APPLICATION_DETAIL_BOOK_MANAGER", "To be completed by the studbook<br /><br />
+									day:<br /><br />
+									finished:<br /><br />
+									Identity cards. sent:");
+define("LITTER_APPLICATION_DETAIL_STATION_TITLE", "Name of kennel");
+define("LITTER_APPLICATION_DETAIL_DOG_TITLES", "exhibition awards and achievements");
+define("LITTER_APPLICATION_DETAIL_CARD_NO", "card number incl. Abbreviations of the stud book");
+define("LITTER_APPLICATION_DETAIL_FUR_TYPE", "fur type");
+define("LITTER_APPLICATION_DETAIL_BONITATION", "bonitations");
+define("LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS", "Name and address of the breeder");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY", "Date of birth of puppies");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_INFO", "Data on the number of puppies born");

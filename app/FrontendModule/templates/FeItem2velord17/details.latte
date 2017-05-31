@@ -1,0 +1,479 @@
+{block content}
+<style>
+.prihlaska, .prihlaska td {
+		font-family: "Arial, Helvetica";
+		font-size: 7.5pt;
+	}
+	.prihlaska_top img {
+		margin:15px 0px;
+		float:left;
+	}
+	.prihlaska_top img {
+		border:1px solid white;
+	}
+	.heading1 {
+		font-size:10pt;
+		padding-top:30px;
+		text-align:center;
+		font-weight:bold;
+		letter-spacing: 0.4ex;
+	}
+	.heading2 {
+		font-size:10pt;
+		margin-top:10px;
+		text-align:center;
+	}
+	.h2td td {
+		font-size:10pt;
+		margin-top:10px;
+		text-align:left;
+	}
+	.black1 td {
+		background:white;
+		text-align: center;
+		height:1.5cm;
+		vertical-align: top;
+		width:25%;
+	}
+	.PKblock {
+		padding:10px;
+		margin-top:10px;
+		text-align:left;
+		float:right;
+		border:3px solid black;
+		width:6.5cm;
+	}
+	.clear {
+		clear:both;
+	}
+	.clearL {
+		clear:left;
+	}
+	.itemFull {
+		margin-bottom:10px;
+		border-bottom:1px solid black;
+		margin-right:8cm;
+	}
+	.itemFullName {
+		margin-bottom:10px;
+		margin-left:3%;
+		clear:left;
+		float:left;
+		width: 4cm;
+	}
+	.itemShim {
+		clear:left;
+		margin-bottom:10px;
+	}
+	.itemFullName2 {
+		clear:left;
+		float:left;
+		width: 2.5cm;
+	}
+	.prihlaska_left {
+		float:left;
+		margin-left:3%;
+		width:42%;
+	}
+	.prihlaska_right {
+		float:right;
+		margin-right:3%;
+		width:42%;
+	}
+	.prihlaska_border {
+		border:1px solid black;
+		margin:0 3%;
+	}
+	.pro3 {
+		margin-left:3%;
+		margin-right:3%;
+	}
+	.prihlaska_table {
+		background-color:black;
+	}
+	.prihlaska_table td {
+		background-color:white;
+	}
+	.prihlaska_table td b {
+		font-size:9pt;
+		background-color:white;
+	}
+	.rbold {
+		border-right:1px solid black;
+	}
+	.h30 {
+		height:12pt;
+	}
+	.prihlaska_full {
+		width:100%;
+		height:50px;
+	}
+	.tright {
+		text-align:center;
+	}
+	.pagebreak {
+		clear:both;
+		page-break-before: always;
+		margin-top:20px;
+	}
+	.bcenter {
+		font-weight:bold;
+		text-align:center;
+	}
+	.plusb {
+		border:1px solid black;
+	}
+	.prihlaskaMaxHeight {
+		height:1.7cm;
+	}
+	.morept {
+		font-size:10pt;
+	}
+	input, textarea {
+		border:1px solid black;
+		margin-bottom:2px;
+	}
+	hr {
+		clear:both;
+		height:1px;
+		color:black;
+	}
+	.fright {
+		float:right;
+	}
+</style>
+
+	{include '../@block.latte'}
+
+	<div class="myContent">
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-lg-12">
+						{form litterApplicationDetailForm}
+							<div class="prihlaska">
+								<div class="prihlaska_top">
+									{if $cID == 159}
+										<img src="{!$basePath}/images/logo-prihlaskaCKCHS.jpg" />
+									{else}
+										<img src="{!$basePath}/images/logo-prihlaska.jpg" />
+									{/if}
+								</div>
+								<div class="heading1">{$title|upper}</div>
+								{if $cID == 159}
+									<div class="heading2">{=LITTER_APPLICATION_DETAIL_APPLICATION_REQUEST|upper}</div>
+								{else}
+									<div class="heading2">{=LITTER_APPLICATION_DETAIL_APPLICATION|upper}</div>
+								{/if}
+
+								<div class="PKblock">{!=LITTER_APPLICATION_DETAIL_BOOK_MANAGER}</div>
+
+								<div class="clearL"></div>
+
+								<div class="itemFull">
+									<div class="itemFullName">{label Plemeno/}</div>
+									{input Plemeno}
+								</div>
+
+								<div class="itemFull">
+									<div class="itemFullName">{label chs/}:</div> {input chs}
+								</div>
+
+								<div class="clear"></div>
+								&nbsp;<br />
+
+								<div class="prihlaska_left">
+									<div class="itemFullName2">{label otec/}:</div>{input otec}<br />
+									<div class="itemFullName2"> &nbsp; {label otecDN/}:</div>{input otecDN}<br />
+									<div class="itemShim">&nbsp; {label otecV/}:</div> {input otecV}<br /><br />
+								</div>
+								<div class="prihlaska_right">
+									{label otecPP/}: {input otecPP}<br />
+									<div class="itemFullName2">{label otecBarva/}:</div>{input otecBarva}<br />
+									<div class="itemFullName2">{label otecSrst/}:</div>{input otecSrst}<br />
+									<div class="itemFullName2">{label otecBon/}:</div>{input otecBon}, {label otecHeight/}: {input otecHeight} cm
+								</div>
+
+								<div class="clear"></div>
+
+								<div class="prihlaska_left">
+									<div class="itemFullName2">{label matka/}: </div>{input matka}<br />
+									<div class="itemFullName2"> &nbsp; {label matkaDN/}: </div>{input matkaDN}<br />
+									<div class="itemShim">&nbsp;  {label matkaV/}: </div> {input matkaV}<br /><br />
+								</div>
+								<div class="prihlaska_right">
+									{label matkaPP/}: {input matkaPP}<br />
+									<div class="itemFullName2">{label matkaBarva/}: </div>{input matkaBarva}<br />
+									<div class="itemFullName2">{label matkaSrst/}: </div>{input matkaSrst}<br />
+									<div class="itemFullName2">{label matkaBon/}: </div>{input matkaBon}, {label matkaHeight/}: {input matkaHeight} cm
+								</div>
+
+								<div class="clear"></div>
+								&nbsp;<br />
+
+								<div class="itemFullName">{label chovatel/}: </div> {input chovatel}<br /><br />
+								<div class="itemFullName">{label datumkryti/}: </div> {input datumkryti}
+								&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {label datumnarozeni/}: &nbsp; &nbsp; &nbsp; {input datumnarozeni}<br /><br />
+
+								<div class="pro3"><b>{=LITTER_APPLICATION_DETAIL_PUPPIES_INFO}:</b></div>
+
+								<div class="prihlaska_border"><table class="prihlaska_table" cellspacing="0" width="100%" border="1">
+										<tr>
+											<td colspan="3">Kolik štěňat fena porodila</td>
+											<td colspan="3">Kolik z nich bylo mrtvých</td>
+											<td colspan="3">Kolik bylo usmrceno</td>
+											<td colspan="2">Přihlašuji k zápisu</td>
+											<td colspan="2">Kolik odevzdáno kojné</td>
+											<td colspan="2">Kolik zahynulo před zápisem</td>
+										</tr>
+										<tr>
+											<td>psů <input type="text" name="porozenoPsu" size="2"></td>
+											<td>fen <input type="text" name="porozenoFen" size="2"></td>
+											<td title="Pohlaví nezjištěno">? <input type="text" name="porozenoNez" size="2" title="Pohlaví nezjištěno"></td>
+											<td>psů <input type="text" name="mrtvychPsu" size="2"></td>
+											<td>fen <input type="text" name="mrtvychFen" size="2"></td>
+											<td title="Pohlaví nezjištěno">? <input type="text" name="mrtvychNez" size="2" title="Pohlaví nezjištěno"></td>
+											<td>psů <input type="text" name="usmrcenoPsu" size="2"></td>
+											<td>fen <input type="text" name="usmrcenoFen" size="2"></td>
+											<td title="Pohlaví nezjištěno">? <input type="text" name="usmrcenoNez" size="2" title="Pohlaví nezjištěno"></td>
+											<td>psů <input type="text" name="kzapisuPsu" size="2"></td>
+											<td>fen <input type="text" name="kzapisuFen" size="2"></td>
+											<td>psů <input type="text" name="kojnePsu" size="2"></td>
+											<td>fen <input type="text" name="kojneFen" size="2"></td>
+											<td>psů <input type="text" name="zahynuloPsu" size="2"></td>
+											<td>fen <input type="text" name="zahynuloFen" size="2"></td>
+										</tr>
+									</table><table class="prihlaska_table" cellspacing="0" width="100%" border="1">
+										<tr>
+											<td align="center" class="rbold" style="width:2.3cm"><b>Vyplní ČMKU</b><br />Číslo zápisu<br />Tetovací číslo</td>
+											<td align="center" class="rbold" style="width:4.4cm"><b>Číslo mikročipu</b><br />(viz 2. strana)</td>
+											<td align="center" style="width:4.7cm"><b>Jméno štěňat</b><br />(podle abecedy,<br />napřed psi)</td>
+											<td align="center" style="width:3cm"><b>Pohlaví</b><br />(napřed psi)</td>
+											<td align="center" style="width:4.6cm"><b>Druh srsti a barva</b></td>
+										</tr>
+										<tr id="tr1">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_1 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip1" size="10"></td>
+											<td align="center"><input type="text" name="jmeno1" size="20"></td>
+											<td align="center"><select name="pohlavi1"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst1"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva1"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr2">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_2 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip2" size="10"></td>
+											<td align="center"><input type="text" name="jmeno2" size="20"></td>
+											<td align="center"><select name="pohlavi2"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst2"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva2"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr3">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_3 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip3" size="10"></td>
+											<td align="center"><input type="text" name="jmeno3" size="20"></td>
+											<td align="center"><select name="pohlavi3"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst3"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva3"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr4">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_4 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip4" size="10"></td>
+											<td align="center"><input type="text" name="jmeno4" size="20"></td>
+											<td align="center"><select name="pohlavi4"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst4"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva4"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr5">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_5 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip5" size="10"></td>
+											<td align="center"><input type="text" name="jmeno5" size="20"></td>
+											<td align="center"><select name="pohlavi5"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst5"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva5"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr6">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_6 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip6" size="10"></td>
+											<td align="center"><input type="text" name="jmeno6" size="20"></td>
+											<td align="center"><select name="pohlavi6"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst6"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva6"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr7">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_7 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip7" size="10"></td>
+											<td align="center"><input type="text" name="jmeno7" size="20"></td>
+											<td align="center"><select name="pohlavi7"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst7"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva7"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr8">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_8 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip8" size="10"></td>
+											<td align="center"><input type="text" name="jmeno8" size="20"></td>
+											<td align="center"><select name="pohlavi8"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst8"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva8"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr9">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_9 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip9" size="10"></td>
+											<td align="center"><input type="text" name="jmeno9" size="20"></td>
+											<td align="center"><select name="pohlavi9"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst9"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva9"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr10">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_10 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip10" size="10"></td>
+											<td align="center"><input type="text" name="jmeno10" size="20"></td>
+											<td align="center"><select name="pohlavi10"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst10"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva10"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr11">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_11 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip11" size="10"></td>
+											<td align="center"><input type="text" name="jmeno11" size="20"></td>
+											<td align="center"><select name="pohlavi11"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst11"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva11"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr12">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_12 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip12" size="10"></td>
+											<td align="center"><input type="text" name="jmeno12" size="20"></td>
+											<td align="center"><select name="pohlavi12"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst12"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva12"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr13">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_13 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip13" size="10"></td>
+											<td align="center"><input type="text" name="jmeno13" size="20"></td>
+											<td align="center"><select name="pohlavi13"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst13"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva13"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr14">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_14 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip14" size="10"></td>
+											<td align="center"><input type="text" name="jmeno14" size="20"></td>
+											<td align="center"><select name="pohlavi14"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst14"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva14"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr><tr id="tr15">
+											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_15 --></td>
+											<td align="center" class="rbold"><input type="text" name="mikrocip15" size="10"></td>
+											<td align="center"><input type="text" name="jmeno15" size="20"></td>
+											<td align="center"><select name="pohlavi15"><option value="1">pes</option><option value="2">fena</option></select></td>
+											<td align="center"><select name="srst15"><option value="2">dlouhá</option><option value="1">krátká</option></select>,
+												<select name="barva15"><option value="3">zlatá</option><option value="2">tricolour</option><option value="1">blue merle</option><option value="4">bicolor</option></select></td>
+										</tr>
+									</table><!--tp--></div>
+
+								<div class="clear"></div>
+								&nbsp;<br />
+
+								<div class="pro3">Výsledek  tetování, čipování a  kontroly  vrhu:<br />
+									<textarea name="kontrolaVrhu" class="prihlaska_full"></textarea></div>
+
+								<div class="clear"></div>
+								&nbsp;<br />
+
+								<p class="pro3">K přihlášce připojuji:  <input type="checkbox" name="kryci_list"> 2x krycí list &bull; <input type="checkbox" name="pp_psa"> 1x kopie PP psa s přeregistrací &bull; <input type="checkbox" name="pp_feny"> 1x kopie PP feny s přeregistrací &bull; <input type="checkbox" name="poplatky"> potvrzení o zaplacení poplatků &bull; <input type="checkbox" name="fotokopiechs"> fotokopie CHS (jen u prvního vrhu) &bull; <input type="checkbox" name="fotokopietitulu"> fotokopie  titulů
+									<br /><br />
+									Potvrzuji svým podpisem, že jsem chovatelem výše uvedených štěňat a že všechny údaje v přihlášce uvedené  jsou pravdivé.<br>
+									*Podpisem stvrzuji souhlas s využitím uvedených údajů pro evidenci klubu v rámci genealogie Klubu.
+									<br /><br />&nbsp;<br /></p>
+								<div class="prihlaska_left">
+									V <input type="text" name="misto" size="50">
+								</div>
+								<div class="prihlaska_right tright">
+									....................................................................<br />Vlastnoruční  podpis  chovatele
+								</div>
+
+								<!-- smazat --><br>&nbsp;<hr>&nbsp;<br>
+
+								<p class="bcenter pagebreak morept">Použít pro nalepení samolepek s čárovým kódem čísla mikročipu.</a></p>
+
+								<table class="prihlaska_table plusb" cellspacing="0" border="1" align="center">
+									<tr>
+										<td style="width:3.9cm;height:1.7cm" align="center">Číslo zápisu</td>
+										<td style="width:7.4cm" align="center">Samolepka s čárovým kódem čísla mikročipu</td>
+									</tr>
+									<tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr><tr>
+										<td class="prihlaskaMaxHeight" style="height:1.7cm">&nbsp;</td><td>&nbsp;</td>
+									</tr>
+								</table>
+								<br />&nbsp;<br />
+
+								<!--<div class="prihlaska_left morept">
+									Další sadu samolepek <b>volně přiložte</b> k přihlášce <br />	pro nalepení do průkazů původu <b>plemennou knihou ČMKU</b>!
+								</div>-->
+
+								<div class="pro3 fright tright morept">
+									<b>Čipování provedl:</b><br />(razítko a podpis  pověřeného veterinárního lékaře)
+									<br /><br /><br /><br /><br />
+									....................................................................
+								</div>
+
+								<div class="clear"></div>
+							</div>
+
+							<br /><input type="submit" value="Vytisknout, odeslat">
+						{/form}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$("#frm-litterApplicationDetailForm-otecDN").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-litterApplicationDetailForm-matkaDN").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-litterApplicationDetailForm-datumkryti").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+
+		$("#frm-litterApplicationDetailForm-datumnarozeni").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+	</script>
+{/block}
