@@ -713,3 +713,38 @@ define("LITTER_APPLICATION_DETAIL_BONITATION", "bonitace");
 define("LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS", "Jméno a adresa chovatele");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY", "Datum narození štěňat");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_INFO", "Údaje o počtu narozených štěňat");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_COUNT", "Kolik štěňat fena porodila");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_DEATH_COUNT", "Kolik z nich bylo mrtvých");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_FORCE_DEATH_COUNT", "Kolik bylo usmrceno");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_APPLICATION_FOR", "Přihlašuji k zápisu");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_TO_NURSE", "Kolik odevzdáno kojné");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_DEATH_BEFORE_APPLICATION", "Kolik zahynulo před zápisem");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_MALES", "psů");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES", "fen");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW", "Pohlaví nezjištěno");
+define("LITTER_APPLICATION_DETAIL_TEXT_1", "<b>Vyplní ČMKU</b><br />Číslo zápisu<br />Tetovací číslo");
+define("LITTER_APPLICATION_DETAIL_TEXT_2", "<b>Číslo mikročipu</b><br />(viz 2. strana)");
+define("LITTER_APPLICATION_DETAIL_TEXT_3", "<b>Jméno štěňat</b><br />(podle abecedy,<br />napřed psi)");
+define("LITTER_APPLICATION_DETAIL_TEXT_4", "<b>Pohlaví</b><br />(napřed psi)");
+define("LITTER_APPLICATION_DETAIL_TEXT_5", "<b>Druh srsti a barva</b>");
+define("LITTER_APPLICATION_DETAIL_TEXT_6", "<br /><br />
+									Potvrzuji svým podpisem, že jsem chovatelem výše uvedených štěňat a že všechny údaje v přihlášce uvedené  jsou pravdivé.<br>
+									*Podpisem stvrzuji souhlas s využitím uvedených údajů pro evidenci klubu v rámci genealogie Klubu.
+									<br /><br />&nbsp;<br />");
+define("LITTER_APPLICATION_DETAIL_TEXT_7", "....................................................................<br />Vlastnoruční  podpis  chovatele");
+define("LITTER_APPLICATION_DETAIL_TEXT_8", "Použít pro nalepení samolepek s čárovým kódem čísla mikročipu.");
+define("LITTER_APPLICATION_DETAIL_TEXT_9", "<b>Čipování provedl:</b><br />(razítko a podpis  pověřeného veterinárního lékaře)
+									<br /><br /><br /><br /><br />
+									....................................................................");
+define("LITTER_APPLICATION_DETAIL_CONTROL", "Výsledek  tetování, čipování a  kontroly  vrhu");
+define("LITTER_APPLICATION_DETAIL_SEND", "Vytisknout, odeslat");
+define("LITTER_APPLICATION_DETAIL_INC", "K přihlášce připojuji");
+define("LITTER_APPLICATION_DETAIL_INC_MATING_LIST", "2x krycí list");
+define("LITTER_APPLICATION_DETAIL_INC_MATING_MALE_PREREG", "1x kopie PP psa s přeregistrací");
+define("LITTER_APPLICATION_DETAIL_INC_MATING_FEMALE_PREREG", "1x kopie PP psa s přeregistrací");;
+define("LITTER_APPLICATION_DETAIL_INC_MATING_FEES", "potvrzení o zaplacení poplatků");
+define("LITTER_APPLICATION_DETAIL_INC_MATING_PHOTO", "fotokopie CHS (jen u prvního vrhu)");
+define("LITTER_APPLICATION_DETAIL_INC_MATING_TITLES", "fotokopie  titulů");
+define("LITTER_APPLICATION_DETAIL_IN", "V");
+define("LITTER_APPLICATION_DETAIL_NO", "Číslo zápisu");
+define("LITTER_APPLICATION_DETAIL_CHIP_BLISTER", "Samolepka s čárovým kódem čísla mikročipu");

@@ -8,6 +8,9 @@ use Nette\Application\UI\Form;
 
 class LitterApplicationDetailForm extends Nette\Object {
 
+	/** @const pocet radek formulare o štěňatech */
+	const NUMBER_OF_LINES = 15;
+
 	/** @var FormFactory */
 	private $factory;
 
@@ -32,9 +35,18 @@ class LitterApplicationDetailForm extends Nette\Object {
 		$form = $this->factory->create();
 		$form->getElementPrototype()->addAttributes(["onsubmit" => "return requiredFields();"]);
 
+		$form->addHidden('oID');
+		$form->addHidden('mID');
+		$form->addHidden('Klub');
+		$form->addHidden('cID');
+		$form->addHidden('title');
+
 		$barvy = $this->enumerationRepository->findEnumItemsForSelect($currentLang, EnumerationRepository::BARVA);
+		$barvyBezPrazdne = $this->enumerationRepository->findEnumItemsForSelectIgnoreEmpty($currentLang, EnumerationRepository::BARVA);
 		$srst = $this->enumerationRepository->findEnumItemsForSelect($currentLang, EnumerationRepository::SRST);
+		$srstBezPrazdne = $this->enumerationRepository->findEnumItemsForSelectIgnoreEmpty($currentLang, EnumerationRepository::SRST);
 		$plemeno = $this->enumerationRepository->findEnumItemsForSelect($currentLang, EnumerationRepository::PLEMENO);
+		$pohlavi = $this->enumerationRepository->findEnumItemsForSelect($currentLang, EnumerationRepository::POHLAVI);
 
 		$form->addSelect("Plemeno", DOG_FORM_BREED, $plemeno);
 		$form->addText("chs", LITTER_APPLICATION_DETAIL_STATION_TITLE, 80);
@@ -65,110 +77,40 @@ class LitterApplicationDetailForm extends Nette\Object {
 		$form->addText("datumkryti", MATING_FORM_DATE, 15);
 		$form->addText("datumnarozeni", LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY, 15);
 
-		return $form;
+		$form->addText("porozenoPsu", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
+		$form->addText("porozenoFen", LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES, 2);
+		$form->addText("porozenoNez", LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW, 2)->setAttribute("title", LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW);
+		$form->addText("mrtvychPsu", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
+		$form->addText("mrtvychFen", LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES, 2);
+		$form->addText("mrtvychNez", LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW, 2)->setAttribute("title", LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW);
+		$form->addText("usmrcenoPsu", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
+		$form->addText("usmrcenoFen", LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES, 2);
+		$form->addText("usmrcenoNez", LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW, 2)->setAttribute("title", LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW);
+		$form->addText("kzapisuPsu", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
+		$form->addText("kzapisuFen", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
+		$form->addText("kojnePsu", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
+		$form->addText("kojneFen", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
+		$form->addText("zahynuloPsu", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
+		$form->addText("zahynuloFen", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
 
-		$maleContainer = $form->addContainer('pID');
-		$maleContainer->addText("Jmeno", DOG_FORM_NAME_MALE)
-			->setAttribute("placeholder", DOG_FORM_NAME);
+		for ($i=1; $i <= self::NUMBER_OF_LINES; $i++) {
+			$form->addText("mikrocip" . $i, "", 10);
+			$form->addText("jmeno" . $i, "", 20);
+			$form->addSelect("pohlavi" . $i, "", $pohlavi);
+			$form->addSelect("srst" . $i, "", $srstBezPrazdne);
+			$form->addSelect("barva" . $i, "", $barvyBezPrazdne);
+		}
 
-		$maleContainer->addText("CisloZapisu", DOG_FORM_NO_OF_REC)
-			->setAttribute("placeholder", DOG_FORM_NO_OF_REC)
-			->setAttribute("tabindex", $counter + 2);
+		$form->addCheckbox("kryci_list", LITTER_APPLICATION_DETAIL_INC_MATING_LIST);
+		$form->addCheckbox("pp_psa", LITTER_APPLICATION_DETAIL_INC_MATING_MALE_PREREG);
+		$form->addCheckbox("pp_feny", LITTER_APPLICATION_DETAIL_INC_MATING_FEMALE_PREREG);
+		$form->addCheckbox("poplatky", LITTER_APPLICATION_DETAIL_INC_MATING_FEES);
+		$form->addCheckbox("fotokopiechs", LITTER_APPLICATION_DETAIL_INC_MATING_PHOTO);
+		$form->addCheckbox("fotokopietitulu", LITTER_APPLICATION_DETAIL_INC_MATING_TITLES);
 
-		$maleContainer->addText("Cip", DOG_FORM_NO_OF_CHIP)
-			->setAttribute("placeholder", DOG_FORM_NO_OF_CHIP)
-			->setAttribute("tabindex", $counter + 3);
-
-		$maleContainer->addText("DatumNarozeni", DOG_FORM_BIRT)
-			->setAttribute("placeholder", DOG_FORM_BIRT)
-			->setAttribute("tabindex", $counter + 4);
-
-
-		$maleContainer->addSelect("Barva", DOG_FORM_FUR_COLOUR, $barvy)
-			->setAttribute("placeholder", DOG_FORM_FUR_COLOUR)
-			->setAttribute("tabindex", $counter + 5);
-
-		$maleContainer->addText("Vyska", DOG_FORM_HEIGHT)
-			->setAttribute("placeholder", DOG_FORM_HEIGHT)
-			->setAttribute("tabindex", $counter + 6);
-
-		$maleContainer->addText("Bonitace", DOG_FORM_BON_DATE)
-			->setAttribute("placeholder", DOG_FORM_BON_DATE)
-			->setAttribute("tabindex", $counter + 7);
-
-		$maleContainer->addText("Misto", MATING_FORM_PLACE2)
-			->setAttribute("placeholder", MATING_FORM_PLACE2)
-			->setAttribute("tabindex", $counter + 8);
-
-		// --------------------------------------------------------
-
-		$femaleContainer = $form->addContainer('fID');
-		$femaleContainer->addText("Jmeno", DOG_FORM_NAME_FEMALE)
-			->setAttribute("placeholder", DOG_FORM_NAME)
-			->setAttribute("tabindex", $counter + 9);
-
-		$femaleContainer->addText("CisloZapisu", DOG_FORM_NO_OF_REC)
-			->setAttribute("placeholder", DOG_FORM_NO_OF_REC)
-			->setAttribute("tabindex", $counter + 10);
-
-		$femaleContainer->addText("Cip", DOG_FORM_NO_OF_CHIP)
-			->setAttribute("placeholder", DOG_FORM_NO_OF_CHIP)
-			->setAttribute("tabindex", $counter + 11);
-
-		$femaleContainer->addText("DatumNarozeni", DOG_FORM_BIRT)
-			->setAttribute("placeholder", DOG_FORM_BIRT)
-			->setAttribute("tabindex", $counter + 12);
-
-		$femaleContainer->addSelect("Barva", DOG_FORM_FUR_COLOUR, $barvy)
-			->setAttribute("placeholder", $barvy)
-			->setAttribute("tabindex", $counter + 13);
-
-		$femaleContainer->addText("Vyska", DOG_FORM_HEIGHT)
-			->setAttribute("placeholder", DOG_FORM_HEIGHT)
-			->setAttribute("tabindex", $counter + 14);
-
-		$femaleContainer->addText("Bonitace", DOG_FORM_BON_DATE)
-			->setAttribute("placeholder", DOG_FORM_BON_DATE)
-			->setAttribute("tabindex", $counter + 15);
-
-		$femaleContainer->addText("Misto", MATING_FORM_PLACE2)
-			->setAttribute("placeholder", MATING_FORM_PLACE2)
-			->setAttribute("tabindex", $counter + 16);
-
-		// ------------------------------------------------------------
-
-		$form->addText("DatumKryti", MATING_FORM_DATE)
-			->setAttribute("placeholder", MATING_FORM_DATE)
-			->setAttribute("tabindex", $counter + 17);
-
-		$form->addText("MistoKryti", MATING_FORM_PLACE)
-			->setAttribute("placeholder", MATING_FORM_PLACE)
-			->setAttribute("tabindex", $counter + 18);
-
-		$form->addText("Inseminace", MATING_FORM_INSEMINATION)
-			->setAttribute("placeholder", MATING_FORM_INSEMINATION)
-			->setAttribute("tabindex", $counter + 19);
-
-		$form->addTextArea("Dohoda", MATING_FORM_AGREEMENT, 100, 10)
-			->setAttribute("placeholder", MATING_FORM_AGREEMENT)
-			->setAttribute("tabindex", $counter + 20);
-
-		$form->addTextArea("MajitelPsa", MATING_FORM_MALE_OWNER, 100, 10)
-			->setAttribute("placeholder", MATING_FORM_MALE_OWNER)
-			->setAttribute("tabindex", $counter + 21);
-
-		$form->addTextArea("MajitelFeny", MATING_FORM_FEMALE_OWNER, 100, 10)
-			->setAttribute("placeholder", MATING_FORM_FEMALE_OWNER)
-			->setAttribute("tabindex", $counter + 22);
-
-		$form->addButton("back", MATING_FORM_OVERAGAIN)
-			->setAttribute("class", "btn margin10")
-			->setAttribute("onclick", "location.assign('" . $linkBack . "')")
-			->setAttribute("tabindex", $counter + 24);
-
-		$form->addSubmit("generate", MATING_FORM_GENERATE)
-			->setAttribute("class", "btn btn-primary margin10")
-			->setAttribute("tabindex", $counter + 23);
+		$form->addText("misto", LITTER_APPLICATION_DETAIL_IN, 50);
+		$form->addTextArea("kontrolaVrhu", LITTER_APPLICATION_DETAIL_CONTROL)->setAttribute("class", "prihlaska_full");
+		$form->addSubmit("submit", LITTER_APPLICATION_DETAIL_SEND);
 
 		return $form;
 	}

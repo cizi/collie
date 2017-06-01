@@ -675,7 +675,6 @@ define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER", "New dog inserted")
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER", "Hello, <br /> in the system has been inserted a new dog . PLease, wait for approval by administrator.");
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN", "New dog inserted");
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN", "Hello, <br />a new dog card has been created %s. Please, log in for approval or decline the request.");
-
 define("LITTER_APPLICATION", "Litter application");
 define("LITTER_APPLICATION_DETAIL_TITLE", "Collie and sheltie breeders club");
 define("LITTER_APPLICATION_DETAIL_APPLICATION", "Registration for puppies in a dog book");
@@ -692,3 +691,38 @@ define("LITTER_APPLICATION_DETAIL_BONITATION", "bonitations");
 define("LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS", "Name and address of the breeder");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY", "Date of birth of puppies");
 define("LITTER_APPLICATION_DETAIL_PUPPIES_INFO", "Data on the number of puppies born");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_COUNT", "How many puppies gave birth to");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_DEATH_COUNT", "How many of them were dead");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_FORCE_DEATH_COUNT", "How much was killed");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_APPLICATION_FOR", "I sign up for a listing");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_TO_NURSE", "How much surrendered to nursing");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_DEATH_BEFORE_APPLICATION", "How much he died before writing");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_MALES", "males");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES", "females");
+define("LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW", "Sex unknow");
+define("LITTER_APPLICATION_DETAIL_TEXT_1", "<b>Fill ČMKU</b><br />NO record<br />Tatto number");
+define("LITTER_APPLICATION_DETAIL_TEXT_2", "<b>Chip number</b><br />(see 2. page)");
+define("LITTER_APPLICATION_DETAIL_TEXT_3", "<b>Name of puppy</b><br />(by alphabet,<br />males first)");
+define("LITTER_APPLICATION_DETAIL_TEXT_4", "<b>Sex</b><br />(males first)");
+define("LITTER_APPLICATION_DETAIL_TEXT_5", "<b>Fur and colour kind</b>");
+define("LITTER_APPLICATION_DETAIL_TEXT_6", "<br /><br />
+									I confirm with my signature that I am the breeder of the above puppies and that all the data in the application are true.
+									* By signing, I confirm my consent to the use of this data for the club's records within the Club's genealogy.
+									<br /><br />&nbsp;<br />");
+define("LITTER_APPLICATION_DETAIL_TEXT_7", "....................................................................<br />Owner's signature of the breeder");
+define("LITTER_APPLICATION_DETAIL_TEXT_8", "Apply barcode stickers to stick stickers.");
+define("LITTER_APPLICATION_DETAIL_TEXT_9", "<b>Chiping done by:</b><br />(stamp and signature of the authorized veterinarian)
+									<br /><br /><br /><br /><br />
+									....................................................................");
+define("LITTER_APPLICATION_DETAIL_CONTROL", "The result of tattooing, chipping and litter control");
+define("LITTER_APPLICATION_DETAIL_SEND", "Print, send");
+define("LITTER_APPLICATION_DETAIL_INC", "I attach the application");
+define("LITTER_APPLICATION_DETAIL_INC_MATING_LIST", "2x cover sheet");
+define("LITTER_APPLICATION_DETAIL_INC_MATING_MALE_PREREG", "1x copy of PP male dog with re-registration");
+define("LITTER_APPLICATION_DETAIL_INC_MATING_FEMALE_PREREG", "1x copy of PP female dog with re-registration");;
+define("LITTER_APPLICATION_DETAIL_INC_MATING_FEES", "confirmation of payment of fees");
+define("LITTER_APPLICATION_DETAIL_INC_MATING_PHOTO", "CHS photocopy (first litter only)");
+define("LITTER_APPLICATION_DETAIL_INC_MATING_TITLES", "Photocopy of titles");
+define("LITTER_APPLICATION_DETAIL_IN", "In");
+define("LITTER_APPLICATION_DETAIL_NO", "Record number");
+define("LITTER_APPLICATION_DETAIL_CHIP_BLISTER", "Sticker with barcode number of microchip");

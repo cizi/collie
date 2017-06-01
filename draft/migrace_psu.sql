@@ -270,4 +270,41 @@ FROM prihlaska;
 
 ######################################
 
+###### krycí list ####################
+INSERT INTO appdata_krycilist (
+  `ID`,
+  `Datum`,
+  `oID`,
+  `mID`,
+  `DatumKryti`,
+  `Data`,
+  `Formular`,
+  `Zavedeno`,
+  `Plemeno`,
+  `Klub`,
+  `MajitelFeny`
+)
+SELECT
+  `ID`,
+  IF(`Datum` != '', `Datum`, NULL),
+  `oID`,
+  `mID`,
+  IF(`DatumKryti` != '', `DatumKryti`, NULL),
+  `Data`,
+  `Formular`,
+  `Zavedeno`,
+  CASE `Plemeno`
+    WHEN 0 THEN NULL
+    WHEN 1 THEN 17
+    WHEN 2 THEN 18
+    WHEN 3 THEN 19
+  END,
+  `Klub`,
+  IF(`MajitelFeny` != 0, `MajitelFeny`, NULL)
+FROM krycilist;
+#RENAME TABLE krycilist to migrated_krycilist;
+
+######################################
+
+
 SET FOREIGN_KEY_CHECKS=1;

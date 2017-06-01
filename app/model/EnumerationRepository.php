@@ -78,10 +78,12 @@ class EnumerationRepository extends BaseRepository {
 		];
 
 		$result = $this->connection->query($query)->fetch();
-		$enum = new EnumerationEntity();
-		$enum->hydrate($result->toArray());
+		if ($result) {
+			$enum = new EnumerationEntity();
+			$enum->hydrate($result->toArray());
 
-		return $enum;
+			return $enum;
+		}
 	}
 
 	/**
@@ -114,7 +116,9 @@ class EnumerationRepository extends BaseRepository {
 		foreach ($result as $item) {
 			$enumItem = new EnumerationItemEntity();
 			$enumItem->hydrate($item->toArray());
-			$return[$enumItem->getOrder()] = $enumItem->getItem();
+			if ($enumItem->getItem() != self::NOT_SELECTED) {
+				$return[$enumItem->getOrder()] = $enumItem->getItem();
+			}
 		}
 
 		return $return;
