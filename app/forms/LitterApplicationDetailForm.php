@@ -117,7 +117,7 @@ class LitterApplicationDetailForm extends Nette\Object {
 			->setAttribute("class", "btn margin10")
 			->setAttribute("onclick", "location.assign('" . $linkBack . "')");
 
-		$form->addSubmit("generate", LITTER_APPLICATION_DETAIL_SEND)
+		$form->addSubmit("generate", MATING_FORM_SAVE)
 			->setAttribute("class", "btn btn-primary margin10");
 
 		return $form;

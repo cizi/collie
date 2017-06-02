@@ -118,10 +118,10 @@ class LitterApplicationEntity {
 
 	/**
 	 * Vrátí dekódovaná POST data formuláře
-	 * @return string
+	 * @return array
 	 */
 	public function getDataDecoded() {
-		return gzinflate(base64_decode($this->getData()));
+		return unserialize(gzinflate(base64_decode($this->getData())));
 	}
 
 	/**
@@ -140,10 +140,10 @@ class LitterApplicationEntity {
 
 	/**
 	 * Vrátí dekódovaný obsah formuláře
-	 * @return string
+	 * @return array
 	 */
 	public function getFormularDecoded() {
-		return gzinflate(base64_decode($this->getFormular()));
+		return unserialize(gzinflate(base64_decode($this->getFormular())));
 	}
 
 	/**

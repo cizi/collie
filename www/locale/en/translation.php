@@ -715,7 +715,6 @@ define("LITTER_APPLICATION_DETAIL_TEXT_9", "<b>Chiping done by:</b><br />(stamp 
 									<br /><br /><br /><br /><br />
 									....................................................................");
 define("LITTER_APPLICATION_DETAIL_CONTROL", "The result of tattooing, chipping and litter control");
-define("LITTER_APPLICATION_DETAIL_SEND", "Print, send");
 define("LITTER_APPLICATION_DETAIL_INC", "I attach the application");
 define("LITTER_APPLICATION_DETAIL_INC_MATING_LIST", "2x cover sheet");
 define("LITTER_APPLICATION_DETAIL_INC_MATING_MALE_PREREG", "1x copy of PP male dog with re-registration");
@@ -727,3 +726,8 @@ define("LITTER_APPLICATION_DETAIL_IN", "In");
 define("LITTER_APPLICATION_DETAIL_NO", "Record number");
 define("LITTER_APPLICATION_DETAIL_CHIP_BLISTER", "Sticker with barcode number of microchip");
 define("LITTER_APPLICATION_DETAIL_LITTER_DATE_REQ", "Litter date is mandatory field!");
+define("LITTER_APPLICATION_SAVED", "Litter application has been succussfully saved");
+define("LITTER_APPLICATION_SAVE_FAILED", "An error occured during savnig. Please double check inserted data and try again.");
+define("LITTER_APPLICATION_DOES_NOT_EXIST", "Litter apoplication number %i does not exist!");
+define("LITTER_APPLICATION_ADD_NEW", "Add new litter apúplication");
+define("LITTER_APPLICATION_GENERATE_PDF", "Save PDF");

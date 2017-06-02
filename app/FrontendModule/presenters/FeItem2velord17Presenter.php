@@ -120,15 +120,13 @@ class FeItem2velord17Presenter extends FrontendPresenter {
 			if ($litterApplicationEntity->getPlemeno() == 0) {
 				$litterApplicationEntity->setPlemeno(null);
 			}
-
 			$this->litterApplicationRepository->save($litterApplicationEntity);
-
-			$pdf = new \Joseki\Application\Responses\PdfResponse($template);
-			$pdf->documentTitle = LITTER_APPLICATION . "_" . date("Y-m-d_His");
-			$this->sendResponse($pdf);
+			$this->flashMessage(LITTER_APPLICATION_SAVED, "alert-success");
+			$this->redirect("litterFinalization", $litterApplicationEntity->getID());
 		} catch (AbortException $e) {
 			throw $e;
 		} catch (\Exception $e) {
+			$this->flashMessage(LITTER_APPLICATION_SAVE_FAILED, "alert-danger");
 		}
 	}
 
@@ -178,5 +176,18 @@ class FeItem2velord17Presenter extends FrontendPresenter {
 		$this->template->puppiesLines = LitterApplicationDetailForm::NUMBER_OF_LINES;
 		$this->template->title = $title;
 		$this->template->cID = $cID;
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function actionLitterFinalization($id) {
+		$litterApplication = $this->litterApplicationRepository->getLitterApplication($id);
+		if ($litterApplication != null) {
+			$this->template->id = $id;
+		} else {
+			$message = sprintf(LITTER_APPLICATION_DOES_NOT_EXIST, $id);
+			$this->flashMessage($message, "alert-danger");
+		}
 	}
 }

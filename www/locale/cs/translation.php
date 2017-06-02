@@ -737,7 +737,6 @@ define("LITTER_APPLICATION_DETAIL_TEXT_9", "<b>Čipování provedl:</b><br />(ra
 									<br /><br /><br /><br /><br />
 									....................................................................");
 define("LITTER_APPLICATION_DETAIL_CONTROL", "Výsledek  tetování, čipování a  kontroly  vrhu");
-define("LITTER_APPLICATION_DETAIL_SEND", "Vytisknout, odeslat");
 define("LITTER_APPLICATION_DETAIL_INC", "K přihlášce připojuji");
 define("LITTER_APPLICATION_DETAIL_INC_MATING_LIST", "2x krycí list");
 define("LITTER_APPLICATION_DETAIL_INC_MATING_MALE_PREREG", "1x kopie PP psa s přeregistrací");
@@ -749,3 +748,8 @@ define("LITTER_APPLICATION_DETAIL_IN", "V");
 define("LITTER_APPLICATION_DETAIL_NO", "Číslo zápisu");
 define("LITTER_APPLICATION_DETAIL_CHIP_BLISTER", "Samolepka s čárovým kódem čísla mikročipu");
 define("LITTER_APPLICATION_DETAIL_LITTER_DATE_REQ", "Datum krytí je povinná položka!");
+define("LITTER_APPLICATION_SAVED", "Přihláška vrhu byla v pořádku uložena");
+define("LITTER_APPLICATION_SAVE_FAILED", "Během ukládání příhlášky vrhu došlo k chybě. Prosím, zkontrolujte data a akci opakujte.");
+define("LITTER_APPLICATION_DOES_NOT_EXIST", "Přihláška vrhu s číslem %i neexistuje!");
+define("LITTER_APPLICATION_ADD_NEW", "Zadat další přihlášku vrhu");
+define("LITTER_APPLICATION_GENERATE_PDF", "Uložit PDF");
