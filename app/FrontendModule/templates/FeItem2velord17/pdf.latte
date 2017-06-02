@@ -176,7 +176,11 @@
 
 							<div class="itemFull">
 								<div class="itemFullName">{=DOG_FORM_BREED}</div>
-								{$Plemeno}
+								{if $Plemeno == 0}
+									-
+								{else}
+									{$enumRepository->findEnumItemByOrder($currentLang, $Plemeno)}
+								{/if}
 							</div>
 
 							<div class="itemFull">
@@ -193,8 +197,19 @@
 							</div>
 							<div class="prihlaska_right">
 								{=LITTER_APPLICATION_DETAIL_CARD_NO|noescape}: {$otecPP}<br />
-								<div class="itemFullName2">{=DOG_TABLE_HEADER_COLOR|noescape}: </div>{$otecBarva}<br />
-								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_FUR_TYPE|noescape}: </div>{$otecSrst}<br />
+								<div class="itemFullName2">{=DOG_TABLE_HEADER_COLOR|noescape}: </div>
+								{if $otecBarva == 0}
+									-
+								{else}
+									{$enumRepository->findEnumItemByOrder($currentLang, $otecBarva)}
+								{/if}<br />
+								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_FUR_TYPE|noescape}: </div>
+								{if $otecSrst == 0}
+									-
+								{else}
+									{$enumRepository->findEnumItemByOrder($currentLang, $otecSrst)}
+								{/if}
+								<br />
 								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_BONITATION|noescape}: </div>{$otecBon}, {=DOG_TABLE_HEADER_HEIGHT|noescape}: {$otecHeight} cm
 							</div>
 
@@ -207,8 +222,18 @@
 							</div>
 							<div class="prihlaska_right">
 								{=LITTER_APPLICATION_DETAIL_CARD_NO|noescape}: {$matkaPP}<br />
-								<div class="itemFullName2">{=DOG_TABLE_HEADER_COLOR|noescape}: </div>{$matkaBarva}<br />
-								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_FUR_TYPE|noescape}: </div>{$matkaSrst}<br />
+								<div class="itemFullName2">{=DOG_TABLE_HEADER_COLOR|noescape}: </div>
+								{if $matkaBarva == 0}
+									-
+								{else}
+									{$enumRepository->findEnumItemByOrder($currentLang, $matkaBarva)}
+								{/if}<br />
+								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_FUR_TYPE|noescape}: </div>
+								{if $matkaSrst == 0}
+									-
+								{else}
+									{$enumRepository->findEnumItemByOrder($currentLang, $matkaSrst)}
+								{/if}<br />
 								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_BONITATION|noescape}: </div>{$matkaBon}, {=DOG_TABLE_HEADER_HEIGHT|noescape}: {$matkaHeight} cm
 							</div>
 
@@ -260,11 +285,19 @@
 
 									{for $i = 1; $i <= $puppiesLines; $i++}
 										<tr id="tr{$i}">
-											<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
-											<td align="center" class="rbold">{$mikrocip.$i}</td>
-											<td align="center">{$jmeno.$i}</td>
-											<td align="center">{$pohlavi.$i}</td>
-											<td align="center">{$srst.$i}, {$barva.$i}</td>
+											{if ${"mikrocip".$i} != "" && ${"jmeno".$i} != ""}
+												<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
+												<td align="center" class="rbold">{${"mikrocip".$i}}</td>
+												<td align="center">{${"jmeno".$i}}</td>
+												<td align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"pohlavi".$i})}</td>
+												<td align="center">{$enumRepository->findEnumItemByOrder($currentLang,  ${"srst".$i})}, {$enumRepository->findEnumItemByOrder($currentLang, ${"barva".$i})}</td>
+											{else}
+												<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
+												<td align="center" class="rbold"></td>
+												<td align="center"></td>
+												<td align="center"></td>
+												<td align="center"></td>
+											{/if}
 										</tr>
 									{/for}
 
@@ -282,8 +315,36 @@
 							&nbsp;<br />
 
 							<p class="pro3">{=LITTER_APPLICATION_DETAIL_INC}:
-								{$kryci_list} {=LITTER_APPLICATION_DETAIL_INC_MATING_LIST} &bull;
-								{$pp_psa} {=LITTER_APPLICATION_DETAIL_INC_MATING_MALE_PREREG} &bull; {$pp_feny} {=LITTER_APPLICATION_DETAIL_INC_MATING_FEMALE_PREREG} &bull; {$poplatky} {=LITTER_APPLICATION_DETAIL_INC_MATING_FEES} &bull; {$fotokopiechs} {=LITTER_APPLICATION_DETAIL_INC_MATING_PHOTO} &bull; {$fotokopietitulu} {=LITTER_APPLICATION_DETAIL_INC_MATING_TITLES}
+								{if isset($kryci_list)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_LIST} &bull;
+								{if isset($pp_psa)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_MALE_PREREG} &bull;
+								{if isset($pp_feny)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_FEMALE_PREREG} &bull;
+								{if isset($poplatky)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_FEES} &bull;
+								{if isset($fotokopiechs)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_PHOTO} &bull;
+								{if isset($fotokopietitulu)}
+									<input type="checkbox" checked="checked" />
+								{else}
+									<input type="checkbox" />
+								{/if} {=LITTER_APPLICATION_DETAIL_INC_MATING_TITLES}
 								{=LITTER_APPLICATION_DETAIL_TEXT_6|noescape}
 							</p>
 							<div class="prihlaska_left">

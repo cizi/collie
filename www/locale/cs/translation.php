@@ -748,3 +748,4 @@ define("LITTER_APPLICATION_DETAIL_INC_MATING_TITLES", "fotokopie  titulů");
 define("LITTER_APPLICATION_DETAIL_IN", "V");
 define("LITTER_APPLICATION_DETAIL_NO", "Číslo zápisu");
 define("LITTER_APPLICATION_DETAIL_CHIP_BLISTER", "Samolepka s čárovým kódem čísla mikročipu");
+define("LITTER_APPLICATION_DETAIL_LITTER_DATE_REQ", "Datum krytí je povinná položka!");

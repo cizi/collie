@@ -74,7 +74,9 @@ class LitterApplicationDetailForm extends Nette\Object {
 		$form->addText("matkaHeight", DOG_TABLE_HEADER_HEIGHT ,4);
 
 		$form->addText("chovatel", LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS, 120);
-		$form->addText("datumkryti", MATING_FORM_DATE, 15);
+		$form->addText("datumkryti", MATING_FORM_DATE, 15)
+			->setAttribute("class", "tinym_required_field")
+			->setAttribute("validation", LITTER_APPLICATION_DETAIL_LITTER_DATE_REQ);
 		$form->addText("datumnarozeni", LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY, 15);
 
 		$form->addText("porozenoPsu", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);

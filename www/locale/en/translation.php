@@ -726,3 +726,4 @@ define("LITTER_APPLICATION_DETAIL_INC_MATING_TITLES", "Photocopy of titles");
 define("LITTER_APPLICATION_DETAIL_IN", "In");
 define("LITTER_APPLICATION_DETAIL_NO", "Record number");
 define("LITTER_APPLICATION_DETAIL_CHIP_BLISTER", "Sticker with barcode number of microchip");
+define("LITTER_APPLICATION_DETAIL_LITTER_DATE_REQ", "Litter date is mandatory field!");
