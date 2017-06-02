@@ -112,7 +112,13 @@ class LitterApplicationDetailForm extends Nette\Object {
 
 		$form->addText("misto", LITTER_APPLICATION_DETAIL_IN, 50);
 		$form->addTextArea("kontrolaVrhu", LITTER_APPLICATION_DETAIL_CONTROL)->setAttribute("class", "prihlaska_full");
-		$form->addSubmit("submit", LITTER_APPLICATION_DETAIL_SEND);
+
+		$form->addButton("back", MATING_FORM_OVERAGAIN)
+			->setAttribute("class", "btn margin10")
+			->setAttribute("onclick", "location.assign('" . $linkBack . "')");
+
+		$form->addSubmit("generate", LITTER_APPLICATION_DETAIL_SEND)
+			->setAttribute("class", "btn btn-primary margin10");
 
 		return $form;
 	}
