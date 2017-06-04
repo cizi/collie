@@ -395,3 +395,10 @@ table.viewHeader{
 .dogViewSingleContent{
 	margin: 10px 30px;
 }
+#frm-litterApplicationRewriteForm > table > tbody > tr > th > label {
+	padding: 5px 10px;
+}
+
+.dogRewriteDelimiter{
+	margin-bottom: 30px;
+}

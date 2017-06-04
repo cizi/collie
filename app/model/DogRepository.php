@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Enum\DogStateEnum;
+use App\Enum\LitterApplicationStateEnum;
 use App\Forms\DogFilterForm;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
@@ -10,6 +11,7 @@ use App\Model\Entity\DogFileEntity;
 use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
+use App\Model\Entity\LitterApplicationEntity;
 use Dibi\Connection;
 use Dibi\Row;
 use Nette\Application\UI\Presenter;
@@ -49,16 +51,26 @@ class DogRepository extends BaseRepository {
 	/** @var LangRepository */
 	private $langRepository;
 
+	/** @var LitterApplicationRepository */
+	private $litterApplicationRepository;
+
 	/**
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param Connection $connection
 	 * @param Session $session
 	 * @param LangRepository $langRepository
 	 */
-	public function __construct(EnumerationRepository $enumerationRepository, Connection $connection, Session $session, LangRepository $langRepository) {
+	public function __construct(
+		EnumerationRepository $enumerationRepository,
+		Connection $connection,
+		Session $session,
+		LangRepository $langRepository,
+		LitterApplicationRepository $litterApplicationRepository
+	) {
 		$this->enumRepository = $enumerationRepository;
 		$this->session = $session;
 		$this->langRepository = $langRepository;
+		$this->litterApplicationRepository = $litterApplicationRepository;
 
 		parent::__construct($connection);
 	}
@@ -644,6 +656,28 @@ class DogRepository extends BaseRepository {
 			$this->connection->commit();
 		} catch (\Exception $e) {
 			$this->connection->rollback();
+			throw $e;
+		}
+	}
+
+	/**
+	 * @param DogEntity[] $dogs
+	 * @param BreederEntity[] $breeders
+	 */
+	public function saveDescendants(array $dogs, array $breeders, LitterApplicationEntity $litterApplicationEntity) {
+		try {
+			$this->connection->begin();
+			foreach ($dogs as $dog) {
+				$this->save($dog, [], [], $breeders, [], []);
+			}
+
+			$litterApplicationEntity->setZavedeno(LitterApplicationStateEnum::REWRITTEN);
+			$this->litterApplicationRepository->save($litterApplicationEntity);
+
+			$this->connection->commit();
+		} catch (\Exception $e) {
+			$this->connection->rollback();
+			throw $e;
 		}
 	}
 

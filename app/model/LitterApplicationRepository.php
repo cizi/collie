@@ -50,4 +50,18 @@ class LitterApplicationRepository extends BaseRepository {
 			return $litterApplicationEntity;
 		}
 	}
+
+	/**
+	 * @param int $id
+	 * @return bool
+	 */
+	public function delete($id) {
+		$return = false;
+		if (!empty($id)) {
+			$query = ["delete from appdata_krycilist where ID = %i", $id];
+			$return = ($this->connection->query($query) == 1 ? true : false);
+		}
+
+		return $return;
+	}
 }
