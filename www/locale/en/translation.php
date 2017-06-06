@@ -244,7 +244,7 @@ define("CONTACT_FORM_SETTING_BACKGROUND_COLOR", 'Color of the contact form backg
 define("CONTACT_FORM_SETTING_COLOR", 'Font colour in the contact form');
 define("CONTACT_FORM_SETTING_RECIPIENT", 'An email recipient from contact form.');
 define("CONTACT_FORM_SETTING_RECIPIENT_VALIDATION", 'An email address of an email recipient is mandatory field!');
-define("CONTACT_FORM_SETTING_RECIPIENT_INFO", 'On this email address will be send a request from contact form.');
+define("CONTACT_FORM_SETTING_RECIPIENT_INFO", 'On this email address will be send a request from contact form. More addresses devide with semicolon (;).');
 define("CONTACT_FORM_SETTING_ATTACHMENT", 'Enabled attachment');
 define("CONTACT_FORM_SETTING_SAVE", 'Save');
 define("CONTACT_FORM_SETTING_COMPLETE_SAVE", 'Setting of the contact form has been saved');

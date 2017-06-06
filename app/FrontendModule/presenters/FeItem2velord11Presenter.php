@@ -336,7 +336,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				$currentDogEntity = $this->dogRepository->getDog($formData['ID']);
 				$newDogEntity->hydrate($formData);
 				$newDogEntity->setPosledniZmena($currentDogEntity->getPosledniZmena());	// tohle bych řešit neměl, takže to převezmu ze stávající hotnoty
-				$linkToDogView = $this->presenter->link("FeItem1velord2:view", $currentDogEntity->getID());
+				$linkToDogView = "http://" . $this->getHttpRequest()->getUrl()->getHost() . $this->presenter->link("FeItem1velord2:view", $currentDogEntity->getID());
 				$this->dogChangesComparatorController->compareSaveDog($currentDogEntity, $newDogEntity, $linkToDogView);
 
 				$currentDogHealth =$this->dogRepository->findAllHealthsByDogId($formData['ID']);

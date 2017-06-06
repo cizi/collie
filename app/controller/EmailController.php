@@ -5,7 +5,7 @@ namespace App\Controller;
 class EmailController {
 
 	/**
-	 * Ode�le email o obnov� hesla
+	 * Odešle email
 	 *
 	 * @param $emailFrom
 	 * @param $emailTo
@@ -22,7 +22,18 @@ class EmailController {
 		$email->isHTML(true);
 		$email->Subject = $subject;
 		$email->Body = $body;
-		$email->AddAddress($emailTo);
+
+		if (strpos($emailTo, ";") !== false) {	// více příjemců
+			$addresses = explode(";", $emailTo);
+			foreach ($addresses as $address) {
+				if (trim($address) != "") {
+					$email->AddAddress($address);
+				}
+			}
+		} else {	// jeden příjemnce
+			$email->AddAddress($emailTo);
+		}
+
 		$email->Send();
 	}
 

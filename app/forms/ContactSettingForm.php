@@ -30,6 +30,7 @@ class ContactSettingForm  extends Nette\Object {
 	 */
 	public function create(Nette\Application\UI\Presenter $presenter) {
 		$form = $this->factory->create();
+		$form->getElementPrototype()->addAttributes(["onsubmit" => "return requiredFields();"]);
 		$i = 0;
 
 		$link = new Nette\Application\UI\Link($presenter, "Contact:LangChange", []);
@@ -62,8 +63,8 @@ class ContactSettingForm  extends Nette\Object {
 
 		$form->addText(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, CONTACT_FORM_SETTING_RECIPIENT)
 			->setAttribute("id", "contactFormRecipient")
-			->setAttribute("class", "form-control minicolors-input")
-			->addRule(Form::EMAIL, CONTACT_FORM_SETTING_RECIPIENT_VALIDATION)
+			->setAttribute("class", "form-control tinym_required_field")
+			->setAttribute("validation", CONTACT_FORM_SETTING_RECIPIENT_VALIDATION)
 			->setAttribute("tabindex", $i++);
 
 		$form->addCheckbox(WebconfigRepository::KEY_CONTACT_FORM_ATTACHMENT)

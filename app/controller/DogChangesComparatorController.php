@@ -157,15 +157,18 @@ class DogChangesComparatorController {
 		}
 		$this->awaitingChangeRepository->writeChanges($changes);	// zapíšu změny
 
-		$userEntity = $this->userRepository->getUser($this->user->getId());
-		$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+		if (count($changes) > 0) {
+			$userEntity = $this->userRepository->getUser($this->user->getId());
+			$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT,
+				WebconfigRepository::KEY_LANG_FOR_COMMON);
 
-		// email pro uživatele
-		$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
-		//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
-		// email pro admina/y
-		$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
-		EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
+			// email pro uživatele
+			$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
+			//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
+			// email pro admina/y
+			$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
+			EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
+		}
 	}
 
 	/**
@@ -243,15 +246,18 @@ class DogChangesComparatorController {
 		}
 		$this->awaitingChangeRepository->writeChanges($changes);        // zapíšu změny
 
-		$userEntity = $this->userRepository->getUser($this->user->getId());
-		$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+		if (count($changes) > 0) {
+			$userEntity = $this->userRepository->getUser($this->user->getId());
+			$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT,
+				WebconfigRepository::KEY_LANG_FOR_COMMON);
 
-		// email pro uživatele
-		$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
-		//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
-		// email pro admina/y
-		$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
-		EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
+			// email pro uživatele
+			$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
+			//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
+			// email pro admina/y
+			$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
+			EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
+		}
 	}
 
 	/**
@@ -297,15 +303,18 @@ class DogChangesComparatorController {
 		}
 		$this->awaitingChangeRepository->writeChanges($changes);        // zapíšu změny
 
-		$userEntity = $this->userRepository->getUser($this->user->getId());
-		$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+		if (count($changes) > 0) {
+			$userEntity = $this->userRepository->getUser($this->user->getId());
+			$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT,
+				WebconfigRepository::KEY_LANG_FOR_COMMON);
 
-		// email pro uživatele
-		$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
-		//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
-		// email pro admina/y
-		$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
-		EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
+			// email pro uživatele
+			$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
+			//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
+			// email pro admina/y
+			$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
+			EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
+		}
 	}
 
 	/**
@@ -328,14 +337,17 @@ class DogChangesComparatorController {
 
 		$this->awaitingChangeRepository->writeChanges($changes);        // zapíšu změny
 
-		$userEntity = $this->userRepository->getUser($this->user->getId());
-		$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+		if (count($changes) > 0) {
+			$userEntity = $this->userRepository->getUser($this->user->getId());
+			$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT,
+				WebconfigRepository::KEY_LANG_FOR_COMMON);
 
-		// email pro uživatele
-		//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER, AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER);		// TODO
-		// email pro admina/y
-		$body = sprintf(AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN, $dogUrl);
-		EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN, $body);
+			// email pro uživatele
+			//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER, AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER);		// TODO
+			// email pro admina/y
+			$body = sprintf(AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN, $dogUrl);
+			EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN, $body);
+		}
 	}
 
 	/**
@@ -382,15 +394,18 @@ class DogChangesComparatorController {
 		}
 		$this->awaitingChangeRepository->writeChanges($changes);
 
-		$userEntity = $this->userRepository->getUser($this->user->getId());
-		$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+		if (count($changes) > 0) {
+			$userEntity = $this->userRepository->getUser($this->user->getId());
+			$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT,
+				WebconfigRepository::KEY_LANG_FOR_COMMON);
 
-		// email pro uživatele
-		$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
-		//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
-		// email pro admina/y
-		$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
-		EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
+			// email pro uživatele
+			$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
+			//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
+			// email pro admina/y
+			$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
+			EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
+		}
 	}
 
 	public function compareNewFiles(array $files) {
