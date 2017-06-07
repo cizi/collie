@@ -748,3 +748,16 @@ define("LITTER_APPLICATION_REWRITE_PUPPY_NAME", "Puppy name");
 define("LITTER_APPLICATION_REWRITE_PUPPIES", "Create descendants into a database");
 define("LITTER_APPLICATION_REWRITE_PUPPIES_FUR", "Fur");
 define("LITTER_APPLICATION_REWRITE_DOES_NOT_EXIST", "The litter number does not exist");
+define("LITTER_APPLICATION_CREATE_SUBJECT", "New litter application has been created");
+define("LITTER_APPLICATION_CREATE_BODY", "New liiter application has been created. See details in included form <br /><br /> %s");
+
+define("PUPPY_TABLE_TERM", "Term");
+define("PUPPY_TABLE_DETAILS", "Details");
+define("PUPPY_TABLE_CONTACT", "Contact");
+define("PUPPY_ADD_NEW", "Add");
+define("PUPPY_ADD_OK", "Record has been inserted");
+define("PUPPY_ADD_FAILED", "En error occured during saving, please, try again");
+define("PUPPY_EDIT", "Edit");
+define("PUPPY_DELETE", "Delete");
+define("PUPPY_DELETE_TITLE", "Delete record");
+define("PUPPY_DELETE_BODY", "Are you really want to delete the record?");

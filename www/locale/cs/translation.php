@@ -772,3 +772,14 @@ define("LITTER_APPLICATION_REWRITE_PUPPIES_FUR", "Srst");
 define("LITTER_APPLICATION_REWRITE_DOES_NOT_EXIST", "Číslo přihlášky vrhu neexistuje");
 define("LITTER_APPLICATION_CREATE_SUBJECT", "Byla založena nová přihlášk vrhu");
 define("LITTER_APPLICATION_CREATE_BODY", "Byla založena nová přihlášk vrhu. Viz přiložený formulář <br /><br /> %s");
+
+define("PUPPY_TABLE_TERM", "Termín");
+define("PUPPY_TABLE_DETAILS", "Podrobnosti");
+define("PUPPY_TABLE_CONTACT", "Kontakt");
+define("PUPPY_ADD_NEW", "Nový");
+define("PUPPY_ADD_OK", "Záznam byl v pořádku vložen");
+define("PUPPY_ADD_FAILED", "Během ukládání záznamu došlo k chybě. Opakujte akci prosím později");
+define("PUPPY_EDIT", "Ediatce");
+define("PUPPY_DELETE", "Smazání");
+define("PUPPY_DELETE_TITLE", "Smazání inzerátu štěňat");
+define("PUPPY_DELETE_BODY", "Opravdu chcete smazat záznam?");
