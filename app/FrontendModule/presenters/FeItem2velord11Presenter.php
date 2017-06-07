@@ -336,17 +336,21 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				$currentDogEntity = $this->dogRepository->getDog($formData['ID']);
 				$newDogEntity->hydrate($formData);
 				$newDogEntity->setPosledniZmena($currentDogEntity->getPosledniZmena());	// tohle bych řešit neměl, takže to převezmu ze stávající hotnoty
-				$linkToDogView = "http://" . $this->getHttpRequest()->getUrl()->getHost() . $this->presenter->link("FeItem1velord2:view", $currentDogEntity->getID());
-				$this->dogChangesComparatorController->compareSaveDog($currentDogEntity, $newDogEntity, $linkToDogView);
+
+				$dogChanged = $this->dogChangesComparatorController->compareSaveDog($currentDogEntity, $newDogEntity);
 
 				$currentDogHealth =$this->dogRepository->findAllHealthsByDogId($formData['ID']);
-				$this->dogChangesComparatorController->compareSaveDogHealth($currentDogHealth, $health, $linkToDogView);
+				$healthChanged = $this->dogChangesComparatorController->compareSaveDogHealth($currentDogHealth, $health);
 
 				$currentBreeder = $this->userRepository->getBreederByDog($formData['ID']);
-				$this->dogChangesComparatorController->compareSaveBreeder($currentBreeder, $breeders, $linkToDogView);
+				$breederChanged = $this->dogChangesComparatorController->compareSaveBreeder($currentBreeder, $breeders);
 
 				$currentOwners = $this->userRepository->findDogOwnersAsEntities($formData['ID']);	// najde současné majitele
-				$this->dogChangesComparatorController->compareSaveOwners($currentOwners, $owners, $linkToDogView);
+				$ownerChanged = $this->dogChangesComparatorController->compareSaveOwners($currentOwners, $owners);
+				if ($dogChanged || $healthChanged || $breederChanged || $ownerChanged) {
+					$linkToDogView = "http://" . $this->getHttpRequest()->getUrl()->getHost() . $this->presenter->link("FeItem1velord2:view", $currentDogEntity->getID());
+					$this->dogChangesComparatorController->sendInfoEmail($linkToDogView);
+				}
 				$this->flashMessage(AWAITING_CHANGES_SENT_TO_APPROVAL, "alert-success");
 			} else {	// pořizování nebo přímá editace pokud jsem jeden z adminů
 				/** @var FileUpload $file */

@@ -77,11 +77,24 @@ class DogChangesComparatorController {
 	}
 
 	/**
+	 * Vrátí pole aktuálního zdraví kde je v klíči pole jeho typ
+	 * @param DogHealthEntity[] $currentDogHealths
+	 */
+	private function arrayWithTypeKey(array $currentDogHealths) {
+		$array = [];
+		foreach ($currentDogHealths as $health) {
+			$array[$health->getTyp()] = $health;
+		}
+
+		return $array;
+	}
+
+	/**
 	 * @param array $currentDogHealth
 	 * @param array $newDogHealth
-	 * @param string $dogUrl
+	 * @return bool
 	 */
-	public function compareSaveDogHealth(array $currentDogHealth, array $newDogHealth, $dogUrl) {
+	public function compareSaveDogHealth(array $currentDogHealth, array $newDogHealth) {
 		$changes = [];
 		$currentDogHealth = $this->arrayWithTypeKey($currentDogHealth);
 		foreach ($newDogHealth as $requiredHealth) {    // projíždím co vyplnili uživatel
@@ -157,31 +170,7 @@ class DogChangesComparatorController {
 		}
 		$this->awaitingChangeRepository->writeChanges($changes);	// zapíšu změny
 
-		if (count($changes) > 0) {
-			$userEntity = $this->userRepository->getUser($this->user->getId());
-			$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT,
-				WebconfigRepository::KEY_LANG_FOR_COMMON);
-
-			// email pro uživatele
-			$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
-			//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
-			// email pro admina/y
-			$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
-			EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
-		}
-	}
-
-	/**
-	 * Vrátí pole aktuálního zdraví kde je v klíči pole jeho typ
-	 * @param DogHealthEntity[] $currentDogHealths
-	 */
-	private function arrayWithTypeKey(array $currentDogHealths) {
-		$array = [];
-		foreach ($currentDogHealths as $health) {
-			$array[$health->getTyp()] = $health;
-		}
-
-		return $array;
+		return (count($changes) > 0);
 	}
 
 	/**
@@ -204,9 +193,9 @@ class DogChangesComparatorController {
 	/**
 	 * @param DogEntity $currentDog
 	 * @param DogEntity $newDog
-	 * @param string [$dogUrl]
+	 * @return bool
 	 */
-	public function compareSaveDog(DogEntity $currentDog, DogEntity $newDog, $dogUrl) {
+	public function compareSaveDog(DogEntity $currentDog, DogEntity $newDog) {
 		$enumValues = [
 			// název sloupce v DB psa => číslo číselníků
 			'Pohlavi' => EnumerationRepository::POHLAVI,
@@ -246,26 +235,15 @@ class DogChangesComparatorController {
 		}
 		$this->awaitingChangeRepository->writeChanges($changes);        // zapíšu změny
 
-		if (count($changes) > 0) {
-			$userEntity = $this->userRepository->getUser($this->user->getId());
-			$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT,
-				WebconfigRepository::KEY_LANG_FOR_COMMON);
-
-			// email pro uživatele
-			$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
-			//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
-			// email pro admina/y
-			$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
-			EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
-		}
+		return (count($changes) > 0);
 	}
 
 	/**
 	 * @param DogOwnerEntity[] $currentOwners
 	 * @param DogOwnerEntity[] $newOwners
-	 * @param string $dogUrl
+	 * @return bool
 	 */
-	public function compareSaveOwners(array $currentOwners, array $newOwners, $dogUrl) {
+	public function compareSaveOwners(array $currentOwners, array $newOwners) {
 		$changes = [];
 		foreach ($newOwners as $newOwner) {	// projedu ty co tam chci přidat
 			$changeMaster = new AwaitingChangesEntity();
@@ -303,18 +281,7 @@ class DogChangesComparatorController {
 		}
 		$this->awaitingChangeRepository->writeChanges($changes);        // zapíšu změny
 
-		if (count($changes) > 0) {
-			$userEntity = $this->userRepository->getUser($this->user->getId());
-			$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT,
-				WebconfigRepository::KEY_LANG_FOR_COMMON);
-
-			// email pro uživatele
-			$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
-			//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
-			// email pro admina/y
-			$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
-			EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
-		}
+		return (count($changes) > 0);
 	}
 
 	/**
@@ -339,8 +306,7 @@ class DogChangesComparatorController {
 
 		if (count($changes) > 0) {
 			$userEntity = $this->userRepository->getUser($this->user->getId());
-			$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT,
-				WebconfigRepository::KEY_LANG_FOR_COMMON);
+			$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
 
 			// email pro uživatele
 			//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER, AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER);		// TODO
@@ -367,9 +333,9 @@ class DogChangesComparatorController {
 	/**
 	 * @param $currentBreeder
 	 * @param BreederEntity[] $newBreeder - tady by měl být jen jeden záznam
-	 * @param string $dogUrl
+	 * @return bool
 	 */
-	public function compareSaveBreeder($currentBreeder, array $newBreeders, $dogUrl) {
+	public function compareSaveBreeder($currentBreeder, array $newBreeders) {
 		if ($currentBreeder == null) {	// což se může stát
 			$currentBreeder = new BreederEntity();
 		}
@@ -394,23 +360,25 @@ class DogChangesComparatorController {
 		}
 		$this->awaitingChangeRepository->writeChanges($changes);
 
-		if (count($changes) > 0) {
-			$userEntity = $this->userRepository->getUser($this->user->getId());
-			$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT,
-				WebconfigRepository::KEY_LANG_FOR_COMMON);
-
-			// email pro uživatele
-			$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
-			//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
-			// email pro admina/y
-			$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
-			EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
-		}
+		return (count($changes) > 0);
 	}
 
-	public function compareNewFiles(array $files) {
+	/**
+	 * Pošle email uživateli a adminům, že na kartě psa došlo ke změně
+	 * @param string $dogUrl
+	 */
+	public function sendInfoEmail($dogUrl) {
+		$userEntity = $this->userRepository->getUser($this->user->getId());
+		$emailFrom = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
 
+		// email pro uživatele
+		$body = sprintf(AWAITING_EMAIL_USER_DOG_BODY, $dogUrl);
+		//EmailController::SendPlainEmail($emailFrom, $userEntity->getEmail(), AWAITING_EMAIL_USER_DOG_SUBJECT, $body);		// TODO
+		// email pro admina/y
+		$body = sprintf(AWAITING_EMAIL_ADMIN_DOG_BODY, $dogUrl);
+		EmailController::SendPlainEmail($userEntity->getEmail(), $emailFrom, AWAITING_EMAIL_ADMIN_DOG_SUBJECT, $body);
 	}
+
 
 	// FUNKCE GENERUJICI HTML
 
