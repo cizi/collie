@@ -770,3 +770,5 @@ define("LITTER_APPLICATION_REWRITE_PUPPY_NAME", "Jméno štěňat");
 define("LITTER_APPLICATION_REWRITE_PUPPIES", "Založit potomky do databáze");
 define("LITTER_APPLICATION_REWRITE_PUPPIES_FUR", "Srst");
 define("LITTER_APPLICATION_REWRITE_DOES_NOT_EXIST", "Číslo přihlášky vrhu neexistuje");
+define("LITTER_APPLICATION_CREATE_SUBJECT", "Byla založena nová přihlášk vrhu");
+define("LITTER_APPLICATION_CREATE_BODY", "Byla založena nová přihlášk vrhu. Viz přiložený formulář <br /><br /> %s");

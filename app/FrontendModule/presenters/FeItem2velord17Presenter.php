@@ -2,6 +2,7 @@
 
 namespace App\FrontendModule\Presenters;
 
+use App\Controller\EmailController;
 use App\Enum\LitterApplicationStateEnum;
 use App\Forms\LitterApplicationDetailForm;
 use App\Forms\LitterApplicationForm;
@@ -10,6 +11,8 @@ use App\Model\Entity\DogEntity;
 use App\Model\Entity\LitterApplicationEntity;
 use App\Model\EnumerationRepository;
 use App\Model\LitterApplicationRepository;
+use App\Model\UserRepository;
+use App\Model\WebconfigRepository;
 use Dibi\DateTime;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
@@ -31,6 +34,9 @@ class FeItem2velord17Presenter extends FrontendPresenter {
 	/** @var LitterApplicationRepository */
 	private $litterApplicationRepository;
 
+	/** @var UserRepository */
+	private $userRepository;
+
 	/**
 	 * FeItem2velord17Presenter constructor.
 	 * @param LitterApplicationForm $litterApplicationForm
@@ -38,19 +44,22 @@ class FeItem2velord17Presenter extends FrontendPresenter {
 	 * @param LitterApplicationDetailForm $litterApplicationDetailForm
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param LitterApplicationRepository $litterApplicationRepository
+	 * @param UserRepository $userRepository
 	 */
 	public function __construct(
 		LitterApplicationForm $litterApplicationForm,
 		DogRepository $dogRepository,
 		LitterApplicationDetailForm $litterApplicationDetailForm,
 		EnumerationRepository $enumerationRepository,
-		LitterApplicationRepository $litterApplicationRepository
+		LitterApplicationRepository $litterApplicationRepository,
+		UserRepository $userRepository
 	) {
 		$this->litterApplicationForm = $litterApplicationForm;
 		$this->dogRepository = $dogRepository;
 		$this->litterApplicationDetailForm = $litterApplicationDetailForm;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->litterApplicationRepository = $litterApplicationRepository;
+		$this->userRepository = $userRepository;
 	}
 
 	public function createComponentLitterApplicationForm() {
@@ -121,6 +130,13 @@ class FeItem2velord17Presenter extends FrontendPresenter {
 				$litterApplicationEntity->setPlemeno(null);
 			}
 			$this->litterApplicationRepository->save($litterApplicationEntity);
+
+			// email pro admina/y
+			$userEntity = $this->userRepository->getUser($this->user->getId());
+			$emailTo = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON);
+			$body = sprintf(LITTER_APPLICATION_CREATE_BODY, $litterApplicationEntity->getFormularDecoded());
+			EmailController::SendPlainEmail($userEntity->getEmail(), $emailTo, LITTER_APPLICATION_CREATE_SUBJECT, $body);
+
 			$this->flashMessage(LITTER_APPLICATION_SAVED, "alert-success");
 			$this->redirect("litterFinalization", $litterApplicationEntity->getID());
 		} catch (AbortException $e) {

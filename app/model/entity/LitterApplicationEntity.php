@@ -143,7 +143,7 @@ class LitterApplicationEntity {
 	 * @return array
 	 */
 	public function getFormularDecoded() {
-		return unserialize(gzinflate(base64_decode($this->getFormular())));
+		return gzinflate(base64_decode($this->getFormular()));
 	}
 
 	/**
