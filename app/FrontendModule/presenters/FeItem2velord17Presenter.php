@@ -4,6 +4,7 @@ namespace App\FrontendModule\Presenters;
 
 use App\Controller\EmailController;
 use App\Enum\LitterApplicationStateEnum;
+use App\Enum\StateEnum;
 use App\Forms\LitterApplicationDetailForm;
 use App\Forms\LitterApplicationForm;
 use App\Model\DogRepository;
@@ -166,6 +167,26 @@ class FeItem2velord17Presenter extends FrontendPresenter {
 		$this['litterApplicationDetailForm']['mID']->setDefaultValue($fID);
 		$clubName = $this->enumerationRepository->findEnumItemByOrder($this->langRepository->getCurrentLang($this->session), $cID);
 		$this['litterApplicationDetailForm']['Klub']->setDefaultValue($clubName);
+
+		$femaleBreeder = $this->userRepository->getBreederByDogAsUser($fID);
+		$femaleOwners = $this->userRepository->findDogOwnersAsEntities($fID);
+		$femaleOwnsId = "";
+		if (count($femaleOwners) == 1) {
+			$femaleOwnsId = $femaleOwners[0]->getUID();
+		} else {
+			foreach ($femaleOwners as $owner) {
+				$femaleOwnsId .= $owner->getUID() . ",";
+			}
+		}
+		$this['litterApplicationDetailForm']['MajitelFeny']->setDefaultValue($femaleOwnsId);
+		if ($femaleBreeder != null) {	// doplním data z majitele feny
+			$breederName = trim($femaleBreeder->getTitleBefore() . " " . $femaleBreeder->getName() . " " . $femaleBreeder->getSurname());
+			$stateEnum = new StateEnum();
+			$breederState = $stateEnum->getValueByKey($femaleBreeder->getState());
+			$breederAddress = $femaleBreeder->getStreet() . " " . $femaleBreeder->getCity() . " " . $breederState . ", " . $femaleBreeder->getEmail();
+			$this['litterApplicationDetailForm']['chs']->setDefaultValue($femaleBreeder->getStation());
+			$this['litterApplicationDetailForm']['chovatel']->setDefaultValue($breederName . "; " . $breederAddress);
+		}
 
 		$pes = $this->dogRepository->getDog($pID);
 		$name = trim($pes->getTitulyPredJmenem() . " " . $pes->getJmeno() . " " . $pes->getTitulyZaJmenem());

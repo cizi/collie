@@ -35,9 +35,10 @@ class LitterApplicationDetailForm extends Nette\Object {
 		$form = $this->factory->create();
 		$form->getElementPrototype()->addAttributes(["onsubmit" => "return requiredFields();"]);
 
-		$form->addHidden('oID');
-		$form->addHidden('mID');
-		$form->addHidden('Klub');
+		$form->addHidden('oID');	// DB
+		$form->addHidden('mID');	// DB
+		$form->addHidden('Klub');	// DB
+		$form->addHidden('MajitelFeny');	// DB
 		$form->addHidden('cID');
 		$form->addHidden('title');
 

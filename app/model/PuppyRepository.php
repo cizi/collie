@@ -11,11 +11,7 @@ class PuppyRepository extends BaseRepository {
 	 * @return PuppyEntity[]
 	 */
 	public function findPuppies() {
-		if ($uID == null) {
-			$query = "select * from appdata_stenata";
-		} else {
-			$query = ["select * from appdata_stenata where uID = %i", $uID];
-		}
+		$query = "select * from appdata_stenata";
 		$result = $this->connection->query($query);
 
 		$puppies = [];

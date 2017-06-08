@@ -214,7 +214,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 
 	/**
 	 * @param int $pID
-	 * @return BreederEntity
+	 * @return UserEntity
 	 */
 	public function getBreederByDogAsUser($pID) {
 		$query = ["select *, u.id as id from appdata_chovatel as ac left join `user` as u on ac.uID = u.id where pID = %i", $pID];
@@ -228,7 +228,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 
 	/**
 	 * @param int $pID
-	 * @return array
+	 * @return DogOwnerEntity[]
 	 */
 	public function findDogOwnersAsEntities($pID) {
 		$owners = [];

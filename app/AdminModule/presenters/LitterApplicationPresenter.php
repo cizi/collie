@@ -8,8 +8,10 @@ use App\Forms\LitterApplicationRewriteForm;
 use App\Model\DogRepository;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
+use App\Model\Entity\DogOwnerEntity;
 use App\Model\EnumerationRepository;
 use App\Model\LitterApplicationRepository;
+use App\Model\UserRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 
@@ -27,17 +29,22 @@ class LitterApplicationPresenter extends SignPresenter {
 	/** @var LitterApplicationRewriteForm */
 	private $litterApplicationRewriteForm;
 
+	/** @var UserRepository */
+	private $userRepository;
+
 	public function __construct(
 		LitterApplicationRepository $litterApplicationRepository,
 		EnumerationRepository $enumerationRepository,
 		DogRepository $dogRepository,
 		LitterApplicationRewriteForm $applicationRewriteForm,
-		LitterApplicationRewriteForm $litterApplicationRewriteForm
+		LitterApplicationRewriteForm $litterApplicationRewriteForm,
+		UserRepository $userRepository
 	) {
 		$this->litterApplicationRepository = $litterApplicationRepository;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->dogRepository = $dogRepository;
 		$this->litterApplicationRewriteForm = $litterApplicationRewriteForm;
+		$this->userRepository = $userRepository;
 	}
 
 	/**
@@ -158,8 +165,22 @@ class LitterApplicationPresenter extends SignPresenter {
 					$dogs[] = $dogEntity;
 				}
 			}
+
 			$application = $this->litterApplicationRepository->getLitterApplication($formArray['ID']);
-			$this->dogRepository->saveDescendants($dogs, $breeders, $application);
+			$owners = [];
+			if (($application->getMajitelFeny() != null ) && (trim($application->getMajitelFeny()) != "")) {
+				$dogOwners = explode(",", $application->getMajitelFeny());
+				foreach ($dogOwners as $own) {
+					$userEntity = $this->userRepository->getUser(trim($own));
+					if ($userEntity != null) {
+						$ownerEntity = new DogOwnerEntity();
+						$ownerEntity->setSoucasny(true);
+						$ownerEntity->setUID($userEntity->getId());
+						$owners[] = $ownerEntity;
+					}
+				}
+			}
+			$this->dogRepository->saveDescendants($dogs, $breeders, $owners, $application);
 
 			$this->flashMessage(LITTER_APPLICATION_REWRITE_DESCENDANTS_OK, "alert-success");
 			$this->redirect("default");
