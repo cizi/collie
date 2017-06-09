@@ -2,6 +2,37 @@
 	{include '../@block.latte'}
 
 	<div class="myContent">
-
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="container">
+							<br />&nbsp;
+							<div class="dogViewName">{=CHS_TITLE}</div>
+							<br />&nbsp;
+							<ul>
+							{foreach $users as $user}
+								<li>
+									<b>{$user->getStation()}</b>
+									{if $user->getSharing() >= 32}
+										<ul>
+											<li>{$user->getName()} {$user->getSurname()}, {$stateEnum->getValueByKey($user->getState())}</li>
+											{if $user->getSharing() >= 33}
+												<li>{if $user->getPhone() != null}{$user->getPhone()}{/if}</li>
+												<li>{if $user->getEmail() != null}{$user->getEmail()}{/if}</li>
+												<li>{if $user->getWeb() != null}<a href="http://{$user->getWeb()|noescape}" target="_blank">{$user->getWeb()}</a>{/if}</li>
+											{/if}
+										</ul>
+									{/if}
+									<br />&nbsp;
+								</li>
+							{/foreach}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 {/block}

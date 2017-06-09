@@ -497,4 +497,24 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 
 		return $result;
 	}
+
+	/**
+	 * Vrátí uživatele, kteří mají nastavený sharing
+	 * @return array
+	 */
+	public function findCatteries() {
+		$query = "select * from user where (trim(station) != '') and (sharing is not null) order by station";
+		$result = $this->connection->query($query);
+
+		$users = [];
+		foreach ($result->fetchAll() as $row) {
+			$user = new UserEntity();
+			$user->hydrate($row->toArray());
+			if ($user->getSharing() != null) {
+				$users[] = $user;
+			}
+		}
+
+		return $users;
+	}
 }

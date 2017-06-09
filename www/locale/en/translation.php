@@ -761,3 +761,5 @@ define("PUPPY_EDIT", "Edit");
 define("PUPPY_DELETE", "Delete");
 define("PUPPY_DELETE_TITLE", "Delete record");
 define("PUPPY_DELETE_BODY", "Are you really want to delete the record?");
+
+define("CHS_TITLE", 'Catteries');
