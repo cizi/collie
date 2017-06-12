@@ -290,8 +290,8 @@ div.colorExample {
 	display: block;
 }
 .dogPicSmall{
-	width: 130px;
-	margin: 5px;
+	max-width: 400px;
+	margin: 10px;
 	display: inline;
 }
 .paginator{

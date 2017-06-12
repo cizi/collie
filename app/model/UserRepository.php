@@ -192,7 +192,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 
 		foreach ($result->fetchAll() as $row) {
 			$user = $row->toArray();
-			$breeders[$user['id']] = $user['title_before'] . " " . $user['name'] . " " . $user['surname'] . " " . $user['title_after'];
+			$breeders[$user['id']] = trim($user['title_before'] . " " . $user['name'] . " " . $user['surname'] . " " . $user['title_after']);
 		}
 
 		return $breeders;
@@ -313,7 +313,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		foreach ($result->fetchAll() as $row) {
 			$user = new UserEntity();
 			$user->hydrate($row->toArray());
-			$name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " " . trim($user->getTitleAfter());
+			$name = trim($user->getTitleBefore() . " " . $user->getName() . " " . $user->getSurname() . " " . $user->getTitleAfter());
 			$name = (strlen($name) > 60 ? substr($name, 0, 60) . "..." : $name);
 			$owners[$user->getId()] = $name;
 		}
