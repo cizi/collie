@@ -258,7 +258,11 @@ class DogRepository extends BaseRepository {
 			$return .= sprintf("am.uID = %d and am.Soucasny = 1", $owner);	// je to soucasny spravne
 			$return .= (count($filter) > 0 ? " and " : "");
 		}
-
+		if (isset($filter[DogFilterForm::DOG_FILTER_LAST_14_DAYS])) {
+			$return .= " PosledniZmena >= (CURDATE() - INTERVAL 14 DAY)";
+			$return .= (count($filter) > 1 ? " and " : "");
+			unset($filter[DogFilterForm::DOG_FILTER_LAST_14_DAYS]);
+		}
 		if (isset($filter[DogFilterForm::DOG_FILTER_LAND])) {
 			$return .= sprintf("u.state = %s", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_LAND]));
 			$return .= (count($filter) > 1 ? " and " : "");

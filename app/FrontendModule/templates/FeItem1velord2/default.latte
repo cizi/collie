@@ -11,6 +11,9 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="container userTable">
+						<div class="paginator">
+							{include "../@paginator.latte", $paginator}
+						</div>
 						<table class="table table-striped dogList">
 							<thead>
 							<tr>
@@ -116,10 +119,6 @@
 
 							</tbody>
 						</table>
-
-						<div class="paginator">
-							{include "../@paginator.latte", $paginator}
-						</div>
 					</div>
 				</div>
 			</div>

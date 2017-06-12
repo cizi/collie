@@ -127,7 +127,8 @@
 								<b>{=VET_ADDRESS}:</b> {$usr->getCity()}, {$usr->getZip()}<br />
 								<b>{=USER_EDIT_PHONE_LABEL}:</b> {$usr->getPhone()}<br />
 								<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$usr->getEmail()}<br />
-								<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$usr->getWeb()}>{$usr->getWeb()}</a>
+								<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$usr->getWeb()}>{$usr->getWeb()}</a><br />
+								{if $iterator->last ==  false}<hr class="margin5"/>{/if}
 							{/foreach}
 						</td>
 					</tr>

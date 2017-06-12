@@ -21,6 +21,7 @@ class DogFilterForm {
 	const DOG_FILTER_EXAM = "DOG_FILTER_EXAM";
 	const DOG_FILTER_BIRTDATE = "DatNarozeni";
 	const DOG_FILTER_ORDER_NUMBER = "CisloZapisuOrder";
+	const DOG_FILTER_LAST_14_DAYS = "Poslednich14Dnu";
 
 	/** @var FormFactory */
 	private $factory;
@@ -121,6 +122,9 @@ class DogFilterForm {
 
 		$form->addText("Vyska", DOG_TABLE_HEADER_HEIGHT)
 		->setAttribute("class", "form-control");
+
+		$form->addCheckbox(self::DOG_FILTER_LAST_14_DAYS, DOG_TABLE_LAST_14_DAYS)
+			->setAttribute("class", "margin10");
 
 		$form->addGroup();
 		$form->addSubmit("filter", DOG_TABLE_BTN_FILTER)

@@ -297,17 +297,20 @@ div.colorExample {
 .paginator{
 	margin: auto;
 	text-align: center;
+	padding-top: 20px;
 }
 .paginator span{
 	color: white;
 	font-weight: bold;
 	background-color: #E1A348;
 	padding: 4px;
+	border-radius: 3px;
 }
 .paginator a{
 	color: white;
 	background-color: #E1A348;
 	padding: 4px;
+	border-radius: 3px;
 }
 .paginator a:hover{
 	color: white;

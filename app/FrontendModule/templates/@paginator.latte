@@ -1,6 +1,6 @@
 {if $paginator->pageCount > 1}
 	{var maxPages=20}
-	{var offsetpages = 3}
+	{var offsetpages = 10}
 	{for $i=1; $i <= $paginator->pageCount; $i++}
 		{var writePage = true}
 		{if $paginator->pageCount > $maxPages}
@@ -18,7 +18,7 @@
 				<a href={link default, $i}>{$i}</a>
 			{/if}
 		{else}
-			.
+			{* .  NIC NEVYPISOVAT*}
 		{/if}
 	{/for}
 {/if}
