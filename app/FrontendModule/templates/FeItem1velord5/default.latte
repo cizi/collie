@@ -14,7 +14,7 @@
 							<ul>
 							{foreach $users as $user}
 								<li>
-									<b>{$user->getStation()}</b>
+									<b>{$user->getStation()} {if $user->getBreed() != null}({$enumRepo->findEnumItemByOrder($lang, $user->getBreed())}){/if}</b>
 									{if $user->getSharing() >= 32}
 										<ul>
 											<li>{$user->getName()} {$user->getSurname()}, {$stateEnum->getValueByKey($user->getState())}</li>
