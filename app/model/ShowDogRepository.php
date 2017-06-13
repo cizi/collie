@@ -21,6 +21,25 @@ class ShowDogRepository extends BaseRepository {
 
 	/**
 	 * @param int $vID
+	 * @param int $pID
+	 * @return ShowDogEntity[]
+	 */
+	public function findTitlesByShowAndDog($vID, $pID) {
+		$query = ["select * from appdata_vystava_pes where vID = %i and pID = %i", $vID, $pID];
+		$result = $this->connection->query($query);
+
+		$dogs = [];
+		foreach ($result->fetchAll() as $row) {
+			$dog = new ShowDogEntity();
+			$dog->hydrate($row->toArray());
+			$dogs[] = $dog;
+		}
+
+		return $dogs;
+	}
+
+	/**
+	 * @param int $vID
 	 * @return ShowDogEntity[]
 	 */
 	public function findDogsByShow($vID) {
@@ -45,7 +64,7 @@ class ShowDogRepository extends BaseRepository {
 		$query = [
 			"select av.* from appdata_vystava_pes as av
 			left join appdata_pes as ap on av.pID = ap.ID
-			where vID = %i order by ap.Pohlavi, ap.Plemeno",
+			where vID = %i group by av.pID order by ap.Pohlavi, ap.Plemeno",
 			$vID];
 		$result = $this->connection->query($query);
 
@@ -59,7 +78,7 @@ class ShowDogRepository extends BaseRepository {
 		return $dogs;
 	}
 
-	/**
+ 	/**
 	 * @param ShowDogEntity $showDogEntity
 	 */
 	public function save(ShowDogEntity $showDogEntity) {

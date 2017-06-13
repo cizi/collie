@@ -64,9 +64,11 @@ class FeItem1velord7Presenter extends FrontendPresenter {
 	 * @param int $id
 	 */
 	public function actionDetail($id) {
+		$this->template->idShow = $id;
 		$this->template->show = $this->showRepository->getShow($id);
 		$this->template->referees = $this->showRefereeRepository->findRefereeByShow($id);
 		$this->template->dogs = $this->showDogRepository->findDogsByShowForDetail($id);
+		$this->template->showDogRepo = $this->showDogRepository;
 	}
 
 	/**
