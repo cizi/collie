@@ -5,6 +5,7 @@ namespace App\AdminModule\Presenters;
 use App\AdminModule\Model;
 use App\Controller\EmailController;
 use App\Enum\UserRoleEnum;
+use App\Forms\UserFilterForm;
 use App\Forms\UserForm;
 use App\Model\Entity\UserEntity;
 use App\Model\UserRepository;
@@ -13,6 +14,7 @@ use Nette\Application\AbortException;
 use Nette\Application\UI\Form;
 use Nette\Security\Passwords;
 use Nette\Security\User;
+use Nette\Utils\Paginator;
 
 class UserPresenter extends SignPresenter {
 
@@ -22,21 +24,33 @@ class UserPresenter extends SignPresenter {
 	/** @var UserForm */
 	private $userForm;
 
+	/** @var UserFilterForm  */
+	private $userFilterForm;
+
 	/**
 	 * @param UserRepository $userRepository
 	 * @param UserForm $userForm
 	 */
-	public function __construct(UserRepository $userRepository, UserForm $userForm) {
+	public function __construct(UserRepository $userRepository, UserForm $userForm, UserFilterForm $userFilterForm) {
 		$this->userRepository = $userRepository;
 		$this->userForm = $userForm;
+		$this->userFilterForm = $userFilterForm;
 	}
 
 	/**
-	 * defaultní akce presenteru naète uivatele
+	 * defaultnÃ­ akce presenteru naÄte uÅ¾ivatele
 	 */
-	public function actionDefault() {
+	public function actionDefault($id, $filter) {
+		$page = (empty($id) ? 1 : intval($id));
+		$this['userFilterForm'][UserRepository::USER_CURRENT_PAGE]->setDefaultValue($page);
+		$paginator = new Paginator();
+		$paginator->setItemCount($this->userRepository->getUsersCount($filter)); // celkovÃ½ poÄet poloÅ¾ek
+		$paginator->setItemsPerPage(50); // poÄet poloÅ¾ek na strÃ¡nce
+		$paginator->setPage($page); // ÄÃ­slo aktuÃ¡lnÃ­ strÃ¡nky, ÄÃ­slovÃ¡no od 1
+
 		$userRoles = new UserRoleEnum();
-		$this->template->users = $this->userRepository->findUsers();
+		$this->template->paginator = $paginator;
+		$this->template->users = $this->userRepository->findUsers($paginator, $filter);
 		$this->template->roles = $userRoles->translatedForSelect();
 	}
 
@@ -72,8 +86,8 @@ class UserPresenter extends SignPresenter {
 		$isEditation = (isset($values['id']) && $values['id'] != "");
 
 		try {
-			if ($isEditation) {	// pokud edituji tak propíšu jen heslo
-				$userCurrent = $this->userRepository->getUser($values['id']);	// uivatel kterého mìním
+			if ($isEditation) {	// pokud edituji tak propï¿½u jen heslo
+				$userCurrent = $this->userRepository->getUser($values['id']);	// uï¿½ivatel kterï¿½ho mï¿½nï¿½m
 				$userEntity->setPassword($userCurrent->getPassword());
 				$this->userRepository->saveUser($userEntity);
 				$this->flashMessage(USER_EDITED, "alert-success");
@@ -121,8 +135,8 @@ class UserPresenter extends SignPresenter {
 			$this['editForm']->addHidden('id', $userEntity->getId());
 			$this['editForm']['email']->setAttribute("readonly", "readonly");
 
-			$this['editForm']['password']->setAttribute("readonly", "readonly");	// pokud edituji tak heslo nemìním
-			$this['editForm']['passwordConfirm']->setAttribute("readonly", "readonly"); // pokud edituji tak heslo nemìním
+			$this['editForm']['password']->setAttribute("readonly", "readonly");	// pokud edituji tak heslo nemï¿½nï¿½m
+			$this['editForm']['passwordConfirm']->setAttribute("readonly", "readonly"); // pokud edituji tak heslo nemï¿½nï¿½m
 
 			$this['editForm']->setDefaults($userEntity->extract());
 
@@ -146,5 +160,31 @@ class UserPresenter extends SignPresenter {
 		}
 
 		$this->terminate();
+	}
+
+	public function createComponentUserFilterForm() {
+		$form = $this->userFilterForm->create();
+		$form->onSubmit[] = $this->submitUserFilterForm;
+
+		$renderer = $form->getRenderer();
+		$renderer->wrappers['controls']['container'] = NULL;
+		$renderer->wrappers['pair']['container'] = 'div class=form-group';
+		$renderer->wrappers['pair']['.error'] = 'has-error';
+		$renderer->wrappers['control']['container'] = 'div class=col-md-4';
+		$renderer->wrappers['label']['container'] = 'div class="col-md-4 control-label"';
+		$renderer->wrappers['control']['description'] = 'span class=help-block';
+		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
+
+		return $form;
+	}
+
+	public function submitUserFilterForm(Form $form) {
+		$array = $form->getHttpData();
+		//$currentPage = (isset($array[UserRepository::USER_CURRENT_PAGE]) ? intval($array[UserRepository::USER_CURRENT_PAGE]) : 1);
+		if (isset($array[UserRepository::USER_SEARCH_FIELD]) && (trim($array[UserRepository::USER_SEARCH_FIELD])) != "") {
+			$this->redirect("default", 1, $array[UserRepository::USER_SEARCH_FIELD]);
+		} else {
+			$this->redirect("default");
+		}
 	}
 }

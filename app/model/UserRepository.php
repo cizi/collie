@@ -12,6 +12,11 @@ use Nette\Security\Passwords;
 
 class UserRepository extends BaseRepository implements Nette\Security\IAuthenticator {
 
+	/**  */
+	const USER_CURRENT_PAGE = "user_current_page";
+
+	const USER_SEARCH_FIELD = "user_search_field";
+
 	const PASSWORD_COLUMN = 'password';
 
 	/** string znak pro nevybraného veterinář v selectu  */
@@ -48,8 +53,14 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	/**
 	 * @return UserEntity[]
 	 */
-	public function findUsers() {
-		$query = "select * from user";
+	public function findUsers(Nette\Utils\Paginator $paginator, $filter) {
+		if ($filter != null) {
+			$dbDriver = $this->connection->getDriver();
+			$query = ["select * from user where (CONCAT_WS(' ', `name`, `surname`, `email`) like %~like~) limit %i , %i", $filter, $paginator->getOffset(), $paginator->getLength()];
+
+		} else {
+			$query = ["select * from user limit %i , %i", $paginator->getOffset(), $paginator->getLength()];
+		}
 		$result = $this->connection->query($query);
 
 		$users = [];
@@ -319,6 +330,18 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		}
 
 		return $owners;
+	}
+
+	public function getUsersCount($filter) {
+		if ($filter != null) {
+			$dbDriver = $this->connection->getDriver();
+			$query = ["select count(id) as pocet from user where (CONCAT_WS(' ', `name`, `surname`, `email`) like %~like~)", $filter];
+		} else {
+			$query = "select count(id) as pocet from user";
+		}
+		$row = $this->connection->query($query);
+
+		return ($row ? $row->fetch()['pocet'] : 0);
 	}
 
 	/**

@@ -316,6 +316,27 @@ div.colorExample {
 .paginator a:hover{
 	color: white;
 }
+.paginatorBackend{
+	margin: auto;
+	text-align: center;
+	padding-top: 20px;
+}
+.paginatorBackend span{
+	color: white;
+	font-weight: bold;
+	background-color: #286090;
+	padding: 4px;
+	border-radius: 3px;
+}
+.paginatorBackend a{
+	color: white;
+	background-color: #286090;
+	padding: 4px;
+	border-radius: 3px;
+}
+.paginatorBackend a:hover{
+	color: white;
+}
 .showDetail {
 	font-size: 12px!important;
 	width: 92%!important;
@@ -405,4 +426,10 @@ table.viewHeader{
 
 .dogRewriteDelimiter{
 	margin-bottom: 30px;
+}
+.userSearchFiled {
+	margin: -5px 0 0 15px!important;
+}
+.marginMinus10 {
+	margin-top: -6px!important;
 }

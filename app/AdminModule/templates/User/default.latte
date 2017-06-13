@@ -14,6 +14,10 @@
 						<br /><br />
 
 						<div class="container userTable">
+							{control userFilterForm}
+							<div class="paginatorBackend">
+								{include "../@paginator.latte", $paginator}
+							</div>
 							<table class="table table-striped">
 								<thead>
 									<tr>

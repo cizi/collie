@@ -63,6 +63,8 @@ define("USER_CONFIRM_DELETE_OK", 'Delete');
 define("USER_ERROR_ACTIVE_SWITCH", 'Communication with server broken, please repeat action later.');
 define("USER_CREATED_MAIL_SUBJECT", 'New user registration');
 define("USER_CREATED_MAIL_BODY", "Hello there, <br /><br /> your registration on server %s has been successful.<br /> Your credentials are: <br /> login: %s <br /> password: %s <br /><br />");
+define("USER_SEARCH_FIELD", "Fulltext searching in users");
+define("USER_SEARCH_BUTTON", "Search");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", ' Addition the new user');
