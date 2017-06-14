@@ -2,10 +2,10 @@
 
 namespace App\FrontendModule\Presenters;
 
-class FeItem2velord13Presenter extends BasePresenter {
+class FeItem2velord18Presenter extends BasePresenter {
 
 	/**
-	 * Odhlášení
+	 * OdhlÃ¡Å¡enÃ­
 	 */
 	public function actionDefault() {
 		$this->getUser()->logout();
