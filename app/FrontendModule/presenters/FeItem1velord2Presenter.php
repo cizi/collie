@@ -302,7 +302,9 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->template->genLev = $genLev;
 		$this->template->pedigreeTable = $this->dogRepository->genealogDeepPedigree($dog->getID(), $genLev, $lang, $this->presenter, $this->template->amIAdmin);
 
-		$this->template->dogPics = $this->dogRepository->findDogPics($id);
+		$dogPics = $this->dogRepository->findDogPics($id);
+		$this->template->dogPics = $dogPics;
+		$this->template->dogPicsHeader = $this->normalizeHeaderPics($dogPics);
 		$this->template->dogFiles = $this->dogRepository->findDogFiles($id);
 		$this->template->dogFileEnum = new DogFileEnum();
 		$this->template->previousOwners = $this->userRepository->findDogPreviousOwners($id);
@@ -440,5 +442,30 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		if ($pID != "") {
 			$this['dogForm']->addHidden("mIdOrOidForNewDog", $pID);
 		}
+	}
+
+	/**
+	 * @param DogPicEntity[] $pics
+	 * @return array
+	 */
+	private function normalizeHeaderPics(array $pics) {
+		$maxWidth = 400;
+		$maxHeight = 300;
+		$picsNormalized = [];
+		foreach ($pics as $pic) {
+			list($width, $height, $type, $attr) = getimagesize($pic->getCesta());
+			$widthNormalized = ($width > $maxWidth ? $maxWidth : $width);
+			$heightNormalized = ($height > $maxHeight ? $maxHeight : $height);
+
+			if (isset($lastWidth) && isset($lastHeight)) {	// v podstatě první průchod cyklem
+				$picsNormalized[$pic->getCesta()] = "style='height: {$lastHeight}px!important'";
+			} else {
+				$picsNormalized[$pic->getCesta()] = "style='width: {$widthNormalized}px!important;'";
+				$lastWidth = $widthNormalized;	// první obrázek ovlivní všechny ostatní
+				$lastHeight = $heightNormalized;
+			}
+		}
+
+		return $picsNormalized;
 	}
 }

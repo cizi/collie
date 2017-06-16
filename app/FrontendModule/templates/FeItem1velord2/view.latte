@@ -16,7 +16,7 @@
 								{for $i=0; $i < App\FrontendModule\Presenters\FeItem1velord2Presenter::TOP_IMAGE_COUNT; $i++}
 									{if isset($dogPics[$i])}
 										{var $dogPic = $dogPics[$i]}
-										<img src="{$dogPic->getCesta()}" class="dogPicSmall img-fluid" />
+										<img src="{$dogPic->getCesta()}" class="img-fluid dogPicSmall" {$dogPicsHeader[$dogPic->getCesta()]|noescape} />
 									{/if}
 								{/for}
 							{/if}
