@@ -23,4 +23,6 @@ $configurator->addConfig(__DIR__ . '/config/config.local.neon');
 
 $container = $configurator->createContainer();
 
+$container->getService('application')->errorPresenter = 'Frontend:Error';
+
 return $container;

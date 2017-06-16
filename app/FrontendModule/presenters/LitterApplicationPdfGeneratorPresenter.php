@@ -29,12 +29,11 @@ class LitterApplicationPdfGeneratorPresenter extends BasePresenter {
 	 * @param int $id
 	 * @throws AbortException
 	 */
-	public function actionDefault($id) {
+	public function renderDefault($id) {
 		$litterApplication = $this->litterApplicationRepository->getLitterApplication($id);
 		if ($litterApplication != null) {
 			try {
 				$latteParams = $litterApplication->getDataDecoded();
-				$latteParams['basePath'] = $this->getHttpRequest()->getUrl()->basePath;
 				$latteParams['puppiesLines'] = LitterApplicationDetailForm::NUMBER_OF_LINES;
 				$latteParams['enumRepository'] = $this->enumerationRepository;
 				$latteParams['currentLang'] = $this->langRepository->getCurrentLang($this->session);
@@ -49,12 +48,11 @@ class LitterApplicationPdfGeneratorPresenter extends BasePresenter {
 			} catch (AbortException $e) {
 				throw $e;
 			} catch (\Exception $e) {
-				$this->terminate();
 			}
 		} else {
 			$message = sprintf(LITTER_APPLICATION_DOES_NOT_EXIST, $id);
 			$this->flashMessage($message, "alert-danger");
-			$this->terminate();
+			$this->redirect("FeItem2velord17:default");
 		}
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace App\FrontendModule\Presenters;
 
+use App\Model\LangRepository;
 use Nette;
 use Tracy\ILogger;
 
@@ -9,7 +10,6 @@ class ErrorPresenter extends Nette\Object implements Nette\Application\IPresente
 {
 	/** @var ILogger */
 	private $logger;
-
 
 	public function __construct(ILogger $logger)
 	{
@@ -31,7 +31,8 @@ class ErrorPresenter extends Nette\Object implements Nette\Application\IPresente
 
 		$this->logger->log($e, ILogger::EXCEPTION);
 		return new Nette\Application\Responses\CallbackResponse(function () {
-			require __DIR__ . '/templates/Error/500.phtml';
+			$pathToErrorPresenter =  __DIR__ . "../../templates/Error/500.phtml";
+			require $pathToErrorPresenter;
 		});
 	}
 
