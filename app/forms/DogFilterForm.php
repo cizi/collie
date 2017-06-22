@@ -18,7 +18,7 @@ class DogFilterForm {
 	const DOG_FILTER_HEALTH_TEXT = "DOG_FILTER_HEALTH_TEXT";
 	const DOG_FILTER_LAND = "DOG_FILTER_LAND";
 	const DOG_FILTER_BREEDER = "DOG_FILTER_BREEDER";
-	const DOG_FILTER_EXAM = "DOG_FILTER_EXAM";
+	const DOG_FILTER_EXAM = "Zkousky";
 	const DOG_FILTER_BIRTDATE = "DatNarozeni";
 	const DOG_FILTER_ORDER_NUMBER = "CisloZapisuOrder";
 	const DOG_FILTER_LAST_14_DAYS = "Poslednich14Dnu";

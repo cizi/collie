@@ -86,7 +86,6 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 				}
 			}
 		}
-		unset($filter['DOG_FILTER_EXAM']);	// TODO
 
 		return $filter;
 	}

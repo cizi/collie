@@ -317,7 +317,11 @@ class DogRepository extends BaseRepository {
 
 		$i = 0;
 		foreach ($filter as $key => $value) {
-			$return .= sprintf("%s = %s", $key, $dbDriver->escapeText($value));
+			if ($key == DogFilterForm::DOG_FILTER_EXAM) {	// like
+				$return .= 	sprintf("`Zkousky` like %s", $dbDriver->escapeLike($value, 0));
+			} else {	// where
+				$return .= sprintf("%s = %s", $key, $dbDriver->escapeText($value));
+			}
 			if (($i+1) != count($filter)) {
 				$return .= " and ";
 			}
