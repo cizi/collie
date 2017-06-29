@@ -38,6 +38,7 @@ define("MENU_ENUMERATION", 'Enumerations');
 define("MENU_VETS", 'Vets / Labs');
 define("MENU_LANG", 'Language setting');
 define("MENU_LOGOUT", 'Logout');
+define("MENU_FRONTEND", 'Back to web');
 
 // admin - users list
 define("USER_TITLE", 'Users');

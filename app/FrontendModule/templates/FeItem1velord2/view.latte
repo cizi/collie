@@ -291,7 +291,25 @@
 				</table>
 
 				<div class="viewHeader">{=DOG_FORM_SHOWS_TEXT}</div>
-				{* TODO *}
+				<table class="table table-striped dogSiblings">
+					{foreach $showTitles as $data}
+						<tr>
+							<td>{if $data['show']->getDatum() != null}{$data['show']->getDatum()->format('d.m.Y')}{/if}</td>
+							<td>{$data['show']->getMisto()}</td>
+							<td>{$enumRepo->findEnumItemByOrder($lang, $data['show']->getTyp())}</td>
+							<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getTrida())}</td>
+							<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getOceneni())}</td>
+							<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getPoradi())}</td>
+							<td>
+								{var titles = $showDogRepo->findTitlesByShowAndDog($data['show']->getID(), $dog->getID())}
+								{foreach $titles as $title}
+									{$enumRepo->findEnumItemByOrder($lang, $title->getTitul())}
+									{if $iterator->last == false}, {/if}
+								{/foreach}
+							</td>
+						</tr>
+					{/foreach}
+				</table>
 
 				<div class="viewHeader">{=DOG_FORM_SHOWS_NEXT_TEXT}</div>
 				<div class="dogViewSingleContent">{$dog->getOceneni()}</div>

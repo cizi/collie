@@ -17,6 +17,7 @@ use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
 use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
+use App\Model\ShowDogRepository;
 use App\Model\UserRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
@@ -46,18 +47,23 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	/** @var EnumerationRepository  */
 	private $enumerationRepository;
 
+	/** @var ShowDogRepository */
+	private $showDogRepository;
+
 	public function __construct(
 		DogFilterForm $dogFilterForm,
 		DogForm $dogForm,
 		DogRepository $dogRepository,
 		EnumerationRepository $enumerationRepository,
-		UserRepository $userRepository
+		UserRepository $userRepository,
+		ShowDogRepository $showDogRepository
 	) {
 		$this->dogFilterForm = $dogFilterForm;
 		$this->dogForm = $dogForm;
 		$this->dogRepository = $dogRepository;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->userRepository = $userRepository;
+		$this->showDogRepository = $showDogRepository;
 	}
 
 	public function startup() {
@@ -314,6 +320,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->template->zdravi = $zdravi;
 		$this->template->siblings = $this->dogRepository->findSiblings($id);
 		$this->template->descendants = $this->dogRepository->findDescendants($id);
+		$this->template->showDogRepo = $this->showDogRepository;
+		$this->template->showTitles = $this->showDogRepository->findTitlesByDog($id);
 	}
 
 	/**

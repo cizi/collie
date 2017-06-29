@@ -38,6 +38,7 @@ define("MENU_ENUMERATION", 'Číselníky');
 define("MENU_VETS", 'Veterináři / Laboratoře');
 define("MENU_LANG", 'Jazyková nastavení');
 define("MENU_LOGOUT", 'Odhlásit');
+define("MENU_FRONTEND", 'Zpět na stránky');
 
 // admin - users list
 define("USER_TITLE", 'Uživatelé');

@@ -2,7 +2,9 @@
 
 namespace App\Model;
 
+use App\Model\Entity\DogEntity;
 use App\Model\Entity\ShowDogEntity;
+use App\Model\Entity\ShowEntity;
 use Dibi\Connection;
 
 class ShowDogRepository extends BaseRepository {
@@ -36,6 +38,38 @@ class ShowDogRepository extends BaseRepository {
 		}
 
 		return $dogs;
+	}
+
+	/**
+	 * @param int $vID
+	 * @param int $pID
+	 * @return ShowDogEntity[]
+	 */
+	public function findTitlesByDog($pID) {
+		$query = [
+			"select *, avp.Oceneni as avpOceneni from appdata_vystava_pes as avp 
+			left join appdata_vystava as av on avp.vID = av.ID
+			where avp.pID = %i
+			order by av.Datum asc"
+			, $pID];
+		$result = $this->connection->query($query);
+
+		$showData = [];
+		foreach ($result->fetchAll() as $row) {
+			$data = [];
+			$dogShowDog = new ShowDogEntity();
+			$dogShowDog->hydrate($row->toArray());
+			$dogShowDog->setOceneni($row['avpOceneni']);
+			$data['showDog'] = $dogShowDog;
+
+			$show = new ShowEntity();
+			$show->hydrate($row->toArray());
+			$data['show'] = $show;
+
+			$showData[] = $data;
+		}
+
+		return $showData;
 	}
 
 	/**
