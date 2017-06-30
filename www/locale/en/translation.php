@@ -479,6 +479,8 @@ define("DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL", 'Cancel');
 define("DOG_TABLE_DOG_ACTION_NOT_ALLOWED", 'This action requires administration privilege!');
 define("DOG_TABLE_DOG_YEAR_FROM", 'from');
 define("DOG_TABLE_LAST_14_DAYS", 'last 14 days');
+define("DOG_TABLE_RECORD_COUNT", 'Record count:');
+define("DOG_TABLE_RECORD_COUNT_PAGES", 'page/s:');
 
 define("DOG_FORM_NAME_PREFIX", 'Titles before name');
 define("DOG_FORM_NAME", 'Name');

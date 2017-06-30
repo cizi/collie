@@ -103,9 +103,10 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$filter = $this->decodeFilterFromQuery();
 		$this['dogFilterForm']->setDefaults($filter);
 
+		$recordCount = $this->dogRepository->getDogsCount($filter);
 		$page = (empty($id) ? 1 : $id);
 		$paginator = new Paginator();
-		$paginator->setItemCount($this->dogRepository->getDogsCount($filter)); // celkový počet položek
+		$paginator->setItemCount($recordCount); // celkový počet položek
 		$paginator->setItemsPerPage(50); // počet položek na stránce
 		$paginator->setPage($page); // číslo aktuální stránky, číslováno od 1
 
@@ -115,6 +116,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->enumRepository = $this->enumerationRepository;
 		$this->template->filterActivated = (!empty($filter) ? true : false);
+		$this->template->recordCount = $recordCount;
+		$this->template->pageCount = $paginator->getPageCount();
 	}
 
 	/**

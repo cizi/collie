@@ -499,6 +499,8 @@ define("DOG_TABLE_DOG_DELETATION_CONFIRM_CANCEL", 'Zpět');
 define("DOG_TABLE_DOG_ACTION_NOT_ALLOWED", 'K požadované akci nemáte dostatečná oprávnění!');
 define("DOG_TABLE_DOG_YEAR_FROM", 'od');
 define("DOG_TABLE_LAST_14_DAYS", 'posledních 14 dnů');
+define("DOG_TABLE_RECORD_COUNT", 'Počet záznamů:');
+define("DOG_TABLE_RECORD_COUNT_PAGES", 'stran/y:');
 
 define("DOG_FORM_NAME_PREFIX", 'Tituly před jménem');
 define("DOG_FORM_NAME", 'Jméno');

@@ -15,6 +15,7 @@
 						<div class="paginator">
 							{include "../@paginator.latte", $paginator}
 						</div>
+						{=DOG_TABLE_RECORD_COUNT} {$recordCount} ({=DOG_TABLE_RECORD_COUNT_PAGES} {$pageCount})
 						<table class="table table-striped dogList">
 							<thead>
 							<tr>
