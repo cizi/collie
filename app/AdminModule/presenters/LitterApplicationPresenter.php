@@ -81,19 +81,29 @@ class LitterApplicationPresenter extends SignPresenter {
 				$this->redirect("default");
 			}
 			$appParams = $application->getDataDecoded();
-			$formData["Plemeno"] = $appParams["Plemeno"];
+			$formData["Plemeno"] = (isset($appParams["Plemeno"]) ? $appParams["Plemeno"] : $appParams["plemeno"]);
 			$formData["mID"] = $appParams["mID"];
 			$formData["oID"] = $appParams["oID"];
 			$formData["ID"] = $id;
-			if (trim($appParams["datumnarozeni"]) != "") {
+			if (isset($appParams["datumnarozeni"]) && (trim($appParams["datumnarozeni"]) != "")) {
 				$formData["DatNarozeni"] = $appParams["datumnarozeni"];
 			}
 			for($i = 1; $i <= LitterApplicationDetailForm::NUMBER_OF_LINES; $i++) {
-				$formData[$i]["Cip"] = $this->getValueByKeyFromArray($appParams, $i, "mikrocip");
-				$formData[$i]["Jmeno"] = $this->getValueByKeyFromArray($appParams, $i, "jmeno");
-				$formData[$i]["Pohlavi"] =$this->getValueByKeyFromArray($appParams, $i, "pohlavi", true);
-				$formData[$i]["Srst"] = $this->getValueByKeyFromArray($appParams, $i, "srst", true);
-				$formData[$i]["Barva"] = $this->getValueByKeyFromArray($appParams, $i, "barva", true);
+				if (($this->getValueByKeyFromArray($appParams, $i, "mikrocip") == "") && ($this->getValueByKeyFromArray($appParams, $i, "jmeno")) == "" ) {
+					unset($this['litterApplicationRewriteForm'][$i]["CisloZapisu"]);
+					unset($this['litterApplicationRewriteForm'][$i]["Tetovani"]);
+					unset($this['litterApplicationRewriteForm'][$i]["Cip"]);
+					unset($this['litterApplicationRewriteForm'][$i]["Jmeno"]);
+					unset($this['litterApplicationRewriteForm'][$i]["Srst"]);
+					unset($this['litterApplicationRewriteForm'][$i]["Barva"]);
+					unset($this['litterApplicationRewriteForm'][$i]["Pohlavi"]);
+				} else {
+					$formData[$i]["Cip"] = $this->getValueByKeyFromArray($appParams, $i, "mikrocip");
+					$formData[$i]["Jmeno"] = $this->getValueByKeyFromArray($appParams, $i, "jmeno");
+					$formData[$i]["Srst"] = $this->getValueByKeyFromArray($appParams, $i, "srst", true);
+					$formData[$i]["Barva"] = $this->getValueByKeyFromArray($appParams, $i, "barva", true);
+					$formData[$i]["Pohlavi"] = $this->getValueByKeyFromArray($appParams, $i, "pohlavi", true);
+				}
 			}
 			$this['litterApplicationRewriteForm']->setDefaults($formData);
 		} else {
@@ -117,7 +127,7 @@ class LitterApplicationPresenter extends SignPresenter {
 			}
 		}
 
-		return ($isSelect && ($result == "") ? 0 : $result);
+		return ($isSelect && ($result == "") ? null : $result);
 	}
 
 	/**

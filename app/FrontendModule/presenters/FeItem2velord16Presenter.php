@@ -6,6 +6,7 @@ use App\Forms\MatingListDetailForm;
 use App\Forms\MatingListForm;
 use App\Model\DogRepository;
 use App\Model\EnumerationRepository;
+use App\Model\UserRepository;
 use Dibi\Exception;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
@@ -25,11 +26,22 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 	/** @var  EnumerationRepository */
 	private $enumerationRepository;
 
-	public function __construct(MatingListForm $matingListForm, DogRepository $dogRepository, MatingListDetailForm $matingListDetailForm, EnumerationRepository $enumerationRepository) {
+	/** @var UserRepository */
+	private $userRepository;
+
+	public function __construct(MatingListForm $matingListForm, DogRepository $dogRepository, MatingListDetailForm $matingListDetailForm, EnumerationRepository $enumerationRepository, UserRepository $userRepository) {
 		$this->matingListForm = $matingListForm;
 		$this->dogRepository = $dogRepository;
 		$this->matingListDetailForm = $matingListDetailForm;
 		$this->enumerationRepository = $enumerationRepository;
+		$this->userRepository = $userRepository;
+	}
+
+	public function actionDefault() {
+		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
+			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
+			$this->redirect("Homepage:Default");
+		}
 	}
 
 	public function createComponentMatingListForm() {
@@ -125,9 +137,28 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 		$this['matingListDetailForm']['pID']->setDefaults($pes->extract());
 		$this['matingListDetailForm']['pID']['Jmeno']->setDefaultValue(trim($pes->getTitulyPredJmenem() . " " . $pes->getJmeno() . " " . $pes->getTitulyZaJmenem()));
 
+		$maleOwnersToInput = "";
+		$maleOwners = $this->userRepository->findDogOwnersAsUser($pes->getID());
+		for($i=0; $i<count($maleOwners); $i++) {
+			$maleOwnersToInput .= $maleOwners[$i]->getFullName();
+			$maleOwnersToInput .= (($i+1) != count($maleOwners) ? ", " : "");
+		}
+		$this['matingListDetailForm']['MajitelPsa']->setDefaultValue($maleOwnersToInput);
+
 		$fena = $this->dogRepository->getDog($fID);
 		$this['matingListDetailForm']['fID']->setDefaults($fena->extract());
 		$this['matingListDetailForm']['fID']['Jmeno']->setDefaultValue(trim($fena->getTitulyPredJmenem() . " " . $fena->getJmeno() . " " . $fena->getTitulyZaJmenem()));
+		if ($fena->getPlemeno() != null) {
+			$this['matingListDetailForm']['Plemeno']->setDefaultValue($fena->getPlemeno());
+		}
+
+		$femaleOwnersForInput = "";
+		$femaleOwners = $this->userRepository->findDogOwnersAsUser($fena->getID());
+		for($i=0; $i<count($femaleOwners); $i++) {
+			$femaleOwnersForInput .= $femaleOwners[$i]->getFullName();
+			$femaleOwnersForInput .= (($i+1) != count($femaleOwners) ? ", " : "");
+		}
+		$this['matingListDetailForm']['MajitelFeny']->setDefaultValue($femaleOwnersForInput);
 
 		$this->template->title = $this->enumerationRepository->findEnumItemByOrder($this->langRepository->getCurrentLang($this->session), $cID);
 		$this->template->cID = $cID;

@@ -285,18 +285,18 @@
 
 									{for $i = 1; $i <= $puppiesLines; $i++}
 										<tr id="tr{$i}">
-											{if ${"mikrocip".$i} != "" && ${"jmeno".$i} != ""}
-												<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
-												<td align="center" class="rbold">{${"mikrocip".$i}}</td>
-												<td align="center">{${"jmeno".$i}}</td>
-												<td align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"pohlavi".$i})}</td>
-												<td align="center">{$enumRepository->findEnumItemByOrder($currentLang,  ${"srst".$i})}, {$enumRepository->findEnumItemByOrder($currentLang, ${"barva".$i})}</td>
-											{else}
+											{if (${"mikrocip".$i} == "") && (${"jmeno".$i} == "")}
 												<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
 												<td align="center" class="rbold"></td>
 												<td align="center"></td>
 												<td align="center"></td>
 												<td align="center"></td>
+											{else}
+												<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
+												<td align="center" class="rbold">{${"mikrocip".$i}}</td>
+												<td align="center">{${"jmeno".$i}}</td>
+												<td align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"pohlavi".$i})}</td>
+												<td align="center">{$enumRepository->findEnumItemByOrder($currentLang,  ${"srst".$i})}, {$enumRepository->findEnumItemByOrder($currentLang, ${"barva".$i})}</td>
 											{/if}
 										</tr>
 									{/for}

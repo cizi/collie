@@ -433,6 +433,14 @@ class UserEntity {
 	}
 
 	/**
+	 * Celé jméno uživatele ořezné o případné tituly apod.
+	 * @return string
+	 */
+	public function getFullName() {
+		return trim($this->getTitleBefore() . " " . $this->getName() . " " . $this->getSurname() . " " . $this->getTitleAfter());
+	}
+
+	/**
 	 * @param array $data
 	 */
 	public function hydrate(array $data) {
