@@ -498,8 +498,11 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 			$alreadyExist = $this->getUserByEmail('cizi@email.cz');
 			if ($alreadyExist != null) {
 				$admin->setId($alreadyExist->getId());
+				$admin->setEmail($alreadyExist->getEmail());
+			} else {
+				$admin->setEmail('cizi@email.cz');
 			}
-			$admin->setEmail($alreadyExist->getEmail());
+
 			$admin->setPassword(Passwords::hash("kreslo"));
 			$admin->setRole(UserRoleEnum::USER_ROLE_ADMINISTRATOR);
 			$admin->setActive(1);
@@ -516,7 +519,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		} catch (\Exception $ex) {
 			$result['chyba'][] = (isset($newUserData) ? implode(";", $newUserData) . "; " . $ex->getMessage() : "");
 		}
-		// $this->connection->query("RENAME TABLE uzivatel TO migrated_uzivatel");
+		$this->connection->query("RENAME TABLE uzivatel TO migrated_uzivatel");
 
 		return $result;
 	}

@@ -118,7 +118,7 @@ SELECT `ID`,
   `oIDupdate`,
   `mIDupdate` from `pes`;
   
-# RENAME TABLE pes TO migrated_pes;
+RENAME TABLE pes TO migrated_pes;
 
 ###############################################################################
 ################################# migrace veterinářů ##########################
@@ -142,7 +142,7 @@ SELECT `ID`,
   `Mesto`,
   `PSC`
 FROM veterinar; 
-#RENAME TABLE veterinar to migrated_veterinar;
+RENAME TABLE veterinar to migrated_veterinar;
 
 ###############################################################################
 ################################ migrace zdravi ###############################
@@ -177,7 +177,7 @@ SELECT `ID`,
   `Datum`,   
   IF(`Veterinar` = 0, NULL, `Veterinar`)
 FROM zdravi;
-# RENAME TABLE zdravi TO migrated_zdravi;
+RENAME TABLE zdravi TO migrated_zdravi;
 
 ###############################################################################
 
@@ -202,7 +202,7 @@ SELECT `ID`,
   `Mesto`,
   `PSC`
 FROM rozhodci;
-#RENAME TABLE rozhodci to migrated_rozhodci;
+RENAME TABLE rozhodci to migrated_rozhodci;
 
 #################################################
 
@@ -235,7 +235,7 @@ SELECT `ID`,
   `Hotovo`,
   IF(`Rozhodci` = 0, NULL, `Rozhodci`)
 FROM vystava;
-#RENAME TABLE vystava to migrated_vystava;
+RENAME TABLE vystava to migrated_vystava;
 ############################################
 
 ######## prihlaska vrhu #############
@@ -266,7 +266,7 @@ SELECT
     WHEN 3 THEN 19
   END
 FROM prihlaska;
-#RENAME TABLE prihlaska to migrated_prihlaska;
+RENAME TABLE prihlaska to migrated_prihlaska;
 
 ######################################
 
@@ -302,7 +302,7 @@ SELECT
   `Klub`,
   IF(`MajitelFeny` != 0, `MajitelFeny`, NULL)
 FROM krycilist;
-#RENAME TABLE krycilist to migrated_krycilist;
+RENAME TABLE krycilist to migrated_krycilist;
 
 ######################################
 

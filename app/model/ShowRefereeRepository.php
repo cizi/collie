@@ -108,12 +108,12 @@ class ShowRefereeRepository extends BaseRepository {
 			foreach ($result->fetchAll() as $row) {
 				$showRefereeEntity = new ShowRefereeEntity();
 
-				if ($showRepository->getShow($row['vID']) == null) {    // v DB chybí odkaz na výstavu = nemùžu zmigrovat
+				if ($showRepository->getShow($row['vID']) == null) {    // v DB chybï¿½ odkaz na vï¿½stavu = nemï¿½ï¿½u zmigrovat
 					continue;
 				}
 				$showRefereeEntity->setVID($row['vID']);
 
-				if ($refereeRepositoty->getReferee($row['jID']) == null) { // pokud v DB chybí odkaz na rozhodciho nemuzu to migrovat
+				if ($refereeRepositoty->getReferee($row['jID']) == null) { // pokud v DB chybï¿½ odkaz na rozhodciho nemuzu to migrovat
 					continue;
 				}
 				$showRefereeEntity->setRID($row['jID']);
@@ -173,7 +173,7 @@ class ShowRefereeRepository extends BaseRepository {
 					}
 				}
 			}
-			//$this->connection->query("#RENAME TABLE v2j to migrated_v2j");
+			$this->connection->query("RENAME TABLE v2j to migrated_v2j");
 			$this->connection->commit();
 		} catch (\Exception $e) {
 				$this->connection->rollback();

@@ -1,14 +1,14 @@
 Array
 (
-    [zmigrováno] => 2662
+    [zmigrováno] => 2814
     [duplicita] => Array
         (
-            [0] => 5950;migracniPrefix_1atelierslunce@seznam.cz;1181884;43;1;2017-04-12 14:43:19;0000-00-00 00:00:00;;Libor a Tereza;Hillebrantovi;;;Jablonné nad Orlicí;;CZECH_REPUBLIC;;;;;32;0;;0;;
-            [1] => 6006;migracniPrefix_2vera.ondruskova@seznam.cz;4145996;43;1;2017-04-12 14:43:23;0000-00-00 00:00:00;;Věra;Ondrušková;;;Říčany u Brna;;CZECH_REPUBLIC;;;;;32;0;;0;;
-            [2] => 6563;migracniPrefix_3Kyncl.alena@seznam.cz;kofola;43;1;2017-04-12 14:44:09;0000-00-00 00:00:00;;Alena;Kynclová;;ČSA 675;Budišov nad Budišovkou;74787;CZECH_REPUBLIC;www.alkyra.estranky.cz;605800136;;Alkyra;33;1;;0;;
-            [3] => 7303;migracniPrefix_4Kyncl.alena@seznam.cz;pass7303;43;1;2017-04-12 14:45:11;0000-00-00 00:00:00;;Kynclová,;Alena;;;Budišov nad Budišovkou   675;747 87;CZECH_REPUBLIC;www.alkyra.estranky.cz;+420 605800136;;Alkyra;33;1;;0;;
-            [4] => 7314;migracniPrefix_5jitkagogo@centrum.cz;geneAheslo;43;1;2017-04-12 14:45:12;0000-00-00 00:00:00;;Petraq;Kloudová;;;Malešov;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [5] => 8600;migracniPrefix_32e.michalkova1@email.cz;0929imy;43;1;2017-04-12 14:47:00;0000-00-00 00:00:00;;Eva;Michálková;DiS.;Košice 25;Uhlířské Janovice;28504;CZECH_REPUBLIC;www.agilitykosice.estranky.cz;728418048;;;34;1;;0;;
+            [0] => 5950;migracniPrefix_1atelierslunce@seznam.cz;1181884;43;1;2017-07-11 20:40:15;0000-00-00 00:00:00;;Libor a Tereza;Hillebrantovi*;;;Jablonné nad Orlicí;;CZECH_REPUBLIC;;;;;32;0;;0;;
+            [1] => 6006;migracniPrefix_2vera.ondruskova@seznam.cz;4145996;43;1;2017-07-11 20:40:21;0000-00-00 00:00:00;;Věra;Ondrušková;;;Říčany u Brna;;CZECH_REPUBLIC;;;;;32;0;;0;;
+            [2] => 6563;migracniPrefix_3Kyncl.alena@seznam.cz;kofola;43;1;2017-07-11 20:41:10;0000-00-00 00:00:00;;Alena;Kynclová;;ČSA 675;Budišov nad Budišovkou;74787;CZECH_REPUBLIC;www.alkyra.estranky.cz;605800136;;Alkyra;33;1;;0;;
+            [3] => 7303;migracniPrefix_4Kyncl.alena@seznam.cz;pass7303;43;1;2017-07-11 20:42:16;0000-00-00 00:00:00;;Kynclová,;Alena;;;Budišov nad Budišovkou   675;747 87;CZECH_REPUBLIC;www.alkyra.estranky.cz;+420 605800136;;Alkyra;33;1;;0;;
+            [4] => 7314;migracniPrefix_5jitkagogo@centrum.cz;geneAheslo;43;1;2017-07-11 20:42:17;0000-00-00 00:00:00;;Petraq;Kloudová;;;Malešov;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [5] => 8600;migracniPrefix_32e.michalkova1@email.cz;0929imy;43;1;2017-07-11 20:44:15;0000-00-00 00:00:00;;Eva;Michálková;DiS.;Košice 25;Uhlířské Janovice;28504;CZECH_REPUBLIC;www.agilitykosice.estranky.cz;728418048;;;34;1;;0;;
         )
 
     [chyba] => Array
@@ -17,33 +17,49 @@ Array
 
     [prazdne_emaily] => Array
         (
-            [0] => 7315;unknow_6@email.cz;geneAheslo;43;1;2017-04-12 14:45:12;0000-00-00 00:00:00;;Lenka;Neťuková;;;Vrchlabí;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [1] => 7316;unknow_7@email.cz;geneAheslo;43;1;2017-04-12 14:45:12;0000-00-00 00:00:00;;Anna;Dědičová;;;Lišov;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [2] => 7317;unknow_8@email.cz;geneAheslo;43;1;2017-04-12 14:45:12;0000-00-00 00:00:00;;Ladislav;Vlášek;;;Kluky;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [3] => 7318;unknow_9@email.cz;geneAheslo;43;1;2017-04-12 14:45:12;0000-00-00 00:00:00;;Eva;Náhlovská;;;Kladno-Švermov;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [4] => 7319;unknow_10@email.cz;geneAheslo;43;1;2017-04-12 14:45:12;0000-00-00 00:00:00;;Jaroslava;Přibylová;;;Poatřelmov;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [5] => 7320;unknow_11@email.cz;geneAheslo;43;1;2017-04-12 14:45:13;0000-00-00 00:00:00;;Pavla;Kaderová;;;Plzeň;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [6] => 7321;unknow_12@email.cz;geneAheslo;43;1;2017-04-12 14:45:13;0000-00-00 00:00:00;;Lenka;Eliášová;;;Prace;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [7] => 7325;unknow_13@email.cz;geneAheslo;43;1;2017-04-12 14:45:13;0000-00-00 00:00:00;;Eva;Kwasniaková;;;Polom;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [8] => 7327;unknow_14@email.cz;geneAheslo;43;1;2017-04-12 14:45:13;0000-00-00 00:00:00;;Lenka;Batista De La Rosa;;;Polom;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [9] => 7347;unknow_15@email.cz;geneAheslo;43;1;2017-04-12 14:45:15;0000-00-00 00:00:00;;Markéta;Hrušková;;;Hlízov;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [10] => 7353;unknow_16@email.cz;geneAheslo;43;1;2017-04-12 14:45:15;0000-00-00 00:00:00;;Eva;Vávrová;;;Vyškov;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [11] => 7361;unknow_17@email.cz;geneAheslo;43;1;2017-04-12 14:45:16;0000-00-00 00:00:00;;Ladislav;Vondráček;;;Česká Třebová;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [12] => 7362;unknow_18@email.cz;geneAheslo;43;1;2017-04-12 14:45:16;0000-00-00 00:00:00;;Břetislav;Prosek;;;Staříč;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [13] => 7363;unknow_19@email.cz;geneAheslo;43;1;2017-04-12 14:45:16;0000-00-00 00:00:00;;Josef;Novák;;;Petřkovice;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [14] => 7365;unknow_20@email.cz;geneAheslo;43;1;2017-04-12 14:45:16;0000-00-00 00:00:00;;Ivana;Horská;;;Hradec Králové;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [15] => 7378;unknow_21@email.cz;geneAheslo;43;1;2017-04-12 14:45:17;0000-00-00 00:00:00;;Pavla;Garmotová;;;Bohumín;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [16] => 8198;unknow_22@email.cz;geneAheslo;43;1;2017-04-12 14:46:26;0000-00-00 00:00:00;;Libuše;Kulawiak;;;Liptaň;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [17] => 8203;unknow_23@email.cz;geneAheslo;43;1;2017-04-12 14:46:27;0000-00-00 00:00:00;;Ivana;Loužecká;;;Hořín;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [18] => 8391;unknow_24@email.cz;geneAheslo;43;1;2017-04-12 14:46:42;0000-00-00 00:00:00;;Miloslav;Koubek;;;Davle;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [19] => 8499;unknow_25@email.cz;geneAheslo;43;1;2017-04-12 14:46:52;0000-00-00 00:00:00;;Jaroslava;Přibylová;;;Postřelmov;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [20] => 8500;unknow_26@email.cz;geneAheslo;43;1;2017-04-12 14:46:52;0000-00-00 00:00:00;;Marie;Sojková Jungrová Ing.;;;Kladno;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [21] => 8543;unknow_27@email.cz;geneAheslo;43;1;2017-04-12 14:46:55;0000-00-00 00:00:00;;Lenka;Dostálová;;;Petřvald;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [22] => 8544;unknow_28@email.cz;geneAheslo;43;1;2017-04-12 14:46:55;0000-00-00 00:00:00;;Šárka;Matulíková;;;Řetechov;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [23] => 8545;unknow_29@email.cz;geneAheslo;43;1;2017-04-12 14:46:56;0000-00-00 00:00:00;;Simona;Segedová;;;Petřvald;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [24] => 8575;unknow_30@email.cz;geneAheslo;43;1;2017-04-12 14:46:58;0000-00-00 00:00:00;;Hana;Matějková;;;Chýně;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [25] => 8576;unknow_31@email.cz;geneAheslo;43;1;2017-04-12 14:46:58;0000-00-00 00:00:00;;Štěpán;Beránek;;;Hradec Králové;;CZECH_REPUBLIC;;;;;;0;;0;;
-            [26] => 8618;unknow_33@email.cz;geneAheslo;43;1;2017-04-12 14:47:02;0000-00-00 00:00:00;;Jana;Steinerová;;;Sezimovo Ústí II.;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [0] => 7315;unknow_6@email.cz;geneAheslo;43;1;2017-07-11 20:42:18;0000-00-00 00:00:00;;Lenka;Neťuková;;;Vrchlabí;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [1] => 7316;unknow_7@email.cz;geneAheslo;43;1;2017-07-11 20:42:18;0000-00-00 00:00:00;;Anna;Dědičová;;;Lišov;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [2] => 7317;unknow_8@email.cz;geneAheslo;43;1;2017-07-11 20:42:18;0000-00-00 00:00:00;;Ladislav;Vlášek;;;Kluky;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [3] => 7318;unknow_9@email.cz;geneAheslo;43;1;2017-07-11 20:42:18;0000-00-00 00:00:00;;Eva;Náhlovská;;;Kladno-Švermov;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [4] => 7319;unknow_10@email.cz;geneAheslo;43;1;2017-07-11 20:42:18;0000-00-00 00:00:00;;Jaroslava;Přibylová;;;Poatřelmov;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [5] => 7320;unknow_11@email.cz;geneAheslo;43;1;2017-07-11 20:42:18;0000-00-00 00:00:00;;Pavla;Kaderová;;;Plzeň;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [6] => 7321;unknow_12@email.cz;geneAheslo;43;1;2017-07-11 20:42:18;0000-00-00 00:00:00;;Lenka;Eliášová;;;Prace;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [7] => 7325;unknow_13@email.cz;geneAheslo;43;1;2017-07-11 20:42:19;0000-00-00 00:00:00;;Eva;Kwasniaková;;;Polom;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [8] => 7327;unknow_14@email.cz;geneAheslo;43;1;2017-07-11 20:42:19;0000-00-00 00:00:00;;Lenka;Batista De La Rosa;;;Polom;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [9] => 7347;unknow_15@email.cz;geneAheslo;43;1;2017-07-11 20:42:21;0000-00-00 00:00:00;;Markéta;Hrušková;;;Hlízov;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [10] => 7353;unknow_16@email.cz;geneAheslo;43;1;2017-07-11 20:42:21;0000-00-00 00:00:00;;Eva;Vávrová;;;Vyškov;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [11] => 7361;unknow_17@email.cz;geneAheslo;43;1;2017-07-11 20:42:22;0000-00-00 00:00:00;;Ladislav;Vondráček;;;Česká Třebová;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [12] => 7362;unknow_18@email.cz;geneAheslo;43;1;2017-07-11 20:42:22;0000-00-00 00:00:00;;Břetislav;Prosek;;;Staříč;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [13] => 7363;unknow_19@email.cz;geneAheslo;43;1;2017-07-11 20:42:22;0000-00-00 00:00:00;;Josef;Novák;;;Petřkovice;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [14] => 7365;unknow_20@email.cz;geneAheslo;43;1;2017-07-11 20:42:23;0000-00-00 00:00:00;;Ivana;Horská;;;Hradec Králové;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [15] => 7378;unknow_21@email.cz;geneAheslo;43;1;2017-07-11 20:42:24;0000-00-00 00:00:00;;Pavla;Garmotová;;;Bohumín;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [16] => 8198;unknow_22@email.cz;geneAheslo;43;1;2017-07-11 20:43:39;0000-00-00 00:00:00;;Libuše;Kulawiak;;;Liptaň;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [17] => 8203;unknow_23@email.cz;geneAheslo;43;1;2017-07-11 20:43:39;0000-00-00 00:00:00;;Ivana;Loužecká;;;Hořín;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [18] => 8391;unknow_24@email.cz;geneAheslo;43;1;2017-07-11 20:43:56;0000-00-00 00:00:00;;Miloslav;Koubek;;;Davle;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [19] => 8499;unknow_25@email.cz;geneAheslo;43;1;2017-07-11 20:44:06;0000-00-00 00:00:00;;Jaroslava;Přibylová;;;Postřelmov;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [20] => 8500;unknow_26@email.cz;geneAheslo;43;1;2017-07-11 20:44:06;0000-00-00 00:00:00;;Marie;Sojková Jungrová Ing.;;;Kladno;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [21] => 8543;unknow_27@email.cz;geneAheslo;43;1;2017-07-11 20:44:10;0000-00-00 00:00:00;;Lenka;Dostálová;;;Petřvald;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [22] => 8544;unknow_28@email.cz;geneAheslo;43;1;2017-07-11 20:44:10;0000-00-00 00:00:00;;Šárka;Matulíková;;;Řetechov;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [23] => 8545;unknow_29@email.cz;geneAheslo;43;1;2017-07-11 20:44:10;0000-00-00 00:00:00;;Simona;Segedová;;;Petřvald;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [24] => 8575;unknow_30@email.cz;geneAheslo;43;1;2017-07-11 20:44:13;0000-00-00 00:00:00;;Hana;Matějková;;;Chýně;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [25] => 8576;unknow_31@email.cz;geneAheslo;43;1;2017-07-11 20:44:13;0000-00-00 00:00:00;;Štěpán;Beránek;;;Hradec Králové;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [26] => 8618;unknow_33@email.cz;geneAheslo;43;1;2017-07-11 20:44:16;0000-00-00 00:00:00;;Jana;Steinerová;;;Sezimovo Ústí II.;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [27] => 8621;unknow_34@email.cz;geneAheslo;43;1;2017-07-11 20:44:16;0000-00-00 00:00:00;;Věra;Inquortová;;;Mělník;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [28] => 8640;unknow_35@email.cz;geneAheslo;43;1;2017-07-11 20:44:18;0000-00-00 00:00:00;;Jan;Karel;;;Telč;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [29] => 8642;unknow_36@email.cz;geneAheslo;43;1;2017-07-11 20:44:18;0000-00-00 00:00:00;;Irena;Malá;;;Kolín 2;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [30] => 8678;unknow_37@email.cz;geneAheslo;43;1;2017-07-11 20:44:21;0000-00-00 00:00:00;;Lenka;Šikulová;;;Dolní Přím;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [31] => 8679;unknow_38@email.cz;geneAheslo;43;1;2017-07-11 20:44:22;0000-00-00 00:00:00;;Kateřina;Konečná;;;Hodonín;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [32] => 8685;unknow_39@email.cz;geneAheslo;43;1;2017-07-11 20:44:22;0000-00-00 00:00:00;;Ladislava;Holečková;;;Dobrovice;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [33] => 8686;unknow_40@email.cz;geneAheslo;43;1;2017-07-11 20:44:22;0000-00-00 00:00:00;;Jaromír;Groušl;;;Mělník;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [34] => 8688;unknow_41@email.cz;geneAheslo;43;1;2017-07-11 20:44:22;0000-00-00 00:00:00;;Miloslav Mgr.;Fiala;;;Přimda;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [35] => 8702;unknow_42@email.cz;geneAheslo;43;1;2017-07-11 20:44:24;0000-00-00 00:00:00;;Petr;Červený;;;Rožmitál p. Třemšínem;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [36] => 8743;unknow_43@email.cz;geneAheslo;43;1;2017-07-11 20:44:28;0000-00-00 00:00:00;;Lenka;Štramberská;;;Zlín;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [37] => 8763;unknow_44@email.cz;geneAheslo;43;1;2017-07-11 20:44:29;0000-00-00 00:00:00;;Jana;Maštalířová;;;;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [38] => 8764;unknow_45@email.cz;geneAheslo;43;1;2017-07-11 20:44:30;0000-00-00 00:00:00;;Alena;Juchelková;;;;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [39] => 8765;unknow_46@email.cz;geneAheslo;43;1;2017-07-11 20:44:30;0000-00-00 00:00:00;;Renata;Jungová;;;;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [40] => 8768;unknow_47@email.cz;geneAheslo;43;1;2017-07-11 20:44:30;0000-00-00 00:00:00;;Karla;Kvíčalová;;;;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [41] => 8769;unknow_48@email.cz;geneAheslo;43;1;2017-07-11 20:44:30;0000-00-00 00:00:00;;Martina;Zbožínková Ježková;;;;;CZECH_REPUBLIC;;;;;;0;;0;;
+            [42] => 8771;unknow_49@email.cz;geneAheslo;43;1;2017-07-11 20:44:30;0000-00-00 00:00:00;;Eva;Čurlejová;;;;;CZECH_REPUBLIC;;;;;;0;;0;;
         )
 
 )

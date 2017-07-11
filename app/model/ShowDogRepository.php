@@ -342,7 +342,7 @@ class ShowDogRepository extends BaseRepository {
 					}
 				}
 			}
-			//$this->connection->query("#RENAME TABLE v2p to migrated_v2p");
+			$this->connection->query("RENAME TABLE v2p to migrated_v2p");
 			$this->connection->commit();
 		} catch (\Exception $e) {
 			$this->connection->rollback();
