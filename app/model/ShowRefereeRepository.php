@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\Entity\ShowEntity;
 use App\Model\Entity\ShowRefereeEntity;
 
 class ShowRefereeRepository extends BaseRepository {
@@ -118,57 +119,84 @@ class ShowRefereeRepository extends BaseRepository {
 				}
 				$showRefereeEntity->setRID($row['jID']);
 
-				$plemenaStara = ["p1" => 18, "p2" => 17, "p3" => 19];
-				foreach ($plemenaStara as $stary => $novy) {
-					if ($row[$stary] == 1) {
-						$showRefereeEntity->setPlemeno($novy);
-						if ($row['t10'] == 1) {
-							$showRefereeEntity->setTrida(102);
-							$this->save($showRefereeEntity);
-						}
-						if ($row['t20'] == 1) {
-							$showRefereeEntity->setTrida(103);
-							$this->save($showRefereeEntity);
-						}
-						if ($row['t30'] == 1) {
-							$showRefereeEntity->setTrida(104);
-							$this->save($showRefereeEntity);
-						}
-						if ($row['t40'] == 1) {
-							$showRefereeEntity->setTrida(105);
-							$this->save($showRefereeEntity);
-						}
-						if ($row['t50'] == 1) {
-							$showRefereeEntity->setTrida(106);
-							$this->save($showRefereeEntity);
-						}
-						if ($row['t60'] == 1) {
-							$showRefereeEntity->setTrida(107);
-							$this->save($showRefereeEntity);
-						}
-						if ($row['t70'] == 1) {
-							$showRefereeEntity->setTrida(108);
-							$this->save($showRefereeEntity);
-						}
-						if ($row['t80'] == 1) {
-							$showRefereeEntity->setTrida(109);
-							$this->save($showRefereeEntity);
-						}
-						if ($row['t90'] == 1) {
-							$showRefereeEntity->setTrida(110);
-							$this->save($showRefereeEntity);
-						}
-						if ($row['t100'] == 1) {
-							$showRefereeEntity->setTrida(111);
-							$this->save($showRefereeEntity);
-						}
-						if ($row['t110'] == 1) {
-							$showRefereeEntity->setTrida(112);
-							$this->save($showRefereeEntity);
-						}
-						if ($row['t120'] == 1) {
-							$showRefereeEntity->setTrida(113);
-							$this->save($showRefereeEntity);
+				if (($row['p1'] == 0) && ($row['p2'] == 0) && ($row['p3'] == 0)) {
+					/** @var ShowEntity $showEntity */
+					$showEntity = $showRepository->getShow($showRefereeEntity->getVID());
+					$showEntity->setRozhodci($showRefereeEntity->getRID());
+					$showRepository->save($showEntity);
+				} else {
+					$plemenaStara = ["p1" => 18, "p2" => 17, "p3" => 19];
+					foreach ($plemenaStara as $stary => $novy) {
+						if ($row[$stary] == 1) {
+							$showRefereeEntity->setPlemeno($novy);
+							if ($row['t10'] == 1) {
+								$showRefereeEntity->setTrida(102);
+								$this->save($showRefereeEntity);
+							}
+							if ($row['t20'] == 1) {
+								$showRefereeEntity->setTrida(103);
+								$this->save($showRefereeEntity);
+							}
+							if ($row['t30'] == 1) {
+								$showRefereeEntity->setTrida(104);
+								$this->save($showRefereeEntity);
+							}
+							if ($row['t40'] == 1) {
+								$showRefereeEntity->setTrida(105);
+								$this->save($showRefereeEntity);
+							}
+							if ($row['t50'] == 1) {
+								$showRefereeEntity->setTrida(106);
+								$this->save($showRefereeEntity);
+							}
+							if ($row['t60'] == 1) {
+								$showRefereeEntity->setTrida(107);
+								$this->save($showRefereeEntity);
+							}
+							if ($row['t70'] == 1) {
+								$showRefereeEntity->setTrida(108);
+								$this->save($showRefereeEntity);
+							}
+							if ($row['t80'] == 1) {
+								$showRefereeEntity->setTrida(109);
+								$this->save($showRefereeEntity);
+							}
+							if ($row['t90'] == 1) {
+								$showRefereeEntity->setTrida(110);
+								$this->save($showRefereeEntity);
+							}
+							if ($row['t100'] == 1) {
+								$showRefereeEntity->setTrida(111);
+								$this->save($showRefereeEntity);
+							}
+							if ($row['t110'] == 1) {
+								$showRefereeEntity->setTrida(112);
+								$this->save($showRefereeEntity);
+							}
+							if ($row['t120'] == 1) {
+								$showRefereeEntity->setTrida(113);
+								$this->save($showRefereeEntity);
+							}
+							// pokud není vybraná žádný typ co rozhodčí posuzuje tak posuzje vše
+							if (($row['t10'] == 0) &&
+								($row['t20'] == 0) &&
+								($row['t30'] == 0) &&
+								($row['t40'] == 0) &&
+								($row['t50'] == 0) &&
+								($row['t60'] == 0) &&
+								($row['t70'] == 0) &&
+								($row['t80'] == 0) &&
+								($row['t90'] == 0) &&
+								($row['t100'] == 0) &&
+								($row['t110'] == 0) &&
+								($row['t120'] == 0)
+							) {
+								$types = [102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113];
+								foreach ($types as $type) {
+									$showRefereeEntity->setTrida($type);
+									$this->save($showRefereeEntity);
+								}
+							}
 						}
 					}
 				}

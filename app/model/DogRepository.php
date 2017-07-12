@@ -165,7 +165,7 @@ class DogRepository extends BaseRepository {
 	 */
 	public function findDogs(Paginator $paginator, array $filter, $owner = null) {
 		if (empty($filter) && ($owner == null)) {
-			$query = ["select * from appdata_pes where Stav = %i limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
+			$query = ["select * from appdata_pes where Stav = %i order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
 		} else {
 			$query[] = "select *, SPLIT_STR(CisloZapisu, '/', 3) as PlemenoCZ, ap.ID as ID from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter, $owner) as $join) {
@@ -176,7 +176,7 @@ class DogRepository extends BaseRepository {
 			if (isset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER])) {
 				$query[] = "order by PlemenoCZ " . (($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]) == 2 ? "desc" : "asc");
 			}
-			$query[] = " limit %i , %i";
+			$query[] = " order by `Jmeno` asc limit %i , %i";
 			$query[] = $paginator->getOffset();
 			$query[] = $paginator->getLength();
 		}

@@ -28,8 +28,8 @@
 											<td>{$formData[$application->getID()]['chs']}</td>
 											<td><a href={link FeItem1velord2:view, $application->getOID()}>{$dogRepo->getName($application->getOID())}</a></td>
 											<td><a href={link FeItem1velord2:view, $application->getMID()}>{$dogRepo->getName($application->getMID())}</a></td>
-											<td>{$formData[$application->getID()]['males']}</td>
-											<td>{$formData[$application->getID()]['females']}</td>
+											<td nowrap="nowrap">{$formData[$application->getID()]['males']}{$formData[$application->getID()]['birthMales']}</td>
+											<td nowrap="nowrap">{$formData[$application->getID()]['females']}{$formData[$application->getID()]['birthFemales']}</td>
 										</tr>
 									{/foreach}
 								</tbody>

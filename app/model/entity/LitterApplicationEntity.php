@@ -19,7 +19,7 @@ class LitterApplicationEntity {
 	private $mID;
 
 	/** @var DateTime */
-	private $DatumKryti;
+	private $DatumNarozeni;
 
 	/** @var string */
 	private $Data;
@@ -98,15 +98,15 @@ class LitterApplicationEntity {
 	/**
 	 * @return DateTime
 	 */
-	public function getDatumKryti() {
-		return $this->DatumKryti;
+	public function getDatumNarozeni() {
+		return $this->DatumNarozeni;
 	}
 
 	/**
-	 * @param DateTime $DatumKryti
+	 * @param DateTime $DatumNarozeni
 	 */
-	public function setDatumKryti($DatumKryti) {
-		$this->DatumKryti = $DatumKryti;
+	public function setDatumNarozeni($DatumNarozeni) {
+		$this->DatumNarozeni = $DatumNarozeni;
 	}
 
 	/**
@@ -217,7 +217,7 @@ class LitterApplicationEntity {
 		$this->setDatum(isset($data['Datum']) ? $data['Datum'] : null);
 		$this->setoID(isset($data['oID']) ? $data['oID'] : null);
 		$this->setmID(isset($data['mID']) ? $data['mID'] : null);
-		$this->setDatumKryti(isset($data['DatumKryti']) ? $data['DatumKryti'] : null);
+		$this->setDatumNarozeni(isset($data['DatumNarozeni']) ? $data['DatumNarozeni'] : null);
 		$this->setData(isset($data['Data']) ? $data['Data'] : null);
 		$this->setFormular(isset($data['Formular']) ? $data['Formular'] : null);
 		$this->setZavedeno(isset($data['Zavedeno']) ? $data['Zavedeno'] : null);
@@ -235,7 +235,7 @@ class LitterApplicationEntity {
 			'Datum'	=> $this->getDatum(),
 			'oID'	=> $this->getoID(),
 			'mID'	=> $this->getmID(),
-			'DatumKryti'	=> $this->getDatumKryti(),
+			'DatumNarozeni'	=> $this->getDatumNarozeni(),
 			'Data'	=> $this->getData(),
 			'Formular'	=> $this->getFormular(),
 			'Zavedeno'	=> $this->getZavedeno(),

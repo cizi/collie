@@ -34,7 +34,20 @@
 										<td><a href={link FeItem1velord2:view, $puppy->getOID()}>{$dogRepo->getName($puppy->getOID())}</a></td>
 										<td>{if $puppy->getTermin() != null}{$puppy->getTermin()->format('d.m.Y')}{/if}</td>
 										<td>{$puppy->getPodrobnosti()|noescape}</td>
-										<td>{$puppy->getKontakt()|noescape}</td>
+										<td>
+											{var user = $userRepo->getUser($puppy->getUID())}
+											<b>{$user->getStation()} {if $user->getBreed() != null}({$enumRepo->findEnumItemByOrder($lang, $user->getBreed())}){/if}</b>
+											{if $user->getSharing() >= 32}
+												<ul>
+													<li>{$user->getName()} {$user->getSurname()}, {$stateEnum->getValueByKey($user->getState())}</li>
+													{if $user->getSharing() >= 33}
+														<li>{if $user->getPhone() != null}{$user->getPhone()}{/if}</li>
+														<li>{if $user->getEmail() != null}{$user->getEmail()}{/if}</li>
+														<li>{if $user->getWeb() != null}<a href="http://{$user->getWeb()|noescape}" target="_blank">{$user->getWeb()}</a>{/if}</li>
+													{/if}
+												</ul>
+											{/if}
+										</td>
 										<td class="alignRight">
 											{if ($puppy->getUID() == $loggedUserId) && $isUserLoggedIn}
 												<a href={link FeItem1velord6:Edit, $puppy->getID()} title={=PUPPY_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;

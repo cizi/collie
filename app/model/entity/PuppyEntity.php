@@ -27,9 +27,6 @@ class PuppyEntity {
 	/** @var string */
 	private $Podrobnosti;
 
-	/** @var string */
-	private $Kontakt;
-
 	/**
 	 * @return int
 	 */
@@ -129,20 +126,6 @@ class PuppyEntity {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getKontakt() {
-		return $this->Kontakt;
-	}
-
-	/**
-	 * @param string $Kontakt
-	 */
-	public function setKontakt($Kontakt) {
-		$this->Kontakt = $Kontakt;
-	}
-
-	/**
 	 * @return array
 	 */
 	public function extract() {
@@ -153,8 +136,7 @@ class PuppyEntity {
 			'oID' => $this->getoID(),
 			'uID' => $this->getUID(),
 			'Termin' => $this->getTermin(),
-			'Podrobnosti' => $this->getPodrobnosti(),
-			'Kontakt' => $this->getKontakt()
+			'Podrobnosti' => $this->getPodrobnosti()
 		];
 	}
 
@@ -169,7 +151,6 @@ class PuppyEntity {
 		$this->setUID((isset($data['uID']) ? $data['uID'] : null));
 		$this->setTermin((isset($data['Termin']) ? $data['Termin'] : null));
 		$this->setPodrobnosti((isset($data['Podrobnosti']) ? $data['Podrobnosti'] : null));
-		$this->setKontakt((isset($data['Kontakt']) ? $data['Kontakt'] : null));
 	}
 
 }

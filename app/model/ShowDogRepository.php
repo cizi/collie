@@ -335,11 +335,17 @@ class ShowDogRepository extends BaseRepository {
 					'BOB' => 155,
 					'BOS' => 156
 				];
+				$titulNevyplnen = true;
 				foreach ($tituly as $stary => $novy) {
 					if ($row[$stary] == 1) {
 						$showDogEntity->setTitul($novy);
 						$this->save($showDogEntity);
+						$titulNevyplnen = false;
 					}
+				}
+				if ($titulNevyplnen == true) {	// uložíme psa bez titulu
+					$showDogEntity->setTitul(null);
+					$this->save($showDogEntity);
 				}
 			}
 			$this->connection->query("RENAME TABLE v2p to migrated_v2p");

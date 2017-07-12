@@ -99,6 +99,7 @@ SELECT `ID`,
     WHEN `Chovnost` = 1 THEN 26
     WHEN `Chovnost` = 2 THEN 27
     WHEN `Chovnost` = 3 THEN 28
+    WHEN `Chovnost` = 4 THEN 91
   END,
   `ChovnyKomentar`,
   `Posudek`,
@@ -271,39 +272,67 @@ RENAME TABLE prihlaska to migrated_prihlaska;
 ######################################
 
 ###### krycí list ####################
-INSERT INTO appdata_krycilist (
+#INSERT INTO appdata_krycilist (
+#  `ID`,
+#  `Datum`,
+#  `oID`,
+#  `mID`,
+#  `DatumKryti`,
+#  `Data`,
+#  `Formular`,
+#  `Zavedeno`,
+#  `Plemeno`,
+#  `Klub`,
+#  `MajitelFeny`
+#)
+#SELECT
+#  `ID`,
+#  IF(`Datum` != '', `Datum`, NULL),
+#  `oID`,
+#  `mID`,
+#  IF(`DatumKryti` != '', `DatumKryti`, NULL),
+#  `Data`,
+#  `Formular`,
+#  `Zavedeno`,
+#  CASE `Plemeno`
+#    WHEN 0 THEN NULL
+#    WHEN 1 THEN 17
+#    WHEN 2 THEN 18
+#    WHEN 3 THEN 19
+#  END,
+#  `Klub`,
+#  IF(`MajitelFeny` != 0, `MajitelFeny`, NULL)
+#FROM krycilist;
+#RENAME TABLE krycilist to migrated_krycilist;
+
+######################################
+
+########## MIGRACE ŠTĚŇAT ############
+INSERT INTO appdata_stenata (
   `ID`,
-  `Datum`,
-  `oID`,
-  `mID`,
-  `DatumKryti`,
-  `Data`,
-  `Formular`,
-  `Zavedeno`,
   `Plemeno`,
-  `Klub`,
-  `MajitelFeny`
+  `mID`,
+  `oID`,
+  `uID`,
+  `Termin`,
+  `Podrobnosti`
 )
 SELECT
   `ID`,
-  IF(`Datum` != '', `Datum`, NULL),
-  `oID`,
-  `mID`,
-  IF(`DatumKryti` != '', `DatumKryti`, NULL),
-  `Data`,
-  `Formular`,
-  `Zavedeno`,
   CASE `Plemeno`
     WHEN 0 THEN NULL
     WHEN 1 THEN 17
     WHEN 2 THEN 18
     WHEN 3 THEN 19
   END,
-  `Klub`,
-  IF(`MajitelFeny` != 0, `MajitelFeny`, NULL)
-FROM krycilist;
-RENAME TABLE krycilist to migrated_krycilist;
+  `fID`,
+  `pID`,
+  `uID`,
+  `Termin`,
+  `Podrobneji`
+FROM vrh;
 
+RENAME TABLE vrh to migrated_vrh;
 ######################################
 
 

@@ -132,7 +132,7 @@ class FeItem2velord17Presenter extends FrontendPresenter {
 			$formular = base64_encode(gzdeflate($template));
 			$litterApplicationEntity->setFormular($formular);
 			$litterApplicationEntity->setDatum(new DateTime());
-			$litterApplicationEntity->setDatumKryti(new DateTime($array["datumkryti"]));	// srovnání indexu DB vs formulář
+			$litterApplicationEntity->setDatumNarozeni(new DateTime($array["datumnarozeni"]));	// srovnání indexu DB vs formulář
 			$litterApplicationEntity->setZavedeno(LitterApplicationStateEnum::INSERT);
 			if ($litterApplicationEntity->getPlemeno() == 0) {
 				$litterApplicationEntity->setPlemeno(null);

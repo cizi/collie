@@ -2,12 +2,14 @@
 
 namespace App\FrontendModule\Presenters;
 
+use App\Enum\StateEnum;
 use App\Forms\PuppyForm;
 use App\Model\DogRepository;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\PuppyEntity;
 use App\Model\EnumerationRepository;
 use App\Model\PuppyRepository;
+use App\Model\UserRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 
@@ -25,18 +27,29 @@ class FeItem1velord6Presenter extends FrontendPresenter	{
 	/** @var EnumerationRepository */
 	private $enumRepository;
 
+	/** @var UserRepository */
+	private $userRepository;
+
 	/**
 	 * FeItem1velord6Presenter constructor.
 	 * @param DogRepository $dogRepository
 	 * @param PuppyRepository $puppyRepository
 	 * @param PuppyForm $puppyForm
 	 * @param EnumerationRepository $enumerationRepository
+	 * @param UserRepository $userRepository
 	 */
-	public function __construct(DogRepository $dogRepository, PuppyRepository $puppyRepository, PuppyForm $puppyForm, EnumerationRepository $enumerationRepository) {
+	public function __construct(
+		DogRepository $dogRepository,
+		PuppyRepository $puppyRepository,
+		PuppyForm $puppyForm,
+		EnumerationRepository $enumerationRepository,
+		UserRepository $userRepository
+	) {
 		$this->dogRepository = $dogRepository;
 		$this->puppyRepository = $puppyRepository;
 		$this->puppyForm = $puppyForm;
 		$this->enumRepository = $enumerationRepository;
+		$this->userRepository = $userRepository;
 	}
 
 	public function actionDefault() {
@@ -44,8 +57,10 @@ class FeItem1velord6Presenter extends FrontendPresenter	{
 		$this->template->puppies = $this->puppyRepository->findPuppies();
 		$this->template->dogRepo = $this->dogRepository;
 		$this->template->enumRepo = $this->enumRepository;
+		$this->template->userRepo = $this->userRepository;
 		$this->template->loggedUserId = $this->getUser()->getId();
 		$this->template->isUserLoggedIn = $this->getUser()->isLoggedIn();
+		$this->template->stateEnum = new StateEnum();
 	}
 
 	/**

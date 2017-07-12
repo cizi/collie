@@ -157,14 +157,14 @@
 					<div class="col-lg-12">
 						<div class="prihlaska">
 							<div class="prihlaska_top">
-								{if $cID == 159}
+								{if isset($cID) && ($cID == 159)}
 									<img src="../images/logo-prihlaskaCKCHS.jpg" />
 								{else}
 									<img src="../images/logo-prihlaska.jpg" />
 								{/if}
 							</div>
-							<div class="heading1">{$title|upper}</div>
-							{if $cID == 159}
+							<div class="heading1">{if isset($title)}{$title|upper}{/if}</div>
+							{if isset($cID) && ($cID == 159)}
 								<div class="heading2">{=LITTER_APPLICATION_DETAIL_APPLICATION_REQUEST|upper}</div>
 							{else}
 								<div class="heading2">{=LITTER_APPLICATION_DETAIL_APPLICATION|upper}</div>

@@ -228,7 +228,7 @@
 					{var lastParent = ""}
 					{foreach $descendants as $descennt}
 						{if $dog->getPohlavi() == App\Model\DogRepository::MALE_ORDER}
-							{if $lastParent != $descennt->getMID()}
+							{if ($lastParent != $descennt->getMID()) || ($lastBirthDate != $descennt->getDatNarozeni())}
 								<tr>
 									<td colspan="4" class="parentMarker">
 										{if $descennt->getDatNarozeni() != null}{$descennt->getDatNarozeni()->format("d.m.Y")} :: {/if}
@@ -242,7 +242,7 @@
 								</tr>
 							{/if}
 						{else}
-							{if $lastParent != $descennt->getOID()}
+							{if ($lastParent != $descennt->getOID()) || ($lastBirthDate != $descennt->getDatNarozeni())}
 								<tr>
 									<td colspan="4" class="parentMarker">
 										{if $descennt->getDatNarozeni() != null}{$descennt->getDatNarozeni()->format("d.m.Y")} :: {/if}
@@ -287,6 +287,7 @@
 						{else}
 							{var lastParent = $descennt->getOID()}
 						{/if}
+						{var lastBirthDate = $descennt->getDatNarozeni()}
 					{/foreach}
 				</table>
 

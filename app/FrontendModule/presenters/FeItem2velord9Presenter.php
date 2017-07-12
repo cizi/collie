@@ -65,6 +65,10 @@ class FeItem2velord9Presenter extends FrontendPresenter {
 		$userEntityNew->setActive(true);
 		$userEntityNew->setPassword($userEntityCurrent->getPassword());
 
+		if ($userEntityNew->getBreed() == 0) {
+			$userEntityNew->setBreed(null);
+		}
+
 		try {
 			$this->userRepository->saveUser($userEntityNew);
 			if (isset($values['id']) && $values['id'] != "") {

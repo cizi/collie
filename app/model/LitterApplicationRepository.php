@@ -10,7 +10,7 @@ class LitterApplicationRepository extends BaseRepository {
 	 * @return LitterApplicationEntity[]
 	 */
 	public function findLitterApplications() {
-		$query = "select * from appdata_krycilist order by Datum desc";
+		$query = "select * from appdata_prihlaska order by DatumNarozeni desc";
 		$result = $this->connection->query($query);
 
 		$applications = [];
@@ -28,11 +28,11 @@ class LitterApplicationRepository extends BaseRepository {
 	 */
 	public function save(LitterApplicationEntity $litterApplicationEntity) {
 		if ($litterApplicationEntity->getID() == null) {
-			$query = ["insert into appdata_krycilist ", $litterApplicationEntity->extract()];
+			$query = ["insert into appdata_prihlaska ", $litterApplicationEntity->extract()];
 			$this->connection->query($query);
 			$litterApplicationEntity->setID($this->connection->getInsertId());
 		} else {
-			$query = ["update appdata_krycilist set ", $litterApplicationEntity->extract(), "where ID=%i", $litterApplicationEntity->getID()];
+			$query = ["update appdata_prihlaska set ", $litterApplicationEntity->extract(), "where ID=%i", $litterApplicationEntity->getID()];
 			$this->connection->query($query);
 		}
 	}
@@ -42,7 +42,7 @@ class LitterApplicationRepository extends BaseRepository {
 	 * @return LitterApplicationEntity
 	 */
 	public function getLitterApplication($id) {
-		$query = ["select * from appdata_krycilist where ID = %i", $id];
+		$query = ["select * from appdata_prihlaska where ID = %i", $id];
 		$row = $this->connection->query($query)->fetch();
 		if ($row) {
 			$litterApplicationEntity = new LitterApplicationEntity();
@@ -58,7 +58,7 @@ class LitterApplicationRepository extends BaseRepository {
 	public function delete($id) {
 		$return = false;
 		if (!empty($id)) {
-			$query = ["delete from appdata_krycilist where ID = %i", $id];
+			$query = ["delete from appdata_prihlaska where ID = %i", $id];
 			$return = ($this->connection->query($query) == 1 ? true : false);
 		}
 
