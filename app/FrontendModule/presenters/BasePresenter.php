@@ -25,10 +25,10 @@ use Nette\Application\UI\Presenter;
  */
 abstract class BasePresenter extends Presenter {
 
-	/** @const oddìlovaè levelu poøadí v presenterech */
+	/** @const oddï¿½lovaï¿½ levelu poï¿½adï¿½ v presenterech */
 	const LEVEL_ORDER_DELIMITER = "velord";
 
-	/** @ const prefix pro všechny presentery */
+	/** @ const prefix pro vï¿½echny presentery */
 	const PRESENTER_PREFIX = "FeItem";
 
 	/** @var WebconfigRepository */
@@ -106,7 +106,7 @@ abstract class BasePresenter extends Presenter {
 
 		$lang = $this->langRepository->getCurrentLang($this->session);
 
-		if (strpos($this->getName(), 'Admin:') === false) {		// tohle mì zajímá jen frontendu
+		if (strpos($this->getName(), 'Admin:') === false) {		// tohle mï¿½ zajï¿½mï¿½ jen frontendu
 			// load another page settings
 			$this->loadWebConfig($lang);
 			$this->loadHeaderConfig();
@@ -122,7 +122,7 @@ abstract class BasePresenter extends Presenter {
 	}
 
 	/**
-	 * Pøepne jazyk
+	 * Pï¿½epne jazyk
 	 * @param string $id
 	 */
 	public function actionToLanguage($id) {
@@ -147,7 +147,7 @@ abstract class BasePresenter extends Presenter {
 	}
 
 	/**
-	 * Vytvoøí odkaz podle úrovnì a poøadí
+	 * Vytvoï¿½ï¿½ odkaz podle ï¿½rovnï¿½ a poï¿½adï¿½
 	 * @param int $level
 	 * @param int $order
 	 * @return string
@@ -308,5 +308,30 @@ abstract class BasePresenter extends Presenter {
 			$allowAttachment = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_ATTACHMENT, $langCommon);
 			$this->template->allowAttachment =  ($allowAttachment == "1" ? true : false);
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function decodeFilterFromQuery() {
+		$filter = [];
+		if ($this->filter != "") {
+			$arr = explode("&", $this->filter);
+			foreach ($arr as $filterItem) {
+				$filterPiece = explode("=", $filterItem);
+				if (
+					(count($filterPiece) > 1)
+					&& ($filterPiece[0] != "")
+					&& ($filterPiece[1] != "")
+					&& ($filterPiece[0] != "filter")
+					&& ($filterPiece[0] != "do")
+					&& ($filterPiece[1] != "0")
+				) {
+					$filter[$filterPiece[0]] = $filterPiece[1];
+				}
+			}
+		}
+
+		return $filter;
 	}
 }

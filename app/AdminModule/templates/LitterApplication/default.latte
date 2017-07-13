@@ -11,6 +11,13 @@
 					<div class="col-lg-12">
 						<h2>{=LITTER_APPLICATION}</h2>
 
+						<div class="row">
+							<div class="col-lg-12">
+								{control litterApplicationFilterForm}
+							</div>
+						</div>
+						<br />
+
 						<div class="container userTable">
 							<table class="table table-striped">
 								<thead>
@@ -28,7 +35,7 @@
 									{foreach $applications as $application}
 										<tr>
 											<td>{if $application->getPlemeno() != null}{$enumRepo->findEnumItemByOrder($currentLang, $application->getPlemeno())}{/if}</td>
-											<td>{if $application->getDatum() != null}{$application->getDatum()->format('d.m.Y')}{/if}</td>
+											<td>{if $application->getDatumNarozeni() != null}{$application->getDatumNarozeni()->format('d.m.Y')}{/if}</td>
 											<td>{$dogRepo->getName($application->getOID())}</td>
 											<td>{$dogRepo->getName($application->getMID())}</td>
 											<td>{if $application->getZavedeno() == $litterApplicationStateEnum::INSERT}{=SHOW_UNDONE}{else}{=SHOW_DONE}{/if}</td>
@@ -74,6 +81,16 @@
 	<script>
 		$('#confirm-delete').on('show.bs.modal', function(e) {
 			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		$("#frm-litterApplicationFilterForm-DatumNarozeni").datetimepicker({
+			format: 'yyyy-mm-dd',
+			language: {$currentLang},
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
 		});
 	</script>
 

@@ -761,6 +761,8 @@ define("LITTER_APPLICATION_ADD_NEW", "Zadat další přihlášku vrhu");
 define("LITTER_APPLICATION_GENERATE_PDF", "Uložit PDF");
 define("LITTER_APPLICATION_SAVE_DATE", "Datum vložení");
 define("LITTER_APPLICATION_SAVE_REWRITTEN", "Zavedeno");
+define("LITTER_APPLICATION_SAVE_UNREWRITTEN", "Nezavedeno");
+define("LITTER_APPLICATION_SAVE_ALLREWRITTEN", "Vše");
 define("LITTER_APPLICATION_DELETE", "Smazat");
 define("LITTER_APPLICATION_DELETE_TITLE", "Smazání příhlášky vrhu");
 define("LITTER_APPLICATION_DELETE_INFO", "Přejete si smazat prihlášku vrhu?");

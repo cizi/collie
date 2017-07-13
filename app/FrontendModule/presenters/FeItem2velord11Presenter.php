@@ -64,31 +64,6 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	}
 
 	/**
-	 * @return array
-	 */
-	private function decodeFilterFromQuery() {
-		$filter = [];
-		if ($this->filter != "") {
-			$arr = explode("&", $this->filter);
-			foreach ($arr as $filterItem) {
-				$filterPiece = explode("=", $filterItem);
-				if (
-					(count($filterPiece) > 1)
-					&& ($filterPiece[0] != "")
-					&& ($filterPiece[1] != "")
-					&& ($filterPiece[0] != "filter")
-					&& ($filterPiece[0] != "do")
-					&& ($filterPiece[1] != "0")
-				) {
-					$filter[$filterPiece[0]] = $filterPiece[1];
-				}
-			}
-		}
-
-		return $filter;
-	}
-
-	/**
 	 * @param int $id
 	 */
 	public function actionDefault($id) {

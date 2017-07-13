@@ -4,6 +4,7 @@ namespace App\AdminModule\Presenters;
 
 use App\Enum\LitterApplicationStateEnum;
 use App\Forms\LitterApplicationDetailForm;
+use App\Forms\LitterApplicationFilterForm;
 use App\Forms\LitterApplicationRewriteForm;
 use App\Model\DogRepository;
 use App\Model\Entity\BreederEntity;
@@ -16,6 +17,9 @@ use Nette\Application\AbortException;
 use Nette\Forms\Form;
 
 class LitterApplicationPresenter extends SignPresenter {
+
+	/** @persistent */
+	public $filter;
 
 	/** @var LitterApplicationRepository */
 	private $litterApplicationRepository;
@@ -32,26 +36,34 @@ class LitterApplicationPresenter extends SignPresenter {
 	/** @var UserRepository */
 	private $userRepository;
 
+	/** @var LitterApplicationFilterForm  */
+	private $litterApplicationFilterForm;
+
 	public function __construct(
 		LitterApplicationRepository $litterApplicationRepository,
 		EnumerationRepository $enumerationRepository,
 		DogRepository $dogRepository,
 		LitterApplicationRewriteForm $applicationRewriteForm,
 		LitterApplicationRewriteForm $litterApplicationRewriteForm,
-		UserRepository $userRepository
+		UserRepository $userRepository,
+		LitterApplicationFilterForm $litterApplicationFilterForm
 	) {
 		$this->litterApplicationRepository = $litterApplicationRepository;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->dogRepository = $dogRepository;
 		$this->litterApplicationRewriteForm = $litterApplicationRewriteForm;
 		$this->userRepository = $userRepository;
+		$this->litterApplicationFilterForm = $litterApplicationFilterForm;
 	}
 
 	/**
 	 * @param int $id
 	 */
 	public function actionDefault($id) {
-		$this->template->applications = $this->litterApplicationRepository->findLitterApplications();
+		$filter = $this->decodeFilterFromQuery();
+		$this['litterApplicationFilterForm']->setDefaults($filter);
+
+		$this->template->applications = $this->litterApplicationRepository->findLitterApplications($filter);
 		$this->template->enumRepo = $this->enumerationRepository;
 		$this->template->dogRepo = $this->dogRepository;
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
@@ -199,5 +211,36 @@ class LitterApplicationPresenter extends SignPresenter {
 		} catch (\Exception $e) {
 			$this->flashMessage(LITTER_APPLICATION_REWRITE_DESCENDANTS_FAILED, "alert-danger");
 		}
+	}
+
+	public function createComponentLitterApplicationFilterForm() {
+		$form = $this->litterApplicationFilterForm->create($this->langRepository->getCurrentLang($this->session), true);
+		$form->onSubmit[] = $this->litterApplicationFilterSubmit;
+
+		$renderer = $form->getRenderer();
+		$renderer->wrappers['controls']['container'] = NULL;
+		$renderer->wrappers['pair']['container'] = 'div class=form-group';
+		$renderer->wrappers['pair']['.error'] = 'has-error';
+		$renderer->wrappers['control']['container'] = 'div class=col-md-2';
+		$renderer->wrappers['label']['container'] = 'div class="col-md-1 control-label margin5"';
+		$renderer->wrappers['control']['description'] = 'span class=help-block';
+		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
+		//$form->getElementPrototype()->class('form-vertical');
+
+		return $form;
+	}
+
+	/**
+	 * @param Form $form
+	 */
+	public function litterApplicationFilterSubmit(Form $form) {
+		$filter = "1&";
+		foreach ($form->getHttpData() as $key => $value) {
+			if ($value != "") {
+				$filter .= $key . "=" . $value . "&";
+			}
+		}
+		$this->filter = $filter;
+		$this->redirect("default");
 	}
 }

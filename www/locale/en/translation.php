@@ -739,6 +739,8 @@ define("LITTER_APPLICATION_ADD_NEW", "Add new litter apúplication");
 define("LITTER_APPLICATION_GENERATE_PDF", "Save PDF");
 define("LITTER_APPLICATION_SAVE_DATE", "Date of insertion");
 define("LITTER_APPLICATION_SAVE_REWRITTEN", "Saved");
+define("LITTER_APPLICATION_SAVE_UNREWRITTEN", "Not saved");
+define("LITTER_APPLICATION_SAVE_ALLREWRITTEN", "All");
 define("LITTER_APPLICATION_DELETE", "Delete");
 define("LITTER_APPLICATION_DELETE_TITLE", "Delete of litter application");
 define("LITTER_APPLICATION_DELETE_INFO", "Are you really want to delete the litter application?");

@@ -9,8 +9,18 @@ class LitterApplicationRepository extends BaseRepository {
 	/**
 	 * @return LitterApplicationEntity[]
 	 */
-	public function findLitterApplications() {
-		$query = "select * from appdata_prihlaska order by DatumNarozeni desc";
+	public function findLitterApplications(array $filter = null) {
+		if ($filter == null && !empty($filter)) {
+			$query = "select * from appdata_prihlaska order by DatumNarozeni desc";
+		} else {
+			if (isset($filter["Zavedeno"])) {
+				$filter["Zavedeno"] = $filter["Zavedeno"] - 1;
+				if ($filter["Zavedeno"] == 2) {
+					unset($filter["Zavedeno"]);
+				}
+			}
+			$query = ["select * from appdata_prihlaska where %and order by DatumNarozeni desc", $filter];
+		}
 		$result = $this->connection->query($query);
 
 		$applications = [];

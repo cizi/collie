@@ -2,12 +2,16 @@
 
 namespace App\FrontendModule\Presenters;
 
+use App\Forms\LitterApplicationFilterForm;
 use App\Model\DogRepository;
 use App\Model\EnumerationRepository;
 use App\Model\LitterApplicationRepository;
-use Nette\Utils\DateTime;
+use Nette\Forms\Form;
 
 class FeItem1velord4Presenter extends FrontendPresenter {
+
+	/** @persistent */
+	public $filter;
 
 	/** @var LitterApplicationRepository */
 	private $litterApplicationRepository;
@@ -18,15 +22,33 @@ class FeItem1velord4Presenter extends FrontendPresenter {
 	/** @var DogRepository */
 	private $dogRepository;
 
-	public function __construct(LitterApplicationRepository $litterApplicationRepository, EnumerationRepository $enumerationRepository, DogRepository $dogRepository) {
+	/** @var  LitterApplicationFilterForm */
+	private $litterApplicationFilterForm;
+
+	/**
+	 * FeItem1velord4Presenter constructor.
+	 * @param LitterApplicationRepository $litterApplicationRepository
+	 * @param EnumerationRepository $enumerationRepository
+	 * @param DogRepository $dogRepository
+	 * @param LitterApplicationFilterForm $litterApplicationFilterForm
+	 */
+	public function __construct(
+		LitterApplicationRepository $litterApplicationRepository,
+		EnumerationRepository $enumerationRepository,
+		DogRepository $dogRepository,
+		LitterApplicationFilterForm $litterApplicationFilterForm
+	) {
 		$this->litterApplicationRepository = $litterApplicationRepository;
 		$this->enumRepository = $enumerationRepository;
 		$this->dogRepository = $dogRepository;
+		$this->litterApplicationFilterForm = $litterApplicationFilterForm;
 	}
 
-
 	public function actionDefault() {
-		$applications = $this->litterApplicationRepository->findLitterApplications();
+		$filter = $this->decodeFilterFromQuery();
+		$this['litterApplicationFilterForm']->setDefaults($filter);
+
+		$applications = $this->litterApplicationRepository->findLitterApplications($filter);
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->enumRepo = $this->enumRepository;
 		$this->template->dogRepo = $this->dogRepository;
@@ -45,5 +67,35 @@ class FeItem1velord4Presenter extends FrontendPresenter {
 		}
 		$this->template->formData = $formData;
 	}
-	
+
+	public function createComponentLitterApplicationFilterForm() {
+		$form = $this->litterApplicationFilterForm->create($this->langRepository->getCurrentLang($this->session));
+		$form->onSubmit[] = $this->litterApplicationFilterSubmit;
+
+		$renderer = $form->getRenderer();
+		$renderer->wrappers['controls']['container'] = NULL;
+		$renderer->wrappers['pair']['container'] = 'div class=form-group';
+		$renderer->wrappers['pair']['.error'] = 'has-error';
+		$renderer->wrappers['control']['container'] = 'div class=col-md-3';
+		$renderer->wrappers['label']['container'] = 'div class="col-md-1 control-label margin5"';
+		$renderer->wrappers['control']['description'] = 'span class=help-block';
+		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
+		//$form->getElementPrototype()->class('form-vertical');
+
+		return $form;
+	}
+
+	/**
+	 * @param Form $form
+	 */
+	public function litterApplicationFilterSubmit(Form $form) {
+		$filter = "1&";
+		foreach ($form->getHttpData() as $key => $value) {
+			if ($value != "") {
+				$filter .= $key . "=" . $value . "&";
+			}
+		}
+		$this->filter = $filter;
+		$this->redirect("default");
+	}
 }
