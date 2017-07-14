@@ -337,3 +337,11 @@ RENAME TABLE vrh to migrated_vrh;
 
 
 SET FOREIGN_KEY_CHECKS=1;
+
+
+# OSTATNI
+UPDATE `appdata_zdravi` set Vysledek = REPLACE(Vysledek, 'HD ', '');
+WHERE ID in (
+  SELECT ID
+    FROM `appdata_zdravi`
+    WHERE `Vysledek` LIKE 'HD %')

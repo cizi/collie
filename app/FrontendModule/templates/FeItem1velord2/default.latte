@@ -28,9 +28,9 @@
 								<th>{=DOG_TABLE_HEADER_PROB_DLK}</th>
 								<th>{=DOG_TABLE_HEADER_HEALTH}</th>
 								<th>
-									{=DOG_TABLE_HEADER_MOTHER}
-									<hr class="motherFatherDelimiter"/>
 									{=DOG_TABLE_HEADER_FATHER}
+									<hr class="motherFatherDelimiter"/>
+									{=DOG_TABLE_HEADER_MOTHER}
 								</th>
 								<th class="alignRight">
 									<button type="button" class="btn btn-group" id="filterToggle">
@@ -93,21 +93,21 @@
 										{/if}
 									</td>
 									<td>
-										{if $dog->getMID() != 0}
-											{var matka = $dogRepository->getDog($dog->getMID())}
-											{if $amIAdmin}
-												<a href={link edit, $matka->getID()}>{$matka->getTitulyPredJmenem()} {$matka->getJmeno()} {$matka->getTitulyZaJmenem()}</a>
-											{else}
-												<a href={link view, $matka->getID()}>{$matka->getTitulyPredJmenem()} {$matka->getJmeno()} {$matka->getTitulyZaJmenem()}</a>
-											{/if}
-										{/if}
 										{if $dog->getOID() != 0}
-											<hr class="motherFatherDelimiter"/>
 											{var otec = $dogRepository->getDog($dog->getOID())}
 											{if $amIAdmin}
 												<a href={link edit, $otec->getID()}>{$otec->getTitulyPredJmenem()} {$otec->getJmeno()} {$otec->getTitulyZaJmenem()}</a>
 											{else}
 												<a href={link view, $otec->getID()}>{$otec->getTitulyPredJmenem()} {$otec->getJmeno()} {$otec->getTitulyZaJmenem()}</a>
+											{/if}
+										{/if}
+										{if $dog->getMID() != 0}
+											<hr class="motherFatherDelimiter"/>
+											{var matka = $dogRepository->getDog($dog->getMID())}
+											{if $amIAdmin}
+												<a href={link edit, $matka->getID()}>{$matka->getTitulyPredJmenem()} {$matka->getJmeno()} {$matka->getTitulyZaJmenem()}</a>
+											{else}
+												<a href={link view, $matka->getID()}>{$matka->getTitulyPredJmenem()} {$matka->getJmeno()} {$matka->getTitulyZaJmenem()}</a>
 											{/if}
 										{/if}
 									</td>
