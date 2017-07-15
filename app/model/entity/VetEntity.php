@@ -141,6 +141,13 @@ class VetEntity {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getFullName() {
+		return trim($this->getTitulyPrefix() . " " . $this->getJmeno() . " " . $this->getPrijmeni() . " " . $this->getTitulySuffix());
+	}
+
+	/**
 	 * @param array $data
 	 */
 	public function hydrate(array $data) {

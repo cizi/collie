@@ -88,7 +88,14 @@
 						<td>
 							{foreach $zdravi as $polozka}
 								{if $polozka->getVysledek() != ""}
-									{$enumRepo->findEnumItemByOrder($lang, $polozka->getTyp())}: {$polozka->getVysledek()} <br />
+									{$enumRepo->findEnumItemByOrder($lang, $polozka->getTyp())}: {$polozka->getVysledek()}
+									{if trim($polozka->getKomentar()) != ""}- {$polozka->getKomentar()}{/if}
+									{if $polozka->getDatum() != null} - {$polozka->getDatum()->format('d.m.Y')}{/if}
+									{if $polozka->getVeterinar() != null}
+										{var vet = $vetRepo->getVet($polozka->getVeterinar())}
+										- {$vet->getFullName()}
+									{/if}
+									<br />
 								{/if}
 							{/foreach}
 						</td>
@@ -104,29 +111,37 @@
 						<th>{=DOG_FORM_BREEDER}:</th>
 						<td>
 						{if $chovatel != null}
-							<b><a href={link userView, $chovatel->getID()}>{$chovatel->getTitleBefore()} {$chovatel->getName()} {$chovatel->getSurname()} {$chovatel->getTitleAfter()}</a></b><br />
 							{var usr = $userRepository->getUser($chovatel->getID())}
 							<b>{=USER_EDIT_STATION_LABEL_SHORT}:</b> {$usr->getStation()}<br />
-							<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($usr->getState())}<br />
-							<b>{=VET_ADDRESS}:</b> {$usr->getCity()}, {$usr->getZip()}<br />
-							<b>{=USER_EDIT_PHONE_LABEL}:</b> {$usr->getPhone()}<br />
-							<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$usr->getEmail()}<br />
-							<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$usr->getWeb()}>{$usr->getWeb()}</a>
+							{if $usr->getSharing() >= 32}
+								<b><a href={link userView, $chovatel->getID()}>{$chovatel->getTitleBefore()} {$chovatel->getName()} {$chovatel->getSurname()} {$chovatel->getTitleAfter()}</a></b><br />
+								<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($usr->getState())}<br />
+									{if $usr->getSharing() >= 33}
+										<b>{=VET_ADDRESS}:</b> {$usr->getCity()}, {$usr->getZip()}<br />
+										<b>{=USER_EDIT_PHONE_LABEL}:</b> {$usr->getPhone()}<br />
+										<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$usr->getEmail()}<br />
+										<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$usr->getWeb()}>{$usr->getWeb()}</a>
+									{/if}
+							{/if}
 						{/if}
 						</td>
 
 						<th>{=DOG_FORM_OWNERS}:</th>
 						<td>
 							{foreach $majitele as $majitel}
-								{$majitel->getTitleBefore()} {$majitel->getName()} {$majitel->getSurname()} {$majitel->getTitleAfter()} <br />
 								{var usr = $userRepository->getUser($majitel->getID())}
 								<b>{=USER_EDIT_STATION_LABEL_SHORT}:</b> {$usr->getStation()}<br />
-								<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($usr->getState())}<br />
-								<b>{=VET_ADDRESS}:</b> {$usr->getCity()}, {$usr->getZip()}<br />
-								<b>{=USER_EDIT_PHONE_LABEL}:</b> {$usr->getPhone()}<br />
-								<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$usr->getEmail()}<br />
-								<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$usr->getWeb()}>{$usr->getWeb()}</a><br />
-								{if $iterator->last ==  false}<hr class="margin5"/>{/if}
+								{if $usr->getSharing() >= 32}
+									{$majitel->getTitleBefore()} {$majitel->getName()} {$majitel->getSurname()} {$majitel->getTitleAfter()} <br />
+									<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($usr->getState())}<br />
+									{if $usr->getSharing() >= 33}
+										<b>{=VET_ADDRESS}:</b> {$usr->getCity()}, {$usr->getZip()}<br />
+										<b>{=USER_EDIT_PHONE_LABEL}:</b> {$usr->getPhone()}<br />
+										<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$usr->getEmail()}<br />
+										<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$usr->getWeb()}>{$usr->getWeb()}</a><br />
+									{/if}
+								{/if}
+								{if $iterator->last == false}<hr class="margin5"/>{/if}
 							{/foreach}
 						</td>
 					</tr>
@@ -293,22 +308,32 @@
 
 				<div class="viewHeader">{=DOG_FORM_SHOWS_TEXT}</div>
 				<table class="table table-striped dogSiblings">
+					{var lastTrida = ""}
+					{var lastOceneni = ""}
+					{var lastPoradi = ""}
+					{var lastDatum = ""}
 					{foreach $showTitles as $data}
-						<tr>
-							<td>{if $data['show']->getDatum() != null}{$data['show']->getDatum()->format('d.m.Y')}{/if}</td>
-							<td>{$data['show']->getMisto()}</td>
-							<td>{$enumRepo->findEnumItemByOrder($lang, $data['show']->getTyp())}</td>
-							<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getTrida())}</td>
-							<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getOceneni())}</td>
-							<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getPoradi())}</td>
-							<td>
-								{var titles = $showDogRepo->findTitlesByShowAndDog($data['show']->getID(), $dog->getID())}
-								{foreach $titles as $title}
-									{$enumRepo->findEnumItemByOrder($lang, $title->getTitul())}
-									{if $iterator->last == false}, {/if}
-								{/foreach}
-							</td>
-						</tr>
+						{if ($data['showDog']->getTrida() != $lastTrida) || ($data['showDog']->getOceneni() != $lastOceneni) || ($data['showDog']->getPoradi() != $lastPoradi) || ($data['show']->getDatum() != $lastDatum)}
+							<tr>
+								<td>{if $data['show']->getDatum() != null}{$data['show']->getDatum()->format('d.m.Y')}{/if}</td>
+								<td>{$data['show']->getMisto()}</td>
+								<td>{$enumRepo->findEnumItemByOrder($lang, $data['show']->getTyp())}</td>
+								<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getTrida())}</td>
+								<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getOceneni())}</td>
+								<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getPoradi())}</td>
+								<td>
+									{var titles = $showDogRepo->findTitlesByShowAndDog($data['show']->getID(), $dog->getID())}
+									{foreach $titles as $title}
+										{$enumRepo->findEnumItemByOrder($lang, $title->getTitul())}
+										{if $iterator->last == false}, {/if}
+									{/foreach}
+								</td>
+							</tr>
+						{/if}
+						{var lastTrida = $data['showDog']->getTrida()}
+						{var lastOceneni = $data['showDog']->getOceneni()}
+						{var lastPoradi = $data['showDog']->getPoradi()}
+						{var lastDatum = $data['show']->getDatum()}
 					{/foreach}
 				</table>
 

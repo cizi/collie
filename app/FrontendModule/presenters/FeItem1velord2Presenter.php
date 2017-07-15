@@ -19,6 +19,7 @@ use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
 use App\Model\ShowDogRepository;
 use App\Model\UserRepository;
+use App\Model\VetRepository;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use Nette\Http\FileUpload;
@@ -50,13 +51,27 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	/** @var ShowDogRepository */
 	private $showDogRepository;
 
+	/** @var VetRepository */
+	private $vetRepository;
+
+	/**
+	 * FeItem1velord2Presenter constructor.
+	 * @param DogFilterForm $dogFilterForm
+	 * @param DogForm $dogForm
+	 * @param DogRepository $dogRepository
+	 * @param EnumerationRepository $enumerationRepository
+	 * @param UserRepository $userRepository
+	 * @param ShowDogRepository $showDogRepository
+	 * @param VetRepository $vetRepository
+	 */
 	public function __construct(
 		DogFilterForm $dogFilterForm,
 		DogForm $dogForm,
 		DogRepository $dogRepository,
 		EnumerationRepository $enumerationRepository,
 		UserRepository $userRepository,
-		ShowDogRepository $showDogRepository
+		ShowDogRepository $showDogRepository,
+		VetRepository $vetRepository
 	) {
 		$this->dogFilterForm = $dogFilterForm;
 		$this->dogForm = $dogForm;
@@ -64,6 +79,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->enumerationRepository = $enumerationRepository;
 		$this->userRepository = $userRepository;
 		$this->showDogRepository = $showDogRepository;
+		$this->vetRepository = $vetRepository;
 	}
 
 	public function startup() {
@@ -277,6 +293,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		} else {
 			$this->template->dog = $dog;
 		}
+		$this->template->vetRepo = $this->vetRepository;
 		$this->template->dogRepository = $this->dogRepository;
 		$this->template->userRepository = $this->userRepository;
 		$this->template->stateEnum = new StateEnum();
