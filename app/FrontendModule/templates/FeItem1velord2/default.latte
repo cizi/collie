@@ -92,7 +92,7 @@
 											{/foreach}
 										{/if}
 									</td>
-									<td>
+									<td {if $amIAdmin == false} colspan="2" {/if}>
 										{if $dog->getOID() != 0}
 											{var otec = $dogRepository->getDog($dog->getOID())}
 											{if $amIAdmin}
@@ -111,13 +111,14 @@
 											{/if}
 										{/if}
 									</td>
-									<td class="alignRight">
-										{if $amIAdmin}
+
+									{if $amIAdmin}
+										<td class="alignRight">
 											<a href={link view, $dog->getID()} title={=DOG_TABLE_DOG_DETAIL}><span class="glyphicon glyphicon-list-alt black"></span></a> &nbsp;&nbsp;
 											<a href={link FeItem1velord2:Edit, $dog->getID()} title={=DOG_TABLE_DOG_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
 											<a href="#" data-href={link FeItem1velord2:Delete, $dog->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=DOG_TABLE_DOG_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
-										{/if}
-									</td>
+										</td>
+									{/if}
 								</tr>
 							{/foreach}
 

@@ -132,7 +132,7 @@
 								{var usr = $userRepository->getUser($majitel->getID())}
 								<b>{=USER_EDIT_STATION_LABEL_SHORT}:</b> {$usr->getStation()}<br />
 								{if $usr->getSharing() >= 32}
-									{$majitel->getTitleBefore()} {$majitel->getName()} {$majitel->getSurname()} {$majitel->getTitleAfter()} <br />
+									<b><a href={link userView, $majitel->getID()}>{$majitel->getTitleBefore()} {$majitel->getName()} {$majitel->getSurname()} {$majitel->getTitleAfter()}</a></b><br />
 									<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($usr->getState())}<br />
 									{if $usr->getSharing() >= 33}
 										<b>{=VET_ADDRESS}:</b> {$usr->getCity()}, {$usr->getZip()}<br />

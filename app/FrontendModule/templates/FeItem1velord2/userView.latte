@@ -3,18 +3,21 @@
 
 	<div class="myContent">
 
-
-		<strong>{$user->getTitleBefore()} {$user->getName()} {$user->getSurname()} {$user->getTitleAfter()} </strong><br />
 		<b>{=USER_EDIT_STATION_LABEL_SHORT}:</b> {$user->getStation()}<br />
-		<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($user->getState())}<br />
-		<b>{=VET_ADDRESS}:</b> {$user->getCity()}, {$user->getZip()}<br />
-		<b>{=USER_EDIT_PHONE_LABEL}:</b> {$user->getPhone()}<br />
-		<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$user->getEmail()}<br />
-		<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$user->getWeb()}>{$user->getWeb()}</a>
+		{if $user->getSharing() >= 32}
+			<strong>{$user->getTitleBefore()} {$user->getName()} {$user->getSurname()} {$user->getTitleAfter()} </strong><br />
+			<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($user->getState())}<br />
+			{if $user->getSharing() >= 33}
+				<b>{=VET_ADDRESS}:</b> {$user->getCity()}, {$user->getZip()}<br />
+				<b>{=USER_EDIT_PHONE_LABEL}:</b> {$user->getPhone()}<br />
+				<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$user->getEmail()}<br />
+				<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$user->getWeb()}>{$user->getWeb()}</a>
+			{/if}
+		{/if}
 
-		<div class="viewHeader">{=USER_VIEW_OWNER}</div>
-		<table class="table table-striped dogSiblings">
-			{if count($dogByCurrentOwner) > 0}
+		{if count($dogByCurrentOwner) > 0}
+			<div class="viewHeader">{=USER_VIEW_OWNER}</div>
+			<table class="table table-striped dogSiblings">
 				<tr>
 					<th colspan="4"></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
@@ -22,40 +25,40 @@
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
 				</tr>
-			{/if}
-			{foreach $dogByCurrentOwner as $dogCurrent}
-				<tr>
-					<td>
-						<a href={link view, $dogCurrent->getID()}>{$dogCurrent->getTitulyPredJmenem()} {$dogCurrent->getJmeno()} {$dogCurrent->getTitulyZaJmenem()}</a>
-					</td>
-					<td>
-						{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPohlavi())}
-					</td>
-					<td>
-						{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPlemeno())}
-					</td>
-					<td>
-						{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}, {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
-					</td>
-				</tr>
-			{/foreach}
-		</table>
+				{foreach $dogByCurrentOwner as $dogCurrent}
+					<tr>
+						<td>
+							<a href={link view, $dogCurrent->getID()}>{$dogCurrent->getTitulyPredJmenem()} {$dogCurrent->getJmeno()} {$dogCurrent->getTitulyZaJmenem()}</a>
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPohlavi())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPlemeno())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}, {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
+						</td>
+					</tr>
+				{/foreach}
+			</table>
+		{/if}
 
-		<div class="viewHeader">{=USER_VIEW_OWNER_PREVIOUS}</div>
-		<table class="table table-striped dogSiblings">
-			{if count($dogByPreviousOwner) > 0}
+		{if count($dogByPreviousOwner) > 0}
+			<div class="viewHeader">{=USER_VIEW_OWNER_PREVIOUS}</div>
+			<table class="table table-striped dogSiblings">
 				<tr>
 					<th colspan="4"></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
@@ -63,40 +66,40 @@
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
 				</tr>
-			{/if}
-			{foreach $dogByPreviousOwner as $dogCurrent}
-				<tr>
-					<td>
-						<a href={link view, $dogCurrent->getID()}>{$dogCurrent->getTitulyPredJmenem()} {$dogCurrent->getJmeno()} {$dogCurrent->getTitulyZaJmenem()}</a>
-					</td>
-					<td>
-						{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPohlavi())}
-					</td>
-					<td>
-						{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPlemeno())}
-					</td>
-					<td>
-						{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}, {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
-					</td>
-				</tr>
-			{/foreach}
-		</table>
+				{foreach $dogByPreviousOwner as $dogCurrent}
+					<tr>
+						<td>
+							<a href={link view, $dogCurrent->getID()}>{$dogCurrent->getTitulyPredJmenem()} {$dogCurrent->getJmeno()} {$dogCurrent->getTitulyZaJmenem()}</a>
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPohlavi())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPlemeno())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}, {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
+						</td>
+					</tr>
+				{/foreach}
+			</table>
+		{/if}
 
-		<div class="viewHeader">{=USER_VIEW_BREEDER}</div>
-		<table class="table table-striped dogSiblings">
-			{if count($dogsByBreeder) > 0}
+		{if count($dogsByBreeder) > 0}
+			<div class="viewHeader">{=USER_VIEW_BREEDER}</div>
+			<table class="table table-striped dogSiblings">
 				<tr>
 					<th colspan="4"></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
@@ -104,37 +107,36 @@
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
 				</tr>
-			{/if}
-			{foreach $dogsByBreeder as $dogCurrent}
-				<tr>
-					<td>
-						<a href={link view, $dogCurrent->getID()}>{$dogCurrent->getTitulyPredJmenem()} {$dogCurrent->getJmeno()} {$dogCurrent->getTitulyZaJmenem()}</a>
-					</td>
-					<td>
-						{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPohlavi())}
-					</td>
-					<td>
-						{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPlemeno())}
-					</td>
-					<td>
-						{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}, {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
-					</td>
-					<td>
-						{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
-					</td>
-				</tr>
-			{/foreach}
-		</table>
-
+				{foreach $dogsByBreeder as $dogCurrent}
+					<tr>
+						<td>
+							<a href={link view, $dogCurrent->getID()}>{$dogCurrent->getTitulyPredJmenem()} {$dogCurrent->getJmeno()} {$dogCurrent->getTitulyZaJmenem()}</a>
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPohlavi())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getPlemeno())}
+						</td>
+						<td>
+							{$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getBarva())}, {$enumRepo->findEnumItemByOrder($lang, $dogCurrent->getSrst())}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DKK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DLK_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::DOV_ORDER)}
+						</td>
+						<td>
+							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
+						</td>
+					</tr>
+				{/foreach}
+			</table>
+		{/if}
 
 	</div>
 {/block}
