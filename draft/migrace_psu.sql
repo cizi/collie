@@ -345,3 +345,10 @@ WHERE ID in (
   SELECT ID
     FROM `appdata_zdravi`
     WHERE `Vysledek` LIKE 'HD %')
+
+# !!!!! TOTO PUSTIT AŽ PO CELÉ MIGRACI !!!!!
+#delete from user where `id` not in
+#(
+#   SELECT uID FROM `appdata_chovatel` union
+#   SELECT uID FROM `appdata_majitel`
+#) and email <> 'cizi@email.cz'
