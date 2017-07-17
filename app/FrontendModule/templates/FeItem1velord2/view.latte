@@ -7,7 +7,7 @@
 				<table class="table table-striped dogView">
 					<tr>
 						<td colspan="4" class="text-center dogViewName noBorder">
-							{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}
+							{$dog->getTitulyPredJmenem()|noescape} {$dog->getJmeno()|noescape} {$dog->getTitulyZaJmenem()|noescape}
 						</td>
 					</tr>
 					<tr>
@@ -159,10 +159,10 @@
 
 					<tr>
 						<th>{=DOG_FORM_TITLES}:</th>
-						<td>{$dog->getTitulyKomentar()} </td>
+						<td>{nl2br($dog->getTitulyKomentar())|noescape} </td>
 
 						<th>{=DOG_FORM_BON_TEXT}:</th>
-						<td>{$dog->getPosudek()}</td>
+						<td>{nl2br($dog->getPosudek())|noescape}</td>
 					</tr>
 				</table>
 			</div>
@@ -195,13 +195,13 @@
 					</tr>
 				</table>
 
-				{!$pedigreeTable}
+				{!$pedigreeTable}	{* RODKOKMEN *}
 
-				<div class="viewHeader">{=DOG_FORM_SIBLINGS}</div>
+				<br />
 				<table class="table table-striped dogSiblings">
 					{if count($siblings) > 0}
-						<tr>
-							<th colspan="4"></th>
+						<tr class="viewHeaderNew">
+							<th colspan="4">{=DOG_FORM_SIBLINGS}</th>
 							<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
 							<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></th>
 							<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
@@ -211,7 +211,7 @@
 					{foreach $siblings as $sibling}
 						<tr>
 							<td>
-								<a href={link view, $sibling->getID()}>{$sibling->getTitulyPredJmenem()} {$sibling->getJmeno()} {$sibling->getTitulyZaJmenem()}</a>
+								<a href={link view, $sibling->getID()}>{$sibling->getTitulyPredJmenem()|noescape} {$sibling->getJmeno()|noescape} {$sibling->getTitulyZaJmenem()|noescape}</a>
 							</td>
 							<td>
 								{$enumRepo->findEnumItemByOrder($lang, $sibling->getPohlavi())}
@@ -238,8 +238,15 @@
 					{/foreach}
 				</table>
 
-				<div class="viewHeader">{=DOG_FORM_DESCENDANTS}</div>
 				<table class="table table-striped dogSiblings">
+					<tr class="viewHeaderNew">
+						<th colspan="4">{=DOG_FORM_DESCENDANTS}</th>
+						<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></th>
+						<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></th>
+						<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
+						<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
+					</tr>
+
 					{var lastParent = ""}
 					{foreach $descendants as $descennt}
 						{if $dog->getPohlavi() == App\Model\DogRepository::MALE_ORDER}
@@ -248,12 +255,12 @@
 									<td colspan="4" class="parentMarker">
 										{if $descennt->getDatNarozeni() != null}{$descennt->getDatNarozeni()->format("d.m.Y")} :: {/if}
 										{=DOG_FORM_FEMALE}:
-										<a href={link view, $descennt->getMID()}>{$dogRepository->getName($descennt->getMID())}</a>
+										<a href={link view, $descennt->getMID()}>{$dogRepository->getName($descennt->getMID())|noescape}</a>
 									</td>
-									<td><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></td>
-									<td><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></td>
-									<td><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></td>
-									<td><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DKK_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DLK_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DOV_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::MDR_ORDER)}</td>
 								</tr>
 							{/if}
 						{else}
@@ -264,16 +271,16 @@
 										{=DOG_FORM_MALE}:
 										<a href={link view, $descennt->getOID()}>{$dogRepository->getName($descennt->getOID())}</a>
 									</td>
-									<td><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DKK_ORDER)}</strong></td>
-									<td><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DLK_ORDER)}</strong></td>
-									<td><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></td>
-									<td><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DKK_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DLK_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DOV_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::MDR_ORDER)}</td>
 								</tr>
 							{/if}
 						{/if}
 						<tr>
 							<td>
-								<a href={link view, $descennt->getID()}>{$descennt->getTitulyPredJmenem()} {$descennt->getJmeno()} {$descennt->getTitulyZaJmenem()}</a>
+								<a href={link view, $descennt->getID()}>{$descennt->getTitulyPredJmenem()|noescape} {$descennt->getJmeno()|noescape} {$descennt->getTitulyZaJmenem()|noescape}</a>
 							</td>
 							<td>
 								{$enumRepo->findEnumItemByOrder($lang, $descennt->getPohlavi())}
@@ -338,16 +345,16 @@
 				</table>
 
 				<div class="viewHeader">{=DOG_FORM_SHOWS_NEXT_TEXT}</div>
-				<div class="dogViewSingleContent">{$dog->getOceneni()}</div>
+				<div class="dogViewSingleContent">{nl2br($dog->getOceneni())|noescape}</div>
 
 				<div class="viewHeader">{=DOG_FORM_SHOWS_NOTE}</div>
-				<div class="dogViewSingleContent">{$dog->getKomentar()}</div>
+				<div class="dogViewSingleContent">{nl2br($dog->getKomentar())|noescape}</div>
 
 				<div class="viewHeader">{=DOG_FORM_SHOWS_EXAMS}</div>
-				<div class="dogViewSingleContent">{$dog->getZkousky()}</div>
+				<div class="dogViewSingleContent">{nl2br($dog->getZkousky())|noescape}</div>
 
 				<div class="viewHeader">{=DOG_FORM_SHOWS_RACES}</div>
-				<div class="dogViewSingleContent">{$dog->getZavody()}</div>
+				<div class="dogViewSingleContent">{nl2br($dog->getZavody())|noescape}</div>
 
 				<div class="viewHeader">{=DOG_FORM_PICS}</div>
 				<div class="dogViewSingleContent">

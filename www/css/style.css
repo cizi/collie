@@ -414,6 +414,11 @@ table.viewHeader{
 	color:  white;
 	font-weight: normal;
 }
+.viewHeaderNew th {
+	height: 30px;
+	background-color: dimgray;
+	color: #FFF;
+}
 .black{
 	color: black;
 }
