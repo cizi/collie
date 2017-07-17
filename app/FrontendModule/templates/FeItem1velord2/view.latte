@@ -257,10 +257,10 @@
 										{=DOG_FORM_FEMALE}:
 										<a href={link view, $descennt->getMID()}>{$dogRepository->getName($descennt->getMID())|noescape}</a>
 									</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DKK_ORDER)}</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DLK_ORDER)}</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DOV_ORDER)}</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::MDR_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getMID(), App\Model\DogRepository::DKK_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getMID(), App\Model\DogRepository::DLK_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getMID(), App\Model\DogRepository::DOV_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getMID(), App\Model\DogRepository::MDR_ORDER)}</td>
 								</tr>
 							{/if}
 						{else}
@@ -271,10 +271,10 @@
 										{=DOG_FORM_MALE}:
 										<a href={link view, $descennt->getOID()}>{$dogRepository->getName($descennt->getOID())}</a>
 									</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DKK_ORDER)}</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DLK_ORDER)}</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::DOV_ORDER)}</td>
-									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getID(), App\Model\DogRepository::MDR_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getOID(), App\Model\DogRepository::DKK_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getOID(), App\Model\DogRepository::DLK_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getOID(), App\Model\DogRepository::DOV_ORDER)}</td>
+									<td>{$dogRepository->getHealthByTypeAsStringWithDesc($descennt->getOID(), App\Model\DogRepository::MDR_ORDER)}</td>
 								</tr>
 							{/if}
 						{/if}

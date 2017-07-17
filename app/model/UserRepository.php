@@ -198,7 +198,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	 */
 	public function findBreedersForSelect() {
 		$breeders[0] = self::NOT_SELECTED;
-		$query = ["select `id`,`title_before`,`name`,`surname`,`title_after` from user where role = %i", UserRoleEnum::USER_BREEDER];
+		$query = ["select `id`,`title_before`,`name`,`surname`,`title_after` from user where role in %in", [UserRoleEnum::USER_BREEDER, UserRoleEnum::USER_ROLE_ADMINISTRATOR]];
 		$result = $this->connection->query($query);
 
 		foreach ($result->fetchAll() as $row) {
