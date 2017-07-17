@@ -10,7 +10,7 @@ class LitterApplicationRepository extends BaseRepository {
 	 * @return LitterApplicationEntity[]
 	 */
 	public function findLitterApplications(array $filter = null) {
-		if ($filter == null && !empty($filter)) {
+		if ($filter == null && empty($filter)) {
 			$query = "select * from appdata_prihlaska order by DatumNarozeni desc";
 		} else {
 			if (isset($filter["Zavedeno"])) {

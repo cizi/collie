@@ -167,6 +167,7 @@ class MigrationPresenter extends BasePresenter	 {
 				$this->litterApplicationRepository->save($app);
 			}
 		} catch (\Exception $e) {
+			dump($e);
 			echo $e->getMessage();
 		}
 		echo "<br />hotovo";

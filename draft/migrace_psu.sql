@@ -308,31 +308,31 @@ RENAME TABLE prihlaska to migrated_prihlaska;
 ######################################
 
 ########## MIGRACE ŠTĚŇAT ############
-INSERT INTO appdata_stenata (
-  `ID`,
-  `Plemeno`,
-  `mID`,
-  `oID`,
-  `uID`,
-  `Termin`,
-  `Podrobnosti`
-)
-SELECT
-  `ID`,
-  CASE `Plemeno`
-    WHEN 0 THEN NULL
-    WHEN 1 THEN 17
-    WHEN 2 THEN 18
-    WHEN 3 THEN 19
-  END,
-  `fID`,
-  `pID`,
-  `uID`,
-  `Termin`,
-  `Podrobneji`
-FROM vrh;
+#INSERT INTO appdata_stenata (
+#  `ID`,
+#  `Plemeno`,
+#  `mID`,
+#  `oID`,
+#  `uID`,
+#  `Termin`,
+#  `Podrobnosti`
+#)
+#SELECT
+#  `ID`,
+#  CASE `Plemeno`
+#    WHEN 0 THEN NULL
+#    WHEN 1 THEN 17
+#    WHEN 2 THEN 18
+#    WHEN 3 THEN 19
+#  END,
+#  `fID`,
+#  `pID`,
+#  `uID`,
+#  `Termin`,
+#  `Podrobneji`
+#FROM vrh;
 
-RENAME TABLE vrh to migrated_vrh;
+#RENAME TABLE vrh to migrated_vrh;
 ######################################
 
 
