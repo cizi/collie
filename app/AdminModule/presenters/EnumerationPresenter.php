@@ -46,12 +46,18 @@ class EnumerationPresenter extends SignPresenter {
 	}
 
 	/**
-	 * Smaže položku èíselníku
+	 * SmaÅ¾e poloÅ¾ku ÄÃ­selnÃ­ku
 	 * @param int $headerId
 	 * @param int $order
 	 */
 	public function actionDeleteItem($headerId, $order) {
-		$this->enumerationRepository->deleteEnumItem($headerId, $order);
+		try {
+			$this->enumerationRepository->deleteEnumItem($headerId, $order);
+		} catch (\Exception $e) {
+			if (strpos($e->getMessage(), 'CONSTRAINT ') !== false) {
+				$this->flashMessage(ENUM_DELETE_ITEM_FAIL, "alert-danger");
+			}
+		}
 		$this->redirect("edit", $headerId);
 	}
 
@@ -132,7 +138,7 @@ class EnumerationPresenter extends SignPresenter {
 	}
 
 	/**
-	 * Uloží položku èíselníku
+	 * Uloï¿½ï¿½ poloï¿½ku ï¿½ï¿½selnï¿½ku
 	 * @param Form $form
 	 * @param ArrayHash $values
 	 */

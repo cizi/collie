@@ -410,6 +410,7 @@ define("ENUM_EDIT_ITEM_SAVE", 'Value of enumeration item has been successfully s
 define("ENUM_EDIT_ITEM_FAIL", 'Saving enumeration item failed.');
 define("ENUM_DELETE_SUCCESS", 'Whole enumeration has benn deleted.');
 define("ENUM_DELETE_FAIL", 'During whole enumeration failed. Probably any value of enumeration item is in used. ');
+define("ENUM_DELETE_ITEM_FAIL", 'Enumeration item deletation failed. Probably the value is in use. ');
 
 // veterináři
 define("VET_TITLE", 'Vet / Lab');
