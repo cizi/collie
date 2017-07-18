@@ -9,7 +9,7 @@ use Nette\Application\UI\Form;
 class LitterApplicationDetailForm extends Nette\Object {
 
 	/** @const pocet radek formulare o štěňatech */
-	const NUMBER_OF_LINES = 15;
+	const NUMBER_OF_LINES = 10;
 
 	/** @var FormFactory */
 	private $factory;
