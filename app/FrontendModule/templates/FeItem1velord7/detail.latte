@@ -55,7 +55,13 @@
 													<a href={link referee, $ref->getID()}>{$ref->getTitulyPrefix()} {$ref->getJmeno()} {$ref->getPrijmeni()} {$ref->getTitulySuffix()}</a>
 												{/if}
 											</td>
-											<td>{$enumRepo->findEnumItemByOrder($lang, $referee->getTrida())}</td>
+											<td>
+												{var tridy = explode(',', $referee->getTrida())}
+												{foreach $tridy as $trida}
+													{$enumRepo->findEnumItemByOrder($lang, $trida)}
+													{if $iterator->last == false}, {/if}
+												{/foreach}
+											</td>
 											<td>{$enumRepo->findEnumItemByOrder($lang, $referee->getPlemeno())}</td>
 										</tr>
 										{var lastRefereeId = $referee->getRID()}

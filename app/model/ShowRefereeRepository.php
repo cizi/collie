@@ -26,6 +26,24 @@ class ShowRefereeRepository extends BaseRepository {
 	}
 
 	/**
+	 * @param int $vID
+	 * @return ShowRefereeEntity[]
+	 */
+	public function findRefereeByShowFrontEnd($vID) {
+		$query = ["select ID, vID, rID, GROUP_CONCAT(Trida SEPARATOR ',') as Trida, Plemeno from appdata_vystava_rozhodci where vID = %i group by Plemeno", $vID];
+		$result = $this->connection->query($query);
+
+		$referees = [];
+		foreach ($result->fetchAll() as $row) {
+			$referee = new ShowRefereeEntity();
+			$referee->hydrate($row->toArray());
+			$referees[] = $referee;
+		}
+
+		return $referees;
+	}
+
+	/**
 	 * @param ShowRefereeEntity $showRefereeEntity
 	 */
 	public function save(ShowRefereeEntity $showRefereeEntity) {

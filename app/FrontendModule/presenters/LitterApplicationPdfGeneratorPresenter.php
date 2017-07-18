@@ -38,7 +38,6 @@ class LitterApplicationPdfGeneratorPresenter extends BasePresenter {
 				$latteParams['enumRepository'] = $this->enumerationRepository;
 				$latteParams['currentLang'] = $this->langRepository->getCurrentLang($this->session);
 
-				dump($latteParams);
 				$latte = new \Latte\Engine();
 				$latte->setTempDirectory(__DIR__ . '/../../../temp/cache');
 				$template = $latte->renderToString(__DIR__ . '/../templates/FeItem2velord17/pdf.latte', $latteParams);
