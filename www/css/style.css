@@ -446,3 +446,6 @@ hr.motherFatherDelimiter {
 	padding: 0;
 	border-top: 1px solid lightgrey;
 }
+.fontBold{
+	font-weight: bold!important;
+}

@@ -1,5 +1,8 @@
 {block content}
 <style>
+.myContent{
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif!important;
+}
 .prihlaska, .prihlaska td {
 		font-size: 8pt;
 	}
@@ -12,7 +15,7 @@
 	}
 	.heading1 {
 		font-size: 10pt;
-		padding-top: -30px;
+		padding-top: -60px;
 		text-align:center;
 		font-weight:bold;
 		letter-spacing: 0.4ex;
@@ -89,6 +92,7 @@
 	}
 	.prihlaska_table {
 		background-color:black;
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif!important;
 	}
 	.prihlaska_table td {
 		background-color:white;
@@ -173,76 +177,85 @@
 							<div class="PKblock">{=LITTER_APPLICATION_DETAIL_BOOK_MANAGER|noescape}</div>
 
 							<div class="clearL"></div>
+							<br /><br /><br />
 
 							<div class="itemFull">
-								<div class="itemFullName">{=DOG_FORM_BREED}</div>
-								{if $Plemeno == 0}
-									-
-								{else}
-									{$enumRepository->findEnumItemByOrder($currentLang, $Plemeno)}
-								{/if}
+								{=DOG_FORM_BREED}:
+								<strong>
+									{if $Plemeno == 0}
+										-
+									{else}
+										{$enumRepository->findEnumItemByOrder($currentLang, $Plemeno)}
+									{/if}
+								</strong>
 							</div>
 
 							<div class="itemFull">
-								<div class="itemFullName">{=LITTER_APPLICATION_DETAIL_STATION_TITLE}:</div> {$chs}
+								{=LITTER_APPLICATION_DETAIL_STATION_TITLE}:<strong>{$chs}</strong>
 							</div>
 
 							<div class="clear"></div>
 							&nbsp;<br />
 
 							<div class="prihlaska_left">
-								<div class="itemFullName2">{=DOG_TABLE_HEADER_FATHER|noescape}: </div>{$otec}<br />
-								<div class="itemFullName2"> &nbsp; {=DOG_TABLE_HEADER_BIRT|noescape}: </div>{$otecDN}<br />
-								<div class="itemShim">&nbsp; {=LITTER_APPLICATION_DETAIL_DOG_TITLES|noescape}: </div> {$otecV}<br /><br />
+								<div class="itemFullName2">{=DOG_TABLE_HEADER_FATHER|noescape}: </div><strong>{$otec}</strong><br />
+								<div class="itemFullName2"> &nbsp; {=DOG_TABLE_HEADER_BIRT|noescape}: </div><strong>{$otecDN}</strong><br />
+								<div class="itemShim">&nbsp; {=LITTER_APPLICATION_DETAIL_DOG_TITLES|noescape}: </div> <strong>{$otecV}</strong><br /><br />
 							</div>
 							<div class="prihlaska_right">
-								{=LITTER_APPLICATION_DETAIL_CARD_NO|noescape}: {$otecPP}<br />
+								{=LITTER_APPLICATION_DETAIL_CARD_NO|noescape}: <strong>{$otecPP}</strong><br />
 								<div class="itemFullName2">{=DOG_TABLE_HEADER_COLOR|noescape}: </div>
-								{if $otecBarva == 0}
-									-
-								{else}
-									{$enumRepository->findEnumItemByOrder($currentLang, $otecBarva)}
-								{/if}<br />
+								<strong>
+									{if $otecBarva == 0}
+										-
+									{else}
+										{$enumRepository->findEnumItemByOrder($currentLang, $otecBarva)}
+									{/if}
+								</strong><br />
 								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_FUR_TYPE|noescape}: </div>
-								{if $otecSrst == 0}
-									-
-								{else}
-									{$enumRepository->findEnumItemByOrder($currentLang, $otecSrst)}
-								{/if}
-								<br />
-								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_BONITATION|noescape}: </div>{$otecBon}, {=DOG_TABLE_HEADER_HEIGHT|noescape}: {$otecHeight} cm
+								<strong>
+									{if $otecSrst == 0}
+										-
+									{else}
+										{$enumRepository->findEnumItemByOrder($currentLang, $otecSrst)}
+									{/if}
+								</strong><br />
+								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_BONITATION|noescape}: </div><strong>{$otecBon}</strong>, {=DOG_TABLE_HEADER_HEIGHT|noescape}: <strong>{$otecHeight}</strong> cm
 							</div>
 
 							<div class="clear"></div>
 
 							<div class="prihlaska_left">
-								<div class="itemFullName2">{=DOG_TABLE_HEADER_MOTHER|noescape}: </div>{$matka}<br />
-								<div class="itemFullName2"> &nbsp; {=DOG_TABLE_HEADER_BIRT|noescape}: </div>{$matkaDN}<br />
-								<div class="itemShim">&nbsp;  {=LITTER_APPLICATION_DETAIL_DOG_TITLES|noescape}: </div> {$matkaV}<br /><br />
+								<div class="itemFullName2">{=DOG_TABLE_HEADER_MOTHER|noescape}: </div><strong>{$matka}</strong><br />
+								<div class="itemFullName2"> &nbsp; {=DOG_TABLE_HEADER_BIRT|noescape}: </div><strong>{$matkaDN}</strong><br />
+								<div class="itemShim">&nbsp;  {=LITTER_APPLICATION_DETAIL_DOG_TITLES|noescape}: </div> <strong>{$matkaV}</strong><br /><br />
 							</div>
 							<div class="prihlaska_right">
-								{=LITTER_APPLICATION_DETAIL_CARD_NO|noescape}: {$matkaPP}<br />
+								{=LITTER_APPLICATION_DETAIL_CARD_NO|noescape}: <strong>{$matkaPP}</strong><br />
 								<div class="itemFullName2">{=DOG_TABLE_HEADER_COLOR|noescape}: </div>
-								{if $matkaBarva == 0}
-									-
-								{else}
-									{$enumRepository->findEnumItemByOrder($currentLang, $matkaBarva)}
-								{/if}<br />
+								<strong>
+									{if $matkaBarva == 0}
+										-
+									{else}
+										{$enumRepository->findEnumItemByOrder($currentLang, $matkaBarva)}
+									{/if}
+								</strong><br />
 								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_FUR_TYPE|noescape}: </div>
-								{if $matkaSrst == 0}
-									-
-								{else}
-									{$enumRepository->findEnumItemByOrder($currentLang, $matkaSrst)}
-								{/if}<br />
-								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_BONITATION|noescape}: </div>{$matkaBon}, {=DOG_TABLE_HEADER_HEIGHT|noescape}: {$matkaHeight} cm
+								<strong>
+									{if $matkaSrst == 0}
+										-
+									{else}
+										{$enumRepository->findEnumItemByOrder($currentLang, $matkaSrst)}
+									{/if}
+								</strong><br />
+								<div class="itemFullName2">{=LITTER_APPLICATION_DETAIL_BONITATION|noescape}: </div><strong>{$matkaBon}</strong>, {=DOG_TABLE_HEADER_HEIGHT|noescape}: <strong>{$matkaHeight}</strong> cm
 							</div>
 
 							<div class="clear"></div>
-							&nbsp;<br />
 
-							<div class="itemFullName">{=LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS|noescape}: </div> {$chovatel}<br /><br />
-							<div class="itemFullName">{=MATING_FORM_DATE|noescape}: </div> {$datumkryti}
-							&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {=LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY|noescape}: &nbsp; &nbsp; &nbsp; {$datumnarozeni}<br /><br />
+							<div class="itemFullName">{=LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS|noescape}: </div> <strong>{$chovatel}</strong>
+							<div class="itemFullName">{=MATING_FORM_DATE|noescape}: </div> <strong>{$datumkryti}</strong>
+							&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {=LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY|noescape}: &nbsp; &nbsp; &nbsp; <strong>{$datumnarozeni}</strong><br /><br />
 
 							<div class="pro3"><b>{=LITTER_APPLICATION_DETAIL_PUPPIES_INFO}:</b></div>
 
@@ -257,21 +270,21 @@
 										<td colspan="2">{=LITTER_APPLICATION_DETAIL_PUPPIES_DEATH_BEFORE_APPLICATION}</td>
 									</tr>
 									<tr>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$porozenoPsu}</td>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$porozenoFen}</td>
-										<td title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {$porozenoNez}</td>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$mrtvychPsu}</td>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$mrtvychFen}</td>
-										<td title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {$mrtvychNez}</td>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$usmrcenoPsu}</td>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$usmrcenoFen}</td>
-										<td title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {$usmrcenoNez}</td>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$kzapisuPsu}</td>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$kzapisuFen}</td>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$kojnePsu}</td>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$kojneFen}</td>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$zahynuloPsu}</td>
-										<td>{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$zahynuloFen}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$porozenoPsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$porozenoFen}</td>
+										<td class="fontBold" title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {$porozenoNez}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$mrtvychPsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$mrtvychFen}</td>
+										<td class="fontBold" title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {$mrtvychNez}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$usmrcenoPsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$usmrcenoFen}</td>
+										<td class="fontBold" title={=LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW}>? {$usmrcenoNez}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$kzapisuPsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$kzapisuFen}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$kojnePsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$kojneFen}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_MALES} {$zahynuloPsu}</td>
+										<td class="fontBold">{=LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES} {$zahynuloFen}</td>
 									</tr>
 								</table>
 								<table class="prihlaska_table" cellspacing="0" width="100%" border="1">
@@ -292,11 +305,11 @@
 												<td align="center"></td>
 												<td align="center"></td>
 											{else}
-												<td align="center" class="rbold h30" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
-												<td align="center" class="rbold">{${"mikrocip".$i}}</td>
-												<td align="center">{${"jmeno".$i}}</td>
-												<td align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"pohlavi".$i})}</td>
-												<td align="center">{$enumRepository->findEnumItemByOrder($currentLang,  ${"srst".$i})}, {$enumRepository->findEnumItemByOrder($currentLang, ${"barva".$i})}</td>
+												<td align="center" class="rbold h30 fontBold" style="height:0.7cm">&nbsp;<!-- CZAP_{$i} --></td>
+												<td align="center" class="rbold fontBold">{${"mikrocip".$i}}</td>
+												<td class="fontBold" align="center">{${"jmeno".$i}}</td>
+												<td class="fontBold" align="center">{$enumRepository->findEnumItemByOrder($currentLang, ${"pohlavi".$i})}</td>
+												<td class="fontBold" align="center">{$enumRepository->findEnumItemByOrder($currentLang,  ${"srst".$i})}, {$enumRepository->findEnumItemByOrder($currentLang, ${"barva".$i})}</td>
 											{/if}
 										</tr>
 									{/for}
@@ -307,12 +320,8 @@
 							<div class="clear"></div>
 							&nbsp;<br />
 
-							<div class="pro3">{=LITTER_APPLICATION_DETAIL_CONTROL}<br />
-								{$kontrolaVrhu}
+							<div class="pro3">{=LITTER_APPLICATION_DETAIL_CONTROL}: {$kontrolaVrhu}
 							</div>
-
-							<div class="clear"></div>
-							&nbsp;<br />
 
 							<p class="pro3">{=LITTER_APPLICATION_DETAIL_INC}:
 								{if isset($kryci_list)}
@@ -354,9 +363,7 @@
 								{=LITTER_APPLICATION_DETAIL_TEXT_7|noescape}
 							</div>
 
-							<!-- smazat --><br>&nbsp;<hr>&nbsp;<br>
-
-							<p class="bcenter pagebreak morept">{=LITTER_APPLICATION_DETAIL_TEXT_8|noescape}</a></p>
+							<p class="bcenter pagebreak morept"><strong>{=LITTER_APPLICATION_DETAIL_TEXT_8|noescape}</strong></p>
 
 							<table class="prihlaska_table plusb" cellspacing="0" border="1" align="center">
 								<tr>
