@@ -194,13 +194,13 @@ class FeItem2velord17Presenter extends FrontendPresenter {
 			$stateEnum = new StateEnum();
 			$breederState = $stateEnum->getValueByKey($appBreeder->getState());
 			$breederAddress = $appBreeder->getStreet() . " " . $appBreeder->getCity() . " " . $breederState . ", " . $appBreeder->getEmail();
-			//$this['litterApplicationDetailForm']['chs']->setDefaultValue($loggedUser->getStation());
+			$this['litterApplicationDetailForm']['chs']->setDefaultValue($appBreeder->getStation());
 			$this['litterApplicationDetailForm']['chovatel']->setDefaultValue($breederName . "; " . $appBreeder->getStation() . "; " . $breederAddress);
 		}
-		$femaleBreeder = $this->userRepository->getBreederByDogAsUser($fID);
+		/*$femaleBreeder = $this->userRepository->getBreederByDogAsUser($fID);
 		if ($femaleBreeder != null) {
 			$this['litterApplicationDetailForm']['chs']->setDefaultValue($femaleBreeder->getStation());
-		}
+		}*/
 
 		$pes = $this->dogRepository->getDog($pID);
 		$name = trim($pes->getTitulyPredJmenem() . " " . $pes->getJmeno() . " " . $pes->getTitulyZaJmenem());
