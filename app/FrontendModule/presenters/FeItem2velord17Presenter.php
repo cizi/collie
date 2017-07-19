@@ -176,24 +176,26 @@ class FeItem2velord17Presenter extends FrontendPresenter {
 		$this['litterApplicationDetailForm']['Klub']->setDefaultValue($clubName);
 
 		$femaleOwners = $this->userRepository->findDogOwnersAsEntities($fID);
+		$appBreeder = $this->userRepository->getUser($this->getUser()->getId());
 		$femaleOwnsId = "";
-		if (count($femaleOwners) == 1) {
-			$femaleOwnsId = $femaleOwners[0]->getUID();
-		} else {
-			foreach ($femaleOwners as $owner) {
-				$femaleOwnsId .= $owner->getUID() . ",";
+		if (!empty($femaleOwners)) {
+			$appBreeder = $this->userRepository->getUser($femaleOwners[0]->getUID());
+			if (count($femaleOwners) == 1) {
+				$femaleOwnsId = $femaleOwners[0]->getUID();
+			} else {
+				foreach ($femaleOwners as $owner) {
+					$femaleOwnsId .= $owner->getUID() . ",";
+				}
 			}
 		}
 		$this['litterApplicationDetailForm']['MajitelFeny']->setDefaultValue($femaleOwnsId);
-
-		$loggedUser = $this->userRepository->getUser($this->getUser()->getId());
-		if ($loggedUser != null) {	 // z přihlášky vrhu je chovatelem ten kdo ty štěňata hlásí
-			$breederName = trim($loggedUser->getTitleBefore() . " " . $loggedUser->getName() . " " . $loggedUser->getSurname());
+		if ($appBreeder != null) {	 // z přihlášky vrhu je chovatelem majitel feny a pokud nebyl nalezen tak ten kdo to hlásí
+			$breederName = trim($appBreeder->getTitleBefore() . " " . $appBreeder->getName() . " " . $appBreeder->getSurname());
 			$stateEnum = new StateEnum();
-			$breederState = $stateEnum->getValueByKey($loggedUser->getState());
-			$breederAddress = $loggedUser->getStreet() . " " . $loggedUser->getCity() . " " . $breederState . ", " . $loggedUser->getEmail();
+			$breederState = $stateEnum->getValueByKey($appBreeder->getState());
+			$breederAddress = $appBreeder->getStreet() . " " . $appBreeder->getCity() . " " . $breederState . ", " . $appBreeder->getEmail();
 			//$this['litterApplicationDetailForm']['chs']->setDefaultValue($loggedUser->getStation());
-			$this['litterApplicationDetailForm']['chovatel']->setDefaultValue($breederName . "; " . $loggedUser->getStation() . "; " . $breederAddress);
+			$this['litterApplicationDetailForm']['chovatel']->setDefaultValue($breederName . "; " . $appBreeder->getStation() . "; " . $breederAddress);
 		}
 		$femaleBreeder = $this->userRepository->getBreederByDogAsUser($fID);
 		if ($femaleBreeder != null) {
@@ -207,6 +209,7 @@ class FeItem2velord17Presenter extends FrontendPresenter {
 		$this['litterApplicationDetailForm']['otecSrst']->setDefaultValue($pes->getSrst());
 		$this['litterApplicationDetailForm']['otecBon']->setDefaultValue($pes->getBonitace());
 		$this['litterApplicationDetailForm']['otecHeight']->setDefaultValue($pes->getVyska());
+		$this['litterApplicationDetailForm']['otecPP']->setDefaultValue($pes->getCisloZapisu());
 		if ($pes->getDatNarozeni() != null) {
 			$this['litterApplicationDetailForm']['otecDN']->setDefaultValue($pes->getDatNarozeni()->format(DogEntity::MASKA_DATA));
 		}
@@ -218,6 +221,7 @@ class FeItem2velord17Presenter extends FrontendPresenter {
 		$this['litterApplicationDetailForm']['matkaSrst']->setDefaultValue($fena->getSrst());
 		$this['litterApplicationDetailForm']['matkaBon']->setDefaultValue($fena->getBonitace());
 		$this['litterApplicationDetailForm']['matkaHeight']->setDefaultValue($fena->getVyska());
+		$this['litterApplicationDetailForm']['matkaPP']->setDefaultValue($fena->getCisloZapisu());
 		if ($fena->getDatNarozeni() != null) {
 			$this['litterApplicationDetailForm']['matkaDN']->setDefaultValue($fena->getDatNarozeni()->format(DogEntity::MASKA_DATA));
 		}
