@@ -210,7 +210,8 @@ class MenuRepository extends BaseRepository {
 
 		$orderValue = $this->connection->query("select ifnull(MAX(`order`),0) + 1 from menu_item");
 		foreach ($langItems as $menuItem) {
-			if (empty($menuItem->getId())) {// insert
+			$menuItemId = $menuItem->getId();
+			if (empty($menuItemId)) {// insert
 				if ($this->insertNewMenuItem($menuItem, $orderValue) == false) {
 					$this->connection->rollback();
 					return false;
@@ -365,7 +366,7 @@ class MenuRepository extends BaseRepository {
 			$query = ["select * from menu_item where lang = %s and link = %s", $menuItem->getLang(), $menuItem->getLink()];
 			$result = $this->connection->query($query)->fetchAll();
 			if ($result) {
-				throw new \Dibi\Exception("Duplicitní unikátní klíè");
+				throw new \Dibi\Exception("Duplicitnï¿½ unikï¿½tnï¿½ klï¿½ï¿½");
 			}
 			$query = [
 				"

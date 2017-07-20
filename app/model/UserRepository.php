@@ -481,15 +481,14 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 				$this->connection->query($query);
 			} catch (\Exception $ex) {
 				$result['chyba'][] = (isset($newUserData) ? implode(";", $newUserData) . "; " . $ex->getMessage() : "");
-			} finally {
-				// zápis stavu migrace
-				if ($emptyEmail) {
-					$result['prazdne_emaily'][] = (isset($newUserData) ? implode(";", $newUserData) : "");
-				} else if ($duplicateEmail) {
-					$result['duplicita'][] = (isset($newUserData) ? implode(";", $newUserData) : "");
-				} else {
-					$result['zmigrováno'] = $result['zmigrováno'] + 1;	//
-				}
+			}
+			// zápis stavu migrace
+			if ($emptyEmail) {
+				$result['prazdne_emaily'][] = (isset($newUserData) ? implode(";", $newUserData) : "");
+			} else if ($duplicateEmail) {
+				$result['duplicita'][] = (isset($newUserData) ? implode(";", $newUserData) : "");
+			} else {
+				$result['zmigrováno'] = $result['zmigrováno'] + 1;	//
 			}
 		}
 

@@ -67,7 +67,7 @@ class LitterApplicationPresenter extends SignPresenter {
 		$this->template->enumRepo = $this->enumerationRepository;
 		$this->template->dogRepo = $this->dogRepository;
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
-		$this->template->litterApplicationStateEnum =  LitterApplicationStateEnum::class;
+		$this->template->litterApplicationStateEnumInsert = LitterApplicationStateEnum::INSERT;			// php 5.4 workaround
 	}
 
 	/**
