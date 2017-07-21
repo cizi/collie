@@ -291,9 +291,9 @@ div.colorExample {
 }
 .dogPicSmall{
 	max-width: 400px;
-	max-height: 300px;
 	margin: 10px;
 	display: inline;
+	width: auto;
 }
 .paginator{
 	margin: auto;

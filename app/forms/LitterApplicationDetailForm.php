@@ -90,11 +90,11 @@ class LitterApplicationDetailForm extends Nette\Object {
 		$form->addText("usmrcenoFen", LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES, 2);
 		$form->addText("usmrcenoNez", LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW, 2)->setAttribute("title", LITTER_APPLICATION_DETAIL_PUPPIES_SEX_UNKNOW);
 		$form->addText("kzapisuPsu", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
-		$form->addText("kzapisuFen", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
+		$form->addText("kzapisuFen", LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES, 2);
 		$form->addText("kojnePsu", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
-		$form->addText("kojneFen", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
+		$form->addText("kojneFen", LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES, 2);
 		$form->addText("zahynuloPsu", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
-		$form->addText("zahynuloFen", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
+		$form->addText("zahynuloFen", LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES, 2);
 
 		for ($i=1; $i <= self::NUMBER_OF_LINES; $i++) {
 			$form->addText("mikrocip" . $i, "", 10);
