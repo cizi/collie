@@ -555,6 +555,7 @@ define("DOG_FORM_OWNERS_SELECT_NO_MATCH", 'No resut match');
 define("DOG_FORM_MID_OID_FAILED_TITLE", 'Reference genealogy error');
 define("DOG_FORM_MID_OID_FAILED_MESSAGE", 'Mother or father of this dog does not match sex of mother/father.');
 define("DOG_FORM_NOT_TRUE_OWNER", 'You are not owner of this dog!');
+define("DOG_FORM_REQUEST_NOT_EXISTS", 'Invalid URL request!');
 
 define("MATING_FORM_CLUB", 'Mating list');
 define("MATING_FORM_FID", 'Male');

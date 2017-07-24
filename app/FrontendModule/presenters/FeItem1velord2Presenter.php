@@ -276,23 +276,24 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	 * @param int $genLev
 	 */
 	public function actionView($id, $genLev = 3) {
+		$dog = $this->dogRepository->getDog($id);
+		if ($dog == NULL) {
+			$this->flashMessage(DOG_FORM_REQUEST_NOT_EXISTS, "alert-danger");
+			$this->redirect("default");
+		}
+
+		$this->template->dog = $dog;
 		$zdravi = [];
 		$lang = $this->langRepository->getCurrentLang($this->session);
 		$zdraviOptions = $this->enumerationRepository->findEnumItems($this->langRepository->getCurrentLang($this->session), 14);
 		/** @var EnumerationItemEntity $enumEntity */
 		foreach ($zdraviOptions as $enumEntity) {
-			$dogHealthEntity = $this->dogRepository->getHealthEntityByDogAndType($enumEntity->getOrder(), $id);
+			$dogHealthEntity = $this->dogRepository->getHealthEntityByDogAndType($enumEntity->getOrder(), $dog->getID());
 			if ($dogHealthEntity != null) {
 				$zdravi[] = $dogHealthEntity;
 			}
 		}
 
-		$dog = $this->dogRepository->getDog($id);
-		if ($dog == NULL) {
-			$this->template->dog = new DogEntity();
-		} else {
-			$this->template->dog = $dog;
-		}
 		$this->template->vetRepo = $this->vetRepository;
 		$this->template->dogRepository = $this->dogRepository;
 		$this->template->userRepository = $this->userRepository;

@@ -575,6 +575,7 @@ define("DOG_FORM_OWNERS_SELECT_NO_MATCH", 'Žádná shoda');
 define("DOG_FORM_MID_OID_FAILED_TITLE", 'Referenční chyba genealogie');
 define("DOG_FORM_MID_OID_FAILED_MESSAGE", 'Matka nebo otec psa neodpovídají pohlaví pro matku/otce.');
 define("DOG_FORM_NOT_TRUE_OWNER", 'Nemůžete editovat toho psa, nejste jeho majitelem!');
+define("DOG_FORM_REQUEST_NOT_EXISTS", 'Neplatný URL požadavek!');
 
 define("MATING_FORM_CLUB", 'Krycí list');
 define("MATING_FORM_FID", 'Pes');

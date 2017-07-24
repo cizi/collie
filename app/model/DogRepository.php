@@ -942,7 +942,14 @@ class DogRepository extends BaseRepository {
 			return;
 		}
 		$query = ["select pes.ID AS ID, pes.Jmeno AS Jmeno, pes.oID AS oID, pes.mID AS mID FROM appdata_pes as pes WHERE ID= %i LIMIT 1", $ID];
-		$row = $this->connection->query($query)->fetch()->toArray();
+		$fetch = $this->connection->query($query)->fetch();
+		if ($fetch == false) {
+			$row['Jmeno'] = "";
+			$row['oID']= "";
+			$row['mID'] = "";
+		} else {
+			$row = $fetch->toArray();
+		}
 		$output[0][] = $ID;
 		$output[] = array(
 			'ID' => $ID,
