@@ -291,8 +291,8 @@ class DogRepository extends BaseRepository {
 		unset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]);	// tohle musím pro unsetnout vždy, protože když to někdo vyplní a nevybere typ zdravi tak je to bezpředmětný
 
 		if (isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]) || isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK])) {
-			$dkk = $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DKK]);
-			$dlk = $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
+			$dkk = (isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]) ? $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DKK]) : "");
+			$dlk = (isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]) ? $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DLK]) : "");
 			if ($dkk != "" && $dlk != "") {
 				$return .= sprintf("(az.Typ in (65,66) and az.Vysledek in (%s, %s))", $dbDriver->escapeText($dkk), $dbDriver->escapeText($dlk));
 				//$return .= "((az.Typ = 65 and az.Vysledek = '"  . $dkk . "') and (az.Typ = 66 and az.Vysledek = '"  . $dlk . "'))";

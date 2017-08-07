@@ -246,6 +246,7 @@
 					</tr>
 
 					{var lastParent = ""}
+					{var lastBirthDate = ""}
 					{foreach $descendants as $descennt}
 						{if $dog->getPohlavi() == App\Model\DogRepository::MALE_ORDER}
 							{if ($lastParent != $descennt->getMID()) || ($lastBirthDate != $descennt->getDatNarozeni())}
