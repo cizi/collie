@@ -40,8 +40,8 @@
 						<th>{=DOG_FORM_DEAD}:</th>
 						<td>{if $dog->getDatUmrti() != null}{$dog->getDatUmrti()->format('d.m.Y')}{/if}</td>
 
-						<th></th>
-						<td></td>
+						<th>{=DOG_FORM_DEAD_COM}:</th>
+						<td>{$dog->getUmrtiKomentar()}</td>
 					</tr>
 					<tr>
 						<th>{=DOG_FORM_HEIGHT}:</th>
@@ -88,7 +88,7 @@
 						<td>
 							{foreach $zdravi as $polozka}
 								{if $polozka->getVysledek() != ""}
-									{$enumRepo->findEnumItemByOrder($lang, $polozka->getTyp())}: {$polozka->getVysledek()}
+									<strong>{$enumRepo->findEnumItemByOrder($lang, $polozka->getTyp())}:</strong> {$polozka->getVysledek()}
 									{if trim($polozka->getKomentar()) != ""}- {$polozka->getKomentar()}{/if}
 									{if $polozka->getDatum() != null} - {$polozka->getDatum()->format('d.m.Y')}{/if}
 									{if $polozka->getVeterinar() != null}
@@ -98,6 +98,7 @@
 									<br />
 								{/if}
 							{/foreach}
+							{$dog->getZdravotniKomentar()}
 						</td>
 					</tr>
 					<tr>

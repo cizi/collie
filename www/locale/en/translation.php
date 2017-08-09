@@ -508,7 +508,7 @@ define("DOG_FORM_BREEDING_COM", 'Breeding comment');
 define("DOG_FORM_BOLOCKS", 'Testicles');
 define("DOG_FORM_CHEW", 'Bite');
 define("DOG_FORM_TEETH_COM", 'Teeth comment');
-define("DOG_FORM_HEALTH_COM", 'Teeth comment');
+define("DOG_FORM_HEALTH_COM", 'Health comment');
 define("DOG_FORM_PICS", 'Pictures');
 define("DOG_FORM_FILES", 'Other dog files');
 define("BONITACNI_POSUDEK", 'Bonitative report');

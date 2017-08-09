@@ -528,7 +528,7 @@ define("DOG_FORM_BREEDING_COM", 'Chovnost komentář');
 define("DOG_FORM_BOLOCKS", 'Varlata');
 define("DOG_FORM_CHEW", 'Skus');
 define("DOG_FORM_TEETH_COM", 'Zuby komentář');
-define("DOG_FORM_HEALTH_COM", 'Zuby komentář');
+define("DOG_FORM_HEALTH_COM", 'Zdravotní komentář');
 define("DOG_FORM_PICS", 'Obrázky');
 define("DOG_FORM_FILES", 'Ostatní soubory');
 define("BONITACNI_POSUDEK", 'Bonitační posudek');
