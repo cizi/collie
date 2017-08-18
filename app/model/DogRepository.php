@@ -107,7 +107,7 @@ class DogRepository extends BaseRepository {
 	 * @return array
 	 */
 	public function findFemaleDogsForSelect($withNotSelectedOption = true) {
-		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes where Stav = %i and Pohlavi = %i", DogStateEnum::ACTIVE ,self::FEMALE_ORDER];
+		$query = ["select `ID`, `Jmeno` from appdata_pes where Stav = %i and Pohlavi = %i", DogStateEnum::ACTIVE, self::FEMALE_ORDER];
 		$result = $this->connection->query($query);
 		$dogs = [];
 
@@ -116,7 +116,7 @@ class DogRepository extends BaseRepository {
 		}
 		foreach ($result->fetchAll() as $row) {
 			$dog = $row->toArray();
-			$dogs[$dog['ID']] = trim($dog['TitulyPredJmenem'] . " " . $dog['Jmeno'] . " " . $dog['TitulyZaJmenem']);
+			$dogs[$dog['ID']] = trim($dog['Jmeno']);
 		}
 
 		return $dogs;
@@ -126,7 +126,7 @@ class DogRepository extends BaseRepository {
 	 * @return array
 	 */
 	public function findDogsForSelect($withNotSelectedOption = true) {
-		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes where Stav = %i", DogStateEnum::ACTIVE];
+		$query = ["select `ID`, `Jmeno` from appdata_pes where Stav = %i", DogStateEnum::ACTIVE];
 		$result = $this->connection->query($query);
 		$dogs = [];
 
@@ -135,7 +135,7 @@ class DogRepository extends BaseRepository {
 		}
 		foreach ($result->fetchAll() as $row) {
 			$dog = $row->toArray();
-			$dogs[$dog['ID']] = trim($dog['TitulyPredJmenem'] . " " . $dog['Jmeno'] . " " . $dog['TitulyZaJmenem']);
+			$dogs[$dog['ID']] = trim($dog['Jmeno']);
 		}
 
 		return $dogs;
@@ -145,7 +145,7 @@ class DogRepository extends BaseRepository {
 	 * @return DogEntity[]
 	 */
 	public function findMaleDogsForSelect($withNotSelectedOption = true) {
-		$query = ["select `ID`,`TitulyPredJmenem`,`Jmeno`,`TitulyZaJmenem` from appdata_pes where Stav = %i and Pohlavi = %i", DogStateEnum::ACTIVE, self::MALE_ORDER];
+		$query = ["select `ID`, `Jmeno` from appdata_pes where Stav = %i and Pohlavi = %i", DogStateEnum::ACTIVE, self::MALE_ORDER];
 		$result = $this->connection->query($query);
 		$dogs = [];
 
@@ -154,7 +154,7 @@ class DogRepository extends BaseRepository {
 		}
 		foreach ($result->fetchAll() as $row) {
 			$dog = $row->toArray();
-			$dogs[$dog['ID']] = trim($dog['TitulyPredJmenem'] . " " . $dog['Jmeno'] . " " . $dog['TitulyZaJmenem']);
+			$dogs[$dog['ID']] = trim($dog['Jmeno']);
 		}
 
 		return $dogs;
