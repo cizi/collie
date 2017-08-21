@@ -120,7 +120,8 @@
 										<b>{=VET_ADDRESS}:</b> {$chovatel->getCity()}, {$chovatel->getZip()}<br />
 										<b>{=USER_EDIT_PHONE_LABEL}:</b> {$chovatel->getPhone()}<br />
 										<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$chovatel->getEmail()}<br />
-										<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$chovatel->getWeb()}>{$chovatel->getWeb()}</a>
+										{var urlTarget = ((strpos($chovatel->getWeb(), 'http://') !== false) ? $chovatel->getWeb() : "http://" . $chovatel->getWeb())}
+										<b>{=USER_EDIT_WEB_LABEL}:</b> <a target="_blank" href={$urlTarget}>{$chovatel->getWeb()}</a>
 									{/if}
 							{/if}
 						{/if}
@@ -137,7 +138,8 @@
 										<b>{=VET_ADDRESS}:</b> {$majitel->getCity()}, {$majitel->getZip()}<br />
 										<b>{=USER_EDIT_PHONE_LABEL}:</b> {$majitel->getPhone()}<br />
 										<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$majitel->getEmail()}<br />
-										<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$majitel->getWeb()}>{$majitel->getWeb()}</a><br />
+										{var urlTarget = ((strpos($chovatel->getWeb(), 'http://') !== false) ? $chovatel->getWeb() : "http://" . $chovatel->getWeb())}
+										<b>{=USER_EDIT_WEB_LABEL}:</b> <a target="_blank" href={$urlTarget}>{$majitel->getWeb()}</a><br />
 									{/if}
 								{/if}
 								{if $iterator->last == false}<hr class="margin5"/>{/if}
