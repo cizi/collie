@@ -122,7 +122,7 @@ abstract class BasePresenter extends Presenter {
 	}
 
 	/**
-	 * P�epne jazyk
+	 * Přepne jazyk
 	 * @param string $id
 	 */
 	public function actionToLanguage($id) {
@@ -133,6 +133,71 @@ abstract class BasePresenter extends Presenter {
 			$this->langRepository->switchToLanguage($this->session, $lang);
 		}
 		$this->redirect("Homepage:default", [ 'lang' => $lang, 'id' => $id ]);
+	}
+
+	/**
+	 * Proceed contact form
+	 *
+	 * @param Nette\Application\UI\Form $form
+	 * @param $values
+	 * @throws \Exception
+	 * @throws \phpmailerException
+	 */
+	public function contactFormSubmitted($form, $values) {
+		if (
+			isset($values['contactEmail']) && $values['contactEmail'] != ""
+			&& isset($values['name']) && $values['name'] != ""
+			&& isset($values['subject']) && $values['subject'] != ""
+			&& isset($values['text']) && $values['text'] != ""
+		) {
+			$supportedFilesFormat = ["png", "jpg", "bmp", "pdf", "doc", "xls", "docx", "xlsx"];
+			$fileError = false;
+			$path = "";
+			if (!empty($values['attachment'])) {
+				/** @var FileUpload $file */
+				$file = $values['attachment'];
+				if (!empty($file->name)) {
+					$fileController = new FileController();
+					if ($fileController->upload($file, $supportedFilesFormat, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+						$fileError = true;
+						$this->flashMessage(CONTACT_FORM_UNSUPPORTED_FILE_FORMAT, "alert-danger");
+					} else {
+						$path = $fileController->getPath();
+					}
+				}
+			}
+
+			if ($fileError == false) {
+				$email = new \PHPMailer();
+				$email->CharSet = "UTF-8";
+				$email->From = $values['contactEmail'];
+				$email->FromName = $values['name'];
+				$email->Subject = CONTACT_FORM_EMAIL_MY_SUBJECT . " - " . $values['subject'];
+				$email->Body = $values['text'];
+				$email->AddAddress($this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON));
+				if (!empty($path)) {
+					$email->AddAttachment($path);
+				}
+				$email->Send();
+				$this->flashMessage(CONTACT_FORM_WAS_SENT, "alert-success");
+			}
+		} else {
+			$this->flashMessage(CONTACT_FORM_SENT_FAILED, "alert-danger");
+		}
+		$this->redirect("default");
+	}
+
+	/**
+	 * Vytvoří componentu kontaktního formuláře
+	 * @return Nette\Application\UI\Form
+	 */
+	public function createComponentContactForm() {
+		$form = $this->contactForm->create();
+		if ($this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON) == "") {
+			$form["confirm"]->setDisabled();
+		}
+		$form->onSuccess[] = $this->contactFormSubmitted;
+		return $form;
 	}
 
 	protected function getMenuLevelPresenter($presenterName) {
@@ -147,7 +212,7 @@ abstract class BasePresenter extends Presenter {
 	}
 
 	/**
-	 * Vytvo�� odkaz podle �rovn� a po�ad�
+	 * Vytvoří odkaz podle úrovně a po�ad�
 	 * @param int $level
 	 * @param int $order
 	 * @return string
@@ -166,7 +231,7 @@ abstract class BasePresenter extends Presenter {
 	/**
 	 * @param Nette\Forms\Form $form
 	 */
-	public function resetUserPassword(Nette\Forms\Form $form) {
+	protected function resetUserPassword(Nette\Forms\Form $form) {
 		$values = $form->getHttpData();
 		if (isset($values["login"]) && $values["login"] != "") {
 			$user = $this->userRepository->getUserByEmail(trim($values["login"]));

@@ -83,7 +83,7 @@
 	{/if}
 	{* static header end *}
 
-	<div style="{if $bodyWidth != ""}width: {!$bodyWidth};{/if} margin: 0 auto;">
+	<div class="webMenu" style="{if $bodyWidth != ""}width: {!$bodyWidth};{/if} margin: 0 auto;">
 
 		{* slider *}
 		{if sliderEnabled}
@@ -154,7 +154,7 @@
 		<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
 	</div>
 
-	<div class="container content" style="{if $bodyWidth != ""}min-width: {!$bodyWidth};{/if}; max-width: 100%;">
+	<div class="container content" style="{if $bodyWidth != ""}width: {!$bodyWidth}{/if};">
 		{if isset($currentLink)}
 			{include content, pageKeywords => $currentLink->getTitle()}
 		{else}

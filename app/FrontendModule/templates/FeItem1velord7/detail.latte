@@ -1,6 +1,6 @@
 {block content}
 <div id="wrapper">
-	{include '../@block.latte'}
+	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
 
 	<div class="myContent">
 		<!-- Page Content -->
