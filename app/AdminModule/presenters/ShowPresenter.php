@@ -93,7 +93,7 @@ class ShowPresenter extends SignPresenter {
 	}
 
 	/**
-	 * Oznaèí výstavu jakko ukonèenou/neukonèenou
+	 * Oznaï¿½ï¿½ vï¿½stavu jakko ukonï¿½enou/neukonï¿½enou
 	 */
 	public function handleDoneSwitch() {
 		$data = $this->request->getParameters();
@@ -233,8 +233,20 @@ class ShowPresenter extends SignPresenter {
 		$arrayValues = $form->getHttpData();
 		$dogsToSave = [];
 		try {
-			if ((DogRepository::NOT_SELECTED != $arrayValues['pID']) && isset($arrayValues['Titul'])) {
-				foreach ($arrayValues['Titul'] as $key => $value) {
+			if (DogRepository::NOT_SELECTED != $arrayValues['pID']) {
+				if (isset($arrayValues['Titul'])) {
+					foreach ($arrayValues['Titul'] as $key => $value) {
+						$showDogEntity = new ShowDogEntity();
+						$showDogEntity->setPID($arrayValues['pID']);
+						$showDogEntity->setVID($arrayValues['vID']);
+						$showDogEntity->setTrida($arrayValues['Trida']);
+						$showDogEntity->setOceneni($arrayValues['Oceneni']);
+						$showDogEntity->setPoradi($arrayValues['Poradi']);
+						$showDogEntity->setTitulyDodatky($arrayValues['TitulyDodatky']);
+						$showDogEntity->setTitul($key);
+						$dogsToSave[] = $showDogEntity;
+					}
+				} else {
 					$showDogEntity = new ShowDogEntity();
 					$showDogEntity->setPID($arrayValues['pID']);
 					$showDogEntity->setVID($arrayValues['vID']);
@@ -242,9 +254,10 @@ class ShowPresenter extends SignPresenter {
 					$showDogEntity->setOceneni($arrayValues['Oceneni']);
 					$showDogEntity->setPoradi($arrayValues['Poradi']);
 					$showDogEntity->setTitulyDodatky($arrayValues['TitulyDodatky']);
-					$showDogEntity->setTitul($key);
+					$showDogEntity->setTitul(null);
 					$dogsToSave[] = $showDogEntity;
 				}
+
 				$this->showDogRepository->saveDogs($dogsToSave);
 				$this->flashMessage(SHOW_DOG_SAVED, "alert-success");
 				$this->redirect("detail", $arrayValues['vID']);

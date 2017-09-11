@@ -138,7 +138,7 @@
 										<b>{=VET_ADDRESS}:</b> {$majitel->getCity()}, {$majitel->getZip()}<br />
 										<b>{=USER_EDIT_PHONE_LABEL}:</b> {$majitel->getPhone()}<br />
 										<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$majitel->getEmail()}<br />
-										{var urlTarget = ((strpos($chovatel->getWeb(), 'http://') !== false) ? $chovatel->getWeb() : "http://" . $chovatel->getWeb())}
+										{var urlTarget = ((strpos($majitel->getWeb(), 'http://') !== false) ? $majitel->getWeb() : "http://" . $majitel->getWeb())}
 										<b>{=USER_EDIT_WEB_LABEL}:</b> <a target="_blank" href={$urlTarget}>{$majitel->getWeb()}</a><br />
 									{/if}
 								{/if}

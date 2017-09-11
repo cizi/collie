@@ -174,9 +174,10 @@ class DogRepository extends BaseRepository {
 			$query[] = "where Stav = " . DogStateEnum::ACTIVE . " ";
 			$query[] = $this->getWhereFromKeyValueArray($filter, $owner);
 			if (isset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER])) {
-				$query[] = "order by PlemenoCZ " . (($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]) == 2 ? "desc" : "asc");
+				$query[] = " order by PlemenoCZ " . (($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]) == 2 ? "desc" : "asc") . " limit %i , %i";
+			} else {
+				$query[] = " order by `Jmeno` asc limit %i , %i";
 			}
-			$query[] = " order by `Jmeno` asc limit %i , %i";
 			$query[] = $paginator->getOffset();
 			$query[] = $paginator->getLength();
 		}

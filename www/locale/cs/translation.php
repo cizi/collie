@@ -621,7 +621,7 @@ define("REFEREE_ADDED_FAILED", 'Při uložení došlo k chybě - záznam nebyl u
 // výstavy
 define("SHOW_MENU", 'Výstavy');
 define("SHOW_TITLE", 'Výstavy');
-define("SHOW_INFO", 'Ve zde je možné založit výstavu, editovat ji nebo zapsat výsledky');
+define("SHOW_INFO", 'Zde je možné založit výstavu, editovat ji nebo zapsat výsledky');
 define("SHOW_TABLE_TYPE", 'Typ');
 define("SHOW_TABLE_DATE", 'Datum');
 define("SHOW_TABLE_NAME", 'Název');
@@ -665,7 +665,7 @@ define("SHOW_ITEM_DELETE_QUESTION", 'Opravdu smazat položku?');
 define("SHOW_DOG_SAVED", 'Pes výstavy uložen');
 define("SHOW_DOG_DELETED", 'Položka psa smazána');
 define("SHOW_DOG_SAVED_FAILED", 'Chyba během zpracování');
-define("DOG_EMPTY_SAVE", 'Žádná data k uložení. Prosím, vyberte psa a titul!');
+define("DOG_EMPTY_SAVE", 'Žádná data k uložení.');
 define("SHOW_FRONTEND_YEAR", 'Rok');
 
 define("KINSHIP_VERIFICATION", "Zjišťoval jsem příbuznost");
