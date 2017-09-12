@@ -231,7 +231,7 @@ abstract class BasePresenter extends Presenter {
 	/**
 	 * @param Nette\Forms\Form $form
 	 */
-	protected function resetUserPassword(Nette\Forms\Form $form) {
+	public function resetUserPassword(Nette\Forms\Form $form) {
 		$values = $form->getHttpData();
 		if (isset($values["login"]) && $values["login"] != "") {
 			$user = $this->userRepository->getUserByEmail(trim($values["login"]));
