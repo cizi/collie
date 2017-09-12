@@ -167,6 +167,22 @@ class EnumerationRepository extends BaseRepository {
 	 * @param int $enumHeaderId
 	 * @return array
 	 */
+	public function findEnumItemsForSelectWithoutEmpty($lang, $enumHeaderId) {
+		$return = [];
+		$items = $this->findEnumItems($lang, $enumHeaderId);
+		/** @var EnumerationItemEntity $enumItem */
+		foreach($items as $enumItem) {
+			$return[$enumItem->getOrder()] = $enumItem->getItem();
+		}
+
+		return $return;
+	}
+
+	/**
+	 * @param string $lang
+	 * @param int $enumHeaderId
+	 * @return array
+	 */
 	public function findEnumItemsByOrder($order) {
 		$return = [];
 		$query = ["select * from enum_item where `order` = %i", $order];
