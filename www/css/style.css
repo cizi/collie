@@ -461,3 +461,11 @@ hr.motherFatherDelimiter {
 .fontBold{
 	font-weight: bold!important;
 }
+.deepPedigreeV2 {
+	width: 100%;
+	font-size: 12px;
+}
+.deepPedigreeV2 tbody tr td {
+	border: 1px solid black;
+	padding: 5px;
+}

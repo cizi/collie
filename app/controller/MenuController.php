@@ -163,10 +163,6 @@ class MenuController {
 		}
 
 		foreach ($itemsInLevel as $item) {
-			if (($item->getLevel() == 1) && ($item->getOrder() == 3)) { // ověření příbuznosti zatím v menu nechceme
-				continue;
-			}
-
 			if (
 				($this->user->isLoggedIn() && (($item->getLevel() == 1) && ($item->getOrder() == 14))) // pokud je přihlášený tak mu nebudeme zobrazovat odkaz přihlásit
 				|| (($this->user->isLoggedIn()) == false) && (($item->getLevel() == 1) && ($item->getOrder() == 8))	// pokud není přihlášený nebudeme mu zobrazovat odkaz uživatelského menu

@@ -12,7 +12,7 @@
 
 				{if isset($male) && isset($female)}
 					<div class="row">
-						<div class="col-lg-12 viewHeader">
+						<div class="col-lg-12 viewHeader" style="height: auto;">
 							{=KINSHIP_VERIFICATION}
 							[<u>{$male->getTitulyPredJmenem()} {$male->getJmeno()} {$male->getTitulyZaJmenem()}</u>]
 							{=KINSHIP_VERIFICATION_AND}
@@ -22,21 +22,11 @@
 					</div>
 
 					<div class="row">
-						<div class="col-lg-12 viewHeader">
-							{$male->getTitulyPredJmenem()} {$male->getJmeno()} {$male->getTitulyZaJmenem()}
-						</div>
-					</div>
-					<div class="row">
 						<div class="col-lg-12">
 							{!$malePedigree}
 						</div>
 					</div>
 
-					<div class="row">
-						<div class="col-lg-12 viewHeader">
-							{$female->getTitulyPredJmenem()} {$female->getJmeno()} {$female->getTitulyZaJmenem()}
-						</div>
-					</div>
 					<div class="row">
 						<div class="col-lg-12">
 							{!$femalePedigree}

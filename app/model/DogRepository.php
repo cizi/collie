@@ -876,6 +876,56 @@ class DogRepository extends BaseRepository {
 		return $dogs;
 	}
 
+	/**
+	 * @param int $pID
+	 * @param int $level
+	 * @param bool $male
+	 * @return string
+	 */
+	private function getDogPedigreeByIdLevel($pID, $lang, Presenter $presenter, $isUserAdmin, $level = 1, $male = true) {
+		$dog = $this->getDog($pID);
+		$searchedDog = "<br />";
+		for($i=1; $i<=$level;$i++) {
+			$dog = ($male ? $this->getDog($dog->getOID()) : $this->getDog($dog->getMID()));
+			if (($i == $level) && ($dog != null)) {
+				$searchedDog = $this->formatDogToPedigreeValidation($dog, $lang, $presenter, $isUserAdmin);
+			}
+
+		}
+
+		return $searchedDog;
+	}
+
+	private function formatDogToPedigreeValidation(DogEntity $dog, $lang, Presenter $presenter, $isUserAdmin) {
+		$link = ($isUserAdmin ? $presenter->link('FeItem1velord2:edit', $dog->getID()) : $presenter->link('FeItem1velord2:view', $dog->getID()));
+		$formated = '<b><a href="' . $link . '">'.trim($dog->getTitulyPredJmenem() . " " .  $dog->getJmeno() . " " . $dog->getTitulyZaJmenem()).'</a></b><br />';
+		$adds = [];
+
+		$plemeno = $dog->getPlemeno();
+		if (!empty($plemeno)) {
+			$adds[] = $this->enumRepository->findEnumItemByOrder($lang, $dog->getPlemeno());
+		}
+		$barva = $dog->getBarva();
+		if (!empty($barva)) {
+			$adds[] = $this->enumRepository->findEnumItemByOrder($lang, $dog->getBarva());
+		}
+		$vyska = $dog->getVyska();
+		if (!empty($vyska)) {
+			$adds[] = $dog->getVyska() . ' cm';
+		}
+
+		$query = ["SELECT item as Nazev, Vysledek FROM appdata_zdravi as zdravi LEFT JOIN enum_item as ciselnik
+				ON (ciselnik.enum_header_id = 14 AND ciselnik.order = zdravi.Typ) WHERE pID = %i ORDER BY Datum DESC", $dog->getID()];
+		$zdravi = $this->connection->query($query)->fetchPairs("Nazev","Vysledek");
+		foreach ($zdravi as $zdraviTyp => $zdraviVysledek) {
+			if (trim($zdraviVysledek) != "") {
+				$adds[] = '' . $zdraviTyp . ': ' . $zdraviVysledek;
+			}
+		}
+
+		return $formated . implode(', ',$adds);
+	}
+
 	// ------ příbuzbost ----
 	/**
 	 * @param int $pID
@@ -969,6 +1019,85 @@ class DogRepository extends BaseRepository {
 		//if (isset($row['mID'])) {
 			$this->genealogGetRshipPedigree($ID,$row['mID'],$level+1,$levels,$output,$route);
 		//}
+	}
+
+	/**
+	 * @param int $pID
+	 * @param string $lang
+	 * @param Presenter $presenter
+	 * @param bool $isUserAdmin
+	 * @param int $levels
+	 * @return string HTML tabulka
+	 */
+	public function genealogDeepPedigreeV2($pID, $lang, Presenter $presenter, $isUserAdmin) {
+		$dog = $this->getDog($pID);
+		$tbl = "<table class='deepPedigreeV2'>
+     		<tr>
+				<td rowspan='16' width='20%'>" . $this->formatDogToPedigreeValidation($dog, $lang, $presenter, $isUserAdmin) . "</td>
+				<td rowspan='8' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 1) ."</td>
+				<td rowspan='4' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 2) ."</td>
+				<td rowspan='2' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 3) ."</td>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4, false) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='2' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 3, false) ."</td>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4, false) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='4' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 2, false) ."</td>
+				<td rowspan='2' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 3) ."</td>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='1'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4, false) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='2' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 3, false) ."</td>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4,false) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='8' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 1, false) ."</td>
+				<td rowspan='4' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 2) ."</td>
+				<td rowspan='2' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 3) ."</td>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4, false) ."</td>
+    		</tr>
+     		<tr>
+				<td rowspan='2' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 3, false) ."</td>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4) ."</td>
+			</tr>
+			<tr>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4, false) ."</td>
+			</tr>
+			<tr>
+				<td rowspan='4' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 2, false) ."</td>
+				<td rowspan='2' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 3) ."</td>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4, false) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='2' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 3, false) ."</td>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4) ."</td>
+     		</tr>
+     		<tr>
+				<td rowspan='1' width='20%'>". $this->getDogPedigreeByIdLevel($pID, $lang, $presenter, $isUserAdmin, 4, false) ."</td>
+     		</tr>
+     </table>";
+
+		return $tbl;
 	}
 
 	/**
