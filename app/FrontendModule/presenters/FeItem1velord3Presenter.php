@@ -56,10 +56,10 @@ class FeItem1velord3Presenter extends FrontendPresenter {
 
 		$this->template->male = $this->dogRepository->getDog($pID);
 		$this->template->female = $this->dogRepository->getDog($fID);
-		$deepMark = true;
 		$this->template->coef = $this->dogRepository->genealogRelationship($pID, $fID);
 
-		$this->template->malePedigree = $this->dogRepository->genealogDeepPedigreeV2($pID, $lang, $this->presenter, $amIAdmin); // $this->dogRepository->genealogDeepPedigree($pID, 5, $lang, $this->presenter, $amIAdmin, $deepMark);
-		$this->template->femalePedigree = $this->dogRepository->genealogDeepPedigreeV2($fID, $lang, $this->presenter, $amIAdmin); //$this->dogRepository->genealogDeepPedigree($fID, 5, $lang, $this->presenter, $amIAdmin, $deepMark);
+		$deepMark = true;
+		$this->template->malePedigree = $this->dogRepository->genealogDeepPedigreeV2($pID, 4, $lang, $this->presenter, $amIAdmin, $deepMark);
+		$this->template->femalePedigree = $this->dogRepository->genealogDeepPedigreeV2($fID, 4, $lang, $this->presenter, $amIAdmin, $deepMark);
 	}
 }
