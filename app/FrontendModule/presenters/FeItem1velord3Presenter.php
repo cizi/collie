@@ -58,7 +58,20 @@ class FeItem1velord3Presenter extends FrontendPresenter {
 
 		$deepMark = true;
 		$this->template->genLev = $urovne;
-		$this->template->malePedigree = $this->dogRepository->genealogDeepPedigreeV2($pID, $urovne, $lang, $this->presenter, $amIAdmin, $deepMark);
+
+		global $pedigree;
+		// $this->template->malePedigree =
+		$this->dogRepository->genealogDeepPedigreeV2($pID, $urovne, $lang, $this->presenter, $amIAdmin, $deepMark);
+		$allDogsInPedigree = $pedigree;
+
+		// $this->template->femalePedigree =
+		$this->dogRepository->genealogDeepPedigreeV2($fID, $urovne, $lang, $this->presenter, $amIAdmin, $deepMark);
+		$allDogsInPedigree = array_merge($allDogsInPedigree, $pedigree);
+
+		$this->dogRepository->selectRepeatingDogs($pID, $fID, $allDogsInPedigree);
 		$this->template->femalePedigree = $this->dogRepository->genealogDeepPedigreeV2($fID, $urovne, $lang, $this->presenter, $amIAdmin, $deepMark);
+		$this->template->malePedigree = $this->dogRepository->genealogDeepPedigreeV2($pID, $urovne, $lang, $this->presenter, $amIAdmin, $deepMark);
+
+		$this->template->avk = $this->dogRepository->genealogAvk($allDogsInPedigree);
 	}
 }

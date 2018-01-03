@@ -54,6 +54,27 @@ class DogRepository extends BaseRepository {
 	/** @var LitterApplicationRepository */
 	private $litterApplicationRepository;
 
+	/** @var array pole výyskytu psů během vypisování rodokmenu */
+	private $avkTable = [];
+
+	/** @var array pole barev podle výskytu */
+	private $colorByDogId = [];
+
+	/** @var array pole možných barev pokud je deepmark */
+	private $backgroundColors = [
+		"#5D8AA8", "#F0F8FF", "#E32636", "#E52B50", "#FFBF00", "#A4C639", "#8DB600", "#FBCEB1", "#7FFFD4", "#4B5320", "#3B444B", "#E9D66B", "#B2BEB5",
+		"#87A96B", "#FF9966", "#6D351A", "#007FFF", "#89CFF0", "#A1CAF1", "#F4C2C2", "#FFD12A", "#848482", "#98777B", "#F5F5DC", "#3D2B1F", "#318CE7",
+		"#FAF0BE", "#0000FF", "#DE5D83", "#79443B", "#CC0000", "#B5A642", "#66FF00", "#BF94E4", "#C32148", "#FF007F",  "#08E8DE", "#D19FE8",  "#004225",
+		"#CD7F32", "#964B00", "#FFC1CC", "#E7FEFF", "#F0DC82", "#800020", "#DEB887", "#CC5500", "#E97451", "#8A3324", "#BD33A4", "#702963", "#536878",
+		"#006B3C", "#ED872D", "#E30022", "#A3C1AD",	"#78866B", "#FFEF00", "#FF0800", "#C41E3A", "#00CC99", "#960018", "#99BADD",  "#ED9121", "#92A1CF",
+		"#ACE1AF", "#007BA7", "#2A52BE", "#A0785A", "#F7E7CE", "#36454F", "#DFFF00", "#DE3163", "#FFB7C5", "#CD5C5C", "#7B3F00", "#FFA700", "#98817B",
+		"#E34234", "#D2691E", "#E4D00A", "#FBCCE7", "#00FF6F", "#0047AB", "#9BDDFF", "#002E63", "#8C92AC", "#B87333", "#FF3800", "#FF7F50", "#893F45",
+		"#FBEC5D", "#B31B1B", "#6495ED", "#FFF8DC", "#FFFDD0", "#DC143C", "#00FFFF", "#FFFF31", "#F0E130", "#00008B", "#654321", "#5D3954", "#A40000",
+		"#08457E", "#986960", "#CD5B45", "#008B8B", "#B8860B", "#013220", "#1A2421", "#BDB76B", "#483C32", "#734F96", "#8B008B", "#003366", "#556B2F",
+		"#FF8C00", 	"#779ECB", "#03C03C", "#966FD6",  "#C23B22", "#E75480","#003399", "#872657", "#E9967A", "#560319", "#3C1414", "#2F4F4F", "#177245",
+		"#918151", "#FFA812", "#CC4E5C", "#9400D3", "#555555", "#1560BD", "#C19A6B", "#EDC9AF", "#696969", "#85BB65", "#00009C", "#E1A95F", "#614051",
+	];
+
 	/**
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param Connection $connection
@@ -947,6 +968,28 @@ class DogRepository extends BaseRepository {
 	}
 
 	/**
+	 * Výpočet AVK podle rodokmenu
+	 * pozn. tabulka avk je plněna během načítání dat rodokmenu
+	 * @return float
+	 */
+	public function genealogAvk(array $allDogsInPedigree) {
+		$deduction = 0;
+		$allDogsCount = count($allDogsInPedigree);
+		foreach ($this->avkTable as $dogId => $numberOfAppearance) {
+			if ($numberOfAppearance > 1) {
+				$deduction += ($numberOfAppearance - 1);
+			}
+		}
+		$avkCounting = ($allDogsCount - $deduction)/$allDogsCount;
+		if ($avkCounting < 0) {
+			$avkCounting = 1 + $avkCounting;
+		}
+		$avk = floor($avkCounting * 100);
+
+		return $avk;
+	}
+
+	/**
 	 * @param int $ID1
 	 * @param int $ID2
 	 * @param int $level
@@ -1062,9 +1105,6 @@ class DogRepository extends BaseRepository {
 	public function genealogDeepPedigreeV2($ID, $max, $lang, Presenter $presenter, $isUserAdmin, $deepMark = false) {
 		$this->clearPedigreeSession();
 		global $pedigree;
-		 /*$query = ["SELECT pes.ID AS ID, pes.Jmeno AS Jmeno, pes.oID AS oID, pes.mID AS mID FROM appdata_pes as pes
-										WHERE pes.ID= %i LIMIT 1", $ID];
-		$row = $this->connection->query($query)->fetch()->toArray(); */
 		$dog = $this->getDog($ID);
 
 		$pedigree = array();
@@ -1072,11 +1112,28 @@ class DogRepository extends BaseRepository {
 		$this->genealogDPTrace($dog->getMID(),1,$max, $lang);
 
 		$htmlResult = "<table class='deepPedigreeV2'><tr>
-				<td>". $this->formatDogToPedigreeValidation($dog, $lang, $presenter, $isUserAdmin) ."</td>
+				<td " . ($deepMark && isset($this->colorByDogId[$ID]) ? "style='background-color: ". $this->colorByDogId[$ID] ." ;'" : "") . " >".
+					$this->formatDogToPedigreeValidation($dog, $lang, $presenter, $isUserAdmin) ."</td>
 				<td>". $this->genealogShowDeepPTable($max, $presenter, $ID, $isUserAdmin, $deepMark) ."</td>
 			</tr></table>";
 
 		return $htmlResult;
+	}
+
+	/**
+	 * Projde kompletní rodokment a označí opakuící se psy
+	 * @param array $completePedigree
+	 */
+	public function selectRepeatingDogs($pID, $fID, array $completePedigree) {
+		$completePedigree[] = ['ID' => $pID];	// přidám psa
+		$completePedigree[] = ['ID' => $fID];	// přidám fenu u kterých tu příbuznost ověřuji
+		foreach ($completePedigree as $key => $values) {
+			if ($this->isIdInPedigreeMoreTimes($completePedigree, $values['ID'])) {
+				if (isset($this->colorByDogId[$values['ID']]) == false) {    // barvy pokud se pes vyskytuje v rodokemnu více krát
+					$this->chooseColorForMoreOccurrencesDog($values['ID']);
+				}
+			}
+		}
 	}
 
 	/**
@@ -1161,9 +1218,15 @@ class DogRepository extends BaseRepository {
 		}
 	}
 
-	private function isIdInPedigreeMoreTimes(array $pedigree, $id) {
+	/**
+	 * Porovná pole tabulky rodokmenu a najde opakující se psy
+	 * @param array $completePedigree
+	 * @param $id
+	 * @return bool
+	 */
+	private function isIdInPedigreeMoreTimes(array $completePedigree, $id) {
 		$times = 0;
-		foreach ($pedigree as $level => $values) {
+		foreach ($completePedigree as $level => $values) {
 			if (isset($values['ID']) && ($values['ID'] == $id)) {
 				$times += 1;
 			}
@@ -1182,9 +1245,6 @@ class DogRepository extends BaseRepository {
 	 */
 	private function genealogShowDeepPTable($max, Presenter $presenter, $ID, $isUserAdmin, $deepMark) {
 		global $pedigree;
-		global $deepMarkArray;	// TODO - to už asi nepotřebuji
-		$backgroundColors = ["#E1FAFA", "#D7F9E1", "#E2FA79","#7ae8f9", "#a4f97a", "#efbfff", "#ffd3a5", "#ffc6f7", "#dbc9c9", "#6ddb74", "#E1FAFA", "#D7F9E1", "#E2FA79","#7ae8f9", "#a4f97a", "#efbfff", "#ffd3a5", "#ffc6f7", "#dbc9c9", "#6ddb74"];
-		$colorById = [];
 		$maxLevel = $max;
 		$htmlOutput = "<table border='0' cellspacing='0' cellpadding='3' class='genTable'><tr>";
 		$lastLevel = 0;
@@ -1223,17 +1283,14 @@ class DogRepository extends BaseRepository {
 			}
 
 			if ($pedigree[$i]['ID'] != NULL) {
+				if(isset($this->avkTable[$pedigree[$i]['ID']])) {	// avk
+					$this->avkTable[$pedigree[$i]['ID']] += + 1;
+				} else {
+					$this->avkTable[$pedigree[$i]['ID']] = 1;
+				}
 				$link = ($isUserAdmin ? $presenter->link('FeItem1velord2:edit', $pedigree[$i]['ID']) : $presenter->link('FeItem1velord2:view', $pedigree[$i]['ID']));
-				if ($deepMark &&  $this->isIdInPedigreeMoreTimes($pedigree, $pedigree[$i]['ID'])) { //in_array($pedigree[$i]['ID'], $deepMarkArray)) { stará logika
-					if (isset($colorById[$pedigree[$i]['ID']]) == false) {
-						$rand = 0;
-						while (isset($backgroundColors[$rand]) == false){
-							$rand += 1;
-						}
-						$colorById[$pedigree[$i]['ID']] = $backgroundColors[$rand];
-						unset($backgroundColors[$rand]);
-					}
-					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'" style="background-color:'.$colorById[$pedigree[$i]['ID']].'">'
+				if ($deepMark && isset($this->colorByDogId[$pedigree[$i]['ID']])) { //in_array($pedigree[$i]['ID'], $deepMarkArray)) { stará logika
+					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'" style="background-color:'.$this->colorByDogId[$pedigree[$i]['ID']].'">'
 					. '<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds . '</td>';
 				} else {
 					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">
@@ -1267,6 +1324,19 @@ class DogRepository extends BaseRepository {
 		$htmlOutput .= "</table>";
 
 		return $htmlOutput;
+	}
+
+	/**
+	 * Vybere barvu pro opakující se psy
+	 * @param int $dogId
+	 */
+	private function chooseColorForMoreOccurrencesDog($dogId) {
+		$rand = 0;
+		while (isset($this->backgroundColors[$rand]) == false){
+			$rand += 1;
+		}
+		$this->colorByDogId[$dogId] = $this->backgroundColors[$rand];
+		unset($this->backgroundColors[$rand]);
 	}
 
 	/**

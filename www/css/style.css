@@ -468,9 +468,32 @@ hr.motherFatherDelimiter {
 }
 .deepPedigreeV2 tbody tr td:first-child {
 	width: 18%!important;
+	background-color: #FAFDEA;
 	border-bottom: 1px solid lightgrey;
+	border-top: 1px solid lightgrey;
 	margin: 0;
+	padding: 5px;
+	border-left: 1px solid lightgrey;
 }
 .deepPedigreeV2 tbody tr td table{
-	margin-top: -6px;
+	margin-top: 0;
+}
+.kinshipVerificationTable{
+	width: 100%;
+	background: none;
+	color: #AB4DAE;
+	font-size: 18px;
+	font-weight: bold;
+}
+.ksvtAvk {
+}
+.ksvtCoi{
+}
+.ksvtFx {
+}
+.ksvtLevels{
+	font-size: 14px;
+	color: #2f2f2f;
+	text-align: right;
+	padding-top: 5px;
 }
