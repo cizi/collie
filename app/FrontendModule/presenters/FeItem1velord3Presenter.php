@@ -29,7 +29,6 @@ class FeItem1velord3Presenter extends FrontendPresenter {
 
 	public function createComponentKinshipVerificationForm() {
 		$form = $this->kinshipVerificationForm->create();
-		$form->onSuccess[] = $this->verifyKinship;
 
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = NULL;
@@ -45,12 +44,11 @@ class FeItem1velord3Presenter extends FrontendPresenter {
 	}
 
 	/**
-	 * @param Form $form
+	 * @param int $pID
+	 * @param int $fID
+	 * @param int $urovne
 	 */
-	public function verifyKinship(Form $form) {
-		$arrayValues = $form->getHttpData();
-		$pID = $arrayValues['pID'];
-		$fID = $arrayValues['fID'];
+	public function actionVerifyKinship($pID, $fID, $urovne = 4) {
 		$lang = $this->langRepository->getCurrentLang($this->session);
 		$amIAdmin = ($this->getUser()->isLoggedIn() && $this->getUser()->getRoles()[0] == UserRoleEnum::USER_ROLE_ADMINISTRATOR);
 
@@ -59,7 +57,8 @@ class FeItem1velord3Presenter extends FrontendPresenter {
 		$this->template->coef = $this->dogRepository->genealogRelationship($pID, $fID);
 
 		$deepMark = true;
-		$this->template->malePedigree = $this->dogRepository->genealogDeepPedigreeV2($pID, 4, $lang, $this->presenter, $amIAdmin, $deepMark);
-		$this->template->femalePedigree = $this->dogRepository->genealogDeepPedigreeV2($fID, 4, $lang, $this->presenter, $amIAdmin, $deepMark);
+		$this->template->genLev = $urovne;
+		$this->template->malePedigree = $this->dogRepository->genealogDeepPedigreeV2($pID, $urovne, $lang, $this->presenter, $amIAdmin, $deepMark);
+		$this->template->femalePedigree = $this->dogRepository->genealogDeepPedigreeV2($fID, $urovne, $lang, $this->presenter, $amIAdmin, $deepMark);
 	}
 }

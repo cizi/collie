@@ -462,19 +462,15 @@ hr.motherFatherDelimiter {
 	font-weight: bold!important;
 }
 .deepPedigreeV2 {
-	border-collapse: collapse;
 	width: 100%;
 	font-size: 12px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .deepPedigreeV2 tbody tr td:first-child {
-	border: 1px solid black;
-	border-right: 0;
-	padding: 5px;
 	width: 18%!important;
+	border-bottom: 1px solid lightgrey;
+	margin: 0;
 }
 .deepPedigreeV2 tbody tr td table{
-	margin-top: 0!important;
-}
-.deepPedigreeV2 tbody tr td table tbody tr td {
-	border: 1px solid black!important;
+	margin-top: -6px;
 }

@@ -44,6 +44,7 @@ class KinshipVerificationForm extends Nette\Object {
 			->setAttribute("tabindex", $counter + 3);
 
 		$form->addSubmit("save", MATING_FORM_SAVE)
+			->setAttribute("id","kinshipVerificationValidation")
 			->setAttribute("class", "btn btn-primary margin10")
 			->setAttribute("tabindex", $counter + 4);
 

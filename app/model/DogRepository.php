@@ -1161,6 +1161,17 @@ class DogRepository extends BaseRepository {
 		}
 	}
 
+	private function isIdInPedigreeMoreTimes(array $pedigree, $id) {
+		$times = 0;
+		foreach ($pedigree as $level => $values) {
+			if (isset($values['ID']) && ($values['ID'] == $id)) {
+				$times += 1;
+			}
+		}
+
+		return ($times > 1);
+	}
+
 	/**
 	 * @param int $max
 	 * @param Presenter $presenter
@@ -1171,9 +1182,11 @@ class DogRepository extends BaseRepository {
 	 */
 	private function genealogShowDeepPTable($max, Presenter $presenter, $ID, $isUserAdmin, $deepMark) {
 		global $pedigree;
-		global $deepMarkArray;
+		global $deepMarkArray;	// TODO - to už asi nepotřebuji
+		$backgroundColors = ["#E1FAFA", "#D7F9E1", "#E2FA79","#7ae8f9", "#a4f97a", "#efbfff", "#ffd3a5", "#ffc6f7", "#dbc9c9", "#6ddb74", "#E1FAFA", "#D7F9E1", "#E2FA79","#7ae8f9", "#a4f97a", "#efbfff", "#ffd3a5", "#ffc6f7", "#dbc9c9", "#6ddb74"];
+		$colorById = [];
 		$maxLevel = $max;
-		$htmlOutput = "<table border='0' cellspacing='1' cellpadding='3' class='genTable'><tr>";
+		$htmlOutput = "<table border='0' cellspacing='0' cellpadding='3' class='genTable'><tr>";
 		$lastLevel = 0;
 		for ($i = 0; $i < count($pedigree); $i++) {
 			if ($pedigree[$i]['Uroven'] <= $lastLevel) {
@@ -1211,8 +1224,16 @@ class DogRepository extends BaseRepository {
 
 			if ($pedigree[$i]['ID'] != NULL) {
 				$link = ($isUserAdmin ? $presenter->link('FeItem1velord2:edit', $pedigree[$i]['ID']) : $presenter->link('FeItem1velord2:view', $pedigree[$i]['ID']));
-				if ($deepMark && in_array($pedigree[$i]['ID'], $deepMarkArray)) {
-					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'" style="background:#FFFFCC">'
+				if ($deepMark &&  $this->isIdInPedigreeMoreTimes($pedigree, $pedigree[$i]['ID'])) { //in_array($pedigree[$i]['ID'], $deepMarkArray)) { stará logika
+					if (isset($colorById[$pedigree[$i]['ID']]) == false) {
+						$rand = 0;
+						while (isset($backgroundColors[$rand]) == false){
+							$rand += 1;
+						}
+						$colorById[$pedigree[$i]['ID']] = $backgroundColors[$rand];
+						unset($backgroundColors[$rand]);
+					}
+					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'" style="background-color:'.$colorById[$pedigree[$i]['ID']].'">'
 					. '<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds . '</td>';
 				} else {
 					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">

@@ -49,6 +49,14 @@
 				placeholder_text: {=MATING_FORM_PICK_FEMALE},
 				no_results_text: {=MATING_FORM_NO_MATCH}
 			});
+
+			$("#kinshipVerificationValidation").click(function(event) {
+				event.preventDefault();
+				var pID = $("#frm-kinshipVerificationForm-pID").val();
+				var fID = $("#frm-kinshipVerificationForm-fID").val();
+				var link = {link verifyKinship} + "?pID=" + pID +"&fID=" + fID;
+				window.open(link);
+			});
 		})
 	</script>
 {/block}
