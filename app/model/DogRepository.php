@@ -62,9 +62,9 @@ class DogRepository extends BaseRepository {
 
 	/** @var array pole možných barev pokud je deepmark */
 	private $backgroundColors = [
-		"#5D8AA8", "#F0F8FF", "#E32636", "#E52B50", "#FFBF00", "#A4C639", "#8DB600", "#FBCEB1", "#7FFFD4", "#4B5320", "#3B444B", "#E9D66B", "#B2BEB5",
-		"#87A96B", "#FF9966", "#6D351A", "#007FFF", "#89CFF0", "#A1CAF1", "#F4C2C2", "#FFD12A", "#848482", "#98777B", "#F5F5DC", "#3D2B1F", "#318CE7",
-		"#FAF0BE", "#0000FF", "#DE5D83", "#79443B", "#CC0000", "#B5A642", "#66FF00", "#BF94E4", "#C32148", "#FF007F",  "#08E8DE", "#D19FE8",  "#004225",
+		"#F0F8FF", "#E32636", "#E52B50", "#FFBF00", "#8DB600", "#FBCEB1", "#7FFFD4", "#3B444B", "#E9D66B", "#B2BEB5",
+		"#87A96B", "#FF9966", "#89CFF0", "#A1CAF1", "#F4C2C2", "#FFD12A", "#F5F5DC", "#3D2B1F",
+		"#FAF0BE", "#DE5D83", "#79443B", "#CC0000", "#B5A642", "#66FF00", "#BF94E4", "#C32148", "#FF007F",  "#08E8DE", "#D19FE8",  "#004225",
 		"#CD7F32", "#964B00", "#FFC1CC", "#E7FEFF", "#F0DC82", "#800020", "#DEB887", "#CC5500", "#E97451", "#8A3324", "#BD33A4", "#702963", "#536878",
 		"#006B3C", "#ED872D", "#E30022", "#A3C1AD",	"#78866B", "#FFEF00", "#FF0800", "#C41E3A", "#00CC99", "#960018", "#99BADD",  "#ED9121", "#92A1CF",
 		"#ACE1AF", "#007BA7", "#2A52BE", "#A0785A", "#F7E7CE", "#36454F", "#DFFF00", "#DE3163", "#FFB7C5", "#CD5C5C", "#7B3F00", "#FFA700", "#98817B",

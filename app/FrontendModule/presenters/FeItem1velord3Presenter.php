@@ -54,7 +54,7 @@ class FeItem1velord3Presenter extends FrontendPresenter {
 
 		$this->template->male = $this->dogRepository->getDog($pID);
 		$this->template->female = $this->dogRepository->getDog($fID);
-		$this->template->coef = $this->dogRepository->genealogRelationship($pID, $fID);
+		//$this->template->coef = $this->dogRepository->genealogRelationship($pID, $fID);
 
 		$deepMark = true;
 		$this->template->genLev = $urovne;
