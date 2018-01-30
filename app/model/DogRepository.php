@@ -1291,10 +1291,10 @@ class DogRepository extends BaseRepository {
 				$link = ($isUserAdmin ? $presenter->link('FeItem1velord2:edit', $pedigree[$i]['ID']) : $presenter->link('FeItem1velord2:view', $pedigree[$i]['ID']));
 				if ($deepMark && isset($this->colorByDogId[$pedigree[$i]['ID']])) { //in_array($pedigree[$i]['ID'], $deepMarkArray)) { stará logika
 					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'" style="background-color:'.$this->colorByDogId[$pedigree[$i]['ID']].'">'
-					. '<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds . '</td>';
+					. '<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>' . ($deepMark ? "" : $adds) . '</td>';
 				} else {
 					$htmlOutput .= '<td rowspan="'.pow(2,$maxLevel - $pedigree[$i]['Uroven'] ).'">
-					<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>'.$adds.'</td>';
+					<b><a href="' . $link . '">'.$pedigree[$i]['Jmeno'].'</a></b>' . ($deepMark ? "" :  $adds) . '</td>';
 				}
 				if (($pedigree[$i]['Uroven'] > 0) && ($pedigree[$i]['Uroven'] != $maxLevel)) {
 					$this->setLastPredecessorSession($pedigree[$i]['Uroven'], $pedigree[$i]['ID']);

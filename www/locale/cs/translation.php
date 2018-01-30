@@ -671,6 +671,7 @@ define("SHOW_FRONTEND_YEAR", 'Rok');
 define("KINSHIP_VERIFICATION", "Zjišťoval jsem příbuznost");
 define("KINSHIP_VERIFICATION_AND", "a");
 define("KINSHIP_VERIFICATION_CROSS", "V úvahu se bere i křížení předků");
+define("KINSHIP_VERIFICATION_NO_AJAX_DATA", "<žádná dostupná data>");
 
 define("AWAITING_CHANGES", "Změny čekající na schválení");
 define("AWAITING_CHANGES_DOG", "Pes");

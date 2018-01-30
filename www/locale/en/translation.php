@@ -650,6 +650,7 @@ define("SHOW_FRONTEND_YEAR", 'Year');
 define("KINSHIP_VERIFICATION", "Inbreeding checking");
 define("KINSHIP_VERIFICATION_AND", "and");
 define("KINSHIP_VERIFICATION_CROSS", "Crossing of ancestors is taking in consideration");
+define("KINSHIP_VERIFICATION_NO_AJAX_DATA", "<no data available>");
 
 define("AWAITING_CHANGES", "Awaiting changes");
 define("AWAITING_CHANGES_DOG", "Dog");

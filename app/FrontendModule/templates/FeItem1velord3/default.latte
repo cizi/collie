@@ -32,8 +32,18 @@
 							{!$femalePedigree}
 						</div>
 					</div>
-
 				{/if}
+
+				<div class="row" style="height: 240px;">
+					<div class="col-xl-1 col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+					<div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-xs-12" id="maleDogContainer">
+
+					</div>
+					<div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-xs-12" id="femaleDogContainer">
+
+					</div>
+					<div class="col-xl-1 col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -50,12 +60,50 @@
 				no_results_text: {=MATING_FORM_NO_MATCH}
 			});
 
-			$("#kinshipVerificationValidation").click(function(event) {
-				event.preventDefault();
-				var pID = $("#frm-kinshipVerificationForm-pID").val();
-				var fID = $("#frm-kinshipVerificationForm-fID").val();
-				var link = {link verifyKinship} + "?pID=" + pID +"&fID=" + fID;
-				window.open(link);
+			$("#frm-kinshipVerificationForm").submit(function( event ) {
+				if (($("#frm-kinshipVerificationForm-pID").val() == "0") || ($("#frm-kinshipVerificationForm-fID").val() == "0")) {
+					event.preventDefault();
+				} else {
+					event.preventDefault();
+					var pID = $("#frm-kinshipVerificationForm-pID").val();
+					var fID = $("#frm-kinshipVerificationForm-fID").val();
+					var link = {link verifyKinship} + "?pID=" + pID +"&fID=" + fID;
+					window.open(link);
+				}
+			});
+
+			$('#frm-kinshipVerificationForm-pID').on('change', function() {
+				if (this.value != 0) {
+					$.ajax({
+						url: {link dogSwitch!},
+						data: {
+							idDog: this.value
+						},
+						success: function (data) {
+							$("#maleDogContainer").html(data);
+						},
+						error: function () {
+							alert({=USER_ERROR_ACTIVE_SWITCH});
+						}
+					});
+				}
+			});
+
+			$('#frm-kinshipVerificationForm-fID').on('change', function() {
+				if (this.value != 0) {
+					$.ajax({
+						url: {link dogSwitch!},
+						data: {
+							idDog: this.value
+						},
+						success: function (data) {
+							$("#femaleDogContainer").html(data);
+						},
+						error: function () {
+							alert({=USER_ERROR_ACTIVE_SWITCH});
+						}
+					});
+				}
 			});
 		})
 	</script>
