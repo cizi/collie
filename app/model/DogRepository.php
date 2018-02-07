@@ -62,10 +62,12 @@ class DogRepository extends BaseRepository {
 
 	/** @var array pole možných barev pokud je deepmark */
 	private $backgroundColors = [
-		"#F0F8FF", "#E32636", "#E52B50", "#FFBF00", "#8DB600", "#FBCEB1", "#7FFFD4", "#3B444B", "#E9D66B", "#B2BEB5",
-		"#87A96B", "#FF9966", "#89CFF0", "#A1CAF1", "#F4C2C2", "#FFD12A", "#F5F5DC", "#3D2B1F",
-		"#FAF0BE", "#DE5D83", "#79443B", "#CC0000", "#B5A642", "#66FF00", "#BF94E4", "#C32148", "#FF007F",  "#08E8DE", "#D19FE8",  "#004225",
-		"#CD7F32", "#964B00", "#FFC1CC", "#E7FEFF", "#F0DC82", "#800020", "#DEB887", "#CC5500", "#E97451", "#8A3324", "#BD33A4", "#702963", "#536878",
+		"#9966FF", "#996699", "#CC66CC", "#CC6666", "#0066FF", "#666699", "#CC9900", "#FF9999", "#669900", "#999900", "#00CCCC", "#66CCCC",
+		"#FFCC00", "#CCCC66", "#66CCCC", "#FFCCFF", "#99CC33", "#66FFFF", "#666666", "#999999", "#FF9933", "#999933", "#669999",
+
+		"#F0F8FF", "#E32636", "#E52B50", "#FFBF00", "#8DB600", "#FBCEB1", "#7FFFD4", "#3B444B", "#E9D66B", "#B2BEB5", "#87A96B", "#FF9966", "#89CFF0",
+		"#A1CAF1", "#F4C2C2", "#FFD12A", "#F5F5DC", "#3D2B1F", "#FAF0BE", "#DE5D83", "#79443B", "#CC0000", "#B5A642", "#66FF00", "#BF94E4", "#C32148",
+		"#FF007F", "#08E8DE", "#D19FE8", "#004225", "#CD7F32", "#964B00", "#FFC1CC", "#E7FEFF", "#F0DC82", "#800020", "#DEB887", "#CC5500", "#E97451",
 		"#006B3C", "#ED872D", "#E30022", "#A3C1AD",	"#78866B", "#FFEF00", "#FF0800", "#C41E3A", "#00CC99", "#960018", "#99BADD",  "#ED9121", "#92A1CF",
 		"#ACE1AF", "#007BA7", "#2A52BE", "#A0785A", "#F7E7CE", "#36454F", "#DFFF00", "#DE3163", "#FFB7C5", "#CD5C5C", "#7B3F00", "#FFA700", "#98817B",
 		"#E34234", "#D2691E", "#E4D00A", "#FBCCE7", "#00FF6F", "#0047AB", "#9BDDFF", "#002E63", "#8C92AC", "#B87333", "#FF3800", "#FF7F50", "#893F45",
@@ -73,6 +75,7 @@ class DogRepository extends BaseRepository {
 		"#08457E", "#986960", "#CD5B45", "#008B8B", "#B8860B", "#013220", "#1A2421", "#BDB76B", "#483C32", "#734F96", "#8B008B", "#003366", "#556B2F",
 		"#FF8C00", 	"#779ECB", "#03C03C", "#966FD6",  "#C23B22", "#E75480","#003399", "#872657", "#E9967A", "#560319", "#3C1414", "#2F4F4F", "#177245",
 		"#918151", "#FFA812", "#CC4E5C", "#9400D3", "#555555", "#1560BD", "#C19A6B", "#EDC9AF", "#696969", "#85BB65", "#00009C", "#E1A95F", "#614051",
+		"#8A3324", "#BD33A4", "#702963", "#536878"
 	];
 
 	/**
@@ -962,8 +965,8 @@ class DogRepository extends BaseRepository {
 	 * @param int $fID
 	 * @return float
 	 */
-	public function genealogRelationship($pID,$fID) {
-		$coef = floor($this->genealogRshipGo($pID,$fID,1)*10000)/100;
+	public function genealogRelationship($pID,$fID, $levels) {
+		$coef = floor($this->genealogRshipGo($pID,$fID,0, $levels)*10000)/100;
 		return $coef;
 	}
 
@@ -975,16 +978,18 @@ class DogRepository extends BaseRepository {
 	public function genealogAvk(array $allDogsInPedigree) {
 		$deduction = 0;
 		$allDogsCount = count($allDogsInPedigree);
+
 		foreach ($this->avkTable as $dogId => $numberOfAppearance) {
 			if ($numberOfAppearance > 1) {
 				$deduction += ($numberOfAppearance - 1);
 			}
 		}
+
 		$avkCounting = ($allDogsCount - $deduction)/$allDogsCount;
 		if ($avkCounting < 0) {
 			$avkCounting = 1 + $avkCounting;
 		}
-		$avk = floor($avkCounting * 100);
+		$avk = round($avkCounting * 100, 2);
 
 		return $avk;
 	}
@@ -995,15 +1000,15 @@ class DogRepository extends BaseRepository {
 	 * @param int $level
 	 * @return number
 	 */
-	public function genealogRshipGo($ID1,$ID2,$level) {
+	public function genealogRshipGo($ID1,$ID2,$level = 0, $levels = 4) {
 		global $deepMarkArray;
 		$deepMarkArray = [];
 		$tree1 = array(array());
-		$this->genealogGetRshipPedigree(NULL, $ID1, 0, 4, $tree1);
+		$this->genealogGetRshipPedigree(NULL, $ID1, $level, $levels, $tree1);
 		$tree1Toc = array_shift($tree1);
 
 		$tree2 = array(array());
-		$this->genealogGetRshipPedigree(NULL, $ID2, 0, 4, $tree2);
+		$this->genealogGetRshipPedigree(NULL, $ID2, $level, $levels, $tree2);
 		$tree2Toc = array_shift($tree2);
 
 		$coef = 0;
