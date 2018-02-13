@@ -62,8 +62,8 @@ class DogRepository extends BaseRepository {
 
 	/** @var array pole možných barev pokud je deepmark */
 	private $backgroundColors = [
-		"#9966FF", "#996699", "#CC66CC", "#CC6666", "#0066FF", "#666699", "#CC9900", "#FF9999", "#669900", "#999900", "#00CCCC", "#66CCCC",
-		"#FFCC00", "#CCCC66", "#66CCCC", "#FFCCFF", "#99CC33", "#66FFFF", "#666666", "#999999", "#FF9933", "#999933", "#669999",
+		"#CC66FF", "#CC99FF", "#3399FF", "#66CCFF", "#FFCC66", "#996699", "#CC66CC", "#CC6666", "#CC9900", "#FF9999", "#999900", "#00CCCC",
+		"#66CCCC", "#FFCC00", "#CCCC66", "#66CCCC", "#FFCCFF", "#99CC33", "#66FFFF", "#666666", "#999999", "#FF9933", "#999933", "#669999",
 
 		"#F0F8FF", "#E32636", "#E52B50", "#FFBF00", "#8DB600", "#FBCEB1", "#7FFFD4", "#3B444B", "#E9D66B", "#B2BEB5", "#87A96B", "#FF9966", "#89CFF0",
 		"#A1CAF1", "#F4C2C2", "#FFD12A", "#F5F5DC", "#3D2B1F", "#FAF0BE", "#DE5D83", "#79443B", "#CC0000", "#B5A642", "#66FF00", "#BF94E4", "#C32148",
