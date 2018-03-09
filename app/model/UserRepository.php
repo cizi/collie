@@ -307,6 +307,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		foreach ($result->fetchAll() as $row) {
 			$user = new UserEntity();
 			$user->hydrate($row->toArray());
+			$user->setOwnerId($row->toArray()['ID']);
 			$owners[] = $user;
 		}
 

@@ -189,7 +189,7 @@ class DogRepository extends BaseRepository {
 	 */
 	public function findDogs(Paginator $paginator, array $filter, $owner = null) {
 		if (empty($filter) && ($owner == null)) {
-			$query = ["select * from appdata_pes where Stav = %i order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
+			$query = ["select * from appdata_pes where Stav = %i order by (`DatNarozeni` = '0000-00-00'), `DatNarozeni` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
 		} else {
 			$query[] = "select *, SPLIT_STR(CisloZapisu, '/', 3) as PlemenoCZ, ap.ID as ID from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter, $owner) as $join) {
@@ -198,9 +198,9 @@ class DogRepository extends BaseRepository {
 			$query[] = "where Stav = " . DogStateEnum::ACTIVE . " ";
 			$query[] = $this->getWhereFromKeyValueArray($filter, $owner);
 			if (isset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER])) {
-				$query[] = " order by PlemenoCZ " . (($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]) == 2 ? "desc" : "asc") . " limit %i , %i";
+				$query[] = " order by Plemeno " . (($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]) == 2 ? "desc" : "asc") . " limit %i , %i";
 			} else {
-				$query[] = " order by `Jmeno` asc limit %i , %i";
+				$query[] = " order by (`DatNarozeni` = '0000-00-00'), `DatNarozeni` asc limit %i , %i";
 			}
 			$query[] = $paginator->getOffset();
 			$query[] = $paginator->getLength();
@@ -576,6 +576,19 @@ class DogRepository extends BaseRepository {
 	private function deleteOwnerByDogId($pID) {
 		$query = ["delete from appdata_majitel where pID = %i", $pID];
 		$this->connection->query($query);
+	}
+
+	/**
+	 * @param int $id id záznamu v tabulce
+	 */
+	public function deleteOwnerById($id) {
+		$return = false;
+		if (!empty($id)) {
+			$query = ["delete from appdata_majitel where ID = %i", $id];
+			$return = ($this->connection->query($query) == 1 ? true : false);
+		}
+
+		return $return;
 	}
 
 	/**

@@ -81,6 +81,22 @@ class UserEntity {
 	/** @var bool */
 	private $deleted;
 
+	/** @var int */
+	private $ownerId;
+
+	/**
+	 * @return int
+	 */
+	public function getOwnerId() {
+		return $this->ownerId;
+	}
+
+	/**
+	 * @param int $ownerId
+	 */
+	public function setOwnerId($ownerId) {
+		$this->ownerId = $ownerId;
+	}
 
 	/**
 	 * @return string

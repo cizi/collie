@@ -19,6 +19,9 @@
 								<div>
 									{foreach $previousOwners as $user}
 										{var $name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter())}
+										<a href="#" data-href={link deleteOldOwner, $user->getOwnerId(), $currentDog->getID()} data-toggle="modal" data-target="#confirm-delete-owner" title={=DOG_FORM_OLD_OWNER_DELETE}>
+											<span class="glyphicon glyphicon-remove colorRed"></span>
+										</a>
 										{(strlen($name) > 35 ? substr($name, 0, 35) . "..." : $name)}<br />
 									{/foreach}
 								</div>
@@ -73,6 +76,23 @@
 		</div>
 	</div>
 
+	<div class="modal fade" id="confirm-delete-owner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					{=DOG_FORM_OLD_OWNER_TITLE}
+				</div>
+				<div class="modal-body">
+					{=DOG_FORM_OLD_OWNER_INFO}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{=SLIDER_SETTINGS_CONFIRM_MODAL_CANCEL}</button>
+					<a class="btn btn-danger btn-ok">{=SLIDER_SETTINGS_CONFIRM_MODAL_OK}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	{* modální start *}
 	<div class="modal fade" id="tinym_info_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -90,6 +110,10 @@
 
 	<script>
 		$('#confirm-delete').on('show.bs.modal', function(e) {
+			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+		});
+
+		$('#confirm-delete-owner').on('show.bs.modal', function(e) {
 			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 		});
 

@@ -448,6 +448,22 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	}
 
 	/**
+	 * @param int $id id záznamu v tabulce majítelů
+	 * @param int $pID id záznamu psa
+	 */
+	public function actionDeleteOldOwner($id, $pID) {
+		if ($this->template->amIAdmin == true) {	// pokud jsem admin můžu smazat původního majitele
+			if ($this->dogRepository->deleteOwnerById($id)) {
+				$this->flashMessage(DOG_FORM_OLD_OWNER_DELETED, "alert-success");
+			} else {
+				$this->flashMessage(DOG_FORM_OLD_OWNER_FAILED, "alert-danger");
+			}
+		}
+
+		$this->redirect("edit", $pID);
+	}
+
+	/**
 	 * @param DogPicEntity[] $pics
 	 * @return array
 	 */
