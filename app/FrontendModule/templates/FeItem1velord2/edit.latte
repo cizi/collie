@@ -5,57 +5,57 @@
 		{form dogForm}
 			<!-- Page Content -->
 			<div id="page-content-wrapper">
-			<div class="container-fluid">
+				<div class="container-fluid">
 
-				<div class="row">
-					<fieldset>
-						<legend>{=DOG_FORM_HEADER}{if $currentDog != null}: {$currentDog->getTitulyPredJmenem()} {$currentDog->getJmeno()} {$currentDog->getTitulyZaJmenem()} {/if} </legend>
-						<div class="col-lg-9"><br /><br />
-							{control dogForm}
-						</div>
-						<div class="col-lg-3">
-							{if count($previousOwners) > 0}
-								<h4>{=DOG_FORM_PREVIOUS_OWNERS}</h4>
-								<div>
-									{foreach $previousOwners as $user}
-										{var $name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter())}
-										<a href="#" data-href={link deleteOldOwner, $user->getOwnerId(), $currentDog->getID()} data-toggle="modal" data-target="#confirm-delete-owner" title={=DOG_FORM_OLD_OWNER_DELETE}>
-											<span class="glyphicon glyphicon-remove colorRed"></span>
-										</a>
-										{(strlen($name) > 35 ? substr($name, 0, 35) . "..." : $name)}<br />
-									{/foreach}
-								</div>
-							{/if}
+					<div class="row">
+						<fieldset>
+							<legend>{=DOG_FORM_HEADER}{if $currentDog != null}: {$currentDog->getTitulyPredJmenem()} {$currentDog->getJmeno()} {$currentDog->getTitulyZaJmenem()} {/if} </legend>
+							<div class="col-lg-9"><br /><br />
+								{control dogForm}
+							</div>
+							<div class="col-lg-3">
+								{if count($previousOwners) > 0}
+									<h4>{=DOG_FORM_PREVIOUS_OWNERS}</h4>
+									<div>
+										{foreach $previousOwners as $user}
+											{var $name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter())}
+											<a href="#" data-href={link deleteOldOwner, $user->getOwnerId(), $currentDog->getID()} data-toggle="modal" data-target="#confirm-delete-owner" title={=DOG_FORM_OLD_OWNER_DELETE}>
+												<span class="glyphicon glyphicon-remove colorRed"></span>
+											</a>
+											{(strlen($name) > 35 ? substr($name, 0, 35) . "..." : $name)}<br />
+										{/foreach}
+									</div>
+								{/if}
 
-							<form action="">
-								{if $currentDog != null}<input type="hidden" id="currentDogId" value={$currentDog->getID()}>{/if}
-								{if count($dogPics) > 0}
-									<h4>{=DOG_FORM_PICS}</h4>
-									{foreach $dogPics as $dogPic}
-										<input type="radio" name="defaultPic" value={$dogPic->getId()}  {if $dogPic->isVychozi()} checked="checked" {/if}> {=DOG_FORM_PIC_DEFAULT}
-										<a href="#" data-href={link deleteDogPic, $dogPic->getId(), $dogPic->getpID()}  data-toggle="modal" data-target="#confirm-delete" title={=DOG_FORM_PIC_DELETE}>
-											<img src="{$dogPic->getCesta()}" class="dogEditPic"  />
-										</a>
+								<form action="">
+									{if $currentDog != null}<input type="hidden" id="currentDogId" value={$currentDog->getID()}>{/if}
+									{if count($dogPics) > 0}
+										<h4>{=DOG_FORM_PICS}</h4>
+										{foreach $dogPics as $dogPic}
+											<input type="radio" name="defaultPic" value={$dogPic->getId()}  {if $dogPic->isVychozi()} checked="checked" {/if}> {=DOG_FORM_PIC_DEFAULT}
+											<a href="#" data-href={link deleteDogPic, $dogPic->getId(), $dogPic->getpID()}  data-toggle="modal" data-target="#confirm-delete" title={=DOG_FORM_PIC_DELETE}>
+												<img src="{$dogPic->getCesta()}" class="dogEditPic"  />
+											</a>
+										{/foreach}
+									{/if}
+								</form>
+
+								{if count($dogFiles) > 0}
+									<h4>{=DOG_FORM_FILES}</h4>
+									{foreach $dogFiles as $file}
+										<a href={$file->getCesta()} target="_blank">{$file->getNazevSouboru()}</a>
+										{if isset($dogFileEnum->arrayValueKey()[$file->getTyp()])}
+											{var typ = $dogFileEnum->arrayValueKey()[$file->getTyp()]}
+											<small>({constant($typ)|lower})</small>
+										{/if}
+										<br />
 									{/foreach}
 								{/if}
-							</form>
-
-							{if count($dogFiles) > 0}
-								<h4>{=DOG_FORM_FILES}</h4>
-								{foreach $dogFiles as $file}
-									<a href={$file->getCesta()} target="_blank">{$file->getNazevSouboru()}</a>
-									{if isset($dogFileEnum->arrayValueKey()[$file->getTyp()])}
-										{var typ = $dogFileEnum->arrayValueKey()[$file->getTyp()]}
-										<small>({constant($typ)|lower})</small>
-									{/if}
-									<br />
-								{/foreach}
-							{/if}
-						</div>
-					</fieldset>
+							</div>
+						</fieldset>
+					</div>
 				</div>
-			</div>
-			<!-- /#page-content-wrapper -->
+			</div><!-- /#page-content-wrapper -->
 		{/form}
 	</div>
 
@@ -94,7 +94,7 @@
 	</div>
 
 	{* modální start *}
-	<div class="modal fade" id="tinym_info_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="tinym_info_modal_reference_error" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -183,11 +183,11 @@
 			});
 
 			{if $mIDFound == false}
-				$("#tinym_info_modal").modal();
+				$("#tinym_info_modal_reference_error").modal();
 			{/if}
 
 			{if $oIDFound == false}
-				$("#tinym_info_modal").modal();
+				$("#tinym_info_modal_reference_error").modal();
 			{/if}
 		});
 

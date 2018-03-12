@@ -154,7 +154,7 @@ abstract class BasePresenter extends Presenter {
 			$fileError = false;
 			$path = "";
 			if (!empty($values['attachment'])) {
-				/** @var FileUpload $file */
+				/** @var Nette\Http\FileUpload $file */
 				$file = $values['attachment'];
 				if (!empty($file->name)) {
 					$fileController = new FileController();
@@ -184,7 +184,7 @@ abstract class BasePresenter extends Presenter {
 		} else {
 			$this->flashMessage(CONTACT_FORM_SENT_FAILED, "alert-danger");
 		}
-		$this->redirect("default");
+		$this->restoreRequest($values['backlink']);
 	}
 
 	/**
@@ -193,6 +193,7 @@ abstract class BasePresenter extends Presenter {
 	 */
 	public function createComponentContactForm() {
 		$form = $this->contactForm->create();
+		$form["backlink"]->setValue($this->presenter->storeRequest());
 		if ($this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON) == "") {
 			$form["confirm"]->setDisabled();
 		}

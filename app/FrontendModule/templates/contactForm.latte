@@ -33,8 +33,37 @@
 			<div class="form-group row formRow">
 				<div class="col-sm-2"></div>
 				<div class="col-sm-4"></div>
-				<div class="col-sm-4 alignRight">{input confirm}</div>
+				<div class="col-sm-4 alignRight">{input backlink}{input confirmContactForm}</div>
 				<div class="col-sm-2"></div>
 			</div>
 		</div>
 {/form}
+
+<script>
+	$("#frm-contactForm").on('submit', function(e) {
+		if (trim($("#frm-contactForm-name").val()) === "") {
+			$("#tinym_info_modal_message").text({=CONTACT_FORM_NAME_REQ});
+			$("#tinym_info_modal").modal();
+
+			e.preventDefault();
+		}
+		if (trim($("#frm-contactForm-contactEmail").val()) === "") {
+			$("#tinym_info_modal_message").text({=CONTACT_FORM_EMAIL_REQ});
+			$("#tinym_info_modal").modal();
+
+			e.preventDefault();
+		}
+		if (trim($("#frm-contactForm-subject").val()) === "") {
+			$("#tinym_info_modal_message").text({=CONTACT_FORM_SUBJECT_REQ});
+			$("#tinym_info_modal").modal();
+
+			e.preventDefault();
+		}
+		if (trim($("#frm-contactForm-text").val()) === "") {
+			$("#tinym_info_modal_message").text({=CONTACT_FORM_TEXT_REQ});
+			$("#tinym_info_modal").modal();
+
+			e.preventDefault();
+		}
+	});
+</script>

@@ -189,7 +189,7 @@ class DogRepository extends BaseRepository {
 	 */
 	public function findDogs(Paginator $paginator, array $filter, $owner = null) {
 		if (empty($filter) && ($owner == null)) {
-			$query = ["select * from appdata_pes where Stav = %i order by (`DatNarozeni` = '0000-00-00'), `DatNarozeni` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
+			$query = ["select * from appdata_pes where Stav = %i order by `Jmeno` asc limit %i , %i", DogStateEnum::ACTIVE, $paginator->getOffset(), $paginator->getLength()];
 		} else {
 			$query[] = "select *, SPLIT_STR(CisloZapisu, '/', 3) as PlemenoCZ, ap.ID as ID from appdata_pes as ap ";
 			foreach ($this->getJoinsToArray($filter, $owner) as $join) {
@@ -198,9 +198,9 @@ class DogRepository extends BaseRepository {
 			$query[] = "where Stav = " . DogStateEnum::ACTIVE . " ";
 			$query[] = $this->getWhereFromKeyValueArray($filter, $owner);
 			if (isset($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER])) {
-				$query[] = " order by Plemeno " . (($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]) == 2 ? "desc" : "asc") . " limit %i , %i";
+				$query[] = " order by PlemenoCZ " . (($filter[DogFilterForm::DOG_FILTER_ORDER_NUMBER]) == 2 ? "desc" : "asc") . " limit %i , %i";
 			} else {
-				$query[] = " order by (`DatNarozeni` = '0000-00-00'), `DatNarozeni` asc limit %i , %i";
+				$query[] = " order by `Jmeno` asc limit %i , %i";
 			}
 			$query[] = $paginator->getOffset();
 			$query[] = $paginator->getLength();
@@ -406,9 +406,9 @@ class DogRepository extends BaseRepository {
 		$dog = $this->getDog($pID);
 		if ($dog != null) {
 			if ($dog->getPohlavi() == self::MALE_ORDER) {
-				$query = ["select * from appdata_pes where Stav = %i and oID = %i order by mID", DogStateEnum::ACTIVE, $dog->getID()];
+				$query = ["select * from appdata_pes where Stav = %i and oID = %i order by (`DatNarozeni` = '0000-00-00'), `DatNarozeni`", DogStateEnum::ACTIVE, $dog->getID()];
 			} else {
-				$query = ["select * from appdata_pes where Stav = %i and mID = %i order by oID", DogStateEnum::ACTIVE, $dog->getID()];
+				$query = ["select * from appdata_pes where Stav = %i and mID = %i order by (`DatNarozeni` = '0000-00-00'), `DatNarozeni`", DogStateEnum::ACTIVE, $dog->getID()];
 			}
 			$result = $this->connection->query($query);
 			foreach ($result->fetchAll() as $row) {
