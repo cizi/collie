@@ -18,6 +18,7 @@ class DogFilterForm {
 	const DOG_FILTER_HEALTH_TEXT = "DOG_FILTER_HEALTH_TEXT";
 	const DOG_FILTER_LAND = "DOG_FILTER_LAND";
 	const DOG_FILTER_BREEDER = "DOG_FILTER_BREEDER";
+	const DOG_FILTER_OWNER = "DOG_FILTER_OWNER";
 	const DOG_FILTER_EXAM = "Zkousky";
 	const DOG_FILTER_BIRTDATE = "DatNarozeni";
 	const DOG_FILTER_ORDER_NUMBER = "CisloZapisuOrder";
@@ -113,8 +114,12 @@ class DogFilterForm {
 		$form->addSelect(self::DOG_FILTER_LAND, DOG_TABLE_HEADER_LAND, $states)
 			->setAttribute("class", "form-control");
 
-		$chovatele = $this->userRepository->findBreedersForSelect();
+		$chovatele = $this->userRepository->findUsedBreedersForSelect();
 		$form->addSelect(self::DOG_FILTER_BREEDER, DOG_TABLE_HEADER_BREEDER, $chovatele)
+			->setAttribute("class", "form-control");
+
+		$majitele = $this->userRepository->findUsedOwnersForSelect();
+		$form->addSelect(self::DOG_FILTER_OWNER, DOG_TABLE_HEADER_OWNER, $majitele)
 			->setAttribute("class", "form-control");
 
 		$form->addText(self::DOG_FILTER_EXAM, DOG_TABLE_HEADER_EXAM)

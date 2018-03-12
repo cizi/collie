@@ -158,6 +158,16 @@
 			{if $filterActivated}
 				$( "#dogFilterForm" ).toggle();
 			{/if}
+
+			$("#frm-dogFilterForm-DOG_FILTER_BREEDER").chosen({
+				placeholder_text: {=DOG_FORM_OWNER_SELECT_TEXT},
+				no_results_text: {=MATING_FORM_NO_MATCH}
+			});
+
+			$("#frm-dogFilterForm-DOG_FILTER_OWNER").chosen({
+				placeholder_text: {=DOG_FORM_OWNER_SELECT_TEXT},
+				no_results_text: {=MATING_FORM_NO_MATCH}
+			});
 		});
 		$('#confirm-delete').on('show.bs.modal', function(e) {
 			$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));

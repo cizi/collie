@@ -210,6 +210,48 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	}
 
 	/**
+	 * @return array
+	 */
+	public function findUsedBreedersForSelect() {
+		$breeders[0] = self::NOT_SELECTED;
+		$query = ["
+				select ac.uID as uID,  u.`id`, u.`title_before`, u.`name`, u.`surname`, u.`title_after` 
+				from appdata_chovatel as ac left join user as u on ac.uID = u.id"
+		];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = $row->toArray();
+			//$breeders[$user['id']] = trim($user['title_before'] . " " . $user['name'] . " " . $user['surname'] . " " . $user['title_after']);
+
+			$breeders[$user['uID']] = trim($user['title_before'] . " " . $user['name'] . " " . $user['surname'] . " " . $user['title_after']);
+		}
+
+		return $breeders;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findUsedOwnersForSelect() {
+		$breeders[0] = self::NOT_SELECTED;
+		$query = ["
+				select am.uID as uID,  u.`id`, u.`title_before`, u.`name`, u.`surname`, u.`title_after` 
+				from appdata_majitel as am left join user as u on am.uID = u.id where Soucasny = 1"
+		];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = $row->toArray();
+			//$breeders[$user['id']] = trim($user['title_before'] . " " . $user['name'] . " " . $user['surname'] . " " . $user['title_after']);
+
+			$breeders[$user['uID']] = trim($user['title_before'] . " " . $user['name'] . " " . $user['surname'] . " " . $user['title_after']);
+		}
+
+		return $breeders;
+	}
+
+	/**
 	 * @param int $pID
 	 * @return BreederEntity
 	 */

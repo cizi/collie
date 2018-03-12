@@ -254,6 +254,12 @@ class DogRepository extends BaseRepository {
 			unset($filter[DogFilterForm::DOG_FILTER_BREEDER]);
 		}
 
+		if (isset($filter[DogFilterForm::DOG_FILTER_OWNER])) {
+			$joins[] = "left join `appdata_majitel` as ama on ap.ID = ama.pID
+						left join `user` as us on ama.uID = us.ID ";
+			unset($filter[DogFilterForm::DOG_FILTER_OWNER]);
+		}
+
 		if (
 			isset($filter[DogFilterForm::DOG_FILTER_HEALTH])
 			|| isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK])
@@ -297,6 +303,11 @@ class DogRepository extends BaseRepository {
 			$return .= sprintf("ac.uID = %d", $filter[DogFilterForm::DOG_FILTER_BREEDER]);
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter[DogFilterForm::DOG_FILTER_BREEDER]);
+		}
+		if (isset($filter[DogFilterForm::DOG_FILTER_OWNER])) {
+			$return .= sprintf("ama.uID = %d", $filter[DogFilterForm::DOG_FILTER_OWNER]);
+			$return .= (count($filter) > 1 ? " and " : "");
+			unset($filter[DogFilterForm::DOG_FILTER_OWNER]);
 		}
 		if (isset($filter["Jmeno"])) {
 			$return .= 	sprintf("(CONCAT_WS(' ', TitulyPredJmenem, Jmeno, TitulyZaJmenem) like %s)", $dbDriver->escapeLike($filter["Jmeno"], 0));

@@ -5,6 +5,7 @@ namespace App\FrontendModule\Presenters;
 use App\Forms\UserForm;
 use App\Model\Entity\UserEntity;
 use App\Model\UserRepository;
+use Nette\Application\AbortException;
 use Nette\Application\UI\Form;
 
 class FeItem2velord9Presenter extends FrontendPresenter {
@@ -34,6 +35,11 @@ class FeItem2velord9Presenter extends FrontendPresenter {
 		if ($userEntity) {
 			$this['editForm']->addHidden('id', $userEntity->getId());
 			$this['editForm']['email']->setAttribute("readonly", "readonly");
+			unset($this['editForm']['password']);
+			unset($this['editForm']['passwordConfirm']);
+			unset($this['editForm']['role']);
+			unset($this['editForm']['active']);
+
 			$this['editForm']->setDefaults($userEntity->extract());
 		}
 	}
@@ -46,6 +52,16 @@ class FeItem2velord9Presenter extends FrontendPresenter {
 		$form = $this->userForm->create($this->link("default"), $this->langRepository->getCurrentLang($this->session));
 		$form->onSubmit[] = $this->saveUser;
 
+		/* $renderer = $form->getRenderer();
+		$renderer->wrappers['controls']['container'] = NULL;
+		$renderer->wrappers['pair']['container'] = 'div class=form-group';
+		$renderer->wrappers['pair']['.error'] = 'has-error';
+		$renderer->wrappers['control']['container'] = 'div class=col-md-6';
+		$renderer->wrappers['label']['container'] = 'div class="col-md-3 control-label"';
+		$renderer->wrappers['control']['description'] = 'span class=help-block';
+		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
+		$form->getElementPrototype()->class('form-horizontal'); */
+
 		return $form;
 	}
 
@@ -54,30 +70,37 @@ class FeItem2velord9Presenter extends FrontendPresenter {
 	 * @param Form $form
 	 */
 	public function saveUser(Form $form) {
-		$values = $form->getHttpData();
-		$userEntityCurrent = $this->userRepository->getUser($this->user->getId());
-
-		$userEntityNew = new UserEntity();
-		$userEntityNew->hydrate((array)$values);
-		$userEntityNew->setId($userEntityCurrent->getId());
-		$userEntityNew->setEmail($userEntityCurrent->getEmail());
-		$userEntityNew->setRole($userEntityCurrent->getRole());
-		$userEntityNew->setActive(true);
-		$userEntityNew->setPassword($userEntityCurrent->getPassword());
-
-		if ($userEntityNew->getBreed() == 0) {
-			$userEntityNew->setBreed(null);
-		}
-
 		try {
+			$values = $form->getHttpData();
+			$userEntityCurrent = $this->userRepository->getUser($this->user->getId());
+
+			$userEntityNew = new UserEntity();
+			$userEntityNew->hydrate((array)$values);
+			$userEntityNew->setId($userEntityCurrent->getId());
+			$userEntityNew->setEmail($userEntityCurrent->getEmail());
+			$userEntityNew->setRole($userEntityCurrent->getRole());
+			$userEntityNew->setActive(true);
+			$userEntityNew->setPassword($userEntityCurrent->getPassword());
+			$userEntityNew->setClub($userEntityCurrent->getClub());
+			$userEntityNew->setClubNo($userEntityCurrent->getClubNo());
+
+			if ($userEntityNew->getBreed() == 0) {
+				$userEntityNew->setBreed(null);
+			}
+
+			if ($userEntityNew->getClub() == 0) {
+				$userEntityNew->setClub(null);
+			}
+
 			$this->userRepository->saveUser($userEntityNew);
+
 			if (isset($values['id']) && $values['id'] != "") {
 				$this->flashMessage(USER_EDITED, "alert-success");
 			} else {
 				$this->flashMessage(USER_ADDED, "alert-success");
 			}
 		} catch (\Exception $e) {
-			//dump($e->getMessage(), $values); die;
+			// dump($e->getMessage(), $values); die;
 			$this->flashMessage(USER_EDIT_SAVE_FAILED, "alert-danger");
 		}
 		$this->redirect("Default");
