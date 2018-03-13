@@ -80,6 +80,7 @@ class FeItem2velord9Presenter extends FrontendPresenter {
 			$userEntityNew->setEmail($userEntityCurrent->getEmail());
 			$userEntityNew->setRole($userEntityCurrent->getRole());
 			$userEntityNew->setActive(true);
+			$userEntityNew->setNews(isset($values['news']));
 			$userEntityNew->setPassword($userEntityCurrent->getPassword());
 			$userEntityNew->setClub($userEntityCurrent->getClub());
 			$userEntityNew->setClubNo($userEntityCurrent->getClubNo());
