@@ -243,12 +243,74 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 
 		foreach ($result->fetchAll() as $row) {
 			$user = $row->toArray();
-			//$breeders[$user['id']] = trim($user['title_before'] . " " . $user['name'] . " " . $user['surname'] . " " . $user['title_after']);
-
 			$breeders[$user['uID']] = trim($user['title_before'] . " " . $user['name'] . " " . $user['surname'] . " " . $user['title_after']);
 		}
 
 		return $breeders;
+	}
+
+	/**
+	 * @return array - [userId, dogId]
+	 */
+	public function findUsedOwnersInDogs() {
+		$owners = [];
+		$query = ["select distinct uID from appdata_majitel"];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = $row->toArray();
+			$owners[$user['uID']] = "";
+		}
+
+		return $owners;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findUsedBreedersInDogs() {
+		$breeders = [];
+		$query = ["select distinct uID from appdata_chovatel"];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = $row->toArray();
+			$breeders[$user['uID']] = "";
+		}
+
+		return $breeders;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findUsedUserInPuppies() {
+		$users = [];
+		$query = ["select distinct uID from appdata_stenata"];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = $row->toArray();
+			$users[$user['uID']] = "";
+		}
+
+		return $users;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findUsedUserInChanges() {
+		$users = [];
+		$query = ["select distinct uID from appdata_zmeny"];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = $row->toArray();
+			$users[$user['uID']] = "";
+		}
+
+		return $users;
 	}
 
 	/**

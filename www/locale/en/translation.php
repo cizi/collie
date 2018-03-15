@@ -48,6 +48,7 @@ define("USER_TABLE_HEADER_LOGIN", "Login");
 define("USER_TABLE_HEADER_ROLE", "Role");
 define("USER_TABLE_HEADER_ACTIVE", "Active");
 define("USER_TABLE_HEADER_LAST_LOGIN", "Last login");
+define("USER_TABLE_HEADER_USER_REF", "References");
 define("USER_TABLE_HEADER_REGISTERED_DATE", "Date of registration");
 define("USER_DELETED", "User has been deleted");
 define("USER_ADDED", "User added");
@@ -66,6 +67,7 @@ define("USER_CREATED_MAIL_SUBJECT", 'New user registration');
 define("USER_CREATED_MAIL_BODY", "Hello there, <br /><br /> your registration on server %s has been successful.<br /> Your credentials are: <br /> login: %s <br /> password: %s <br /><br />");
 define("USER_SEARCH_FIELD", "Fulltext searching in users");
 define("USER_SEARCH_BUTTON", "Search");
+define("USER_REFERENCES",  "User's references");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", ' Addition the new user');
@@ -691,6 +693,8 @@ define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER", "New dog inserted")
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER", "Hello, <br /> in the system has been inserted a new dog . PLease, wait for approval by administrator.");
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN", "New dog inserted");
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN", "Hello, <br />a new dog card has been created %s. Please, log in for approval or decline the request.");
+define("AWAITING_CHANGE_REF", "changes");
+
 define("LITTER_APPLICATION", "Litter application");
 define("LITTER_APPLICATION_DETAIL_TITLE", "Collie and sheltie breeders club");
 define("LITTER_APPLICATION_DETAIL_APPLICATION", "Registration for puppies in a dog book");
@@ -779,5 +783,6 @@ define("PUPPY_EDIT", "Edit");
 define("PUPPY_DELETE", "Delete");
 define("PUPPY_DELETE_TITLE", "Delete record");
 define("PUPPY_DELETE_BODY", "Are you really want to delete the record?");
+define("PUPPY_USER_REF", "puppies");
 
 define("CHS_TITLE", 'Catteries');

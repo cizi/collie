@@ -49,6 +49,7 @@ define("USER_TABLE_HEADER_LOGIN", "Login");
 define("USER_TABLE_HEADER_ROLE", "Role");
 define("USER_TABLE_HEADER_ACTIVE", "Aktivní");
 define("USER_TABLE_HEADER_LAST_LOGIN", "Poslední přihlášení");
+define("USER_TABLE_HEADER_USER_REF", "Reference");
 define("USER_TABLE_HEADER_REGISTERED_DATE", "Datum registrace");
 define("USER_DELETED", "Uživatel byl smazán");
 define("USER_ADDED", "Uživatel přidán");
@@ -67,6 +68,7 @@ define("USER_CREATED_MAIL_SUBJECT", 'Registrace nového uživatele');
 define("USER_CREATED_MAIL_BODY", "Dobrý den, <br /><br /> Vaše registace na serveru %s proběhla úspěšně.<br /> Vaše příhlašovací údaje jsou: <br /> jméno: %s <br /> heslo: %s <br /><br />");
 define("USER_SEARCH_FIELD",  "Fulltextové vyhledávání v uživatelích");
 define("USER_SEARCH_BUTTON",  "Hledat");
+define("USER_REFERENCES",  "Reference uživatele");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", 'Přidání nového uživatele');
@@ -712,6 +714,7 @@ define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_USER", "Vložení nového 
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_USER", "Dobrý den, <br /> do systému byl zaveden nový pes. Prosím vyčketje na jeho schválení.");
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_SUBJECT_ADMIN", "Založení nového psa");
 define("AWAITING_CHANGE_NEW_DOG_NEED_APPROVAL_BODY_ADMIN", "Dobrý den, <br />byla založena nová karta psa %s. Pro schválení nebo zamítnutí se, prosím, přihlaste do administrace.");
+define("AWAITING_CHANGE_REF", "změny");
 
 define("LITTER_APPLICATION", "Přihláška vrhu");
 define("LITTER_APPLICATION_DETAIL_TITLE", "Klub chovatelů collií a sheltií");
@@ -801,5 +804,6 @@ define("PUPPY_EDIT", "Ediatce");
 define("PUPPY_DELETE", "Smazání");
 define("PUPPY_DELETE_TITLE", "Smazání inzerátu štěňat");
 define("PUPPY_DELETE_BODY", "Opravdu chcete smazat záznam?");
+define("PUPPY_USER_REF", "štěňata");
 
 define("CHS_TITLE", 'Chovatelské stanice');

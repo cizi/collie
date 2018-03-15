@@ -52,6 +52,15 @@ class UserPresenter extends SignPresenter {
 		$this->template->paginator = $paginator;
 		$this->template->users = $this->userRepository->findUsers($paginator, $filter);
 		$this->template->roles = $userRoles->translatedForSelect();
+		$this->template->usedOwnersPerDog = $this->userRepository->findUsedOwnersInDogs();
+		$this->template->usedBreedersPerDog = $this->userRepository->findUsedBreedersInDogs();
+		$this->template->usedUserInPuppies = $this->userRepository->findUsedUserInPuppies();
+		$this->template->usedUserInChanges = $this->userRepository->findUsedUserInChanges();
+	}
+
+	public function actionUserReferencies($id) {
+		// TODO
+		$this->terminate();
 	}
 
 	/**
