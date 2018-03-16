@@ -69,6 +69,11 @@ define("USER_CREATED_MAIL_BODY", "Dobrý den, <br /><br /> Vaše registace na se
 define("USER_SEARCH_FIELD",  "Fulltextové vyhledávání v uživatelích");
 define("USER_SEARCH_BUTTON",  "Hledat");
 define("USER_REFERENCES",  "Reference uživatele");
+define("USER_REFERENCES_INFO",  "Zde jsou zobrazeny veškeré odkazy na uživatele. Pokud chcete uživatele odstranit, nesmí mít žádné odkazy do databáze. <strong>POZOR</strong> akce je nevratná!");
+define("USER_REFERENCES_OWNER",  "U těchto psů je uživatel veden jako <strong>majitel</strong>");
+define("USER_REFERENCES_BREEDER",  "U těchto psů je uživatel veden jako <strong>chovatel</strong>");
+define("USER_REFERENCES_REQUESTED_CHANGES",  "Požadované změny uživatele");
+define("USER_REFERENCES_REQUESTED_CHANGES_STATE",  "Stav");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", 'Přidání nového uživatele');
@@ -705,6 +710,8 @@ define("AWAITING_CHANGE_ACCEPTED", "Schválené změny");
 define("AWAITING_CHANGE_DECLINED", "Zamítnuté změny");
 define("AWAITING_CHANGE_PROCEEDED_BY", "Zpracováno od");
 define("AWAITING_CHANGE_PROCEEDED_WHEN", "Schváleno");
+define("AWAITING_CHANGE_PROCEEDED_DEC", "Zamítnuto");
+define("AWAITING_CHANGE_PROCEEDED_INS", "Vloženo");
 define("AWAITING_CHANGE_PROCEEDED_OK_SUBJECT", "Váš požadavek na změnu byl schválen");
 define("AWAITING_CHANGE_PROCEEDED_OK_BODY", "Dobrý den, <br />Váš požadavek na změnu byl schválen. Prosím, proveďte kontrolu zde %s.");
 define("AWAITING_CHANGE_PROCEEDED_DECLINE_SUBJECT", "Váš požadavek na změnu byl zamítnut");

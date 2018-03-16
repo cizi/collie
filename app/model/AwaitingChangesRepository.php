@@ -47,6 +47,23 @@ class AwaitingChangesRepository extends BaseRepository {
 	/**
 	 * @return AwaitingChangesEntity[]
 	 */
+	public function findChangesByUser($uID) {
+		$query = ["select * from appdata_zmeny where uID= %i order by datimVlozeno asc", $uID];
+		$result = $this->connection->query($query);
+
+		$awaitingChanges = [];
+		foreach ($result->fetchAll() as $row) {
+			$change = new AwaitingChangesEntity();
+			$change->hydrate($row->toArray());
+			$awaitingChanges[] = $change;
+		}
+
+		return $awaitingChanges;
+	}
+
+	/**
+	 * @return AwaitingChangesEntity[]
+	 */
 	public function findProceededChanges() {
 		$query = ["select * from appdata_zmeny where stav= %i order by datimVlozeno asc", DogChangeStateEnum::PROCEEDED];
 		$result = $this->connection->query($query);

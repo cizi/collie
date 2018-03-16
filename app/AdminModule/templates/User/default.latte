@@ -63,7 +63,7 @@
 												|| isset($usedUserInPuppies[$user->getId()])
 												|| isset($usedUserInChanges[$user->getId()])
 											}
-												<a href={link userReferencies, $user->getId()} title={=USER_REFERENCES}><span class="glyphicon glyphicon-user colorGrey"></span></a> &nbsp;&nbsp;
+												<a href={link userReferences, $user->getId()} title={=USER_REFERENCES}><span class="glyphicon glyphicon-user colorGrey"></span></a> &nbsp;&nbsp;
 											{/if}
 											<a href={link User:Edit, $user->getId()} title={=USER_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
 											<a href="#" data-href={link User:DeleteUser, $user->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=USER_DELETE}><span class="glyphicon glyphicon-remove"></span></a>

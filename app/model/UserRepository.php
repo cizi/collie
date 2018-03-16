@@ -5,7 +5,9 @@ namespace App\Model;
 use App\Enum\StateEnum;
 use App\Enum\UserRoleEnum;
 use App\Model\Entity\BreederEntity;
+use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogOwnerEntity;
+use App\Model\Entity\PuppyEntity;
 use Nette;
 use App\Model\Entity\UserEntity;
 use Nette\Security\Passwords;
@@ -250,7 +252,7 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	}
 
 	/**
-	 * @return array - [userId, dogId]
+	 * @return array - [userId]
 	 */
 	public function findUsedOwnersInDogs() {
 		$owners = [];
@@ -260,6 +262,42 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		foreach ($result->fetchAll() as $row) {
 			$user = $row->toArray();
 			$owners[$user['uID']] = "";
+		}
+
+		return $owners;
+	}
+
+	/**
+	 * @return array - [idZáznau v tabulce] = data o psovi
+	 */
+	public function findRecOwnersInDogs($uID) {
+		$owners = [];
+		$query = ["select am.id as amId, ap.* from appdata_majitel as am left join appdata_pes as ap on am.pID = ap.ID where am.uID = %i", $uID];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$data = $row->toArray();
+			$dog = new DogEntity();
+			$dog->hydrate($data);
+			$owners[$data['amId']] = $dog;
+		}
+
+		return $owners;
+	}
+
+	/**
+	 * @return array - [idZáznau v tabulce] = data o psovi
+	 */
+	public function findRecBreedersInDogs($uID) {
+		$owners = [];
+		$query = ["select ac.id as acId, ap.* from appdata_chovatel as ac left join appdata_pes as ap on ac.pID = ap.ID where ac.uID = %i", $uID];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$data = $row->toArray();
+			$dog = new DogEntity();
+			$dog->hydrate($data);
+			$owners[$data['acId']] = $dog;
 		}
 
 		return $owners;
@@ -298,11 +336,47 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	}
 
 	/**
+	 * Vrátí inzeráty uživatele
+	 * @param int $id
+	 * @return array
+	 */
+	public function findRecUserInPuppies($id) {
+		$adds = [];
+		$query = ["select * from appdata_stenata where uID = %i", $id];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$data = $row->toArray();
+			$puppy = new PuppyEntity();
+			$puppy->hydrate($data);
+			$adds[$data['ID']] = $puppy;
+		}
+
+		return $adds;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function findUsedUserInChanges() {
 		$users = [];
 		$query = ["select distinct uID from appdata_zmeny"];
+		$result = $this->connection->query($query);
+
+		foreach ($result->fetchAll() as $row) {
+			$user = $row->toArray();
+			$users[$user['uID']] = "";
+		}
+
+		return $users;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findRecUserInChanges() {
+		$users = [];
+		$query = ["select * from appdata_zmeny"];
 		$result = $this->connection->query($query);
 
 		foreach ($result->fetchAll() as $row) {

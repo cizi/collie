@@ -3,7 +3,9 @@
 namespace App\AdminModule\Presenters;
 
 use App\AdminModule\Model;
+use App\Controller\DogChangesComparatorController;
 use App\Controller\EmailController;
+use App\Enum\StateEnum;
 use App\Enum\UserRoleEnum;
 use App\Forms\UserFilterForm;
 use App\Forms\UserForm;
@@ -27,14 +29,21 @@ class UserPresenter extends SignPresenter {
 	/** @var UserFilterForm  */
 	private $userFilterForm;
 
+	/** @var DogChangesComparatorController  */
+	private $dogChangesComparatorController;
+
 	/**
+	 * UserPresenter constructor.
 	 * @param UserRepository $userRepository
 	 * @param UserForm $userForm
+	 * @param UserFilterForm $userFilterForm
+	 * @param DogChangesComparatorController $dogChangesComparatorController
 	 */
-	public function __construct(UserRepository $userRepository, UserForm $userForm, UserFilterForm $userFilterForm) {
+	public function __construct(UserRepository $userRepository, UserForm $userForm, UserFilterForm $userFilterForm, DogChangesComparatorController $dogChangesComparatorController) {
 		$this->userRepository = $userRepository;
 		$this->userForm = $userForm;
 		$this->userFilterForm = $userFilterForm;
+		$this->dogChangesComparatorController = $dogChangesComparatorController;
 	}
 
 	/**
@@ -58,9 +67,59 @@ class UserPresenter extends SignPresenter {
 		$this->template->usedUserInChanges = $this->userRepository->findUsedUserInChanges();
 	}
 
-	public function actionUserReferencies($id) {
+	public function actionUserReferences($id) {
+		$this->template->stateEnum = new StateEnum();
+		$this->template->user = $this->userRepository->getUser($id);
+		$this->template->userOwnDogs = $this->userRepository->findRecOwnersInDogs($id);
+		$this->template->userBreedDogs = $this->userRepository->findRecBreedersInDogs($id);
+		$this->template->userInPuppyAdd = $this->userRepository->findRecUserInPuppies($id);
+
+		$currentLang = $this->langRepository->getCurrentLang($this->session);
+		$this->template->userChangeRequestAsHtml = $this->dogChangesComparatorController->generateAwaitingChangesHtmlPerUser($this->presenter, $currentLang, $id);
+	}
+
+	/**
+	 * Smaže záznam v tabulce majitelů podle ID
+	 * @param int $id
+	 * @param int $uID
+	 */
+	public function actionDeleteDogOwner($id, $uID) {
+		$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		$this->redirect("userReferences", $uID);
 		// TODO
-		$this->terminate();
+	}
+
+	/**
+	 * Smaže záznam v tabulce chovatelů podle ID
+	 * @param int $id
+	 * @param int $uID
+	 */
+	public function actionDeleteDogBreeder($id, $uID) {
+		$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		$this->redirect("userReferences", $uID);
+		// TODO
+	}
+
+	/**
+	 * Smaže záznam v tabulce inzerátu štěňat
+	 * @param $id
+	 * @param $uID
+	 */
+	public function actionDeletePuppyAdd($id, $uID) {
+		$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		$this->redirect("userReferences", $uID);
+		// TODO
+	}
+
+	/**
+	 * Smaže záznam v tabulce změn
+	 * @param $id
+	 * @param $uID
+	 */
+	public function actionDeleteUserChangeRequest($id, $uID) {
+		$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		$this->redirect("userReferences", $uID);
+		// TODO
 	}
 
 	/**

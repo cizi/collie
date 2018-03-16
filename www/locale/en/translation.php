@@ -68,6 +68,11 @@ define("USER_CREATED_MAIL_BODY", "Hello there, <br /><br /> your registration on
 define("USER_SEARCH_FIELD", "Fulltext searching in users");
 define("USER_SEARCH_BUTTON", "Search");
 define("USER_REFERENCES",  "User's references");
+define("USER_REFERENCES_INFO",  "Here are all references to the database where user is in use. For user deletation you need do discard (delete) all references. <strong>ATTENTION</strong> can't be undone!");
+define("USER_REFERENCES_OWNER",  "Here are listed dogs where is user use as <strong>owner</strong>");
+define("USER_REFERENCES_BREEDER",  "Here are listed dogs where is user use as <strong>breeder</strong>");
+define("USER_REFERENCES_REQUESTED_CHANGES",  "Requested user changes");
+define("USER_REFERENCES_REQUESTED_CHANGES_STATE",  "State");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", ' Addition the new user');
@@ -684,6 +689,8 @@ define("AWAITING_CHANGE_ACCEPTED", "Approved changes");
 define("AWAITING_CHANGE_DECLINED", "Declined changes");
 define("AWAITING_CHANGE_PROCEEDED_BY", "Processed from");
 define("AWAITING_CHANGE_PROCEEDED_WHEN", "Approved");
+define("AWAITING_CHANGE_PROCEEDED_DEC", "Declined");
+define("AWAITING_CHANGE_PROCEEDED_INS", "Inserted");
 define("AWAITING_CHANGE_PROCEEDED_OK_SUBJECT", "Your change request has been apporved");
 define("AWAITING_CHANGE_PROCEEDED_OK_BODY", "Hello, <br />your change request has been approved. Please, take a look here %s.");
 define("AWAITING_CHANGE_PROCEEDED_DECLINE_SUBJECT", "Your change request has been declined");
