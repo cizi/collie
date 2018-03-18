@@ -71,6 +71,8 @@ define("USER_REFERENCES",  "User's references");
 define("USER_REFERENCES_INFO",  "Here are all references to the database where user is in use. For user deletation you need do discard (delete) all references. <strong>ATTENTION</strong> can't be undone!");
 define("USER_REFERENCES_OWNER",  "Here are listed dogs where is user use as <strong>owner</strong>");
 define("USER_REFERENCES_BREEDER",  "Here are listed dogs where is user use as <strong>breeder</strong>");
+define("USER_REFERENCES_PUPPY",  "User has these adds listed");
+define("USER_REFERENCES_LITTER_APP",  "Here is user listed as <strong>'dog's female owner'</strong>");
 define("USER_REFERENCES_REQUESTED_CHANGES",  "Requested user changes");
 define("USER_REFERENCES_REQUESTED_CHANGES_STATE",  "State");
 

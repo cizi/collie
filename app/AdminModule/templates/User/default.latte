@@ -62,6 +62,7 @@
 												|| isset($usedBreedersPerDog[$user->getId()])
 												|| isset($usedUserInPuppies[$user->getId()])
 												|| isset($usedUserInChanges[$user->getId()])
+												|| isset($usedUserInLitterApp[$user->getId()])
 											}
 												<a href={link userReferences, $user->getId()} title={=USER_REFERENCES}><span class="glyphicon glyphicon-user colorGrey"></span></a> &nbsp;&nbsp;
 											{/if}

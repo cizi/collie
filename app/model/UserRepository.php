@@ -8,6 +8,7 @@ use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\PuppyEntity;
+use Dibi\Exception;
 use Nette;
 use App\Model\Entity\UserEntity;
 use Nette\Security\Passwords;
@@ -286,6 +287,20 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 	}
 
 	/**
+	 * @param int $id
+	 * @return bool
+	 */
+	public function deleteOwner($recId) {
+		$return = false;
+		if (!empty($recId)) {
+			$query = ["delete from appdata_majitel where ID = %i", $recId];
+			$return = ($this->connection->query($query) == 1 ? true : false);
+		}
+
+		return $return;
+	}
+
+	/**
 	 * @return array - [idZáznau v tabulce] = data o psovi
 	 */
 	public function findRecBreedersInDogs($uID) {
@@ -317,6 +332,20 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 		}
 
 		return $breeders;
+	}
+
+	/**
+	 * @param int $id
+	 * @return bool
+	 */
+	public function deleteBreeder($recId) {
+		$return = false;
+		if (!empty($recId)) {
+			$query = ["delete from appdata_chovatel where ID = %i", $recId];
+			$return = ($this->connection->query($query) == 1 ? true : false);
+		}
+
+		return $return;
 	}
 
 	/**

@@ -72,6 +72,8 @@ define("USER_REFERENCES",  "Reference uživatele");
 define("USER_REFERENCES_INFO",  "Zde jsou zobrazeny veškeré odkazy na uživatele. Pokud chcete uživatele odstranit, nesmí mít žádné odkazy do databáze. <strong>POZOR</strong> akce je nevratná!");
 define("USER_REFERENCES_OWNER",  "U těchto psů je uživatel veden jako <strong>majitel</strong>");
 define("USER_REFERENCES_BREEDER",  "U těchto psů je uživatel veden jako <strong>chovatel</strong>");
+define("USER_REFERENCES_PUPPY",  "Uživatel má vystaveny tyto inzeráty štěňat");
+define("USER_REFERENCES_LITTER_APP",  "U těchto přihlášek vrhu je uživatel veden jako <strong>'majitel feny'</strong>");
 define("USER_REFERENCES_REQUESTED_CHANGES",  "Požadované změny uživatele");
 define("USER_REFERENCES_REQUESTED_CHANGES_STATE",  "Stav");
 

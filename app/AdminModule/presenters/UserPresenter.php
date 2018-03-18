@@ -5,11 +5,18 @@ namespace App\AdminModule\Presenters;
 use App\AdminModule\Model;
 use App\Controller\DogChangesComparatorController;
 use App\Controller\EmailController;
+use App\Enum\LitterApplicationStateEnum;
 use App\Enum\StateEnum;
 use App\Enum\UserRoleEnum;
 use App\Forms\UserFilterForm;
 use App\Forms\UserForm;
+use App\Model\AwaitingChangesRepository;
+use App\Model\DogRepository;
+use App\Model\Entity\AwaitingChangesEntity;
 use App\Model\Entity\UserEntity;
+use App\Model\EnumerationRepository;
+use App\Model\LitterApplicationRepository;
+use App\Model\PuppyRepository;
 use App\Model\UserRepository;
 use App\Model\WebconfigRepository;
 use Nette\Application\AbortException;
@@ -32,18 +39,53 @@ class UserPresenter extends SignPresenter {
 	/** @var DogChangesComparatorController  */
 	private $dogChangesComparatorController;
 
+	/** @var LitterApplicationRepository */
+	private $litterApplicationRepository;
+
+	/** @var EnumerationRepository */
+	private $enumerationRepository;
+
+	/** @var DogRepository */
+	private $dogRepository;
+
+	/** @var AwaitingChangesEntity  */
+	private $awaitingChangesRepository;
+
+	/** @var PuppyRepository */
+	private $puppyRepository;
+
 	/**
 	 * UserPresenter constructor.
 	 * @param UserRepository $userRepository
 	 * @param UserForm $userForm
 	 * @param UserFilterForm $userFilterForm
 	 * @param DogChangesComparatorController $dogChangesComparatorController
+	 * @param LitterApplicationRepository $litterApplicationRepository
+	 * @param EnumerationRepository $enumerationRepository
+	 * @param DogRepository $dogRepository
+	 * @param AwaitingChangesRepository $awaitingChangesRepository
+	 * @param PuppyRepository $puppyRepository
 	 */
-	public function __construct(UserRepository $userRepository, UserForm $userForm, UserFilterForm $userFilterForm, DogChangesComparatorController $dogChangesComparatorController) {
+	public function __construct(
+		UserRepository $userRepository,
+		UserForm $userForm,
+		UserFilterForm $userFilterForm,
+		DogChangesComparatorController $dogChangesComparatorController,
+		LitterApplicationRepository $litterApplicationRepository,
+		EnumerationRepository $enumerationRepository,
+		DogRepository $dogRepository,
+		AwaitingChangesRepository $awaitingChangesRepository,
+		PuppyRepository $puppyRepository
+	) {
 		$this->userRepository = $userRepository;
 		$this->userForm = $userForm;
 		$this->userFilterForm = $userFilterForm;
 		$this->dogChangesComparatorController = $dogChangesComparatorController;
+		$this->litterApplicationRepository = $litterApplicationRepository;
+		$this->enumerationRepository = $enumerationRepository;
+		$this->dogRepository = $dogRepository;
+		$this->awaitingChangesRepository = $awaitingChangesRepository;
+		$this->puppyRepository = $puppyRepository;
 	}
 
 	/**
@@ -65,10 +107,15 @@ class UserPresenter extends SignPresenter {
 		$this->template->usedBreedersPerDog = $this->userRepository->findUsedBreedersInDogs();
 		$this->template->usedUserInPuppies = $this->userRepository->findUsedUserInPuppies();
 		$this->template->usedUserInChanges = $this->userRepository->findUsedUserInChanges();
+		$this->template->usedUserInLitterApp = $this->litterApplicationRepository->findUsersInApplications();
 	}
 
 	public function actionUserReferences($id) {
 		$this->template->stateEnum = new StateEnum();
+		$this->template->enumRepo = $this->enumerationRepository;
+		$this->template->dogRepo = $this->dogRepository;
+		$this->template->litterApplicationStateEnumInsert = LitterApplicationStateEnum::INSERT;			// php 5.4 workaround
+		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->user = $this->userRepository->getUser($id);
 		$this->template->userOwnDogs = $this->userRepository->findRecOwnersInDogs($id);
 		$this->template->userBreedDogs = $this->userRepository->findRecBreedersInDogs($id);
@@ -76,6 +123,7 @@ class UserPresenter extends SignPresenter {
 
 		$currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->userChangeRequestAsHtml = $this->dogChangesComparatorController->generateAwaitingChangesHtmlPerUser($this->presenter, $currentLang, $id);
+		$this->template->userInLitterApplication = $this->litterApplicationRepository->findUsedUserInApplication($id);
 	}
 
 	/**
@@ -84,9 +132,12 @@ class UserPresenter extends SignPresenter {
 	 * @param int $uID
 	 */
 	public function actionDeleteDogOwner($id, $uID) {
-		$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		if ($this->userRepository->deleteOwner($id)) {
+			$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED_FAILED, "alert-danger");
+		}
 		$this->redirect("userReferences", $uID);
-		// TODO
 	}
 
 	/**
@@ -95,9 +146,12 @@ class UserPresenter extends SignPresenter {
 	 * @param int $uID
 	 */
 	public function actionDeleteDogBreeder($id, $uID) {
-		$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		if ($this->userRepository->deleteBreeder($id)) {
+			$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED_FAILED, "alert-danger");
+		}
 		$this->redirect("userReferences", $uID);
-		// TODO
 	}
 
 	/**
@@ -106,9 +160,12 @@ class UserPresenter extends SignPresenter {
 	 * @param $uID
 	 */
 	public function actionDeletePuppyAdd($id, $uID) {
-		$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		if ($this->puppyRepository->deletePuppy($id)) {
+			$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED_FAILED, "alert-danger");
+		}
 		$this->redirect("userReferences", $uID);
-		// TODO
 	}
 
 	/**
@@ -117,9 +174,26 @@ class UserPresenter extends SignPresenter {
 	 * @param $uID
 	 */
 	public function actionDeleteUserChangeRequest($id, $uID) {
-		$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		if ($this->awaitingChangesRepository->deleteAwaitingChange($id)) {
+			$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED_FAILED, "alert-danger");
+		}
+
 		$this->redirect("userReferences", $uID);
-		// TODO
+	}
+
+	/**
+	 * @param int $id
+	 * @param int $uID
+	 */
+	public function actionDeleteLitterApplication($id, $uID) {
+		if ($this->litterApplicationRepository->delete($id)) {
+			$this->flashMessage(LITTER_APPLICATION_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(LITTER_APPLICATION_DELETED_FAILED, "alert-danger");
+		}
+		$this->redirect("userReferences", $uID);
 	}
 
 	/**
