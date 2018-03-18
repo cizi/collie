@@ -75,6 +75,7 @@ define("USER_REFERENCES_PUPPY",  "User has these adds listed");
 define("USER_REFERENCES_LITTER_APP",  "Here is user listed as <strong>'dog's female owner'</strong>");
 define("USER_REFERENCES_REQUESTED_CHANGES",  "Requested user changes");
 define("USER_REFERENCES_REQUESTED_CHANGES_STATE",  "State");
+define("USER_REFERENCES_CORRUPT_DOG_REF",  "<i>Invalid dog reference</i>");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", ' Addition the new user');

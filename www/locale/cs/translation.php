@@ -76,6 +76,7 @@ define("USER_REFERENCES_PUPPY",  "Uživatel má vystaveny tyto inzeráty štěň
 define("USER_REFERENCES_LITTER_APP",  "U těchto přihlášek vrhu je uživatel veden jako <strong>'majitel feny'</strong>");
 define("USER_REFERENCES_REQUESTED_CHANGES",  "Požadované změny uživatele");
 define("USER_REFERENCES_REQUESTED_CHANGES_STATE",  "Stav");
+define("USER_REFERENCES_CORRUPT_DOG_REF",  "<i>Neplatná reference na psa</i>");
 
 // admin - user edit
 define("USER_EDIT_FORM_ADD", 'Přidání nového uživatele');
