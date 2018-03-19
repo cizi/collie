@@ -320,7 +320,7 @@ class DogRepository extends BaseRepository {
 			unset($filter[DogFilterForm::DOG_FILTER_HEALTH]);
 
 			if (isset($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT])) { // ale musím připojit vysledek
-				$return .= sprintf("az.Vysledek = %s", $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT]));
+				$return .= sprintf("az.Vysledek like %s", $dbDriver->escapeLike($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT], 1));	// $dbDriver->escapeText($filter[DogFilterForm::DOG_FILTER_HEALTH_TEXT])
 				$return .= (count($filter) > 1 ? " and " : "");
 			}
 		}
