@@ -18,6 +18,7 @@ use App\Model\Entity\DogPicEntity;
 use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
 use App\Model\ShowDogRepository;
+use App\Model\TemporaryUserRepository;
 use App\Model\UserRepository;
 use App\Model\VetRepository;
 use Nette\Application\AbortException;
@@ -54,6 +55,9 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	/** @var VetRepository */
 	private $vetRepository;
 
+	/** @var TemporaryUserRepository */
+	private $temporaryUserRepository;
+
 	/**
 	 * FeItem1velord2Presenter constructor.
 	 * @param DogFilterForm $dogFilterForm
@@ -63,6 +67,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	 * @param UserRepository $userRepository
 	 * @param ShowDogRepository $showDogRepository
 	 * @param VetRepository $vetRepository
+	 * @param TemporaryUserRepository $temporaryUserRepository
 	 */
 	public function __construct(
 		DogFilterForm $dogFilterForm,
@@ -71,7 +76,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		EnumerationRepository $enumerationRepository,
 		UserRepository $userRepository,
 		ShowDogRepository $showDogRepository,
-		VetRepository $vetRepository
+		VetRepository $vetRepository,
+	 	TemporaryUserRepository $temporaryUserRepository
 	) {
 		$this->dogFilterForm = $dogFilterForm;
 		$this->dogForm = $dogForm;
@@ -80,6 +86,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->userRepository = $userRepository;
 		$this->showDogRepository = $showDogRepository;
 		$this->vetRepository = $vetRepository;
+		$this->temporaryUserRepository = $temporaryUserRepository;
 	}
 
 	public function startup() {
@@ -224,9 +231,11 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 				$this['dogForm']['breeder']->addHidden("ID", $breeder->getID())->setAttribute("class", "form-control");
 				$this['dogForm']['breeder']['uID']->setValue($breeder->getUID());
 			}
+			$this['dogForm']['tempBreeder']->setDefaultValue($this->temporaryUserRepository->findTemporaryBreedersAsString($dog->getID()));
 
 			$owners = $this->userRepository->findDogOwners($id);
 			$this['dogForm']['owners']['uID']->setDefaultValue($owners);
+			$this['dogForm']['tempOwners']->setDefaultValue($this->temporaryUserRepository->findTemporaryOwnersAsString($dog->getID()));
 		}
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->dogPics = $this->dogRepository->findDogPics($id);
@@ -312,7 +321,9 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->template->lang = $lang;
 		$this->template->enumRepo = $this->enumerationRepository;
 		$this->template->majitele = $this->userRepository->findDogOwnersAsUser($id);
+		$this->template->docasnyMajitele = $this->temporaryUserRepository->findTemporaryOwnersAsString($dog->getID());
 		$this->template->chovatel = $this->userRepository->getBreederByDogAsUser($id);
+		$this->template->docasnyChovatele = $this->temporaryUserRepository->findTemporaryBreedersAsString($dog->getID());
 		$this->template->zdravi = $zdravi;
 		$this->template->siblings = $this->dogRepository->findSiblings($id);
 		$this->template->descendants = $this->dogRepository->findDescendants($id);
@@ -412,7 +423,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			$dogEntity->hydrate($formData);
 
 			$mIdOrOidForNewDog = (isset($formData['mIdOrOidForNewDog']) ? $formData['mIdOrOidForNewDog'] : null);
-			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files, $mIdOrOidForNewDog);
+			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files, $mIdOrOidForNewDog, $formData['tempBreeder'], $formData['tempOwners']);
 			$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			$this->redirect("default");
 		} catch (\Exception $e) {

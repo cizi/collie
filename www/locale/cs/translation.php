@@ -573,6 +573,7 @@ define("DOG_FORM_SHOWS_EXAMS", 'Zkoušky');
 define("DOG_FORM_SHOWS_RACES", 'Závody');
 define("DOG_FORM_SHOWS_NOTE", 'Poznámka');
 define("DOG_FORM_BREEDER", 'Chovatel');
+define("DOG_FORM_BREEDER_UNREGISTERED", 'Neregistrovaný chovatel');
 define("DOG_FORM_MALE", 'Otec');
 define("DOG_FORM_FEMALE", 'Matka');
 define("DOG_FORM_DESCENDANTS", 'Potomci');
@@ -585,6 +586,8 @@ define("DOG_FORM_PEDIGREE_GENERATIONS_NO", 'generací');
 define("DOG_FORM_PEDIGREE_ADD_MISSING", 'Přidat psa');
 
 define("DOG_FORM_OWNERS", 'Majitel/é');
+define("DOG_FORM_OWNERS_UNREGISTERED", 'Neregistrovaní majitelé (oddělujte čárkou)');
+define("DOG_FORM_OWNERS_UNREGISTERED_VIEW", 'Neregistrovaní majitelé (odděleni čátkou)');
 define("DOG_FORM_PREVIOUS_OWNERS", 'Předchozí majitelé');
 define("DOG_FORM_OWNERS_SELECT_TEXT", 'Vyberte možnosti');
 define("DOG_FORM_OWNER_SELECT_TEXT", 'Vyberte možnost');

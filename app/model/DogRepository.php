@@ -6,12 +6,14 @@ use App\Enum\DogStateEnum;
 use App\Enum\LitterApplicationStateEnum;
 use App\Forms\DogFilterForm;
 use App\Model\Entity\BreederEntity;
+use App\Model\Entity\BreederTemporary;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogFileEntity;
 use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
 use App\Model\Entity\LitterApplicationEntity;
+use App\Model\Entity\UserTemporaryEntity;
 use Dibi\Connection;
 use Dibi\Row;
 use Nette\Application\UI\Presenter;
@@ -54,6 +56,9 @@ class DogRepository extends BaseRepository {
 	/** @var LitterApplicationRepository */
 	private $litterApplicationRepository;
 
+	/** @var TemporaryUserRepository */
+	private $temporaryUserRepository;
+
 	/** @var array pole výyskytu psů během vypisování rodokmenu */
 	private $avkTable = [];
 
@@ -89,12 +94,14 @@ class DogRepository extends BaseRepository {
 		Connection $connection,
 		Session $session,
 		LangRepository $langRepository,
-		LitterApplicationRepository $litterApplicationRepository
+		LitterApplicationRepository $litterApplicationRepository,
+		TemporaryUserRepository $temporaryUserRepository
 	) {
 		$this->enumRepository = $enumerationRepository;
 		$this->session = $session;
 		$this->langRepository = $langRepository;
 		$this->litterApplicationRepository = $litterApplicationRepository;
+		$this->temporaryUserRepository = $temporaryUserRepository;
 
 		parent::__construct($connection);
 	}
@@ -643,8 +650,20 @@ class DogRepository extends BaseRepository {
 	 * @param DogOwnerEntity[]
 	 * @param DogFileEntity[]
 	 * @param int [$mIdOrOidForNewDog]
+	 * @param string [$tempBreeder]
+	 * @param string [$tempOwner]
 	 */
-	public function save(DogEntity $dogEntity, array $dogPics, array $dogHealth, array $breeders, array $owners, array $dogFiles, $mIdOrOidForNewDog = null) {
+	public function save(
+			DogEntity $dogEntity,
+			array $dogPics,
+			array $dogHealth,
+			array $breeders,
+			array $owners,
+			array $dogFiles,
+			$mIdOrOidForNewDog = null,
+			$tempBreeder = null,
+			$tempOwner = null
+	) {
 		try {
 			$this->connection->begin();
 			$dogEntity->setPosledniZmena(new DateTime());
@@ -710,8 +729,38 @@ class DogRepository extends BaseRepository {
 				}
 			}
 
+			// dočasní chovatelé
+			$this->temporaryUserRepository->deleteAllTemporaryBreedersByDog($dogEntity->getID());
+			if (!empty($tempBreeder) && (trim($tempBreeder) != "")) {
+				$tempUser = $this->temporaryUserRepository->getTemporaryUserByName(trim($tempBreeder));
+				if ($tempUser == null) {
+					$tempUser = new UserTemporaryEntity();
+					$tempUser->setCeleJmeno(trim($tempBreeder));
+					$tempUser = $this->temporaryUserRepository->saveTemporaryUser($tempUser);
+				}
+				$this->temporaryUserRepository->setTempUserAsTempBreeder($tempUser, $dogEntity->getID());
+			}
+
+			// dočasní majitelé
+			$this->temporaryUserRepository->deleteAllTemporaryOwnersByDog($dogEntity->getID());
+			if (!empty($tempOwner) && (trim($tempOwner != ""))) {
+				$allTempOwners = explode(",", $tempOwner);
+				foreach ($allTempOwners as $tempOwnerToDb) {
+					if (trim($tempOwnerToDb) != "") {
+						$tempUser = $this->temporaryUserRepository->getTemporaryUserByName(trim($tempOwnerToDb));
+						if ($tempUser == null) {
+							$tempUser = new UserTemporaryEntity();
+							$tempUser->setCeleJmeno(trim($tempOwnerToDb));
+							$tempUser = $this->temporaryUserRepository->saveTemporaryUser($tempUser);
+						}
+						$this->temporaryUserRepository->setTempUserAsTempOwner($tempUser, $dogEntity->getID());
+					}
+				}
+			}
+
 			$this->connection->commit();
 		} catch (\Exception $e) {
+			// echo $e->getMessage(); die;
 			$this->connection->rollback();
 			throw $e;
 		}

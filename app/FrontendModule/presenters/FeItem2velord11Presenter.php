@@ -17,6 +17,7 @@ use App\Model\Entity\DogOwnerEntity;
 use App\Model\Entity\DogPicEntity;
 use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
+use App\Model\TemporaryUserRepository;
 use App\Model\UserRepository;
 use App\Model\WebconfigRepository;
 use Nette\Application\AbortException;
@@ -47,13 +48,17 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	/** @var DogChangesComparatorController */
 	private $dogChangesComparatorController;
 
+	/** @var TemporaryUserRepository */
+	private $temporaryUserRepository;
+
 	public function __construct(
 		DogFilterForm $dogFilterForm,
 		DogForm $dogForm,
 		DogRepository $dogRepository,
 		EnumerationRepository $enumerationRepository,
 		UserRepository $userRepository,
-		DogChangesComparatorController $changesComparatorController
+		DogChangesComparatorController $changesComparatorController,
+		TemporaryUserRepository $temporaryUserRepository
 	) {
 		$this->dogFilterForm = $dogFilterForm;
 		$this->dogForm = $dogForm;
@@ -61,6 +66,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$this->enumerationRepository = $enumerationRepository;
 		$this->userRepository = $userRepository;
 		$this->dogChangesComparatorController = $changesComparatorController;
+		$this->temporaryUserRepository = $temporaryUserRepository;
 	}
 
 	/**
@@ -213,9 +219,11 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				$this['dogForm']['breeder']->addHidden("ID", $breeder->getID())->setAttribute("class", "form-control");
 				$this['dogForm']['breeder']['uID']->setValue($breeder->getUID());
 			}
+			$this['dogForm']['tempBreeder']->setDefaultValue($this->temporaryUserRepository->findTemporaryBreedersAsString($dog->getID()));
 
 			$owners = $this->userRepository->findDogOwners($id);
 			$this['dogForm']['owners']['uID']->setDefaultValue($owners);
+			$this['dogForm']['tempOwners']->setDefaultValue($this->temporaryUserRepository->findTemporaryOwnersAsString($dog->getID()));
 		}
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->dogPics = $this->dogRepository->findDogPics($id);
@@ -366,7 +374,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				if ($isCommonUser) {	// pokud jsem BFU je nutné psa schválit, tedy mu dám odpovídající flag
 					$newDogEntity->setStav(DogStateEnum::INACTIVE);
 				}
-				$this->dogRepository->save($newDogEntity, $pics, $health, $breeders, $owners, $files);
+				$this->dogRepository->save($newDogEntity, $pics, $health, $breeders, $owners, $files, null, $formData['tempBreeder'], $formData['tempOwners']);
 				if ($isCommonUser) {	// pokud jsem BFU tak po založení psa se stavem ke schválení musím udělat zápis a poslat mail
 					$linkToDogView = $this->presenter->link("FeItem1velord2:view", $newDogEntity->getID());
 					$this->dogChangesComparatorController->newDogCreated($newDogEntity, $linkToDogView);

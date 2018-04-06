@@ -553,6 +553,7 @@ define("DOG_FORM_SHOWS_EXAMS", 'Exams');
 define("DOG_FORM_SHOWS_RACES", 'Races');
 define("DOG_FORM_SHOWS_NOTE", 'Note');
 define("DOG_FORM_BREEDER", 'Breeder');
+define("DOG_FORM_BREEDER_UNREGISTERED", 'Unregistered breeder');
 define("DOG_FORM_MALE", 'Father');
 define("DOG_FORM_FEMALE", 'Mother');
 define("DOG_FORM_DESCENDANTS", 'Descendants');
@@ -565,6 +566,8 @@ define("DOG_FORM_PEDIGREE_GENERATIONS_NO", 'generations');
 define("DOG_FORM_PEDIGREE_ADD_MISSING", 'Add dog');
 
 define("DOG_FORM_OWNERS", 'Owner/s');
+define("DOG_FORM_OWNERS_UNREGISTERED", 'Unregistered owner/s (separate by comma)');
+define("DOG_FORM_OWNERS_UNREGISTERED_VIEW", 'Unregistered owner/s (separates by comma)');
 define("DOG_FORM_PREVIOUS_OWNERS", 'Previous owners');
 define("DOG_FORM_OWNERS_SELECT_TEXT", 'Select some options');
 define("DOG_FORM_OWNER_SELECT_TEXT", 'Select an option');

@@ -5,6 +5,7 @@ namespace App\Forms;
 use App\Model\DogRepository;
 use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
+use App\Model\TemporaryUserRepository;
 use App\Model\UserRepository;
 use App\Model\VetRepository;
 use Nette\Application\UI\Form;
@@ -27,25 +28,32 @@ class DogForm {
 	/** @var DogRepository */
 	private $dogRepository;
 
+	/** @var TemporaryUserRepository  */
+	private $temporaryUserRepository;
+
 	/**
+	 * DogForm constructor.
 	 * @param FormFactory $factory
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param VetRepository $vetRepository
 	 * @param UserRepository $userRepository
-	 * @param DogRepository
+	 * @param DogRepository $dogRepository
+	 * @param TemporaryUserRepository $temporaryUserRepository
 	 */
 	public function __construct(
 		FormFactory $factory,
 		EnumerationRepository $enumerationRepository,
 		VetRepository $vetRepository,
 		UserRepository $userRepository,
-		DogRepository $dogRepository
+		DogRepository $dogRepository,
+		TemporaryUserRepository $temporaryUserRepository
 	) {
 		$this->factory = $factory;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->vetRepository = $vetRepository;
 		$this->userRepository = $userRepository;
 		$this->dogRepository = $dogRepository;
+		$this->temporaryUserRepository = $temporaryUserRepository;
 	}
 
 	/**
@@ -177,10 +185,19 @@ class DogForm {
 		$breederContainer = $form->addContainer("breeder");
 		$breederContainer->addSelect("uID", DOG_FORM_BREEDER, $chovatele)->setAttribute("class", "form-control");
 
+		$form->addText("tempBreeder", DOG_FORM_BREEDER_UNREGISTERED)
+			->setAttribute("data-list", $this->temporaryUserRepository->findAllTemporaryUsersForDataList())
+			->setAttribute("class", "awesomplete form-control");
+
 		$vlastnici = $this->userRepository->findOwnersForSelect();
 		$ownerContainer = $form->addContainer("owners");
 		$ownerContainer->addMultiSelect("uID", DOG_FORM_OWNERS, $vlastnici)
 			->setAttribute("class", "form-control chosen-select");
+
+		$form->addText("tempOwners", DOG_FORM_OWNERS_UNREGISTERED)
+			->setAttribute("data-list",$this->temporaryUserRepository->findAllTemporaryUsersForDataList())
+			->setAttribute("class", "awesomplete form-control")
+			->setAttribute("data-multiple");
 
 		$males = $this->dogRepository->findMaleDogsForSelect();
 		$form->addSelect("oID", DOG_FORM_MALE, $males)
