@@ -32,6 +32,7 @@ define("MENU_BLOCK", 'Bloky');
 define("MENU_MENU_BLOCK", 'Nabídka vs bloky');
 define("MENU_CONTACT_FORM", 'Kontaktní formulář');
 define("MENU_FOOTER", 'Patička');
+define("MENU_USERS_TEMP", 'Dočasní uživatelé');
 define("MENU_USERS", 'Uživatelé');
 define("MENU_SETTINGS", 'Nastavení');
 define("MENU_ENUMERATION", 'Číselníky');
@@ -42,6 +43,12 @@ define("MENU_FRONTEND", 'Zpět na stránky');
 
 // admin - users list
 define("USER_TITLE", 'Uživatelé');
+define("USER_TEMP_INFO_TEXT", "Zde jsou vedeni dočasní uživatelé, kteří jsou vedeni v databázi u psů jako dočasní majitelé/chovatelé. 
+								Je možné zde uživatele přepsat jako platného uživatele. Pokud dojde k přepsání, bude uživatel smazán s dočasných, 
+								zaveden jako platný uživatel do databáze se všemi nutnými údaji (email, role apod.) a následně bude u všech psů 
+								nahrazen z dočasného za právo platného uživatele. ");
+define("USER_TEMP_REWRITE", "Registrovat dočasného uživatele");
+define("USER_TEMP_REWRITTEN", "Uživatel přepsán. Dočasný uživatel smazán.");
 define("USER_INFO_TEXT", "Zde je možné spravovat přístup uživatelů do systému. Je možmé uživatele přidávat, odebírat, aktivaovat nebo odebírat. <br /><br />
 							Přihlašovací jméno uživatele je jeho emailová adresa, tím se zaručí jedinečnost bez duplicit uživatelů. Mějte prosím, na
 							paměti, že veškeré změny jsou nevratné!");

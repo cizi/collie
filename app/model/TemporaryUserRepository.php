@@ -26,6 +26,20 @@ class TemporaryUserRepository extends BaseRepository {
 	}
 
 	/**
+	 * @param int $id
+	 * @return UserTemporaryEntity
+	 */
+	public function getTemporaryUserById($id) {
+		$query = ["select * from appdata_uzivatel_docasny where id = %i", $id];
+		$row = $this->connection->query($query)->fetch();
+		if ($row) {
+			$tempUser = new UserTemporaryEntity();
+			$tempUser->hydrate($row->toArray());
+			return $tempUser;
+		}
+	}
+
+	/**
 	 * @param string $name
 	 * @return UserTemporaryEntity
 	 */
@@ -55,6 +69,34 @@ class TemporaryUserRepository extends BaseRepository {
 	public function deleteAllTemporaryOwnersByDog($pID) {
 		$query = ["delete from appdata_majitel_docasny where pID = %i", $pID];
 		return $this->connection->query($query);
+	}
+
+	/**
+	 * Smaže dočasného uživatele a všechny jeho vazby na psy
+	 * @param int $id
+	 * @return bool
+	 */
+	public function deleteTemporaryUser($id) {
+		$result = false;
+		try {
+			$this->connection->begin();
+			$query = ["delete from appdata_chovatel_docasny where utID = %i", $id];
+			$this->connection->query($query);
+
+			$query = ["delete from appdata_majitel_docasny where utID = %i", $id];
+			$this->connection->query($query);
+
+			$query = ["delete from appdata_uzivatel_docasny where id = %i", $id];
+			$this->connection->query($query);
+
+			$result = true;
+			$this->connection->commit();
+		} catch (\Exception $e) {
+			$this->connection->rollback();
+
+		}
+
+		return $result;
 	}
 
 	/**
@@ -144,6 +186,55 @@ class TemporaryUserRepository extends BaseRepository {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @return UserTemporaryEntity[]
+	 */
+	public function findAllTemporaryUsers() {
+		$query = ["select * from appdata_uzivatel_docasny"];
+		$result = $this->connection->query($query);
+
+		$return = [];
+		foreach($result->fetchAll() as $usr) {
+			$usrEntity = new UserTemporaryEntity();
+			$usrEntity->hydrate($usr->toArray());
+			$return[] = $usrEntity;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * @param int $utID - id dočasného uživatele
+	 * @return int[]
+	 */
+	public function findTemporaryOwnerDogs($utID) {
+		$query = ["select * from appdata_majitel_docasny where utID = %i", $utID];
+		$result = $this->connection->query($query);
+
+		$dogIds = [];
+		foreach($result->fetchAll() as $record) {
+			$dogIds[] = $record['pID'];
+		}
+
+		return $dogIds;
+	}
+
+	/**
+	 * @param int $utID - id dočasného uživatele
+	 * @return int[]
+	 */
+	public function findTemporaryBreederDogs($utID) {
+		$query = ["select * from appdata_chovatel_docasny where utID = %i", $utID];
+		$result = $this->connection->query($query);
+
+		$dogIds = [];
+		foreach($result->fetchAll() as $record) {
+			$dogIds[] = $record['pID'];
+		}
+
+		return $dogIds;
 	}
 
 	/**

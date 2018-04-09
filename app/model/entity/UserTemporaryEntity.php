@@ -44,7 +44,6 @@ class UserTemporaryEntity {
 	public function hydrate(array $data) {
 		$this->id = (isset($data['id']) ? $data['id'] : null);
 		$this->celeJmeno = (isset($data['CeleJmeno']) ? $data['CeleJmeno'] : null);
-		$this->pID = (isset($data['pID']) ? $data['pID'] : null);
 	}
 
 	/**

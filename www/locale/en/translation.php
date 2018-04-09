@@ -32,6 +32,7 @@ define("MENU_BLOCK", 'Page content blocks');
 define("MENU_MENU_BLOCK", 'Menu vs blocks');
 define("MENU_CONTACT_FORM", 'Contact form');
 define("MENU_FOOTER", 'Page footer');
+define("MENU_USERS_TEMP", 'Temporary users');
 define("MENU_USERS", 'Users');
 define("MENU_SETTINGS", 'Page setting');
 define("MENU_ENUMERATION", 'Enumerations');
@@ -42,6 +43,11 @@ define("MENU_FRONTEND", 'Back to web');
 
 // admin - users list
 define("USER_TITLE", 'Users');
+define("USER_TEMP_INFO_TEXT", "Here are temporary users which are filled in dogs cards just are temporary users. Here you can rewrite the temporary user 
+								from temporary to regular user with email and role etc. All references to the temporary user will be discarded 
+								and replaced to the regular user. ");
+define("USER_TEMP_REWRITE", "Register temp user");
+define("USER_TEMP_REWRITTEN", "User has been rewritten. Temporary user has been deleted.");
 define("USER_INFO_TEXT", "Here you can manage users and their roles. Login name is their email addresses. It assures the unique user name (login).
 						Please remember that these changes are undone!");
 define("USER_TABLE_HEADER_LOGIN", "Login");

@@ -7,7 +7,9 @@ use App\Enum\UserRoleEnum;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogOwnerEntity;
+use App\Model\Entity\OwnerTemporaryEntity;
 use App\Model\Entity\PuppyEntity;
+use Dibi\Connection;
 use Dibi\Exception;
 use Nette;
 use App\Model\Entity\UserEntity;
@@ -24,6 +26,27 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 
 	/** string znak pro nevybraného veterinář v selectu  */
 	const NOT_SELECTED = "-";
+
+	/** @var TemporaryUserRepository */
+	private $temporaryUserRepository;
+
+	/** @var DogRepository */
+	private $dogRepository;
+
+	/** @var Connection */
+	protected $connection;
+
+	/**
+	 * UserRepository constructor.
+	 * @param TemporaryUserRepository $temporaryUserRepository
+	 * @param DogRepository $dogRepository
+	 * @param Connection $connection
+	 */
+	public function __construct(TemporaryUserRepository $temporaryUserRepository, DogRepository $dogRepository, Connection $connection)  {
+		$this->temporaryUserRepository = $temporaryUserRepository;
+		$this->dogRepository = $dogRepository;
+		parent::__construct($connection);
+	}
 
 	/**
 	 * Performs an authentication.
@@ -147,15 +170,54 @@ class UserRepository extends BaseRepository implements Nette\Security\IAuthentic
 			$userEntity->setLastLogin('0000-00-00 00:00:00');
 			$userEntity->setRegisterTimestamp(date('Y-m-d H:i:s'));
 			$query = ["insert into user ", $userEntity->extract()];
+			$this->connection->query($query);
+			$userEntity->setId($this->connection->getInsertId());
 		} else {
 			$updateArray = $userEntity->extract();
 			unset($updateArray['id']);
 			unset($updateArray['register_timestamp']);
 			unset($updateArray['last_login']);
 			$query = ["update user set ", $updateArray, "where id=%i", $userEntity->getId()];
+			$this->connection->query($query);
 		}
 
-		$this->connection->query($query);
+		return $userEntity;
+	}
+
+	/**
+	 * @param UserEntity $userEntity
+	 * @param int $tempUserId
+	 * @return bool
+	 */
+	public function rewriteTempUserToRegularUser(UserEntity $userEntity, $tempUserId) {
+		$result = false;
+		try {
+			$this->connection->begin();
+			$this->saveUser($userEntity);
+
+			$tempBreederDogs = $this->temporaryUserRepository->findTemporaryBreederDogs($tempUserId);
+			foreach ($tempBreederDogs as $dogId) {
+				$breederEntity = new BreederEntity();
+				$breederEntity->setPID($dogId);
+				$breederEntity->setUID($userEntity->getId());
+				$this->dogRepository->saveBreeder($breederEntity);
+			}
+			$tempOwnerDogs = $this->temporaryUserRepository->findTemporaryOwnerDogs($tempUserId);
+			foreach ($tempOwnerDogs as $dogId) {
+				$ownerEntity = new DogOwnerEntity();
+				$ownerEntity->setSoucasny(true);
+				$ownerEntity->setPID($dogId);
+				$ownerEntity->setUID($userEntity->getId());
+				$this->dogRepository->saveOwner($ownerEntity);
+			}
+			$this->temporaryUserRepository->deleteTemporaryUser($tempUserId);
+			$result = true;
+			$this->connection->commit();
+		} catch (\Exception $e) {
+			$this->connection->rollback();
+		}
+
+		return $result;
 	}
 
 	/**

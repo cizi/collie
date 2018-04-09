@@ -45,6 +45,11 @@
 				<span class="glyphicon glyphicon-chevron-down menuItem"></span>{=MENU_FOOTER}</a>
 		</li>
 		<li>
+			<a href={link TempUser:Default} {if $item == "tempUsers"} style="color: white"{/if}>
+			<span class="glyphicon glyphicon-time menuItem"></span>{=MENU_USERS_TEMP}
+			</a>
+		</li>
+		<li>
 			<a href={link User:Default} {if $item == "user"} style="color: white"{/if}>
 				<span class="glyphicon glyphicon-user menuItem"></span>{=MENU_USERS}
 			</a>
