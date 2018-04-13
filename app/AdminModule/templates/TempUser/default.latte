@@ -30,6 +30,9 @@
 									<tr>
 										<td>{$user->getCeleJmeno()}</td>
 										<td class="alignRight">
+											{if isset($tempUsersAsBreeders[$user->getId()]) || isset($tempUsersAsOwners[$user->getId()])}
+												<a href={link userReferences, $user->getId()} title={=USER_REFERENCES}><span class="glyphicon glyphicon-user colorGrey"></span></a> &nbsp;&nbsp;
+											{/if}
 											<a href={link RewriteTempUser, $user->getId()} title={=USER_TEMP_REWRITE}><span class="glyphicon glyphicon-plus-sign"></span></a> &nbsp;&nbsp;
 											<a href="#" data-href={link DeleteTempUser, $user->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=USER_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 										</td>

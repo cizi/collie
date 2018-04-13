@@ -60,6 +60,9 @@
 													<img src="{!$baseUrl}/images/ifoto.gif" />
 												{/if}
 											{/if}
+											{if isset($whoHasDescendants[$dog->getID()])}
+												<img src="{!$baseUrl}/images/ipotomci.gif" />
+											{/if}
 											{if $dog->isPesMrtvy()}
 												<img src="{!$baseUrl}/images/mrtvy.gif" />
 											{/if}

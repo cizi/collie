@@ -4,6 +4,7 @@ namespace App\AdminModule\Presenters;
 
 use App\Controller\DogChangesComparatorController;
 use App\Controller\EmailController;
+use App\Enum\StateEnum;
 use App\Enum\UserRoleEnum;
 use App\Forms\UserForm;
 use App\Model\DogRepository;
@@ -68,6 +69,8 @@ class TempUserPresenter extends SignPresenter {
 		$userRoles = new UserRoleEnum();
 		$this->template->users = $this-> temporaryUserRepository->findAllTemporaryUsers();
 		$this->template->roles = $userRoles->translatedForSelect();
+		$this->template->tempUsersAsBreeders = $this->temporaryUserRepository->findTemporaryBreeders();
+		$this->template->tempUsersAsOwners = $this->temporaryUserRepository->findTemporaryOwners();
 	}
 
 	/**
@@ -145,5 +148,45 @@ class TempUserPresenter extends SignPresenter {
 				$form->addError(USER_EDIT_SAVE_FAILED);
 			}
 		}
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function actionUserReferences($id) {
+		$this->template->stateEnum = new StateEnum();
+		$this->template->enumRepo = $this->enumerationRepository;
+		$this->template->dogRepo = $this->dogRepository;
+		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
+		$this->template->user = $this->temporaryUserRepository->getTemporaryUserById($id);
+
+		$this->template->userOwnDogs = $this->temporaryUserRepository->findRecOwnersInDogs($id);
+		$this->template->userBreedDogs = $this->temporaryUserRepository->findRecBreedersInDogs($id);
+	}
+
+	/**
+	 * @param int $id
+	 * @param int $utID
+	 */
+	public function actionDeleteDogTempOwner($id, $utID) {
+		if ($this->temporaryUserRepository->deleteTemporaryOwnerById($id)) {
+			$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED_FAILED, "alert-danger");
+		}
+		$this->redirect("userReferences", $utID);
+	}
+
+	/**
+	 * @param int $id
+	 * @param int $utID
+	 */
+	public function actionDeleteDogTempBreeder($id, $utID) {
+		if ($this->temporaryUserRepository->deleteTemporaryBreederById($id)) {
+			$this->flashMessage(MENU_SETTINGS_ITEM_DELETED, "alert-success");
+		} else {
+			$this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED_FAILED, "alert-danger");
+		}
+		$this->redirect("userReferences", $utID);
 	}
 }

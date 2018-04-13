@@ -97,6 +97,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$this->template->filterActivated = (!empty($filter) ? true : false);
 		$this->template->recordCount = $recordCount;
 		$this->template->pageCount = $paginator->getPageCount();
+		$this->template->whoHasDescendants = $this->dogRepository->findDogsWithDescendants();
 	}
 
 	/**

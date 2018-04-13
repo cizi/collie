@@ -440,6 +440,19 @@ class DogRepository extends BaseRepository {
 	}
 
 	/**
+	 * @return int[]
+	 */
+	public function findDogsWithDescendants() {
+		$query = "select distinct oID from appdata_pes";
+		$males = $this->connection->query($query)->fetchPairs("oID","oID");
+
+		$query = "select distinct mID from appdata_pes";
+		$females = $this->connection->query($query)->fetchPairs("mID","mID");
+
+		return ($males + $females);
+	}
+
+	/**
 	 * Uloží/aktualizuje zázanm do tabulky zdraví psa
 	 * @param DogHealthEntity $dogHealthEntity
 	 */
