@@ -49,6 +49,9 @@
 									<tr>
 										{var $fullName = trim($dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem())}
 										<td {if strlen($fullName) <= 38}nowrap{/if}>
+											{if $dog->isPesMrtvy()}
+												<img src="{!$baseUrl}/images/mrtvy.gif" />
+											{/if}
 											{if count($dogRepository->findDogPics($dog->getID())) > 0}
 												{if $dog->getPlemeno() == 18}
 													<img src="{!$baseUrl}/images/ifoto_dlouhosrsta_kolie.gif" />
@@ -62,9 +65,6 @@
 											{/if}
 											{if isset($whoHasDescendants[$dog->getID()])}
 												<img src="{!$baseUrl}/images/ipotomci.gif" />
-											{/if}
-											{if $dog->isPesMrtvy()}
-												<img src="{!$baseUrl}/images/mrtvy.gif" />
 											{/if}
 											<a href={link view, $dog->getID()}>{$fullName}</a>
 											{* if $amIAdmin}
