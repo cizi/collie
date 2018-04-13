@@ -423,7 +423,9 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			$dogEntity->hydrate($formData);
 
 			$mIdOrOidForNewDog = (isset($formData['mIdOrOidForNewDog']) ? $formData['mIdOrOidForNewDog'] : null);
-			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files, $mIdOrOidForNewDog, $formData['tempBreeder'], $formData['tempOwners']);
+			$tempBreeder = (isset($formData['tempBreeder']) ? $formData['tempBreeder'] : null);
+			$tempOwners = (isset($formData['tempOwners']) ? $formData['tempOwners'] : null);
+			$this->dogRepository->save($dogEntity, $pics, $health, $breeders, $owners, $files, $mIdOrOidForNewDog, $tempBreeder, $tempOwners);
 			$this->flashMessage(DOG_FORM_ADDED, "alert-success");
 			$this->redirect("default");
 		} catch (\Exception $e) {

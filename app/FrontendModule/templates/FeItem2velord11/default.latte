@@ -49,7 +49,15 @@
 										{var $fullName = trim($dog->getTitulyPredJmenem() . " " . $dog->getJmeno() . " " . $dog->getTitulyZaJmenem())}
 										<td {if strlen($fullName) <= 38}nowrap{/if}>
 											{if count($dogRepository->findDogPics($dog->getID())) > 0}
-												<img src="{!$baseUrl}/images/ifoto.gif" />
+												{if $dog->getPlemeno() == 18}
+													<img src="{!$baseUrl}/images/ifoto_dlouhosrsta_kolie.gif" />
+												{elseif $dog->getPlemeno() == 17}
+													<img src="{!$baseUrl}/images/ifoto_kratkosrsta_kolie.gif" />
+												{elseif $dog->getPlemeno() == 19}
+													<img src="{!$baseUrl}/images/ifoto_sheltie_kolie.gif" />
+												{else}
+													<img src="{!$baseUrl}/images/ifoto.gif" />
+												{/if}
 											{/if}
 											{if $dog->isPesMrtvy()}
 												<img src="{!$baseUrl}/images/mrtvy.gif" />

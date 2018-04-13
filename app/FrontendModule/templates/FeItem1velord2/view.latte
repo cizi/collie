@@ -147,13 +147,15 @@
 						</td>
 					</tr>
 
-					<tr>
-						<th>{=DOG_FORM_BREEDER_UNREGISTERED}:</th>
-						<td>{$docasnyChovatele}</td>
+					{if ($docasnyChovatele != "") || ($docasnyMajitele != "")}
+						<tr>
+							<th>{* =DOG_FORM_BREEDER_UNREGISTERED}: *}</th>
+							<td>{$docasnyChovatele}</td>
 
-						<th>{=DOG_FORM_OWNERS_UNREGISTERED_VIEW}:</th>
-						<td>{$docasnyMajitele}</td>
-					</tr>
+							<th>{* =DOG_FORM_OWNERS_UNREGISTERED_VIEW}: *}</th>
+							<td>{$docasnyMajitele}</td>
+						</tr>
+					{/if}
 
 					<tr>
 						<th>{=DOG_FORM_PREVIOUS_OWNERS}</th>
