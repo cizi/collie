@@ -331,7 +331,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				// načtu si aktuální data psa
 				$currentDogEntity = $this->dogRepository->getDog($formData['ID']);
 				$this->directPicsUpload($currentDogEntity, $supportedPicFormats, (isset($formData['pics']) ? $formData['pics'] : []));
-				$this->directFileUpload($currentDogEntity, $supportedFileFormats, (isset($formData['BonitaceSoubory']) ? $formData['BonitaceSoubory'] : []));
+				$this->directFilesUpload($currentDogEntity, $supportedFileFormats, (isset($formData['BonitaceSoubory']) ? $formData['BonitaceSoubory'] : []));
 				$newDogEntity->hydrate($formData);
 				$newDogEntity->setPosledniZmena($currentDogEntity->getPosledniZmena());	// tohle bych řešit neměl, takže to převezmu ze stávající hotnoty
 
@@ -439,7 +439,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * @param array $files
 	 * @throws \Exception
 	 */
-	private function directFileUpload(DogEntity $currentDogEntity, array $supportedFileFormats, array $files) {
+	private function directFilesUpload(DogEntity $currentDogEntity, array $supportedFileFormats, array $files) {
 		/** @var FileUpload $file */
 		foreach($files as $file) {
 			if ($file != null) {
