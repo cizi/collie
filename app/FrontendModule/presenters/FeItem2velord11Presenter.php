@@ -330,6 +330,8 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			if (isset($formData['ID']) && $isCommonUser) {	// editace => schvalování adminem, ale jen tehndy pokud aktuálně přihlášený uživatel není schvalovací admin
 				// načtu si aktuální data psa
 				$currentDogEntity = $this->dogRepository->getDog($formData['ID']);
+				$this->directPicsUpload($currentDogEntity, $supportedPicFormats, (isset($formData['pics']) ? $formData['pics'] : []));
+				$this->directFileUpload($currentDogEntity, $supportedFileFormats, (isset($formData['BonitaceSoubory']) ? $formData['BonitaceSoubory'] : []));
 				$newDogEntity->hydrate($formData);
 				$newDogEntity->setPosledniZmena($currentDogEntity->getPosledniZmena());	// tohle bych řešit neměl, takže to převezmu ze stávající hotnoty
 
@@ -403,6 +405,55 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			} else {
 				$form->addError(DOG_FORM_ADD_FAILED);
 				$this->flashMessage(DOG_FORM_ADD_FAILED, "alert-danger");
+			}
+		}
+	}
+	
+	/**
+	 * @param DogEntity $currentDogEntity
+	 * @param array $supportedPicFormats
+	 * @param array $pics
+	 * @throws \Exception
+	 */
+	private function directPicsUpload(DogEntity $currentDogEntity, array $supportedPicFormats, array $pics) {
+		/** @var FileUpload $file */
+		foreach($pics as $file) {
+			if ($file != null) {
+				$fileController = new FileController();
+				if ($fileController->upload($file, $supportedPicFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+					$message = sprintf("Nelze nahrát soubor '%s'.", $file->getName());
+					throw new \Exception($message);
+					break;
+				}
+				$dogPic = new DogPicEntity();
+				$dogPic->setCesta($fileController->getPathDb());
+				$dogPic->setPID($currentDogEntity->getID());
+				$this->dogRepository->saveDogPic($dogPic);
+			}
+		}
+	}
+
+	/**
+	 * @param DogEntity $currentDogEntity
+	 * @param array $supportedFileFormats
+	 * @param array $files
+	 * @throws \Exception
+	 */
+	private function directFileUpload(DogEntity $currentDogEntity, array $supportedFileFormats, array $files) {
+		/** @var FileUpload $file */
+		foreach($files as $file) {
+			if ($file != null) {
+				$fileController = new FileController();
+				if ($fileController->upload($file, $supportedFileFormats, $this->getHttpRequest()->getUrl()->getBaseUrl()) == false) {
+					$message = sprintf("Nelze nahrát soubor '%s'.", $file->getName());
+					throw new \Exception($message);
+					break;
+				}
+				$dogFile = new DogFileEntity();
+				$dogFile->setCesta($fileController->getPathDb());
+				$dogFile->setTyp(DogFileEnum::BONITACNI_POSUDEK);
+				$dogFile->setPID($currentDogEntity->getID());
+				$this->dogRepository->saveDogFile($dogFile);
 			}
 		}
 	}
