@@ -3,8 +3,10 @@
 namespace App\Forms;
 
 use App\Model\DogRepository;
+use App\Model\Entity\EnumerationItemEntity;
 use App\Model\EnumerationRepository;
 use App\Model\UserRepository;
+use App\Model\VetRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
@@ -22,6 +24,11 @@ class LitterApplicationRewriteForm extends Nette\Object {
 	/** @var UserRepository */
 	private $userRepository;
 
+	/** @var VetRepository */
+	private $vetRepository;
+
+	private $puppyRequiredHealth = [DogRepository::DOV_ORDER];
+
 	/**
 	 * LitterApplicationRewriteForm constructor.
 	 * @param FormFactory $factory
@@ -29,11 +36,18 @@ class LitterApplicationRewriteForm extends Nette\Object {
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param UserRepository $userRepository
 	 */
-	public function __construct(FormFactory $factory, DogRepository $dogRepository, EnumerationRepository $enumerationRepository, UserRepository $userRepository) {
+	public function __construct(
+		FormFactory $factory,
+		DogRepository $dogRepository,
+		EnumerationRepository $enumerationRepository,
+		UserRepository $userRepository,
+		VetRepository $vetRepository
+	) {
 		$this->factory = $factory;
 		$this->dogRepository = $dogRepository;
 		$this->enumerationRepository = $enumerationRepository;
 		$this->userRepository = $userRepository;
+		$this->vetRepository = $vetRepository;
 	}
 
 	/**
@@ -56,6 +70,8 @@ class LitterApplicationRewriteForm extends Nette\Object {
 		$form->addHidden("ID");
 		$form->addHidden("DatNarozeni");
 
+		$vets = $this->vetRepository->findVetsForSelect();
+		$zdravi = $this->enumerationRepository->findEnumItems($currentLang, 14);
 		for ($i=1; $i <= LitterApplicationDetailForm::NUMBER_OF_LINES; $i++) {
 			$container = $form->addContainer($i);
 
@@ -71,6 +87,20 @@ class LitterApplicationRewriteForm extends Nette\Object {
 			$container->addText("Jmeno", DOG_FORM_NAME)
 				->setAttribute("class", "form-control");
 
+			// zdraví
+			$dogHealthContainer = $container->addContainer("dogHealth");
+			/** @var EnumerationItemEntity $enumEntity */
+			foreach ($zdravi as $enumEntity) {
+				if (in_array($enumEntity->getOrder(), $this->puppyRequiredHealth)) {
+					$container = $dogHealthContainer->addContainer($enumEntity->getOrder());
+					$container->addText("caption", null)->setAttribute("class","form-control")->setAttribute("readonly", "readonly")->setAttribute("value",	$enumEntity->getItem());
+					$container->addText("Vysledek", DOG_FORM_HEALTH_SUMMARY)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_SUMMARY);
+					//$container->addText("Komentar", DOG_FORM_HEALTH_COMMENT)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_COMMENT);
+					$container->addText("Datum", DOG_FORM_HEALTH_DATE)->setAttribute("class", "healthDatePicker form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_DATE);
+					$container->addSelect("Veterinar", DOG_FORM_HEALTH_VET, $vets)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_VET);
+				}
+			}
+
 			$container->addSelect("PohlaviSel", DOG_FORM_SEX, $pohlavi)
 				->setAttribute("class", "form-control")
 				->setDisabled();
@@ -84,6 +114,7 @@ class LitterApplicationRewriteForm extends Nette\Object {
 			$container->addSelect("BarvaSel", DOG_FORM_FUR_COLOUR, $barvy)
 				->setAttribute("class", "form-control dogRewriteDelimiter")
 				->setDisabled();
+
 			$container->addHidden("Barva");
 		}
 

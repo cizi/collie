@@ -353,7 +353,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	 * @param Form $form
 	 */
 	public function saveDog(Form $form){
-		$supportedPicFormats = ["jpg", "png", "gif"];
+		$supportedPicFormats = ["jpg", "png", "gif", "jpeg"];
 		$supportedFileFormats = ["jpg", "png", "gif", "doc", "docx", "pdf", "xls", "xlsx"];
 		$dogEntity = new DogEntity();
 		$pics = [];

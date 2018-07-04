@@ -277,7 +277,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	 * @throws AbortException
 	 */
 	public function saveDog(Form $form) {
-		$supportedPicFormats = ["jpg", "png", "gif"];
+		$supportedPicFormats = ["jpg", "png", "gif", "jpeg"];
 		$supportedFileFormats = ["jpg", "png", "gif", "doc", "docx", "pdf", "xls", "xlsx"];
 		$newDogEntity = new DogEntity();
 		$pics = [];
@@ -403,6 +403,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 			if ($e instanceof AbortException) {
 				throw $e;
 			} else {
+				// dump($e);
 				$form->addError(DOG_FORM_ADD_FAILED);
 				$this->flashMessage(DOG_FORM_ADD_FAILED, "alert-danger");
 			}

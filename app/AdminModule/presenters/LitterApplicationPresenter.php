@@ -113,6 +113,7 @@ class LitterApplicationPresenter extends SignPresenter {
 					unset($this['litterApplicationRewriteForm'][$i]["Barva"]);
 					unset($this['litterApplicationRewriteForm'][$i]["PohlaviSel"]);
 					unset($this['litterApplicationRewriteForm'][$i]["Pohlavi"]);
+					unset($this['litterApplicationRewriteForm'][$i]["dogHealth"]);	// kontejner pro zdraví
 				} else {
 					$formData[$i]["Cip"] = $this->getValueByKeyFromArray($appParams, $i, "mikrocip");
 					$formData[$i]["Jmeno"] = $this->getValueByKeyFromArray($appParams, $i, "jmeno") . $chs;
@@ -164,6 +165,7 @@ class LitterApplicationPresenter extends SignPresenter {
 	 * @param Form $form
 	 */
 	public function submitRewrite(Form $form) {
+		dump($form); die;
 		try {
 			$formArray = $form->getHttpData();
 			$breeders = [];
@@ -210,7 +212,7 @@ class LitterApplicationPresenter extends SignPresenter {
 					}
 				}
 			}*/
-			$this->dogRepository->saveDescendants($dogs, $breeders, $owners, $application);
+			$this->dogRepository->saveDescendants($dogs, $breeders, $owners, $application); // TODO
 
 			$this->flashMessage(LITTER_APPLICATION_REWRITE_DESCENDANTS_OK, "alert-success");
 			$this->redirect("default");
