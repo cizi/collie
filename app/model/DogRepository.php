@@ -780,19 +780,19 @@ class DogRepository extends BaseRepository {
 	}
 
 	/**
-	 * @param array $dogs
+	 * @param DogEntity[] $dogs
+	 * @param DogHealthEntity[] $healths
 	 * @param array $breeders
 	 * @param array $owners
 	 * @param LitterApplicationEntity $litterApplicationEntity
 	 * @throws \Exception
 	 */
-	public function saveDescendants(array $dogs, array $breeders, array $owners, LitterApplicationEntity $litterApplicationEntity) {
+	public function saveDescendants(array $dogs, array $healths, array $breeders, array $owners, LitterApplicationEntity $litterApplicationEntity) {
 		try {
 			$this->connection->begin();
-			foreach ($dogs as $dog) {
-				$this->save($dog, [], [], $breeders, $owners, []);
+			for($i = 0; $i < count($dogs); $i++) {
+				$this->save($dogs[$i], [], $healths[$i], $breeders, $owners, []);
 			}
-
 			$litterApplicationEntity->setZavedeno(LitterApplicationStateEnum::REWRITTEN);
 			$this->litterApplicationRepository->save($litterApplicationEntity);
 

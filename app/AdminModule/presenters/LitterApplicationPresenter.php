@@ -9,6 +9,7 @@ use App\Forms\LitterApplicationRewriteForm;
 use App\Model\DogRepository;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
+use App\Model\Entity\DogHealthEntity;
 use App\Model\Entity\DogOwnerEntity;
 use App\Model\EnumerationRepository;
 use App\Model\LitterApplicationRepository;
@@ -126,6 +127,7 @@ class LitterApplicationPresenter extends SignPresenter {
 				}
 			}
 			$this['litterApplicationRewriteForm']->setDefaults($formData);
+			$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		} else {
 			$this->flashMessage(LITTER_APPLICATION_REWRITE_DOES_NOT_EXIST, "alert-danger");
 			$this->redirect("default");
@@ -165,11 +167,11 @@ class LitterApplicationPresenter extends SignPresenter {
 	 * @param Form $form
 	 */
 	public function submitRewrite(Form $form) {
-		dump($form); die;
 		try {
 			$formArray = $form->getHttpData();
 			$breeders = [];
 			$dogs = [];
+			$healths = [];
 
 			if (isset($formArray['breeder'])) {	// chovatele
 				$breederEntity = new BreederEntity();
@@ -193,7 +195,17 @@ class LitterApplicationPresenter extends SignPresenter {
 					if ($formArray["DatNarozeni"] != "") {
 						$dogEntity->setDatNarozeni($formArray["DatNarozeni"]);
 					}
-					$dogs[] = $dogEntity;
+					$dogs[] = $dogEntity;	// indexy pes a zdraví k sobě musí sedět
+
+					// zdraví
+					$dogHealths = [];
+					foreach($dogArr['dogHealth'] as $typ => $hodnoty) {
+						$healthEntity = new DogHealthEntity();
+						$healthEntity->hydrate($hodnoty);
+						$healthEntity->setTyp($typ);
+						$dogHealths[] = $healthEntity;
+					}
+					$healths[] = $dogHealths; // indexy pes a zdraví k sobě musí sedět
 				}
 			}
 
@@ -212,7 +224,7 @@ class LitterApplicationPresenter extends SignPresenter {
 					}
 				}
 			}*/
-			$this->dogRepository->saveDescendants($dogs, $breeders, $owners, $application); // TODO
+			$this->dogRepository->saveDescendants($dogs, $healths, $breeders, $owners, $application);	// indexy pes a zdraví k sobě musí sedět
 
 			$this->flashMessage(LITTER_APPLICATION_REWRITE_DESCENDANTS_OK, "alert-success");
 			$this->redirect("default");

@@ -96,6 +96,7 @@ class LitterApplicationRewriteForm extends Nette\Object {
 					$container->addText("caption", null)->setAttribute("class","form-control")->setAttribute("readonly", "readonly")->setAttribute("value",	$enumEntity->getItem());
 					$container->addText("Vysledek", DOG_FORM_HEALTH_SUMMARY)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_SUMMARY);
 					//$container->addText("Komentar", DOG_FORM_HEALTH_COMMENT)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_COMMENT);
+					$container->addHidden("Komentar");
 					$container->addText("Datum", DOG_FORM_HEALTH_DATE)->setAttribute("class", "healthDatePicker form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_DATE);
 					$container->addSelect("Veterinar", DOG_FORM_HEALTH_VET, $vets)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_VET);
 				}
