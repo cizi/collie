@@ -358,6 +358,7 @@ div.colorExample {
 }
 .dogList {
 	font-size: 12px!important;
+	background-color: white;
 }
 .dogList tbody tr td a {
 	font-weight: bold;

@@ -124,13 +124,15 @@
 											{/if}
 										</td>
 
-										{if $amIAdmin}
-											<td class="alignRight">
+
+										<td class="alignRight">
+											{if $amIAdmin}
 												<a href="view/{$dog->getID()}" title={=DOG_TABLE_DOG_DETAIL}><span class="glyphicon glyphicon-list-alt black"></span></a> &nbsp;&nbsp;
 												<a href="edit/{$dog->getID()}" title={=DOG_TABLE_DOG_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
 												<a href="#" data-href={link FeItem1velord2:Delete, $dog->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=DOG_TABLE_DOG_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
-											</td>
-										{/if}
+											{/if}
+										</td>
+
 									</tr>
 								{/foreach}
 
