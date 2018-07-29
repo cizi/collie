@@ -379,10 +379,10 @@ abstract class BasePresenter extends Presenter {
 	/**
 	 * @return array
 	 */
-	public function decodeFilterFromQuery() {
+	public function decodeFilterFromQuery($queryFilter) {
 		$filter = [];
-		if ($this->filter != "") {
-			$arr = explode("&", $this->filter);
+		if ($queryFilter != "") {
+			$arr = explode("&", $queryFilter);
 			foreach ($arr as $filterItem) {
 				$filterPiece = explode("=", $filterItem);
 				if (

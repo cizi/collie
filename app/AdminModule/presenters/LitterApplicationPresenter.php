@@ -19,9 +19,6 @@ use Nette\Forms\Form;
 
 class LitterApplicationPresenter extends SignPresenter {
 
-	/** @persistent */
-	public $filter;
-
 	/** @var LitterApplicationRepository */
 	private $litterApplicationRepository;
 
@@ -59,28 +56,31 @@ class LitterApplicationPresenter extends SignPresenter {
 
 	/**
 	 * @param int $id
+	 * @param string $filter
 	 */
-	public function actionDefault($id) {
-		$filter = $this->decodeFilterFromQuery();
-		$this['litterApplicationFilterForm']->setDefaults($filter);
+	public function actionDefault($id, $filter) {
+		$filterArray = $this->decodeFilterFromQuery($filter);
+		$this['litterApplicationFilterForm']->setDefaults($filterArray);
 
-		$this->template->applications = $this->litterApplicationRepository->findLitterApplications($filter);
+		$this->template->applications = $this->litterApplicationRepository->findLitterApplications($filterArray);
 		$this->template->enumRepo = $this->enumerationRepository;
 		$this->template->dogRepo = $this->dogRepository;
 		$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->litterApplicationStateEnumInsert = LitterApplicationStateEnum::INSERT;			// php 5.4 workaround
+		$this->template->filter = $filter;
 	}
 
 	/**
 	 * @param int $id
+	 * @param string $filter
 	 */
-	public function actionDelete($id) {
+	public function actionDelete($id, $filter) {
 		if ($this->litterApplicationRepository->delete($id)) {
 			$this->flashMessage(LITTER_APPLICATION_DELETED, "alert-success");
 		} else {
 			$this->flashMessage(LITTER_APPLICATION_DELETED_FAILED, "alert-danger");
 		}
-		$this->redirect("default");
+		$this->redirect("default", ["filter" => $filter]);
 	}
 
 	/**
@@ -262,7 +262,6 @@ class LitterApplicationPresenter extends SignPresenter {
 				$filter .= $key . "=" . $value . "&";
 			}
 		}
-		$this->filter = $filter;
-		$this->redirect("default");
+		$this->redirect("default", [ "filter" => $filter]);
 	}
 }

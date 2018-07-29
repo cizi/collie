@@ -66,8 +66,8 @@
 											{if isset($whoHasDescendants[$dog->getID()])}
 												<img src="{!$baseUrl}/images/ipotomci.gif" />
 											{/if}
-											<a href="view/{$dog->getID()}">{$fullName}</a>
-											{* <a href={link view, $dog->getID()}>{$fullName}</a> *}
+											<a href={link view, $dog->getID()}>{$fullName}</a>
+											{* <a href={< view, $dog->getID()}>{$fullName}</a> *}
 											{* if $amIAdmin}
 												<a href={link edit, $dog->getID()}>{$dog->getTitulyPredJmenem()} {$dog->getJmeno()} {$dog->getTitulyZaJmenem()}</a>
 											{else}
@@ -108,18 +108,18 @@
 											{if $dog->getOID() != 0}
 												{var otec = $dogRepository->getDog($dog->getOID())}
 												{if $amIAdmin}
-													<a href="edit/{$otec->getID()}">{$otec->getTitulyPredJmenem()} {$otec->getJmeno()} {$otec->getTitulyZaJmenem()}</a>
+													<a href={link edit, $otec->getID()}>{$otec->getTitulyPredJmenem()} {$otec->getJmeno()} {$otec->getTitulyZaJmenem()}</a>
 												{else}
-													<a href="view/{$otec->getID()}">{$otec->getTitulyPredJmenem()} {$otec->getJmeno()} {$otec->getTitulyZaJmenem()}</a>
+													<a href={link view, $otec->getID()}>{$otec->getTitulyPredJmenem()} {$otec->getJmeno()} {$otec->getTitulyZaJmenem()}</a>
 												{/if}
 											{/if}
 											{if $dog->getMID() != 0}
 												<hr class="motherFatherDelimiter"/>
 												{var matka = $dogRepository->getDog($dog->getMID())}
 												{if $amIAdmin}
-													<a href="edit/{$matka->getID()}">{$matka->getTitulyPredJmenem()} {$matka->getJmeno()} {$matka->getTitulyZaJmenem()}</a>
+													<a href={link edit, $matka->getID()}>{$matka->getTitulyPredJmenem()} {$matka->getJmeno()} {$matka->getTitulyZaJmenem()}</a>
 												{else}
-													<a href="view/{$matka->getID()}">{$matka->getTitulyPredJmenem()} {$matka->getJmeno()} {$matka->getTitulyZaJmenem()}</a>
+													<a href={link view, $matka->getID()}>{$matka->getTitulyPredJmenem()} {$matka->getJmeno()} {$matka->getTitulyZaJmenem()}</a>
 												{/if}
 											{/if}
 										</td>
@@ -127,9 +127,9 @@
 
 										<td class="alignRight">
 											{if $amIAdmin}
-												<a href="view/{$dog->getID()}" title={=DOG_TABLE_DOG_DETAIL}><span class="glyphicon glyphicon-list-alt black"></span></a> &nbsp;&nbsp;
-												<a href="edit/{$dog->getID()}" title={=DOG_TABLE_DOG_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
-												<a href="#" data-href={link FeItem1velord2:Delete, $dog->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=DOG_TABLE_DOG_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+												<a href={link view, $dog->getID()} title={=DOG_TABLE_DOG_DETAIL}><span class="glyphicon glyphicon-list-alt black"></span></a> &nbsp;&nbsp;
+												<a href={link FeItem1velord2:Edit, $dog->getID()} title={=DOG_TABLE_DOG_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+												<a href="#" data-href={link FeItem1velord2:Delete, $dog->getID(), $filter} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=DOG_TABLE_DOG_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 											{/if}
 										</td>
 

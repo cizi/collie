@@ -28,9 +28,6 @@ use Nette\Utils\Paginator;
 
 class FeItem2velord11Presenter extends FrontendPresenter {
 
-	/** @persistent */
-	public $filter;
-
 	/** @var DogRepository */
 	private $dogRepository;
 
@@ -73,13 +70,13 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 	/**
 	 * @param int $id
 	 */
-	public function actionDefault($id) {
+	public function actionDefault($id, $filter) {
 		if ($this->getUser()->isLoggedIn() == false) { // pokud nejsen přihlášen nemám tady co dělat
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
 			$this->redirect("Homepage:Default");
 		}
 
-		$filter = $this->decodeFilterFromQuery();
+		$filter = $this->decodeFilterFromQuery($filter);
 		$this['dogFilterForm']->setDefaults($filter);
 
 		$recordCount = $this->dogRepository->getDogsCount($filter, $this->getUser()->getId());
@@ -98,6 +95,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 		$this->template->recordCount = $recordCount;
 		$this->template->pageCount = $paginator->getPageCount();
 		$this->template->whoHasDescendants = $this->dogRepository->findDogsWithDescendants();
+		$this->template->filter = $this->getHttpRequest()->getQuery("filter");
 	}
 
 	/**
@@ -110,8 +108,7 @@ class FeItem2velord11Presenter extends FrontendPresenter {
 				$filter .= $key . "=" . $value . "&";
 			}
 		}
-		$this->filter = $filter;
-		$this->redirect("default");
+		$this->redirect("default", ["filter" => $filter]);
 	}
 
 	/**

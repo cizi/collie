@@ -35,6 +35,7 @@ class LitterApplicationRewriteForm extends Nette\Object {
 	 * @param DogRepository $dogRepository
 	 * @param EnumerationRepository $enumerationRepository
 	 * @param UserRepository $userRepository
+	 * @param VetRepository $vetRepository
 	 */
 	public function __construct(
 		FormFactory $factory,

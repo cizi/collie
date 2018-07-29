@@ -317,7 +317,7 @@ class DogRepository extends BaseRepository {
 			unset($filter[DogFilterForm::DOG_FILTER_OWNER]);
 		}
 		if (isset($filter["Jmeno"])) {
-			$return .= 	sprintf("(CONCAT_WS(' ', TitulyPredJmenem, Jmeno, TitulyZaJmenem) like %s)", $dbDriver->escapeLike($filter["Jmeno"], 0));
+			$return .= 	"(CONCAT_WS(' ', TitulyPredJmenem, Jmeno, TitulyZaJmenem) like \"%".$filter["Jmeno"]."%\")";
 			$return .= (count($filter) > 1 ? " and " : "");
 			unset($filter["Jmeno"]);
 		}

@@ -15,7 +15,7 @@
 			{if $paginator->getPage() == $i}
 				<span>{$i}</span>
 			{else}
-				<a href={link default, $i}>{$i}</a>
+				<a href={link default, $i, $filter}>{$i}</a>
 			{/if}
 		{else}
 			{* .  NIC NEVYPISOVAT*}

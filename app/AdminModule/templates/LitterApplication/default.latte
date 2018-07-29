@@ -46,7 +46,7 @@
 												{else}
 													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 												{/if}
-												<a href="#" data-href={link Delete, $application->getID()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=LITTER_APPLICATION_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+												<a href="#" data-href={link Delete, $application->getID(), $filter} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=LITTER_APPLICATION_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 											</td>
 										</tr>
 									{/foreach}

@@ -28,9 +28,6 @@ use Nette\Utils\Paginator;
 
 class FeItem1velord2Presenter extends FrontendPresenter {
 	
-	/** @persistent */
-	public $filter;
-
 	/** @const počet obrázků v hlavičce pohledu  */
 	const TOP_IMAGE_COUNT = 2;
 
@@ -97,8 +94,8 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	/**
 	 * @param int $id
 	 */
-	public function actionDefault($id) {
-		$filter = $this->decodeFilterFromQuery();
+	public function actionDefault($id, $filter) {
+		$filter = $this->decodeFilterFromQuery($filter);
 		$this['dogFilterForm']->setDefaults($filter);
 
 		$recordCount = $this->dogRepository->getDogsCount($filter);
@@ -117,6 +114,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->template->recordCount = $recordCount;
 		$this->template->pageCount = $paginator->getPageCount();
 		$this->template->whoHasDescendants = $this->dogRepository->findDogsWithDescendants();
+		$this->template->filter = $this->getHttpRequest()->getQuery("filter");
 	}
 
 	/**
@@ -129,8 +127,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 				$filter .= $key . "=" . $value . "&";
 			}
 		}
-		$this->filter = $filter;
-		$this->redirect("default");
+		$this->redirect("default", ["filter" => $filter]);
 	}
 
 	/**
@@ -258,10 +255,10 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	/**
 	 * @param int $id
 	 */
-	public function actionDelete($id) {
+	public function actionDelete($id, $filter) {
 		if ($this->template->amIAdmin == false) {	// pokud nejsem admin nemůžu mazat
 			$this->flashMessage(DOG_TABLE_DOG_ACTION_NOT_ALLOWED, "alert-danger");
-			$this->redirect("default");
+			$this->redirect("default", ["filter" => $filter]);
 		}
 
 		if ($this->dogRepository->delete($id)) {
@@ -269,7 +266,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		} else {
 			$this->flashMessage(DOG_TABLE_DOG_DELETED_FAILED, "alert-danger");
 		}
-		$this->redirect("default");
+		$this->redirect("default", ["filter" => $filter]);
 	}
 
 	/**
