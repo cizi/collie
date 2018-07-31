@@ -10,9 +10,6 @@ use Nette\Forms\Form;
 
 class FeItem1velord4Presenter extends FrontendPresenter {
 
-	/** @persistent */
-	public $filter;
-
 	/** @var LitterApplicationRepository */
 	private $litterApplicationRepository;
 
@@ -44,8 +41,12 @@ class FeItem1velord4Presenter extends FrontendPresenter {
 		$this->litterApplicationFilterForm = $litterApplicationFilterForm;
 	}
 
-	public function actionDefault() {
-		$filter = $this->decodeFilterFromQuery();
+	/**
+	 * @param int $id
+	 * @param string $filter
+	 */
+	public function actionDefault($id, $filter) {
+		$filter = $this->decodeFilterFromQuery($filter);
 		$this['litterApplicationFilterForm']->setDefaults($filter);
 
 		$applications = $this->litterApplicationRepository->findLitterApplications($filter);
@@ -95,7 +96,6 @@ class FeItem1velord4Presenter extends FrontendPresenter {
 				$filter .= $key . "=" . $value . "&";
 			}
 		}
-		$this->filter = $filter;
-		$this->redirect("default");
+		$this->redirect("default", ["filter" => $filter]);
 	}
 }
