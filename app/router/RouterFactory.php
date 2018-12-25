@@ -21,7 +21,7 @@ class RouterFactory {
 			'presenter' => 'Default',
 			'action' => 'default',
 			'id' => NULL,
-		));
+		), Route::SECURED);
 
 		// frontend routing
 		//$router[] = new Route('[<lang>][/<id>]', array(
@@ -30,7 +30,7 @@ class RouterFactory {
 			'presenter' => 'Homepage',
 			'action' => 'default',
 			'id' => NULL,
-		));
+		), Route::SECURED);
 
 		return $router;
 	}
