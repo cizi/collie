@@ -126,6 +126,9 @@ define("USER_EDIT_SHARING_LABEL", 'Sharing');
 define("USER_EDIT_CLUB", 'Club');
 define("USER_EDIT_CLUB_NO", 'Club member number');
 define("USER_EDIT_NEWS", 'I agree that my email address can be used for newsletter.');
+define("USER_EDIT_PRIVACY", 'I agree with the processing of personal data within the GDPR.');
+define("USER_EDIT_PRIVACY_VALIDATION", "It is neccasary to agree with GDPR's data processing.");
+define("USER_EDIT_PRIVACY_URL", "More information.");
 
 // user roles - select
 define("USER_ROLE_LAYOUT_CHANGER", "Full access");
@@ -331,7 +334,8 @@ define("BLOCK_SETTINGS_CONFIRM_MODAL_DELETE_MSG", 'Are you really wnat to delete
 define("BLOCK_SETTINGS_CONFIRM_MODAL_OK", 'Delete');
 define("BLOCK_SETTINGS_CONFIRM_MODAL_CANCEL", 'Cancel');
 define("BLOCK_SETTINGS_ITEM_DELETED", 'Item has been successfully deleted.');
-define("BLOCK_SETTINGS_ITEM_DEFAULT_BLOCK", 'This cannot be deleted bacause it is default home block!');
+define("BLOCK_SETTINGS_ITEM_DEFAULT_BLOCK", 'This block cannot be deleted bacause it is default home block!');
+define("BLOCK_SETTINGS_ITEM_GDPR_BLOCK", "This block cannot be deleted bacause it is about GDPR information.");
 define("BLOCK_SETTINGS_ITEM_DELETED_FAILED", 'During the deletions error occurred, please try it again later!');
 define("BLOCK_SETTINGS_ITEM_SAVED_FAILED", 'During saving the item, error occurred, please try again later!');
 

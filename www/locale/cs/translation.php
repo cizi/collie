@@ -135,6 +135,9 @@ define("USER_EDIT_SHARING_LABEL", 'Sdílení informací');
 define("USER_EDIT_CLUB", 'Člen klubu');
 define("USER_EDIT_CLUB_NO", 'Členské číslo');
 define("USER_EDIT_NEWS", 'Souhlasím s použitím mé e-mailové adresy pro zasílání zpráv, novinek a akcí.');
+define("USER_EDIT_PRIVACY", 'Souhlasím se zpracování osobních údajů v rámci GDPR.');
+define("USER_EDIT_PRIVACY_VALIDATION", "Je nezbytné souhlasit se zpracováním osobních údajů v rámci GDPR.");
+define("USER_EDIT_PRIVACY_URL", "Více informací.");
 
 // user roles - select
 define("USER_ROLE_LAYOUT_CHANGER", "Plná práva");
@@ -352,6 +355,7 @@ define("BLOCK_SETTINGS_CONFIRM_MODAL_OK", 'Smazat');
 define("BLOCK_SETTINGS_CONFIRM_MODAL_CANCEL", 'Zpět');
 define("BLOCK_SETTINGS_ITEM_DELETED", 'Položka byla úspěšně smazána.');
 define("BLOCK_SETTINGS_ITEM_DEFAULT_BLOCK", 'Tento blok nelze smazat! Je nastaven jako block domací stránky.');
+define("BLOCK_SETTINGS_ITEM_GDPR_BLOCK", 'Tento blok nelze smazat! Jde o informace s GDPR.');
 define("BLOCK_SETTINGS_ITEM_DELETED_FAILED", 'Při mazání položky došlo k chybě!');
 define("BLOCK_SETTINGS_ITEM_SAVED_FAILED", 'Při uložení položky došlo k chybě!');
 

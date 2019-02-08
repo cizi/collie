@@ -35,7 +35,8 @@ class FeItem1velord15Presenter extends FrontendPresenter {
 	}
 
 	public function renderDefault($id) {
-
+		$this['editForm']['privacy']->setAttribute("class", "tinym_required_field");
+		$this['editForm']['privacy']->setAttribute("validation", USER_EDIT_PRIVACY_VALIDATION);
 	}
 
 	/**

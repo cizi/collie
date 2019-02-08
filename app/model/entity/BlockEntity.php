@@ -93,10 +93,10 @@ class BlockEntity {
 	 * @param array $data
 	 */
 	public function hydrate(array $data) {
-		$this->setId(isset($data['id']) ? $data['id'] : null);
-		$this->setBackgroundColor(isset($data['background_color']) ? $data['background_color'] : null);
-		$this->setColor(isset($data['color']) ? $data['color'] : null);
-		$this->setWidth(isset($data['width']) ? $data['width'] : null);
+		$this->setId(!empty($data['id']) ? $data['id'] : null);
+		$this->setBackgroundColor(!empty($data['background_color']) ? $data['background_color'] : null);
+		$this->setColor(!empty($data['color']) ? $data['color'] : null);
+		$this->setWidth(!empty($data['width']) ? $data['width'] : null);
 	}
 
 	/**

@@ -155,18 +155,22 @@ class UserForm extends Nette\Object {
 			->setAttribute("placeholder", USER_EDIT_CLUB_NO)
 			->setAttribute("tabindex", "21");
 
-		$form->addCheckbox("news", USER_EDIT_NEWS)
-			->setAttribute("placeholder", USER_EDIT_NEWS)
+		$form->addCheckbox("news", "")
 			->setAttribute("tabindex", "22");
+
+		$form->addCheckbox("privacy", "")
+			->setAttribute("tabindex", "23");
+
+		$form->addHidden("privacy_tries_count", 0);
 
 		$form->addSubmit("confirm", USER_EDIT_SAVE_BTN_LABEL)
 			->setAttribute("class","btn btn-primary")
-			->setAttribute("tabindex", "23");
+			->setAttribute("tabindex", "24");
 
 		$form->addButton("back", USER_EDIT_BACK_BTN_LABEL)
 			->setAttribute("class", "btn btn-secondary")
 			->setAttribute("onclick", "location.assign('". $linkBack ."')")
-			->setAttribute("tabindex", "24");
+			->setAttribute("tabindex", "25");
 
 		return $form;
 	}

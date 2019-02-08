@@ -14,17 +14,7 @@
 							<ul>
 							{foreach $users as $user}
 								<li>
-									<b>{$user->getStation()} {if $user->getBreed() != null}({$enumRepo->findEnumItemByOrder($lang, $user->getBreed())}){/if}</b>
-									{if $user->getSharing() >= 32}
-										<ul>
-											<li>{$user->getName()} {$user->getSurname()}, {$stateEnum->getValueByKey($user->getState())}</li>
-											{if $user->getSharing() >= 33}
-												<li>{if $user->getPhone() != null}{$user->getPhone()}{/if}</li>
-												<li>{if $user->getEmail() != null}{$user->getEmail()}{/if}</li>
-												<li>{if $user->getWeb() != null}<a href="http://{$user->getWeb()|noescape}" target="_blank">{$user->getWeb()}</a>{/if}</li>
-											{/if}
-										</ul>
-									{/if}
+									{include '../@userInfoForList.latte', 'user' => $user}
 									<br />&nbsp;
 								</li>
 							{/foreach}

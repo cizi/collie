@@ -199,7 +199,7 @@
 			submitForm = true;
 			$($(".tinym_required_field").get().reverse()).each(function() {
 				console.log($(this).val());
-				if ($(this).val() == "") {
+				if (($(this).val() == "") || (($(this).is(':checkbox')) && ($(this).is(':checked') == false))) {
 					$(this).addClass("form-control-danger");
 					$("#tinym_info_modal_message").text($(this).attr("validation"));
 					$("#tinym_info_modal").modal();

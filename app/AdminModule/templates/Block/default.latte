@@ -51,7 +51,11 @@
 												<td class="alignRight">
 													{if $blockEntity->getId() != $contactFormId}
 														<a href='{link edit, $blockEntity->getId()}' title={=BLOCK_SETTING_EDIT_ITEM}><span class='glyphicon glyphicon-pencil'></span></a> &nbsp;&nbsp;
-														<a href='#' data-href='{link delete, $blockEntity->getId()}' class='colorRed' data-toggle='modal' data-target='#confirm-delete' title={=BLOCK_SETTING_DELETE_ITEM}><span class='glyphicon glyphicon-remove'></span></a>
+														{if !in_array($blockEntity->getId(), $prohibitedBlocksToDelete)}
+															<a href='#' data-href='{link delete, $blockEntity->getId()}' class='colorRed' data-toggle='modal' data-target='#confirm-delete' title={=BLOCK_SETTING_DELETE_ITEM}><span class='glyphicon glyphicon-remove'></span></a>
+														{else}
+															&nbsp;&nbsp;&nbsp;
+														{/if}
 													{/if}
 												</td>
 											</tr>

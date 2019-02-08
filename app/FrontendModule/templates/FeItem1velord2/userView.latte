@@ -2,18 +2,7 @@
 	{include '../@block.latte', pageKeywords => $currentLink->getTitle()}
 
 	<div class="myContent">
-
-		<b>{=USER_EDIT_STATION_LABEL_SHORT}:</b> {$user->getStation()}<br />
-		{if $user->getSharing() >= 32}
-			<strong>{$user->getTitleBefore()} {$user->getName()} {$user->getSurname()} {$user->getTitleAfter()} </strong><br />
-			<b>{=USER_EDIT_STATE_LABEL}:</b> {$stateEnum->getValueByKey($user->getState())}<br />
-			{if $user->getSharing() >= 33}
-				<b>{=VET_ADDRESS}:</b> {$user->getCity()}, {$user->getZip()}<br />
-				<b>{=USER_EDIT_PHONE_LABEL}:</b> {$user->getPhone()}<br />
-				<b>{=USER_EDIT_EMAIL_LABEL}:</b> {$user->getEmail()}<br />
-				<b>{=USER_EDIT_WEB_LABEL}:</b> <a href={$user->getWeb()}>{$user->getWeb()}</a>
-			{/if}
-		{/if}
+		{include ../@userInfo.latte, 'uzivatel' => $user}
 
 		{if count($dogByCurrentOwner) > 0}
 			<div class="viewHeader">{=USER_VIEW_OWNER}</div>

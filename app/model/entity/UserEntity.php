@@ -84,6 +84,12 @@ class UserEntity {
 	/** @var int */
 	private $ownerId;
 
+	/** @var bool */
+	private $privacy;
+
+	/** @var int */
+	private $privacyTriesCount;
+
 	/**
 	 * @return int
 	 */
@@ -449,6 +455,35 @@ class UserEntity {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isPrivacy() {
+		return $this->privacy;
+	}
+
+	/**
+	 * @param bool $privacy
+	 */
+	public function setPrivacy($privacy) {
+		$this->privacy = $privacy;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getPrivacyTriesCount() {
+		return $this->privacyTriesCount;
+	}
+
+	/**
+	 * @param int $privacyTriesCount
+	 */
+	public function setPrivacyTriesCount($privacyTriesCount) {
+		$this->privacyTriesCount = $privacyTriesCount;
+	}
+
+
+	/**
 	 * Celé jméno uživatele ořezné o případné tituly apod.
 	 * @return string
 	 */
@@ -481,10 +516,12 @@ class UserEntity {
 		$this->station = (isset($data['station']) ? $data['station'] : null);
 		$this->sharing = (isset($data['sharing']) ? $data['sharing'] : null);
 		$this->breed = (isset($data['breed']) ? $data['breed'] : null);
-		$this->news = (isset($data['news']) ? $data['news'] : null);
+		$this->news = (!empty($data['news']) ? 1 : 0);
 		$this->club = (isset($data['club']) ? $data['club'] : null);
 		$this->clubNo = (isset($data['clubNo']) ? $data['clubNo'] : null);
-		$this->deleted = (isset($data['deleted']) ? $data['deleted'] : null);
+		$this->deleted = (isset($data['deleted']) ? $data['deleted'] : 0);
+		$this->privacy = (!empty($data['privacy']) ? 1 : 0);
+		$this->privacyTriesCount = (isset($data['privacy_tries_count']) ? $data['privacy_tries_count'] : 0);
 	}
 
 	/**
@@ -516,7 +553,9 @@ class UserEntity {
 			'news' => $this->isNews(),
 			'club' => $this->getClub(),
 			'clubNo' => $this->getClubNo(),
-			'deleted' => $this->isDeleted()
+			'deleted' => $this->isDeleted(),
+			'privacy' => $this->isPrivacy(),
+			'privacy_tries_count' => $this->getPrivacyTriesCount()
 		];
 	}
 }
