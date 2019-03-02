@@ -19,6 +19,7 @@ define("ADMIN_LOGIN_LOGIN", 'Přihlásit');
 define("ADMIN_LOGIN_EMAIL_PLACEHOLDER", 'Email');
 define("ADMIN_LOGIN_PASS_PLACEHOLDER", 'Heslo');
 define("ADMIN_LOGIN_SUCCESS", 'Přihlášení proběhlo v pořádku');
+define("ADMIN_LOGIN_SUCCESS_NO_PRIVACY", 'Dosud jste nesouhlasil/a se zpracováním GDPR. Prosíme, zvažte tento souhlas, pro plné využití služeb genealogie.');
 define("ADMIN_LOGIN_FAILED", 'Neplatné jméno nebo heslo');
 define("ADMIN_LOGIN_UNLOGGED", 'Odhlášení proběhlo v pořádku.');
 
@@ -355,7 +356,6 @@ define("BLOCK_SETTINGS_CONFIRM_MODAL_OK", 'Smazat');
 define("BLOCK_SETTINGS_CONFIRM_MODAL_CANCEL", 'Zpět');
 define("BLOCK_SETTINGS_ITEM_DELETED", 'Položka byla úspěšně smazána.');
 define("BLOCK_SETTINGS_ITEM_DEFAULT_BLOCK", 'Tento blok nelze smazat! Je nastaven jako block domací stránky.');
-define("BLOCK_SETTINGS_ITEM_GDPR_BLOCK", 'Tento blok nelze smazat! Jde o informace s GDPR.');
 define("BLOCK_SETTINGS_ITEM_DELETED_FAILED", 'Při mazání položky došlo k chybě!');
 define("BLOCK_SETTINGS_ITEM_SAVED_FAILED", 'Při uložení položky došlo k chybě!');
 

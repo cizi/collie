@@ -19,6 +19,7 @@ define("ADMIN_LOGIN_LOGIN", 'Login');
 define("ADMIN_LOGIN_EMAIL_PLACEHOLDER", 'Email');
 define("ADMIN_LOGIN_PASS_PLACEHOLDER", 'Password');
 define("ADMIN_LOGIN_SUCCESS", 'You are successfully logged in');
+define("ADMIN_LOGIN_SUCCESS_NO_PRIVACY", 'Still has not been agreed with GRPR regulation. Please, consider this agreement for full service of this website.');
 define("ADMIN_LOGIN_FAILED", 'Incorrect login name or password');
 define("ADMIN_LOGIN_UNLOGGED", 'You have been successfully logged out.');
 
@@ -335,7 +336,6 @@ define("BLOCK_SETTINGS_CONFIRM_MODAL_OK", 'Delete');
 define("BLOCK_SETTINGS_CONFIRM_MODAL_CANCEL", 'Cancel');
 define("BLOCK_SETTINGS_ITEM_DELETED", 'Item has been successfully deleted.');
 define("BLOCK_SETTINGS_ITEM_DEFAULT_BLOCK", 'This block cannot be deleted bacause it is default home block!');
-define("BLOCK_SETTINGS_ITEM_GDPR_BLOCK", "This block cannot be deleted bacause it is about GDPR information.");
 define("BLOCK_SETTINGS_ITEM_DELETED_FAILED", 'During the deletions error occurred, please try it again later!');
 define("BLOCK_SETTINGS_ITEM_SAVED_FAILED", 'During saving the item, error occurred, please try again later!');
 

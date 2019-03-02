@@ -70,7 +70,14 @@ class FeItem1velord14Presenter extends FrontendPresenter {
 			$this->userRepository->updateLostLogin($identity->getId());
 
 			$this->flashMessage(ADMIN_LOGIN_SUCCESS, "alert-success");
-			$this->redirect("Homepage:default");
+			$userEntity = $this->userRepository->getUser($identity->getId());
+			if ($userEntity->isPrivacy() == false) {
+				$this->userRepository->updatePrivacyTriesCount($identity->getId());
+				$this->flashMessage(ADMIN_LOGIN_SUCCESS_NO_PRIVACY, "alert-warning");
+				$this->redirect("FeItem2velord9:default");
+			} else {
+				$this->redirect("Homepage:default");
+			}
 		} catch (\Nette\Security\AuthenticationException $e) {
 			$this->flashMessage(ADMIN_LOGIN_FAILED, "alert-danger");
 			$form->addError(ADMIN_LOGIN_FAILED);

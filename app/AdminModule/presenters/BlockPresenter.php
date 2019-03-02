@@ -17,7 +17,7 @@ use Nette\Utils\ArrayHash;
 
 class BlockPresenter extends SignPresenter {
 
-	const GDPR_BLOCK_ID = 26;
+	const GDPR_URL = "http://www.collie-sheltie-club.cz/klub/dokumenty-klubu/gdpr";
 
 	/** @var PicRepository */
 	private $picRepository;
@@ -38,8 +38,6 @@ class BlockPresenter extends SignPresenter {
 		$lang = $this->langRepository->getCurrentLang($this->session);
 		$this->template->blocks = $this->blockRepository->findBlockList($lang);
 		$this->template->contactFormId = BlockContentPresenter::CONTACT_FORM_ID_AS_BLOCK;
-
-		$this->template->prohibitedBlocksToDelete = [self::GDPR_BLOCK_ID];
 	}
 
 	/**
@@ -129,8 +127,6 @@ class BlockPresenter extends SignPresenter {
 		$idDefaultBlock = $this->webconfigRepository->getByKey(WebconfigRepository::KEY_WEB_HOME_BLOCK, WebconfigRepository::KEY_LANG_FOR_COMMON);
 		if ($idDefaultBlock == $id) {
 			$this->flashMessage(BLOCK_SETTINGS_ITEM_DEFAULT_BLOCK, "alert-danger");
-		} else if ($id == self::GDPR_BLOCK_ID) {
-			$this->flashMessage(BLOCK_SETTINGS_ITEM_GDPR_BLOCK, "alert-danger");
 		} else {
 			if ($this->blockRepository->deleteBlockItem($id) == true) {
 				$this->flashMessage(BLOCK_SETTINGS_ITEM_DELETED, "alert-success");
