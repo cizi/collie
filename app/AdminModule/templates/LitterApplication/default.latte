@@ -36,15 +36,24 @@
 										<tr>
 											<td>{if $application->getPlemeno() != null}{$enumRepo->findEnumItemByOrder($currentLang, $application->getPlemeno())}{/if}</td>
 											<td>{if $application->getDatumNarozeni() != null}{$application->getDatumNarozeni()->format('d.m.Y')}{/if}</td>
-											<td>{$dogRepo->getName($application->getOID())}</td>
-											<td>{$dogRepo->getName($application->getMID())}</td>
+											<td>
+												<a href={link :Frontend:FeItem1velord2:Edit, $application->getOID()} title={=DOG_TABLE_DOG_EDIT} target="_blank">
+													{$dogRepo->getName($application->getOID())}
+												</a>
+											</td>
+											<td>
+												<a href={link :Frontend:FeItem1velord2:Edit, $application->getMID()} title={=DOG_TABLE_DOG_EDIT} target="_blank">
+													{$dogRepo->getName($application->getMID())}
+												</a>
+											</td>
 											<td>{if $application->getZavedeno() == $litterApplicationStateEnumInsert}{=SHOW_UNDONE}{else}{=SHOW_DONE}{/if}</td>
 											<td class="alignRight" nowrap="nowrap">
 												<a href={link :Frontend:LitterApplicationPdfGenerator:default, $application->getID()} title={=LITTER_APPLICATION_GENERATE_PDF}><span class="glyphicon glyphicon-print black"></span></a> &nbsp;&nbsp;
 												{if $application->getZavedeno() == $litterApplicationStateEnumInsert}
-													<a href={link RewriteDescendants, $application->getID()} title={=LITTER_APPLICATION_REWRITE_DESCENDANTS}><span class="glyphicon glyphicon-indent-left"></span></a> &nbsp;&nbsp;
+													<a href={link Details, $application->getID(), $filter} title={=LITTER_APPLICATION_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+													<a href={link RewriteDescendants, $application->getID(), $filter} title={=LITTER_APPLICATION_REWRITE_DESCENDANTS}><span class="glyphicon glyphicon-indent-left"></span></a> &nbsp;&nbsp;
 												{else}
-													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 												{/if}
 												<a href="#" data-href={link Delete, $application->getID(), $filter} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=LITTER_APPLICATION_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 											</td>

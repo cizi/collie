@@ -781,6 +781,7 @@ define("LITTER_APPLICATION_SAVE_REWRITTEN", "Saved");
 define("LITTER_APPLICATION_SAVE_UNREWRITTEN", "Not saved");
 define("LITTER_APPLICATION_SAVE_ALLREWRITTEN", "All");
 define("LITTER_APPLICATION_DELETE", "Delete");
+define("LITTER_APPLICATION_EDIT", "Edit litter application");
 define("LITTER_APPLICATION_DELETE_TITLE", "Delete of litter application");
 define("LITTER_APPLICATION_DELETE_INFO", "Are you really want to delete the litter application?");
 define("LITTER_APPLICATION_DELETED", "The litter application has been deleted");
@@ -789,6 +790,7 @@ define("LITTER_APPLICATION_REWRITE_DESCENDANTS", "Introduce descendants into the
 define("LITTER_APPLICATION_REWRITE_DESCENDANTS_OK", "The descendants were introduced");
 define("LITTER_APPLICATION_REWRITE_DESCENDANTS_FAILED", "There was an error while saving the descendants");
 define("LITTER_APPLICATION_REWRITE_DESCENDANTS_ALREADY_IN", "WARNING - this litter application has already been processed, duplicates will be created by new introduction!");
+define("LITTER_APPLICATION_REWRITE_DESCENDANTS_ALREADY_IN_EDIT", "WARNING - this litter application has already been processed, is not possible to edit it!");
 define("LITTER_APPLICATION_REWRITE_TATTOO_NO", "Tattoo number");
 define("LITTER_APPLICATION_REWRITE_CHIP_NO", "Chip number");
 define("LITTER_APPLICATION_REWRITE_PUPPY_NAME", "Puppy name");

@@ -10,7 +10,8 @@ use App\Model\DogRepository;
 use App\Model\Entity\BreederEntity;
 use App\Model\Entity\DogEntity;
 use App\Model\Entity\DogHealthEntity;
-use App\Model\Entity\DogOwnerEntity;
+use Dibi\DateTime;
+use App\Model\Entity\LitterApplicationEntity;
 use App\Model\EnumerationRepository;
 use App\Model\LitterApplicationRepository;
 use App\Model\UserRepository;
@@ -37,6 +38,9 @@ class LitterApplicationPresenter extends SignPresenter {
 	/** @var LitterApplicationFilterForm  */
 	private $litterApplicationFilterForm;
 
+	/** @var LitterApplicationDetailForm */
+	private $litterApplicationDetailForm;
+
 	public function __construct(
 		LitterApplicationRepository $litterApplicationRepository,
 		EnumerationRepository $enumerationRepository,
@@ -44,7 +48,8 @@ class LitterApplicationPresenter extends SignPresenter {
 		LitterApplicationRewriteForm $applicationRewriteForm,
 		LitterApplicationRewriteForm $litterApplicationRewriteForm,
 		UserRepository $userRepository,
-		LitterApplicationFilterForm $litterApplicationFilterForm
+		LitterApplicationFilterForm $litterApplicationFilterForm,
+		LitterApplicationDetailForm $litterApplicationDetailForm
 	) {
 		$this->litterApplicationRepository = $litterApplicationRepository;
 		$this->enumerationRepository = $enumerationRepository;
@@ -52,6 +57,7 @@ class LitterApplicationPresenter extends SignPresenter {
 		$this->litterApplicationRewriteForm = $litterApplicationRewriteForm;
 		$this->userRepository = $userRepository;
 		$this->litterApplicationFilterForm = $litterApplicationFilterForm;
+		$this->litterApplicationDetailForm = $litterApplicationDetailForm;
 	}
 
 	/**
@@ -85,13 +91,90 @@ class LitterApplicationPresenter extends SignPresenter {
 
 	/**
 	 * @param int $id
+	 * @param string $filter
 	 */
-	public function actionRewriteDescendants($id) {
+	public function actionDetails($id, $filter) {
+		$application = $this->litterApplicationRepository->getLitterApplication($id);
+		if ($application != null) {
+			if ($application->getZavedeno() == LitterApplicationStateEnum::REWRITTEN) {
+				$this->flashMessage(LITTER_APPLICATION_REWRITE_DESCENDANTS_ALREADY_IN_EDIT, "alert-danger");
+				$this->redirect("default", ["filter" => $filter]);
+			} else {
+				$this->template->puppiesLines = LitterApplicationDetailForm::NUMBER_OF_LINES;
+				$this->template->title = "";
+				$this->template->cID = $application->getKlub();
+				$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
+
+				$this->template->basePath = $this->getHttpRequest()->getUrl()->basePath;
+				$this->template->puppiesLines = LitterApplicationDetailForm::NUMBER_OF_LINES;
+				$this->template->enumRepository = $this->enumerationRepository;
+				$this['litterApplicationDetailForm']->addHidden("ID", $id);
+				$this['litterApplicationDetailForm']->setDefaults($application->getDataDecoded());
+				$this['litterApplicationDetailForm']['generate']->caption = VET_EDIT_SAVE;
+				$this['litterApplicationDetailForm']['back']->caption = VET_EDIT_BACK;
+			}
+		} else {
+			$this->flashMessage(LITTER_APPLICATION_REWRITE_DOES_NOT_EXIST, "alert-danger");
+			$this->redirect("default", ["filter" => $filter]);
+		}
+	}
+
+	public function createComponentLitterApplicationDetailForm() {
+		$form = $this->litterApplicationDetailForm->create($this->langRepository->getCurrentLang($this->session), $this->link("default"));
+		$form->onSubmit[] = $this->submitLitterApplicationDetail;
+
+		return $form;
+	}
+
+	/**
+	 * @param Form $form
+	 */
+	public function submitLitterApplicationDetail(Form $form) {
+		try {
+			$array = $form->getHttpData();
+			$litterApplicationEntity = new LitterApplicationEntity();
+			$litterApplicationEntity->hydrate($array);
+
+			$latteParams = $array;
+			$latteParams['basePath'] = $this->getHttpRequest()->getUrl()->basePath;
+			$latteParams['puppiesLines'] = LitterApplicationDetailForm::NUMBER_OF_LINES;
+			$latteParams['enumRepository'] = $this->enumerationRepository;
+			$latteParams['currentLang'] = $this->langRepository->getCurrentLang($this->session);
+
+			$latte = new \Latte\Engine();
+			$latte->setTempDirectory(__DIR__ . '/../../../temp/cache');
+			$template = $latte->renderToString(__DIR__ . '/../../FrontendModule/templates/FeItem2velord17/pdf.latte', $latteParams);
+
+			$data = base64_encode(gzdeflate(serialize($_POST)));
+			$litterApplicationEntity->setData($data);
+			$formular = base64_encode(gzdeflate($template));
+			$litterApplicationEntity->setFormular($formular);
+			$litterApplicationEntity->setDatum(new DateTime());
+			$litterApplicationEntity->setDatumNarozeni(new DateTime($array["datumnarozeni"]));	// srovnání indexu DB vs formulář
+			$litterApplicationEntity->setZavedeno(LitterApplicationStateEnum::INSERT);
+			if ($litterApplicationEntity->getPlemeno() == 0) {
+				$litterApplicationEntity->setPlemeno(null);
+			}
+			$this->litterApplicationRepository->save($litterApplicationEntity);
+
+			$this->flashMessage(LITTER_APPLICATION_SAVED, "alert-success");
+			$this->redirect("default", $litterApplicationEntity->getID());
+		} catch (AbortException $e) {
+			throw $e;
+		} catch (\Exception $e) {
+			$this->flashMessage(LITTER_APPLICATION_SAVE_FAILED, "alert-danger");
+		}
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function actionRewriteDescendants($id, $filter) {
 		$application = $this->litterApplicationRepository->getLitterApplication($id);
 		if ($application != null) {
 			if ($application->getZavedeno() == LitterApplicationStateEnum::REWRITTEN) {
 				$this->flashMessage(LITTER_APPLICATION_REWRITE_DESCENDANTS_ALREADY_IN, "alert-danger");
-				$this->redirect("default");
+				$this->redirect("default", ["filter" => $filter]);
 			}
 			$appParams = $application->getDataDecoded();
 			$chs = (isset($appParams['chs']) ? " " . trim($appParams['chs']) : "");
@@ -130,7 +213,7 @@ class LitterApplicationPresenter extends SignPresenter {
 			$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
 		} else {
 			$this->flashMessage(LITTER_APPLICATION_REWRITE_DOES_NOT_EXIST, "alert-danger");
-			$this->redirect("default");
+			$this->redirect("default", ["filter" => $filter]);
 		}
 	}
 

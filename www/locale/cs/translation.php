@@ -803,6 +803,7 @@ define("LITTER_APPLICATION_SAVE_REWRITTEN", "Zavedeno");
 define("LITTER_APPLICATION_SAVE_UNREWRITTEN", "Nezavedeno");
 define("LITTER_APPLICATION_SAVE_ALLREWRITTEN", "Vše");
 define("LITTER_APPLICATION_DELETE", "Smazat");
+define("LITTER_APPLICATION_EDIT", "Editovat přihlášku vrhu");
 define("LITTER_APPLICATION_DELETE_TITLE", "Smazání příhlášky vrhu");
 define("LITTER_APPLICATION_DELETE_INFO", "Přejete si smazat prihlášku vrhu?");
 define("LITTER_APPLICATION_DELETED", "Přihláška vrhu byla smzána");
@@ -811,6 +812,7 @@ define("LITTER_APPLICATION_REWRITE_DESCENDANTS", "Zavést potomky do databáze")
 define("LITTER_APPLICATION_REWRITE_DESCENDANTS_OK", "Potomci byly zavedeni");
 define("LITTER_APPLICATION_REWRITE_DESCENDANTS_FAILED", "Během zavádění potomků došlo k chybě");
 define("LITTER_APPLICATION_REWRITE_DESCENDANTS_ALREADY_IN", "POZOR - tato přihláška vrhu už byla zpracována, novým zavedením vzniknou duplicity!");
+define("LITTER_APPLICATION_REWRITE_DESCENDANTS_ALREADY_IN_EDIT", "POZOR - tato přihláška vrhu už byla zpracována, nelze ji editovat!");
 define("LITTER_APPLICATION_REWRITE_TATTOO_NO", "Tetovací číslo");
 define("LITTER_APPLICATION_REWRITE_CHIP_NO", "Číslo mikročipu");
 define("LITTER_APPLICATION_REWRITE_PUPPY_NAME", "Jméno štěňat");
