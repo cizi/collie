@@ -104,8 +104,6 @@ class LitterApplicationPresenter extends SignPresenter {
 				$this->template->title = "";
 				$this->template->cID = $application->getKlub();
 				$this->template->currentLang = $this->langRepository->getCurrentLang($this->session);
-
-				$this->template->basePath = $this->getHttpRequest()->getUrl()->basePath;
 				$this->template->puppiesLines = LitterApplicationDetailForm::NUMBER_OF_LINES;
 				$this->template->enumRepository = $this->enumerationRepository;
 				$this['litterApplicationDetailForm']->addHidden("ID", $id);
