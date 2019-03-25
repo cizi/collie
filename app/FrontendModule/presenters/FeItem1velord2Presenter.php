@@ -483,7 +483,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$maxHeight = 300;
 		$picsNormalized = [];
 		foreach ($pics as $pic) {
-			list($width, $height, $type, $attr) = getimagesize($pic->getCesta());
+			list($width, $height, $type, $attr) = @getimagesize($pic->getCesta());
 			$widthNormalized = ($width > $maxWidth ? $maxWidth : $width);
 			$heightNormalized = ($height > $maxHeight ? $maxHeight : $height);
 

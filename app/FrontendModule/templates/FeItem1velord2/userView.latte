@@ -96,7 +96,22 @@
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::DOV_ORDER)}</strong></th>
 					<th><strong>{$enumRepo->findEnumItemByOrder($lang, App\Model\DogRepository::MDR_ORDER)}</strong></th>
 				</tr>
+				{var lastParentMale = ""}
+				{var lastParentFemale = ""}
+				{var lastBirthDate = ""}
 				{foreach $dogsByBreeder as $dogCurrent}
+					{if ($lastParentFemale != $dogCurrent->getMID()) || ($lastParentMale != $dogCurrent->getOID()) || ($lastBirthDate != $dogCurrent->getDatNarozeni())}
+						<tr>
+							<td colspan="8" class="parentMarker">
+								{if $dogCurrent->getDatNarozeni() != null}{$dogCurrent->getDatNarozeni()->format("d.m.Y")} :: {/if}
+								{* =DOG_FORM_FEMALE : *}
+								<a href={link view, $dogCurrent->getMID()}>{$dogRepository->getName($dogCurrent->getMID())|noescape}</a>
+								x
+								{* =DOG_FORM_MALE : *}
+								<a href={link view, $dogCurrent->getOID()}>{$dogRepository->getName($dogCurrent->getOID())|noescape}</a>
+							</td>
+						</tr>
+					{/if}
 					<tr>
 						<td>
 							<a href={link view, $dogCurrent->getID()}>{$dogCurrent->getTitulyPredJmenem()} {$dogCurrent->getJmeno()} {$dogCurrent->getTitulyZaJmenem()}</a>
@@ -123,6 +138,9 @@
 							{$dogRepository->getHealthByTypeAsStringWithDesc($dogCurrent->getID(), App\Model\DogRepository::MDR_ORDER)}
 						</td>
 					</tr>
+					{var lastParentFemale = $dogCurrent->getMID()}
+					{var lastParentMale = $dogCurrent->getOID()}
+					{var lastBirthDate = $dogCurrent->getDatNarozeni()}
 				{/foreach}
 			</table>
 		{/if}

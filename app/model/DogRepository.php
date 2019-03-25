@@ -337,12 +337,12 @@ class DogRepository extends BaseRepository {
 			$dkk = (isset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]) ? $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DKK]) : "");
 			$dlk = (isset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]) ? $this->enumRepository->findEnumItemByOrder($currentLang, $filter[DogFilterForm::DOG_FILTER_PROB_DLK]) : "");
 			if ($dkk != "" && $dlk != "") {
-				$return .= sprintf("(az.Typ in (65,66) and az.Vysledek in (%s, %s))", $dbDriver->escapeText($dkk), $dbDriver->escapeText($dlk));
+				$return .= sprintf("(az.Typ  = " . DogRepository::DKK_ORDER . " and az.Vysledek like %s) and (az.Typ = " . DogRepository::DLK_ORDER . " and az.Vysledek like %s)", $dbDriver->escapeLike($dkk, 1), $dbDriver->escapeLike($dlk, 1));
 				//$return .= "((az.Typ = 65 and az.Vysledek = '"  . $dkk . "') and (az.Typ = 66 and az.Vysledek = '"  . $dlk . "'))";
 			} else if ($dkk != "") {
-				$return .= sprintf("(az.Typ = 65 and az.Vysledek = %s)", $dbDriver->escapeText($dkk));
+				$return .= sprintf("(az.Typ = " . DogRepository::DKK_ORDER . " and az.Vysledek like %s)", $dbDriver->escapeLike($dkk, 1));
 			} else if ($dlk != "") {
-				$return .= sprintf("(az.Typ = 66 and az.Vysledek = %s)", $dbDriver->escapeText($dlk));
+				$return .= sprintf("(az.Typ = " . DogRepository::DLK_ORDER . " and az.Vysledek like %s)", $dbDriver->escapeLike($dlk, 1));
 			}
 			unset($filter[DogFilterForm::DOG_FILTER_PROB_DKK]);
 			unset($filter[DogFilterForm::DOG_FILTER_PROB_DLK]);
@@ -933,7 +933,11 @@ class DogRepository extends BaseRepository {
 	 * @return DogEntity[]
 	 */
 	public function findDogsByBreeder($userId) {
-		$query = ["select * from appdata_chovatel as ac left join appdata_pes as ap on ac.pID = ap.ID where ac.uID = %i", $userId];
+		$query = [
+			"select *, ac.ID as acID from appdata_chovatel as ac left join appdata_pes as ap on ac.pID = ap.ID where ac.uID = %i and ap.Stav = %i order by ap.DatNarozeni ASC",
+			$userId, DogStateEnum::ACTIVE
+		];
+		// $query = ["select * from appdata_chovatel as ac left join appdata_pes as ap on ac.pID = ap.ID where ac.uID = %i", $userId];
 		$result = $this->connection->query($query);
 
 		$dogs = [];
