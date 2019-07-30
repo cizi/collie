@@ -3,9 +3,11 @@
 namespace App\Forms;
 
 use Nette\Forms\Form;
-use Nette\Object;
+use Nette;
 
-class UserChangePasswordForm extends Object {
+class UserChangePasswordForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

@@ -10,7 +10,9 @@ use App\Model\VetRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class LitterApplicationRewriteForm extends Nette\Object {
+class LitterApplicationRewriteForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

@@ -9,7 +9,9 @@ use App\Model\UserRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class UserFilterForm extends Nette\Object {
+class UserFilterForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

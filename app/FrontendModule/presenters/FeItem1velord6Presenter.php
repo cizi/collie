@@ -87,7 +87,7 @@ class FeItem1velord6Presenter extends FrontendPresenter	{
 
 	public function createComponentPuppyForm() {
 		$form = $this->puppyForm->create($this->langRepository->getCurrentLang($this->session));
-		$form->onSubmit[] = $this->submitPuppyForm;
+		$form->onSubmit[] = [$this, 'submitPuppyForm'];
 
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = NULL;

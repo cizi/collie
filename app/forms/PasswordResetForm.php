@@ -5,7 +5,9 @@ namespace App\Forms;
 use Nette;
 use Nette\Application\UI\Form;
 
-class PasswordResetForm extends Nette\Object {
+class PasswordResetForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

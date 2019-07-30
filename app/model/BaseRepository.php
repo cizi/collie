@@ -2,7 +2,11 @@
 
 namespace App\Model;
 
-class BaseRepository extends \Nette\Object {
+use Nette;
+
+class BaseRepository {
+
+    use Nette\SmartObject;
 
 	/** @var \Dibi\Connection */
 	protected $connection;

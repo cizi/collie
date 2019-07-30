@@ -6,7 +6,9 @@ use App\Model\DogRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class KinshipVerificationForm extends Nette\Object {
+class KinshipVerificationForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

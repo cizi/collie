@@ -68,7 +68,7 @@ class HeaderPresenter extends SignPresenter {
 	 */
 	public function createComponentHeaderForm() {
 		$form = $this->headerForm->create($this->presenter);
-		$form->onSuccess[] = $this->saveForm;
+		$form->onSuccess[] = [$this, 'saveForm'];
 
 		return $form;
 	}

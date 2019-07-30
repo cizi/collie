@@ -8,7 +8,9 @@ use App\Model\LangRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class BlockForm extends Nette\Object {
+class BlockForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

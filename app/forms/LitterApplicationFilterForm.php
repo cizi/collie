@@ -7,7 +7,9 @@ use App\Model\EnumerationRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class LitterApplicationFilterForm extends Nette\Object {
+class LitterApplicationFilterForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

@@ -7,7 +7,9 @@ use App\Model\WebconfigRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class ContactSettingForm  extends Nette\Object {
+class ContactSettingForm  {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

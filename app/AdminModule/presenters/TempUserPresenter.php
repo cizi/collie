@@ -87,7 +87,7 @@ class TempUserPresenter extends SignPresenter {
 
 	public function createComponentEditForm() {
 		$form = $this->userForm->create($this->link("TempUser:Default"), $this->langRepository->getCurrentLang($this->session));
-		$form->onSuccess[] = $this->saveUser;
+		$form->onSuccess[] = [$this, 'saveUser'];
 
 		return $form;
 	}

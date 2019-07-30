@@ -8,7 +8,9 @@ use App\Model\EnumerationRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class UserForm extends Nette\Object {
+class UserForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

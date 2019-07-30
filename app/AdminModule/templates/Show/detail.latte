@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1>{=SHOW_TITLE}</h1>
-						<p>{!=SHOW_INFO}</p>
+						<p>{=SHOW_INFO|noescape}</p>
 						<br /><br />
 						{if $show !=null}
 							<b>{=SHOW_TABLE_TYPE}: </b>{$enumRepo->findEnumItemByOrder($lang, $show->getTyp())}<br />

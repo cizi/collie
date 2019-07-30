@@ -71,7 +71,7 @@ class FeItem1velord4Presenter extends FrontendPresenter {
 
 	public function createComponentLitterApplicationFilterForm() {
 		$form = $this->litterApplicationFilterForm->create($this->langRepository->getCurrentLang($this->session));
-		$form->onSubmit[] = $this->litterApplicationFilterSubmit;
+		$form->onSubmit[] = [$this, 'litterApplicationFilterSubmit'];
 
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = NULL;

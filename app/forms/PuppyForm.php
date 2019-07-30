@@ -7,7 +7,9 @@ use App\Model\EnumerationRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class PuppyForm extends Nette\Object {
+class PuppyForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

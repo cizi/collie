@@ -6,7 +6,9 @@ use App\Model\MenuRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class MenuForm extends Nette\Object {
+class MenuForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

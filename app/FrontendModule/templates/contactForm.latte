@@ -1,7 +1,7 @@
 {form contactForm}
 		<div class="row contactForm" style="
-			{if $contactFormBackground != ""}background-color: {!$contactFormBackground};{/if}
-			{if $contactFormColor != ""}color: {!$contactFormColor};{/if}
+			{if $contactFormBackground != ""}background-color: {$contactFormBackground|noescape};{/if}
+			{if $contactFormColor != ""}color: {$contactFormColor|noescape};{/if}
 		">
 			<div class="form-group row formRow">
 				<div class="col-sm-2"></div>
@@ -10,7 +10,7 @@
 						<h3>{$contactFormHeader}</h3>
 					{/if}
 					{if $contactFormContent !=""}
-						{!$contactFormContent}
+						{$contactFormContent|noescape}
 					{/if}
 				</div>
 				<div class="col-sm-2"></div>

@@ -6,7 +6,9 @@ use App\Model\EnumerationRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class LitterApplicationDetailForm extends Nette\Object {
+class LitterApplicationDetailForm {
+
+    use Nette\SmartObject;
 
 	/** @const pocet radek formulare o štěňatech */
 	const NUMBER_OF_LINES = 10;

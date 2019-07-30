@@ -1,13 +1,13 @@
-{if $user->isPrivacy()}
-	<b>{$user->getStation()} {if $user->getBreed() != null}({$enumRepo->findEnumItemByOrder($lang, $user->getBreed())}){/if}</b>
+{if $userLatte->isPrivacy()}
+	<b>{$userLatte->getStation()} {if $userLatte->getBreed() != null}({$enumRepo->findEnumItemByOrder($lang, $userLatte->getBreed())}){/if}</b>
 {/if}
-{if $user->getSharing() >= 32}
+{if $userLatte->getSharing() >= 32}
 	<ul>
-		<li>{$user->getFullName()}{if $user->isPrivacy()}, {$stateEnum->getValueByKey($user->getState())}{/if}</li>
-		{if ($user->getSharing() >= 33) && ($user->isPrivacy())}
-			<li>{if $user->getPhone() != null}{$user->getPhone()}{/if}</li>
-			<li>{if $user->getEmail() != null}{$user->getEmail()}{/if}</li>
-			<li>{if $user->getWeb() != null}<a href="http://{$user->getWeb()|noescape}" target="_blank">{$user->getWeb()}</a>{/if}</li>
+		<li>{$userLatte->getFullName()}{if $userLatte->isPrivacy()}, {$stateEnum->getValueByKey($userLatte->getState())}{/if}</li>
+		{if ($userLatte->getSharing() >= 33) && ($userLatte->isPrivacy())}
+			<li>{if $userLatte->getPhone() != null}{$userLatte->getPhone()}{/if}</li>
+			<li>{if $userLatte->getEmail() != null}{$userLatte->getEmail()}{/if}</li>
+			<li>{if $userLatte->getWeb() != null}<a href="https://{$userLatte->getWeb()|noescape}" target="_blank">{$userLatte->getWeb()}</a>{/if}</li>
 		{/if}
 	</ul>
 {/if}

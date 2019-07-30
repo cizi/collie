@@ -8,7 +8,9 @@ use App\Model\LangRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class MatingListForm extends Nette\Object {
+class MatingListForm{
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

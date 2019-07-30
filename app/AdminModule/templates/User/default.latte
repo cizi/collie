@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1>{=USER_TITLE}</h1>
-						<p>{!=USER_INFO_TEXT}</p>
+						<p>{=USER_INFO_TEXT|noescape}</p>
 						<br /><br />
 
 						<div class="container userTable">
@@ -34,40 +34,40 @@
 									</tr>
 								</thead>
 								<tbody>
-								{foreach $users as $user}
+								{foreach $users as $userLatte}
 									<tr>
-										<td>{$user->getEmail()}</td>
+										<td>{$userLatte->getEmail()}</td>
 										<td>
-											{if isset($roles[$user->getRole()])}
-											{$roles[$user->getRole()]}
+											{if isset($roles[$userLatte->getRole()])}
+											{$roles[$userLatte->getRole()]}
 											{else}
 											""
 											{/if}
 										</td>
 										<td>
-											{if $user->isActive()}
+											{if $userLatte->isActive()}
 												<label class="checkbox-inline">
-													<input class="activeToggleEvent" user-data={$user->getId()} type="checkbox" checked data-toggle="toggle" data-height="25" data-width="50">
+													<input class="activeToggleEvent" user-data={$userLatte->getId()} type="checkbox" checked data-toggle="toggle" data-height="25" data-width="50">
 												</label>
 											{else}
 												<label class="checkbox-inline">
-													<input class="activeToggleEvent" user-data={$user->getId()} type="checkbox" data-toggle="toggle" data-height="25" data-width="50">
+													<input class="activeToggleEvent" user-data={$userLatte->getId()} type="checkbox" data-toggle="toggle" data-height="25" data-width="50">
 												</label>
 											{/if}
 										</td>
-										<td>{$user->getRegisterTimestamp()|date: 'j.n.Y G:i:s'}</td>
-										<td>{$user->getLastLogin()|date: 'j.n.Y G:i:s'}</td>
+										<td>{$userLatte->getRegisterTimestamp()|date: 'j.n.Y G:i:s'}</td>
+										<td>{$userLatte->getLastLogin()|date: 'j.n.Y G:i:s'}</td>
 										<td class="alignRight">
-											{if isset($usedOwnersPerDog[$user->getId()])
-												|| isset($usedBreedersPerDog[$user->getId()])
-												|| isset($usedUserInPuppies[$user->getId()])
-												|| isset($usedUserInChanges[$user->getId()])
-												|| isset($usedUserInLitterApp[$user->getId()])
+											{if isset($usedOwnersPerDog[$userLatte->getId()])
+												|| isset($usedBreedersPerDog[$userLatte->getId()])
+												|| isset($usedUserInPuppies[$userLatte->getId()])
+												|| isset($usedUserInChanges[$userLatte->getId()])
+												|| isset($usedUserInLitterApp[$userLatte->getId()])
 											}
-												<a href={link userReferences, $user->getId()} title={=USER_REFERENCES}><span class="glyphicon glyphicon-user colorGrey"></span></a> &nbsp;&nbsp;
+												<a href={link userReferences, $userLatte->getId()} title={=USER_REFERENCES}><span class="glyphicon glyphicon-user colorGrey"></span></a> &nbsp;&nbsp;
 											{/if}
-											<a href={link User:Edit, $user->getId()} title={=USER_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
-											<a href="#" data-href={link User:DeleteUser, $user->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=USER_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+											<a href={link User:Edit, $userLatte->getId()} title={=USER_EDIT}><span class="glyphicon glyphicon-pencil"></span></a> &nbsp;&nbsp;
+											<a href="#" data-href={link User:DeleteUser, $userLatte->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=USER_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 										</td>
 									</tr>
 								{/foreach}

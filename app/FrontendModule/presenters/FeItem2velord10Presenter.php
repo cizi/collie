@@ -31,17 +31,17 @@ class FeItem2velord10Presenter extends FrontendPresenter {
 	}
 
 	/**
-	 * Vytvoøí komponentu pro zmìnu hesla uživatele
+	 * Vytvoï¿½ï¿½ komponentu pro zmï¿½nu hesla uï¿½ivatele
 	 */
 	public function createComponentChangePasswordForm() {
 		$form = $this->userChangePasswordForm->create();
-		$form->onSubmit[] = $this->updatePassword;
+		$form->onSubmit[] = [$this, 'updatePassword'];
 
 		return $form;
 	}
 
 	/**
-	 * Zvaliduje dormuláø zmìny hesla
+	 * Zvaliduje dormulï¿½ï¿½ zmï¿½ny hesla
 	 * @param Form $form
 	 */
 	public function updatePassword(Form $form) {

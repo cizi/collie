@@ -141,7 +141,7 @@ abstract class BasePresenter extends Presenter {
 	 * @param Nette\Application\UI\Form $form
 	 * @param $values
 	 * @throws \Exception
-	 * @throws \phpmailerException
+	 * @throws \phpmailerExceptio
 	 */
 	public function contactFormSubmitted($form, $values) {
 		if (
@@ -197,7 +197,7 @@ abstract class BasePresenter extends Presenter {
 		if ($this->webconfigRepository->getByKey(WebconfigRepository::KEY_CONTACT_FORM_RECIPIENT, WebconfigRepository::KEY_LANG_FOR_COMMON) == "") {
 			$form["confirm"]->setDisabled();
 		}
-		$form->onSuccess[] = $this->contactFormSubmitted;
+		$form->onSuccess[] = [$this, 'contactFormSubmitted'];
 		return $form;
 	}
 
@@ -224,7 +224,7 @@ abstract class BasePresenter extends Presenter {
 
 	protected function createComponentPasswordResetForm() {
 		$form = $this->passwordResetForm->create();
-		$form->onSubmit[] = $this->resetUserPassword;
+		$form->onSubmit[] = [$this, 'resetUserPassword'];
 
 		return $form;
 	}

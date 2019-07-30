@@ -50,7 +50,7 @@ class FeItem2velord9Presenter extends FrontendPresenter {
 	 */
 	public function createComponentEditForm() {
 		$form = $this->userForm->create($this->link("default"), $this->langRepository->getCurrentLang($this->session));
-		$form->onSubmit[] = $this->saveUser;
+		$form->onSubmit[] = [$this, 'saveUser'];
 
 		/* $renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = NULL;

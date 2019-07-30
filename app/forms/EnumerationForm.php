@@ -6,7 +6,9 @@ use App\Model\MenuRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class EnumerationForm extends Nette\Object {
+class EnumerationForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

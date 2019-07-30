@@ -35,7 +35,7 @@ class MenuPresenter extends SignPresenter {
 
 	public function createComponentMenuForm() {
 		$form = $this->menuForm->create($this->langRepository->findLanguages());
-		$form->onSuccess[] = $this->saveMenuItem;
+		$form->onSuccess[] = [$this, 'saveMenuItem'];
 		return $form;
 	}
 

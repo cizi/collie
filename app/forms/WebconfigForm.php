@@ -8,7 +8,9 @@ use App\Model\LangRepository;
 use App\Model\WebconfigRepository;
 use Nette;
 
-class WebconfigForm extends Nette\Object {
+class WebconfigForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

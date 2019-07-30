@@ -16,7 +16,7 @@
 					<div class="row">
 						<div class="col-lg-6 col-md-8 col-sm-12">
 							<h1>{=FOOTER_TITLE}</h1>
-							<span>{!=FOOTER_INFO}</span>
+							<span>{=FOOTER_INFO|noescape}</span>
 							<br /><br />
 
 							<div class="form-group row">
@@ -25,7 +25,7 @@
 									{input WEB_MUTATION}
 								</div>
 								<div class="col-sm-10 field_info">
-									{!=WEBCONFIG_WEBMUTATION_INFO}
+									{=WEBCONFIG_WEBMUTATION_INFO|noescape}
 								</div>
 
 								<div class="col-sm-10">
@@ -39,7 +39,7 @@
 									{input FOOTER_WIDTH}
 								</div>
 								<div class="col-sm-10 field_info">
-									{!=FOOTER_WIDTH_INFO}
+									{=FOOTER_WIDTH_INFO|noescape}
 								</div>
 
 								<div class="col-sm-10">
@@ -65,7 +65,7 @@
 									{input FOOTER_CONTENT}
 								</div>
 								<div class="col-sm-10 field_info">
-									{!=FOOTER_CONTENT_TEXT}
+									{=FOOTER_CONTENT_TEXT|noescape}
 								</div>
 
 								<div class="col-sm-10">
@@ -73,7 +73,7 @@
 									{input FOOTER_FILES}
 								</div>
 								<div class="col-sm-10 field_info">
-									{!=FOOTER_CONTENT_PICS}
+									{=FOOTER_CONTENT_PICS|noescape}
 								</div>
 
 								<div class="col-sm-10">
@@ -81,7 +81,7 @@
 									<table class="footerPic">
 									{foreach $footerPics as $pic}
 											<tr>
-												<td style="width: 100px"><img src="{!$pic->getPath()}" class="footerList"/><td>
+												<td style="width: 100px"><img src="{$pic->getPath()|noescape}" class="footerList"/><td>
 												<td>
 													<a href="#" data-href={link Footer:DeletePic, $pic->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=FOOTER_PIC_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 													<pre style="width: 100%">{$pic->getPath()}</pre>

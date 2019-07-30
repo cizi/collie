@@ -15,7 +15,7 @@
 					<div class="row">
 						<div class="col-lg-10 col-md-10 col-sm-12">
 							<h1>{=MENU_SETTINGS_TITLE}</h1>
-							<span>{!=MENU_SETTINGS_INFO}</span>
+							<span>{=MENU_SETTINGS_INFO|noescape}</span>
 							<br /><br />
 
 							<div class="container userTable">
@@ -34,7 +34,7 @@
 									</tr>
 									</thead>
 									<tbody>
-										{!$menuController->renderMenuItemWithSubItems($presenter, $topMenuEntities)}
+										{$menuController->renderMenuItemWithSubItems($presenter, $topMenuEntities)|noescape}
 									</tbody>
 								</table>
 							</div>

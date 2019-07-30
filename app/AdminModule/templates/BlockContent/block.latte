@@ -1,6 +1,6 @@
 	{if count($blocks) == 0}
 		<div class="alignCenter noBlocks">
-			{!=BLOCK_CONTENT_SETTINGS_NO_BLOCKS}
+			{=BLOCK_CONTENT_SETTINGS_NO_BLOCKS|noescape}
 		</div>
 	{else}
 		<table class="table table-striped">
@@ -16,16 +16,16 @@
 			{foreach $blocks as $blockEntity}
 				<tr>
 					<td>
-						{!$blockEntity->getBlockContent()->getContentText()}
+						{$blockEntity->getBlockContent()->getContentText()|noescape}
 					</td>
 					<td>
 						{if $blockEntity->getBackgroundColor() !=""}
-							<div class="colorExample" style="background-color: {!$blockEntity->getBackgroundColor()}"></div>
+							<div class="colorExample" style="background-color: {$blockEntity->getBackgroundColor()|noescape}"></div>
 						{/if}
 					</td>
 					<td>
 						{if $blockEntity->getColor() != ""}
-							<div class="colorExample" style="background-color: {!$blockEntity->getColor()}"></div>
+							<div class="colorExample" style="background-color: {$blockEntity->getColor()|noescape}"></div>
 						{/if}
 					</td>
 					<td class="alignRight" nowrap="nowrap">

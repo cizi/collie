@@ -50,7 +50,7 @@ class ContactPresenter extends SignPresenter {
 	 */
 	public function createComponentContactSettingForm() {
 		$form = $this->contactSettingForm->create($this->presenter);
-		$form->onSuccess[] = $this->saveForm;
+		$form->onSuccess[] = [$this, 'saveForm'];
 
 		return $form;
 	}

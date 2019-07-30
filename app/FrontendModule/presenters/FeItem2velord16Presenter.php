@@ -46,7 +46,7 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 
 	public function createComponentMatingListForm() {
 		$form = $this->matingListForm->create($this->langRepository->getCurrentLang($this->session));
-		$form->onSubmit[] = $this->submitMatingList;
+		$form->onSubmit[] = [$this, 'submitMatingList'];
 
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = NULL;
@@ -63,7 +63,7 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 
 	public function createComponentMatingListDetailForm() {
 		$form = $this->matingListDetailForm->create($this->langRepository->getCurrentLang($this->session), $this->link("default"));
-		$form->onSubmit[] = $this->submitMatingListDetail;
+		$form->onSubmit[] = [$this, 'submitMatingListDetail'];
 
 		return $form;
 	}

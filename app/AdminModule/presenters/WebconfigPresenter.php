@@ -52,7 +52,7 @@ class WebconfigPresenter extends SignPresenter {
 	 */
 	public function createComponentConfigForm() {
 		$form = $this->configForm->create($this->presenter, $this->webCurrentLang);
-		$form->onSuccess[] = $this->saveValue;
+		$form->onSuccess[] = [$this, 'saveValue'];
 
 		return $form;
 	}

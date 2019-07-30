@@ -5,7 +5,9 @@ namespace App\Forms;
 use Nette;
 use Nette\Application\UI\Form;
 
-class ContactForm extends Nette\Object {
+class ContactForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

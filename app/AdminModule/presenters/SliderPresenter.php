@@ -51,7 +51,7 @@ class SliderPresenter extends SignPresenter {
 	 */
 	public function createComponentSliderForm() {
 		$form = $this->sliderForm->create();
-		$form->onSuccess[] = $this->proceedForm;
+		$form->onSuccess[] = [$this, 'proceedForm'];
 
 		return $form;
 	}

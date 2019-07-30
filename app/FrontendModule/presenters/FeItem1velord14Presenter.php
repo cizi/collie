@@ -46,7 +46,7 @@ class FeItem1velord14Presenter extends FrontendPresenter {
 			$form['lang']->setItems($langs);
 		}
 
-		$form->onSubmit[] = $this->formSucceeded;
+		$form->onSubmit[] = [$this, 'formSucceeded'];
 
 		return $form;
 	}

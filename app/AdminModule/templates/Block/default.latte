@@ -15,7 +15,7 @@
 					<div class="row">
 						<div class="col-lg-10 col-md-10 col-sm-12">
 							<h1>{=BLOCK_SETTING_TITLE}</h1>
-							<span>{!=BLOCK_SETTING_INFO}</span>
+							<span>{=BLOCK_SETTING_INFO|noescape}</span>
 							<br /><br />
 
 							<div class="container userTable">
@@ -36,16 +36,16 @@
 										{foreach $blocks as $blockEntity}
 											<tr>
 												<td>
-													{!$blockEntity->getBlockContent()->getContentText()}
+													{$blockEntity->getBlockContent()->getContentText()|noescape}
 												</td>
 												<td>
 													{if $blockEntity->getBackgroundColor() !=""}
-														<div class="colorExample" style="background-color: {!$blockEntity->getBackgroundColor()}"></div>
+														<div class="colorExample" style="background-color: {$blockEntity->getBackgroundColor()|noescape}"></div>
 													{/if}
 												</td>
 												<td>
 													{if $blockEntity->getColor() != ""}
-														<div class="colorExample" style="background-color: {!$blockEntity->getColor()}"></div>
+														<div class="colorExample" style="background-color: {$blockEntity->getColor()|noescape}"></div>
 													{/if}
 												</td>
 												<td class="alignRight">

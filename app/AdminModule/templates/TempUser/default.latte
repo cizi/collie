@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1>{=MENU_USERS_TEMP}</h1>
-						<p>{!=USER_TEMP_INFO_TEXT}</p>
+						<p>{=USER_TEMP_INFO_TEXT|noescape}</p>
 						<br /><br />
 
 						<div class="container userTable">
@@ -26,15 +26,15 @@
 									</tr>
 								</thead>
 								<tbody>
-								{foreach $users as $user}
+								{foreach $users as $userLatte}
 									<tr>
-										<td>{$user->getCeleJmeno()}</td>
+										<td>{$userLatte->getCeleJmeno()}</td>
 										<td class="alignRight">
-											{if isset($tempUsersAsBreeders[$user->getId()]) || isset($tempUsersAsOwners[$user->getId()])}
-												<a href={link userReferences, $user->getId()} title={=USER_REFERENCES}><span class="glyphicon glyphicon-user colorGrey"></span></a> &nbsp;&nbsp;
+											{if isset($tempUsersAsBreeders[$userLatte->getId()]) || isset($tempUsersAsOwners[$userLatte->getId()])}
+												<a href={link userReferences, $userLatte->getId()} title={=USER_REFERENCES}><span class="glyphicon glyphicon-user colorGrey"></span></a> &nbsp;&nbsp;
 											{/if}
-											<a href={link RewriteTempUser, $user->getId()} title={=USER_TEMP_REWRITE}><span class="glyphicon glyphicon-plus-sign"></span></a> &nbsp;&nbsp;
-											<a href="#" data-href={link DeleteTempUser, $user->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=USER_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
+											<a href={link RewriteTempUser, $userLatte->getId()} title={=USER_TEMP_REWRITE}><span class="glyphicon glyphicon-plus-sign"></span></a> &nbsp;&nbsp;
+											<a href="#" data-href={link DeleteTempUser, $userLatte->getId()} class="colorRed" data-toggle="modal" data-target="#confirm-delete" title={=USER_DELETE}><span class="glyphicon glyphicon-remove"></span></a>
 										</td>
 									</tr>
 								{/foreach}

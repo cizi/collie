@@ -51,7 +51,7 @@ class RefereePresenter extends SignPresenter {
 
 	public function createComponentEditForm() {
 		$form = $this->refereeForm->create($this->link("default"));
-		$form->onSuccess[] = $this->saveVet;
+		$form->onSuccess[] = [$this, 'saveVet'];
 
 		return $form;
 	}

@@ -5,7 +5,9 @@ namespace App\Forms;
 use Nette;
 use Nette\Application\UI\Form;
 
-class EnumerationItemForm extends Nette\Object {
+class EnumerationItemForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

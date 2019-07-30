@@ -34,7 +34,7 @@ class HomepagePresenter extends BasePresenter {
 	 * @param string $lang
 	 * @param string $id
 	 */
-	public function renderDefault($lang, $id) {
+	public function actionDefault($lang, $id) {
 		if (empty($lang)) {
 			$lang = $this->langRepository->getCurrentLang($this->session);
 			$this->redirect("default", [ 'lang' => $lang, 'id' => $id]);

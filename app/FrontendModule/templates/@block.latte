@@ -1,13 +1,13 @@
 {block content}
 	{foreach $userBlocks as $block}
 		{if $block->getId() == $contactFormId}
-			<div style="margin: auto; padding: 10px 0; background-color: {!$block->getBackgroundColor()}; color: {!$block->getColor()}; width: {!$widthEnum->getValueByKey($block->getWidth())};">
+			<div style="margin: auto; padding: 10px 0; background-color: {$block->getBackgroundColor()|noescape}; color: {$block->getColor()|noescape}; width: {!$widthEnum->getValueByKey($block->getWidth())};">
 				{include "../contactForm.latte"}
 			</div>
 		{else}
-			<div class="contentRow" style="background-color: {!$block->getBackgroundColor()}; outline: 15px solid {!$block->getBackgroundColor()}; color: {!$block->getColor()}; width: {!$widthEnum->getValueByKey($block->getWidth())}">
+			<div class="contentRow" style="background-color: {$block->getBackgroundColor()|noescape}; outline: 15px solid {$block->getBackgroundColor()|noescape}; color: {$block->getColor()|noescape}; width: {$widthEnum->getValueByKey($block->getWidth())|noescape}">
 				{var text = str_replace("../../.", "",$block->getBlockContent()->getContentText(true))}
-				{!$text}
+				{$text|noescape}
 			</div>
 			{if ($iterator->getCounter()%2 == 0) && ($pageKeywords != "")}<em class="hidden">{$pageKeywords}</em>{/if}
 		{/if}

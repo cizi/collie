@@ -8,7 +8,9 @@ use App\Model\SliderSettingRepository;
 use Nette;
 use Nette\Application\UI\Form;
 
-class SliderForm extends Nette\Object {
+class SliderForm {
+
+    use Nette\SmartObject;
 
 	/** @var FormFactory */
 	private $factory;

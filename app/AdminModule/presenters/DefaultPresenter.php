@@ -64,7 +64,7 @@ class DefaultPresenter extends BasePresenter {
 			$form['lang']->setItems($langs);
 		}
 
-		$form->onSuccess[] = $this->formSucceeded;
+		$form->onSuccess[] = [$this, 'formSucceeded'];
 
 		return $form;
 	}

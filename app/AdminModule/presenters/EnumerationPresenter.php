@@ -100,13 +100,13 @@ class EnumerationPresenter extends SignPresenter {
 
 	public function createComponentEnumerationForm() {
 		$form = $this->enumerationForm->create($this->langRepository->findLanguages(), $this->link("default"));
-		$form->onSuccess[] = $this->saveEdit;
+		$form->onSuccess[] = [$this, 'saveEdit'];
 		return $form;
 	}
 
 	public function createComponentEnumerationItemForm() {
 		$form = $this->enumerationItemForm->create($this->langRepository->findLanguages(), $this->link("default"));
-		$form->onSuccess[] = $this->saveEditItem;
+		$form->onSuccess[] = [$this, 'saveEditItem'];
 
 		return $form;
 	}

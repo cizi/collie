@@ -36,7 +36,7 @@
 										<td>{$puppy->getPodrobnosti()|noescape}</td>
 										<td>
 											{var user = $userRepo->getUser($puppy->getUID())}
-											{include '../@userInfoForList.latte', 'user' => $user}
+											{include '../@userInfoForList.latte', 'userLatte' => $user}
 										</td>
 										<td class="alignRight">
 											{if ($puppy->getUID() == $loggedUserId) && $isUserLoggedIn}
