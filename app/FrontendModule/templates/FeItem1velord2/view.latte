@@ -16,7 +16,7 @@
 								{for $i=0; $i < App\FrontendModule\Presenters\FeItem1velord2Presenter::TOP_IMAGE_COUNT; $i++}
 									{if isset($dogPics[$i])}
 										{var $dogPic = $dogPics[$i]}
-										<img src="{$dogPic->getCesta()}" class="img-fluid dogPicSmall" {$dogPicsHeader[$dogPic->getCesta()]|noescape} />
+										<img src="{$dogPic->getCesta()}" class="img-fluid dogPicSmall" alt={$dog->getJmeno()} />
 									{/if}
 								{/for}
 							{/if}
@@ -138,8 +138,8 @@
 					<tr>
 						<th>{=DOG_FORM_PREVIOUS_OWNERS}</th>
 						<td>
-							{foreach $previousOwners as $user}
-								{var $name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter())}
+							{foreach $previousOwners as $userPrew}
+								{var $name = trim($userPrew->getTitleBefore()) . " " . trim($userPrew->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter())}
 								{(strlen($name) > 35 ? substr($name, 0, 35) . "..." : $name)}<br />
 							{/foreach}
 						</td>
@@ -321,8 +321,8 @@
 								<td>{$enumRepo->findEnumItemByOrder($lang, $data['showDog']->getPoradi())}</td>
 								<td>
 									{var titles = $showDogRepo->findTitlesByShowAndDog($data['show']->getID(), $dog->getID())}
-									{foreach $titles as $title}
-										{$enumRepo->findEnumItemByOrder($lang, $title->getTitul())}
+									{foreach $titles as $titleDog}
+										{$enumRepo->findEnumItemByOrder($lang, $titleDog->getTitul())}
 										{if $iterator->last == false}, {/if}
 									{/foreach}
 								</td>
