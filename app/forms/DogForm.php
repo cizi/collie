@@ -104,12 +104,14 @@ class DogForm {
 		$form->addText("Vyska", DOG_FORM_HEIGHT)
 			->setAttribute("class", "form-control")
 			->addRule(Form::PATTERN, DOG_FORM_HEIGHT_NUMBER, '\d*(?:\.\d+)?')
-			->setAttribute("placeholder", DOG_FORM_HEIGHT);
+			->setAttribute("placeholder", DOG_FORM_HEIGHT)
+            ->setRequired(FALSE);
 
 		$form->addText("Vaha", DOG_FORM_WEIGHT)
 			->setAttribute("class", "form-control")
 			->addRule(Form::PATTERN, DOG_FORM_WEIGHT_NUMBER,  '\d*(?:\.\d+)?')
-			->setAttribute("placeholder", DOG_FORM_WEIGHT);
+			->setAttribute("placeholder", DOG_FORM_WEIGHT)
+            ->setRequired(FALSE);
 
 		$form->addText("DatUmrti", DOG_FORM_DEAD)
 			->setAttribute("class", "form-control")
@@ -174,7 +176,7 @@ class DogForm {
 		/** @var EnumerationItemEntity $enumEntity */
 		foreach ($zdravi as $enumEntity) {
 			$container = $dogHealthContainer->addContainer($enumEntity->getOrder());
-			$container->addText("caption", null)->setAttribute("class", "form-control")->setAttribute("readonly", "readonly")->setAttribute("value", $enumEntity->getItem());
+            $container->addText("caption", null)->setAttribute("class", "form-control")->setAttribute("readonly", "readonly")->setDefaultValue($enumEntity->getItem());
 			$container->addText("Vysledek", DOG_FORM_HEALTH_SUMMARY)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_SUMMARY);
 			$container->addText("Komentar", DOG_FORM_HEALTH_COMMENT)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_COMMENT);
 			$container->addText("Datum", DOG_FORM_HEALTH_DATE)->setAttribute("class", "healthDatePicker form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_DATE);

@@ -17,9 +17,9 @@
 								{if count($previousOwners) > 0}
 									<h4>{=DOG_FORM_PREVIOUS_OWNERS}</h4>
 									<div>
-										{foreach $previousOwners as $user}
-											{var $name = trim($user->getTitleBefore()) . " " . trim($user->getName()) . " " . trim($user->getSurname()) . " ". trim($user->getTitleAfter())}
-											<a href="#" data-href={link deleteOldOwner, $user->getOwnerId(), $currentDog->getID()} data-toggle="modal" data-target="#confirm-delete-owner" title={=DOG_FORM_OLD_OWNER_DELETE}>
+										{foreach $previousOwners as $previousOwner}
+											{var $name = trim($previousOwner->getTitleBefore()) . " " . trim($previousOwner->getName()) . " " . trim($previousOwner->getSurname()) . " ". trim($previousOwner->getTitleAfter())}
+											<a href="#" data-href={link deleteOldOwner, $previousOwner->getOwnerId(), $currentDog->getID()} data-toggle="modal" data-target="#confirm-delete-owner" title={=DOG_FORM_OLD_OWNER_DELETE}>
 												<span class="glyphicon glyphicon-remove colorRed"></span>
 											</a>
 											{(strlen($name) > 35 ? substr($name, 0, 35) . "..." : $name)}<br />
