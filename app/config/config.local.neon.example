@@ -1,9 +1,14 @@
 parameters:
-
-
-database:
-	dsn: 'mysql:host=127.0.0.1;dbname=test'
-	user:
-	password:
-	options:
-		lazy: yes
+    extensions:
+        dibi: Dibi\Bridges\Nette\DibiExtension22
+    database:
+        host: localhost
+        username: root
+        password: toor6666
+        database: collie
+        lazy: TRUE
+        profiler:
+            run: false
+            explain: true
+            filter: DibiEvent::ALL
+            file: log.sql 

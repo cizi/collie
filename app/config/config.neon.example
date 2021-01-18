@@ -87,10 +87,6 @@ services:
 	- App\Controller\DogChangesComparatorController
 	router: App\RouterFactory::createRouter
 	connection:
-	    class: \Dibi\Connection(%database%)
-
-tracy:
-    bar:
-        - Dibi\Bridges\Tracy\Panel
+		class: \Dibi\Connection(%database%)
 
 

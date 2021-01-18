@@ -122,7 +122,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 	 */
 	public function dogFilter(Form $form) {
 		$filter = "1&";
-		foreach ($form->getHttpData() as $key => $value) {
+		foreach ($form->getValues() as $key => $value) {
 			if ($value != "") {
 				$filter .= $key . "=" . $value . "&";
 			}

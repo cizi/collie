@@ -5,9 +5,9 @@ namespace App\FrontendModule\Presenters;
 use App\Forms\MatingListDetailForm;
 use App\Forms\MatingListForm;
 use App\Model\DogRepository;
+use App\Model\Entity\DogEntity;
 use App\Model\EnumerationRepository;
 use App\Model\UserRepository;
-use Dibi\Exception;
 use Nette\Application\AbortException;
 use Nette\Forms\Form;
 use Nette\Utils\ArrayHash;
@@ -135,7 +135,10 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 		$pes = $this->dogRepository->getDog($pID);
 		$this['matingListDetailForm']['cID']->setDefaultValue($cID);
 		$this['matingListDetailForm']['pID']->setDefaults($pes->extract());
-		$this['matingListDetailForm']['pID']['Jmeno']->setDefaultValue(trim($pes->getTitulyPredJmenem() . " " . $pes->getJmeno() . " " . $pes->getTitulyZaJmenem()));
+		$this['matingListDetailForm']['pID']['Jmeno']->setDefaultValue($pes->getCeleJmeno());
+		if (!empty($pes->getDatNarozeni())) {
+		    $this['matingListDetailForm']['pID']['DatumNarozeni']->setDefaultValue($pes->getDatNarozeni()->format(DogEntity::MASKA_DATA));
+        }
 
 		$maleOwnersToInput = "";
 		$maleOwners = $this->userRepository->findDogOwnersAsUser($pes->getID());
@@ -147,7 +150,10 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 
 		$fena = $this->dogRepository->getDog($fID);
 		$this['matingListDetailForm']['fID']->setDefaults($fena->extract());
-		$this['matingListDetailForm']['fID']['Jmeno']->setDefaultValue(trim($fena->getTitulyPredJmenem() . " " . $fena->getJmeno() . " " . $fena->getTitulyZaJmenem()));
+		$this['matingListDetailForm']['fID']['Jmeno']->setDefaultValue($fena->getCeleJmeno());
+		if (!empty($fena->getDatNarozeni())) {
+		    $this['matingListDetailForm']['fID']['DatumNarozeni']->setDefaultValue($fena->getDatNarozeni()->format(DogEntity::MASKA_DATA));
+        }
 		if ($fena->getPlemeno() != null) {
 			$this['matingListDetailForm']['Plemeno']->setDefaultValue($fena->getPlemeno());
 		}

@@ -56,7 +56,8 @@ class LitterApplicationDetailForm {
 
 		// OTEC
 		$form->addText("otec", DOG_TABLE_HEADER_FATHER, 40);
-		$form->addText("otecDN", DOG_TABLE_HEADER_BIRT, 40);
+		$form->addText("otecDN", DOG_TABLE_HEADER_BIRT, 40)
+            ->setType('date');
 		$form->addTextArea("otecV", LITTER_APPLICATION_DETAIL_DOG_TITLES, 60, 3);
 
 		$form->addText("otecPP", LITTER_APPLICATION_DETAIL_CARD_NO, 20);
@@ -67,7 +68,8 @@ class LitterApplicationDetailForm {
 
 		// matka
 		$form->addText("matka", DOG_TABLE_HEADER_MOTHER, 40);
-		$form->addText("matkaDN", DOG_TABLE_HEADER_BIRT, 40);
+		$form->addText("matkaDN", DOG_TABLE_HEADER_BIRT, 40)
+            ->setType('date');
 		$form->addTextArea("matkaV", LITTER_APPLICATION_DETAIL_DOG_TITLES, 60, 3);
 
 		$form->addText("matkaPP", LITTER_APPLICATION_DETAIL_CARD_NO, 20);
@@ -79,8 +81,12 @@ class LitterApplicationDetailForm {
 		$form->addText("chovatel", LITTER_APPLICATION_DETAIL_BREEDER_ADDRESS, 120);
 		$form->addText("datumkryti", MATING_FORM_DATE, 15)
 			->setAttribute("class", "tinym_required_field")
+            ->setAttribute("autocomplete", "off")
+            ->setType('date')
 			->setAttribute("validation", LITTER_APPLICATION_DETAIL_LITTER_DATE_REQ);
-		$form->addText("datumnarozeni", LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY, 15);
+		$form->addText("datumnarozeni", LITTER_APPLICATION_DETAIL_PUPPIES_BIRTHDAY, 15)
+            ->setAttribute("autocomplete", "off")
+            ->setType('date');
 
 		$form->addText("porozenoPsu", LITTER_APPLICATION_DETAIL_PUPPIES_MALES, 2);
 		$form->addText("porozenoFen", LITTER_APPLICATION_DETAIL_PUPPIES_FEMALES, 2);

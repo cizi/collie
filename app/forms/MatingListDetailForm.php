@@ -56,6 +56,8 @@ class MatingListDetailForm {
 			->setAttribute("tabindex", $counter + 3);
 
 		$maleContainer->addText("DatumNarozeni", DOG_FORM_BIRT)
+            ->setType('date')
+            ->setAttribute("autocomplete", "off")
 			->setAttribute("placeholder", DOG_FORM_BIRT)
 			->setAttribute("tabindex", $counter + 4);
 
@@ -68,6 +70,8 @@ class MatingListDetailForm {
 			->setAttribute("tabindex", $counter + 6);
 
 		$maleContainer->addText("Bonitace", DOG_FORM_BON_DATE)
+            ->setType('date')
+            ->setAttribute("autocomplete", "off")
 			->setAttribute("placeholder", DOG_FORM_BON_DATE)
 			->setAttribute("tabindex", $counter + 7);
 
@@ -91,6 +95,8 @@ class MatingListDetailForm {
 			->setAttribute("tabindex", $counter + 11);
 
 		$femaleContainer->addText("DatumNarozeni", DOG_FORM_BIRT)
+            ->setType('date')
+            ->setAttribute("autocomplete", "off")
 			->setAttribute("placeholder", DOG_FORM_BIRT)
 			->setAttribute("tabindex", $counter + 12);
 
@@ -103,6 +109,8 @@ class MatingListDetailForm {
 			->setAttribute("tabindex", $counter + 14);
 
 		$femaleContainer->addText("Bonitace", DOG_FORM_BON_DATE)
+            ->setType('date')
+            ->setAttribute("autocomplete", "off")
 			->setAttribute("placeholder", DOG_FORM_BON_DATE)
 			->setAttribute("tabindex", $counter + 15);
 
@@ -110,9 +118,11 @@ class MatingListDetailForm {
 			->setAttribute("placeholder", MATING_FORM_PLACE2)
 			->setAttribute("tabindex", $counter + 16);
 
-		// ------------------------------------------------------------
+		// -----------------------------------------------------------
 
 		$form->addText("DatumKryti", MATING_FORM_DATE)
+            ->setType('date')
+            ->setAttribute("autocomplete", "off")
 			->setAttribute("placeholder", MATING_FORM_DATE)
 			->setAttribute("tabindex", $counter + 17);
 

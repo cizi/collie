@@ -7,8 +7,10 @@ use Dibi\DateTime;
 
 class DogEntity {
 
-	/** @const form�t data */
+	/** @const format data */
 	const MASKA_DATA = 'Y-m-d';
+
+	const MASKA_DATA_FE = 'd.m.Y';
 
 	/** @var int */
 	public $ID;
@@ -695,6 +697,11 @@ class DogEntity {
 	 */
 	public function setMIDupdate($mIDupdate) {
 		$this->mIDupdate = $mIDupdate;
+	}
+
+    public function getCeleJmeno()
+    {
+        return trim($this->getTitulyPredJmenem() . " " . $this->getJmeno() . " " . $this->getTitulyZaJmenem());
 	}
 
 	public function hydrate(array $data) {
