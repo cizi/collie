@@ -136,6 +136,7 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 		$this['matingListDetailForm']['cID']->setDefaultValue($cID);
 		$this['matingListDetailForm']['pID']->setDefaults($pes->extract());
 		$this['matingListDetailForm']['pID']['Jmeno']->setDefaultValue($pes->getCeleJmeno());
+        $this['matingListDetailForm']['pID']['Bonitace']->setDefaultValue($pes->getBonitace());
 		if (!empty($pes->getDatNarozeni())) {
 		    $this['matingListDetailForm']['pID']['DatumNarozeni']->setDefaultValue($pes->getDatNarozeni()->format(DogEntity::MASKA_DATA));
         }
@@ -151,6 +152,7 @@ class FeItem2velord16Presenter extends FrontendPresenter {
 		$fena = $this->dogRepository->getDog($fID);
 		$this['matingListDetailForm']['fID']->setDefaults($fena->extract());
 		$this['matingListDetailForm']['fID']['Jmeno']->setDefaultValue($fena->getCeleJmeno());
+        $this['matingListDetailForm']['fID']['Bonitace']->setDefaultValue($fena->getBonitace());
 		if (!empty($fena->getDatNarozeni())) {
 		    $this['matingListDetailForm']['fID']['DatumNarozeni']->setDefaultValue($fena->getDatNarozeni()->format(DogEntity::MASKA_DATA));
         }

@@ -37,6 +37,7 @@ define("MENU_USERS_TEMP", 'Temporary users');
 define("MENU_USERS", 'Users');
 define("MENU_SETTINGS", 'Page setting');
 define("MENU_ENUMERATION", 'Enumerations');
+define("MENU_HEALTH_ENUM_ORDER", 'Health ordering');
 define("MENU_VETS", 'Vets / Labs');
 define("MENU_LANG", 'Language setting');
 define("MENU_LOGOUT", 'Logout');

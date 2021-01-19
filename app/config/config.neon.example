@@ -63,6 +63,7 @@ services:
 	- App\Forms\PuppyForm
 	- App\Forms\UserFilterForm
 	- App\Forms\LitterApplicationFilterForm
+	- App\Forms\HealthEnumOrderForm
 	- App\Model\UserRepository
 	- App\Model\WebconfigRepository
 	- App\Model\LangRepository

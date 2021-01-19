@@ -37,6 +37,7 @@ define("MENU_USERS_TEMP", 'Dočasní uživatelé');
 define("MENU_USERS", 'Uživatelé');
 define("MENU_SETTINGS", 'Nastavení');
 define("MENU_ENUMERATION", 'Číselníky');
+define("MENU_HEALTH_ENUM_ORDER", 'Řazení vyšetření');
 define("MENU_VETS", 'Veterináři / Laboratoře');
 define("MENU_LANG", 'Jazyková nastavení');
 define("MENU_LOGOUT", 'Odhlásit');

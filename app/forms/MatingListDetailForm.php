@@ -70,8 +70,6 @@ class MatingListDetailForm {
 			->setAttribute("tabindex", $counter + 6);
 
 		$maleContainer->addText("Bonitace", DOG_FORM_BON_DATE)
-            ->setType('date')
-            ->setAttribute("autocomplete", "off")
 			->setAttribute("placeholder", DOG_FORM_BON_DATE)
 			->setAttribute("tabindex", $counter + 7);
 
@@ -109,8 +107,6 @@ class MatingListDetailForm {
 			->setAttribute("tabindex", $counter + 14);
 
 		$femaleContainer->addText("Bonitace", DOG_FORM_BON_DATE)
-            ->setType('date')
-            ->setAttribute("autocomplete", "off")
 			->setAttribute("placeholder", DOG_FORM_BON_DATE)
 			->setAttribute("tabindex", $counter + 15);
 
