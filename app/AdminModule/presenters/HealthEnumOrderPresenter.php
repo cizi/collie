@@ -3,15 +3,22 @@
 namespace App\AdminModule\Presenters;
 
 use App\Forms\HealthEnumOrderForm;
+use App\Model\Entity\HealthOrderEntity;
+use App\Model\HealthOrderRepository;
 
 class HealthEnumOrderPresenter extends SignPresenter {
 
+    /** @var HealthEnumOrderForm */
     private $healthEnumOrderForm;
 
-    public function __construct(HealthEnumOrderForm $healthEnumOrderForm)
+    /** @var HealthOrderRepository */
+    private $healthOrderRepository;
+
+    public function __construct(HealthEnumOrderForm $healthEnumOrderForm, HealthOrderRepository $healthOrderRepository)
     {
         parent::__construct();
         $this->healthEnumOrderForm = $healthEnumOrderForm;
+        $this->healthOrderRepository = $healthOrderRepository;
     }
 
     public function createComponentHealthEnumOrderForm()
@@ -34,6 +41,21 @@ class HealthEnumOrderPresenter extends SignPresenter {
 
     public function saveHealthOrder($form, $values)
     {
-        dump($values);
+        $healthOrderEntities = [];
+        foreach ($values as $order => $value) {
+            if (isset ($value['order']) && !empty(trim($value['order']))) {
+                $healthOrderEntity = new HealthOrderEntity();
+                $healthOrderEntity->setEnumPoradi($order);
+                $healthOrderEntity->setZobrazeniPoradi($value['order']);
+                $healthOrderEntities[] = $healthOrderEntity;
+            }
+        }
+
+        if ($this->healthOrderRepository->updateOrders($healthOrderEntities)) {
+            $this->flashMessage(WEBCONFIG_WEB_SAVE_SUCCESS, "alert-success");
+        } else {
+            $this->flashMessage(REFEREE_SAVED_FAILED, "alert-danger");
+        }
+        $this->redirect("default");
     }
 }
