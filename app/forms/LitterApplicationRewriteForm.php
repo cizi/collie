@@ -96,7 +96,7 @@ class LitterApplicationRewriteForm {
 			foreach ($zdravi as $enumEntity) {
 				if (in_array($enumEntity->getOrder(), $this->puppyRequiredHealth)) {
 					$dogHealthContainerType = $dogHealthContainer->addContainer($enumEntity->getOrder());
-					$dogHealthContainerType->addText("caption", null)->setAttribute("class","form-control")->setAttribute("readonly", "readonly")->setAttribute("value",	$enumEntity->getItem());
+					$dogHealthContainerType->addText("caption", null)->setAttribute("class","form-control")->setAttribute("readonly", "readonly")->setDefaultValue($enumEntity->getItem());
 					$dogHealthContainerType->addText("Vysledek", DOG_FORM_HEALTH_SUMMARY)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_SUMMARY);
 					//$container->addText("Komentar", DOG_FORM_HEALTH_COMMENT)->setAttribute("class", "form-control")->setAttribute("placeholder", DOG_FORM_HEALTH_COMMENT);
 					$dogHealthContainerType->addHidden("Komentar");
