@@ -170,7 +170,7 @@ class DogForm {
 			->setAttribute("placeholder", DOG_FORM_TEETH_COM);
 
 		$vets = $this->vetRepository->findVetsForSelect();
-		$zdravi = $this->enumerationRepository->findEnumItems($langCurrent, 14);
+		$zdravi = $this->enumerationRepository->findEnumItems($langCurrent, EnumerationRepository::ZDRAVI);
 		$form->addButton("healthHelper", DOG_FORM_HEALTH)->setAttribute("id","healthHelper")->setAttribute("class", "form-control btn btn-info");
 		$dogHealthContainer = $form->addContainer("dogHealth");
 		/** @var EnumerationItemEntity $enumEntity */

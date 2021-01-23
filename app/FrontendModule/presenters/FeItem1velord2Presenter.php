@@ -212,7 +212,7 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 			if ($dog) {
 				$this['dogForm']->addHidden('ID', $dog->getID());
 			}
-			$zdravi = $this->enumerationRepository->findEnumItems($this->langRepository->getCurrentLang($this->session), 14);
+			$zdravi = $this->enumerationRepository->findEnumItems($this->langRepository->getCurrentLang($this->session), EnumerationRepository::ZDRAVI);
 			/** @var EnumerationItemEntity $enumEntity */
 			foreach ($zdravi as $enumEntity) {
 				$dogHealthEntity = $this->dogRepository->getHealthEntityByDogAndType($enumEntity->getOrder(), $id);
@@ -292,7 +292,10 @@ class FeItem1velord2Presenter extends FrontendPresenter {
 		$this->template->dog = $dog;
 		$zdravi = [];
 		$lang = $this->langRepository->getCurrentLang($this->session);
-		$zdraviOptions = $this->enumerationRepository->findEnumItems($this->langRepository->getCurrentLang($this->session), 14);
+		$zdraviOptions = $this->enumerationRepository->findEnumItems(
+		    $this->langRepository->getCurrentLang($this->session),
+            EnumerationRepository::ZDRAVI
+        );
 		/** @var EnumerationItemEntity $enumEntity */
 		foreach ($zdraviOptions as $enumEntity) {
 			$dogHealthEntity = $this->dogRepository->getHealthEntityByDogAndType($enumEntity->getOrder(), $dog->getID());

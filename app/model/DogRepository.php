@@ -65,6 +65,12 @@ class DogRepository extends BaseRepository {
 	/** @var array pole barev podle výskytu */
 	private $colorByDogId = [];
 
+	/** @var HealthOrderRepository */
+	private $healthOrderRepository;
+
+	/** @var array */
+	private $healthOrder;
+
 	/** @var array pole možných barev pokud je deepmark */
 	private $backgroundColors = [
 		"#CC66FF", "#CC99FF", "#3399FF", "#66CCFF", "#FFCC66", "#996699", "#CC66CC", "#CC6666", "#CC9900", "#FF9999", "#999900", "#00CCCC",
@@ -95,15 +101,19 @@ class DogRepository extends BaseRepository {
 		Session $session,
 		LangRepository $langRepository,
 		LitterApplicationRepository $litterApplicationRepository,
-		TemporaryUserRepository $temporaryUserRepository
+		TemporaryUserRepository $temporaryUserRepository,
+        HealthOrderRepository $healthOrderRepository
 	) {
 		$this->enumRepository = $enumerationRepository;
 		$this->session = $session;
 		$this->langRepository = $langRepository;
 		$this->litterApplicationRepository = $litterApplicationRepository;
 		$this->temporaryUserRepository = $temporaryUserRepository;
+        $this->healthOrderRepository = $healthOrderRepository;
 
 		parent::__construct($connection);
+
+		$this->healthOrder = $this->healthOrderRepository->findOrders();
 	}
 
 	/**
@@ -527,8 +537,13 @@ class DogRepository extends BaseRepository {
 		foreach ($result->fetchAll() as $row) {
 			$dogHealth = new DogHealthEntity();
 			$dogHealth->hydrate($row->toArray());
-			$dogHealths[] = $dogHealth;
+			if (isset($this->healthOrder[$dogHealth->getTyp()])) {
+                $dogHealths[$this->healthOrder[$dogHealth->getTyp()]] = $dogHealth;
+            } else {
+			    $dogHealths[] = $dogHealth;
+            }
 		}
+		ksort($dogHealths);
 
 		return $dogHealths;
 	}

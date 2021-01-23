@@ -836,3 +836,5 @@ define("PUPPY_DELETE_BODY", "Opravdu chcete smazat záznam?");
 define("PUPPY_USER_REF", "štěňata");
 
 define("CHS_TITLE", 'Chovatelské stanice');
+
+define('HEALTH_ORDER_NOT_UNIQUE', 'Nelze zadat shodnou hodnotu pořadí u více vyšetření!');

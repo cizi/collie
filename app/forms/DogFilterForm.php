@@ -99,7 +99,7 @@ class DogFilterForm {
 		$form->addSelect(self::DOG_FILTER_PROB_DLK, DOG_TABLE_HEADER_PROB_DLK, $dlk)
 			->setAttribute("class", "form-control");
 
-		$zdravi = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($langCurrent, 14);
+		$zdravi = $this->enumerationRepository->findEnumItemsForSelectWithEmpty($langCurrent, EnumerationRepository::ZDRAVI);
 		$form->addSelect(self::DOG_FILTER_HEALTH, DOG_TABLE_HEADER_HEALTH, $zdravi)
 			->setAttribute("class", "form-control");
 

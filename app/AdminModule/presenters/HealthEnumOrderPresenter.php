@@ -42,16 +42,22 @@ class HealthEnumOrderPresenter extends SignPresenter {
     public function saveHealthOrder($form, $values)
     {
         $healthOrderEntities = [];
+        $orderIsUnique = true;
         foreach ($values as $order => $value) {
-            if (isset ($value['order']) && !empty(trim($value['order']))) {
+            if (isset($value['order']) && !empty(trim($value['order']))) {
+                $orderIsUnique = !isset($healthOrderEntities[$value['order']]);
                 $healthOrderEntity = new HealthOrderEntity();
                 $healthOrderEntity->setEnumPoradi($order);
                 $healthOrderEntity->setZobrazeniPoradi($value['order']);
-                $healthOrderEntities[] = $healthOrderEntity;
+                $healthOrderEntities[$value['order']] = $healthOrderEntity;
+            }
+            if (!$orderIsUnique) {
+                $this->flashMessage(HEALTH_ORDER_NOT_UNIQUE, "alert-danger");
+                break;
             }
         }
 
-        if ($this->healthOrderRepository->updateOrders($healthOrderEntities)) {
+        if ($orderIsUnique && $this->healthOrderRepository->updateOrders($healthOrderEntities)) {
             $this->flashMessage(WEBCONFIG_WEB_SAVE_SUCCESS, "alert-success");
         } else {
             $this->flashMessage(REFEREE_SAVED_FAILED, "alert-danger");

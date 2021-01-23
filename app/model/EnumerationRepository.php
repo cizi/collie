@@ -17,7 +17,19 @@ class EnumerationRepository extends BaseRepository {
 	SRST = 11,
 	VARLATA = 12,
 	SKUS = 10,
-	CHOVNOST = 5;
+	CHOVNOST = 5,
+    ZDRAVI = 14;
+
+	/** @var HealthOrderRepository */
+	private $healthOrderRepository;
+
+    public function	__construct(
+        \Dibi\Connection $connection,
+        HealthOrderRepository $healthOrderRepository
+    ) {
+        parent::__construct($connection);
+        $this->healthOrderRepository = $healthOrderRepository;
+    }
 
 	/**
 	 * @param int $id
@@ -89,6 +101,7 @@ class EnumerationRepository extends BaseRepository {
 	/**
 	 * @param string $lang
 	 * @param int $enumHeaderId
+     * @param bool $isSelect - vždy bude vráceno pole EnumerationItemEntity bez úprav
 	 * @return array
 	 */
 	public function findEnumItems($lang, $enumHeaderId) {
@@ -101,8 +114,28 @@ class EnumerationRepository extends BaseRepository {
 			$return[] = $enumItem;
 		}
 
-		return $return;
+		if ($enumHeaderId == self::ZDRAVI) {
+		    return $this->applyDogHealthOrder($return);
+        } else {
+		    return $return;
+        }
 	}
+
+	private function applyDogHealthOrder(array $dogHealths) {
+	    $orderedHeaths = [];
+	    $userHealthOrder = $this->healthOrderRepository->findOrders();
+	    /** @var EnumerationItemEntity $dogHealth */
+        foreach ($dogHealths as $dogHealth) {
+	        if (isset($userHealthOrder[$dogHealth->getOrder()])) {
+                $orderedHeaths[$userHealthOrder[$dogHealth->getOrder()]] = $dogHealth;
+            } else {
+                $orderedHeaths[] = $dogHealth;
+            }
+        }
+        ksort($orderedHeaths);
+
+        return $orderedHeaths;
+    }
 
 	/**
 	 * @param string $lang

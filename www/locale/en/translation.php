@@ -814,3 +814,5 @@ define("PUPPY_DELETE_BODY", "Are you really want to delete the record?");
 define("PUPPY_USER_REF", "puppies");
 
 define("CHS_TITLE", 'Catteries');
+
+define('HEALTH_ORDER_NOT_UNIQUE', 'Dog health order must be unique!');
