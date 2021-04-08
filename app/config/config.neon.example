@@ -6,18 +6,6 @@ parameters:
     language:
         default: cs
 
-    database:
-        host: host
-        username: name
-        password: pass
-        database: db
-        lazy: TRUE
-        profiler:
-            run: false
-            explain: true
-            filter: DibiEvent::ALL
-            file: log.sql
-
 php:
 	date.timezone: Europe/Prague
 
@@ -83,6 +71,7 @@ services:
 	- App\Model\LitterApplicationRepository
 	- App\Model\PuppyRepository
 	- App\Model\TemporaryUserRepository
+	- App\Model\HealthOrderRepository
 	- App\Controller\MenuController
 	- App\Controller\FileController
 	- App\Controller\DogChangesComparatorController

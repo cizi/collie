@@ -6,7 +6,7 @@
 			</div>
 		{else}
 			<div class="contentRow" style="background-color: {$block->getBackgroundColor()|noescape}; outline: 15px solid {$block->getBackgroundColor()|noescape}; color: {$block->getColor()|noescape}; width: {$widthEnum->getValueByKey($block->getWidth())|noescape}">
-				{var text = str_replace("../../.", "",$block->getBlockContent()->getContentText(true))}
+				{var $text = str_replace("../../.", "",$block->getBlockContent()->getContentText(true))}
 				{$text|noescape}
 			</div>
 			{if ($iterator->getCounter()%2 == 0) && ($pageKeywords != "")}<em class="hidden">{$pageKeywords}</em>{/if}

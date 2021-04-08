@@ -2,10 +2,10 @@ parameters:
     extensions:
         dibi: Dibi\Bridges\Nette\DibiExtension22
     database:
-        host: localhost
-        username: root
-        password: toor6666
-        database: collie
+        host: host
+        username: user
+        password: pass
+        database: db
         lazy: TRUE
         profiler:
             run: false
